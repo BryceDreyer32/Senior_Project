@@ -1,0 +1,51 @@
+IO_LOC  "servo_pwm[0]" 25;
+
+IO_LOC  "sd_pwm[3]" 39;
+
+IO_LOC  "sd_pwm[2]" 36;
+
+IO_LOC  "sd_pwm[1]" 37;
+
+IO_LOC  "sd_pwm[0]" 38;
+
+IO_LOC  "servo_pwm[3]" 32;
+
+IO_LOC  "servo_pwm[2]" 31;
+
+IO_LOC  "servo_pwm[1]" 49;
+
+IO_LOC  "sd_pwm[0]" 48;
+
+IO_LOC  "sda[3]" 70;
+
+IO_LOC  "sda[2]" 71;
+
+IO_LOC  "sda[1]" 72;
+
+IO_LOC  "sda[0]" 73;
+
+IO_LOC  "scl[3]" 74;
+
+IO_LOC  "scl[2]" 75;
+
+IO_LOC  "scl[1]" 76;
+
+IO_LOC  "scl[0]" 77;
+
+IO_LOC  "sr_pwm[3]" 79;
+
+IO_LOC  "sr_pwm[2]" 80;
+
+IO_LOC  "sr_pwm[1]" 81;
+
+IO_LOC  "sr_pwm[0]" 82;
+
+IO_LOC  "mosi" 83;
+
+IO_LOC  "cs_n" 84;
+
+IO_LOC  "spi_clock" 85;
+
+IO_LOC  "clock" 86;
+
+IO_LOC  "reset_n" 63;
