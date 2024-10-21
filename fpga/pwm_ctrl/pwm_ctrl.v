@@ -40,15 +40,22 @@ wire    [7:0]       rd_data;
 wire                i2c_done, isSending, sdaOutReg;
 reg     [3:0]       ps, ns;
 reg                 send_nack;
+reg                 enable;
+reg     [15:0]      counter;
 
 // FSM to control the pwm ctrl
 always @(posedge clock or negedge reset_n)  begin
     if(~reset_n) begin
         ps <= IDLE;
+        counter <= 16'b0;
     end
 
     else begin
         ps <= ns;
+        if(ps == PAUSE)
+            counter <= counter + 16'b1;
+        else
+            counter <= 16'b0;
     end
 end
 
@@ -56,9 +63,11 @@ always @(*) begin
     instruction = 3'b0;
     wr_data     = 8'b0;
     send_nack   = 1'b0;
+    enable      = 1'b1;
 
     case(ps)
         IDLE: begin
+            enable = 1'b0;
             if(angle_update)
                 ns = START;
         end
@@ -131,10 +140,17 @@ always @(*) begin
         end
 
         PAUSE: begin
-            if(angle_done)
+           /*  if(angle_done)
                 ns = IDLE;
             else
+                ns = START;  */
+            instruction = 3'd1;
+            if(counter == 16'h3FF)
                 ns = START;
+            else begin
+                ns = PAUSE;
+                enable = 1'b0;
+            end
         end
 
         default: begin
@@ -160,12 +176,13 @@ angle_to_pwm a_to_pwm(
 
 i2c i2c(
     .clk            (clock),
+    .reset_n        (reset_n),
     .sdaIn          (sda),
     .sdaOutReg      (sdaOutReg),
     .isSending      (isSending),
     .scl            (sck),
     .instruction    (instruction[1:0]),
-    .enable         (reset_n),
+    .enable         (enable),
     .byteToSend     (wr_data[7:0]),
     .send_nack      (send_nack),
     .byteReceived   (rd_data[7:0]),
