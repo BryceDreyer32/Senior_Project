@@ -125,13 +125,13 @@ always @(posedge clock or negedge reset_n) begin
     end
 end
 
-always @(posedge shift_en or posedge csn_wentlow) begin
+always @(posedge ~shift_en or posedge csn_wentlow) begin
     if(csn_wentlow)
         shift_out_reg[15:0]     <= miso_reg[15:0];
     else 
         shift_out_reg[15:0]     <= (shift_out_reg[15:0] << 1);
 end
 
-assign miso     = shift_out_reg[15] | (~cs_n);
+assign miso     = shift_out_reg[15] | cs_n;
 
 endmodule

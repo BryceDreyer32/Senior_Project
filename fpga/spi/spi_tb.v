@@ -83,7 +83,7 @@ module test();
     reg [7:0]       test_data   = 8'h56;
     reg [5:0]       test_addr   = 8'h4;
     reg             test_parity = 0;
-    reg             test_rw     = 0;
+    reg             test_rw     = 1;
 
 always
     #1  clock = ~clock;
@@ -102,6 +102,8 @@ initial begin
 
     $display("--- WRITE TEST ---");
     $display("Asserting cs_n");
+    test_rw = 0;
+    test_mosi = {1'b0, 1'b1, test_addr[5:0], test_data[7:0]};
     #12 cs_n = 0;
 
     $display("Running for 16 spiclk cycles");
@@ -112,15 +114,33 @@ initial begin
 
     #(10*3*2);
 
+    // For the read, we first send 1 byte which contains the read flag, parity, and read address
     $display("--- READ TEST ---");
-    $display("Asserting cs_n");
+    $display("Asserting cs_n, writing the address to be read");
+    test_rw = 1;
+    test_mosi = {1'b1, 1'b0, test_addr[5:0], 8'hFF};
     #2 cs_n = 0;
 
     $display("Running for 16 spiclk cycles");
-    #(16*3*2);
+    #(16*3*2);    
 
     $display("Deasserting cs_n");
-    cs_n = 1;
+    #3 cs_n = 1;
+
+    #(5*3*2);
+
+    // Then we read the data byte back on the MISO (while MOSI is held high the whole time)
+    $display("Asserting cs_n, and reading back data read");
+    test_rw = 1;
+    test_mosi = 16'hFFFF;
+    #2 cs_n = 0;
+
+    $display("Running for 16 spiclk cycles");
+    #(16*3*2);    
+
+    $display("Deasserting cs_n");
+    #3 cs_n = 1;
+
 
     #(50*3*2) $finish;
 end
@@ -138,17 +158,8 @@ assign gate_spi_clk = spi_clk & clk_gate & ~cs_n;
 
 reg cs_n_ff, cs_n_ff2;
 
-always @(negedge gate_spi_clk or negedge clk_gate) begin
-    // After transaction cs_n deasserts, when this happens flip whether we are doing read or write, and reset the data
-    if(~clk_gate) begin
-        test_rw     <= ~test_rw;
-        test_mosi[15:0] <= {test_rw, test_parity, test_addr[5:0], test_data[7:0]};
-        cs_n_ff     <= 1'b0;
-        cs_n_ff2    <= 1'b0;
-    end
-    else begin
-        test_mosi[15:0] <= {test_mosi[14:0], 1'b0};
-    end
+always @(negedge gate_spi_clk) begin
+    test_mosi[15:0] <= {test_mosi[14:0], 1'b0};
 end
 assign mosi = test_mosi[15];
 

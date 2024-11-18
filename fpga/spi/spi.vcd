@@ -1,5 +1,5 @@
 $date
-	Sun Nov 17 19:11:36 2024
+	Sun Nov 17 20:50:45 2024
 $end
 $version
 	Icarus Verilog
@@ -47,59 +47,57 @@ $var wire 6 D address [5:0] $end
 $var reg 1 E clk_gate $end
 $var reg 1 F clock $end
 $var reg 1 G cs_n $end
-$var reg 1 H cs_n_ff $end
-$var reg 1 I cs_n_ff2 $end
-$var reg 1 J reset_n $end
-$var reg 1 K spi_clk $end
-$var reg 6 L test_addr [5:0] $end
-$var reg 8 M test_data [7:0] $end
-$var reg 16 N test_mosi [15:0] $end
-$var reg 1 O test_parity $end
-$var reg 1 P test_rw $end
+$var reg 1 H reset_n $end
+$var reg 1 I spi_clk $end
+$var reg 6 J test_addr [5:0] $end
+$var reg 8 K test_data [7:0] $end
+$var reg 16 L test_mosi [15:0] $end
+$var reg 1 M test_parity $end
+$var reg 1 N test_rw $end
 $scope module dut $end
 $var wire 1 F clock $end
 $var wire 1 G cs_n $end
-$var wire 1 Q data_valid $end
+$var wire 1 O data_valid $end
 $var wire 1 C miso $end
 $var wire 1 B mosi $end
-$var wire 1 J reset_n $end
-$var wire 1 R shift_en $end
+$var wire 1 H reset_n $end
+$var wire 1 P shift_en $end
 $var wire 1 5 spi_clk $end
-$var wire 1 S tx_parity $end
-$var wire 1 T rx_parity $end
-$var wire 8 U rd_data [7:0] $end
-$var reg 6 V address [5:0] $end
-$var reg 1 W cs_n_ff $end
-$var reg 1 X cs_n_ff2 $end
-$var reg 1 Y csn_wenthigh $end
-$var reg 1 Z csn_wenthigh_ff $end
-$var reg 1 [ csn_wentlow $end
-$var reg 16 \ miso_reg [15:0] $end
-$var reg 16 ] mosi_reg [15:0] $end
-$var reg 1 ^ parity $end
-$var reg 1 _ read $end
+$var wire 1 Q tx_parity $end
+$var wire 1 R rx_parity $end
+$var wire 8 S rd_data [7:0] $end
+$var reg 6 T address [5:0] $end
+$var reg 1 U cs_n_ff $end
+$var reg 1 V cs_n_ff2 $end
+$var reg 1 W csn_wenthigh $end
+$var reg 1 X csn_wenthigh_ff $end
+$var reg 1 Y csn_wentlow $end
+$var reg 16 Z miso_reg [15:0] $end
+$var reg 16 [ mosi_reg [15:0] $end
+$var reg 1 \ parity $end
+$var reg 1 ] read $end
 $var reg 1 @ read_en $end
-$var reg 16 ` shift_in_reg [15:0] $end
-$var reg 16 a shift_out_reg [15:0] $end
-$var reg 8 b wr_data [7:0] $end
-$var reg 1 c write $end
+$var reg 16 ^ shift_in_reg [15:0] $end
+$var reg 16 _ shift_out_reg [15:0] $end
+$var reg 8 ` wr_data [7:0] $end
+$var reg 1 a write $end
 $var reg 1 : write_en $end
 $upscope $end
 $scope module rf $end
-$var wire 7 d adc_temp0 [6:0] $end
-$var wire 7 e adc_temp1 [6:0] $end
-$var wire 7 f adc_temp2 [6:0] $end
-$var wire 7 g adc_temp3 [6:0] $end
-$var wire 7 h adc_temp4 [6:0] $end
-$var wire 7 i adc_temp5 [6:0] $end
-$var wire 7 j adc_temp6 [6:0] $end
-$var wire 7 k adc_temp7 [6:0] $end
-$var wire 6 l address [5:0] $end
+$var wire 7 b adc_temp0 [6:0] $end
+$var wire 7 c adc_temp1 [6:0] $end
+$var wire 7 d adc_temp2 [6:0] $end
+$var wire 7 e adc_temp3 [6:0] $end
+$var wire 7 f adc_temp4 [6:0] $end
+$var wire 7 g adc_temp5 [6:0] $end
+$var wire 7 h adc_temp6 [6:0] $end
+$var wire 7 i adc_temp7 [6:0] $end
+$var wire 6 j address [5:0] $end
 $var wire 1 F clock $end
-$var wire 8 m current_angle0 [7:0] $end
-$var wire 8 n current_angle1 [7:0] $end
-$var wire 8 o current_angle2 [7:0] $end
-$var wire 8 p current_angle3 [7:0] $end
+$var wire 8 k current_angle0 [7:0] $end
+$var wire 8 l current_angle1 [7:0] $end
+$var wire 8 m current_angle2 [7:0] $end
+$var wire 8 n current_angle3 [7:0] $end
 $var wire 1 - fault0 $end
 $var wire 1 . fault1 $end
 $var wire 1 / fault2 $end
@@ -109,50 +107,50 @@ $var wire 1 2 fault5 $end
 $var wire 1 3 fault6 $end
 $var wire 1 4 fault7 $end
 $var wire 1 @ read_en $end
-$var wire 1 J reset_n $end
-$var wire 8 q servo_position0 [7:0] $end
-$var wire 8 r servo_position1 [7:0] $end
-$var wire 8 s servo_position2 [7:0] $end
-$var wire 8 t servo_position3 [7:0] $end
-$var wire 8 u target_angle0 [7:0] $end
-$var wire 8 v target_angle1 [7:0] $end
-$var wire 8 w target_angle2 [7:0] $end
-$var wire 8 x target_angle3 [7:0] $end
-$var wire 8 y wr_data [7:0] $end
+$var wire 1 H reset_n $end
+$var wire 8 o servo_position0 [7:0] $end
+$var wire 8 p servo_position1 [7:0] $end
+$var wire 8 q servo_position2 [7:0] $end
+$var wire 8 r servo_position3 [7:0] $end
+$var wire 8 s target_angle0 [7:0] $end
+$var wire 8 t target_angle1 [7:0] $end
+$var wire 8 u target_angle2 [7:0] $end
+$var wire 8 v target_angle3 [7:0] $end
+$var wire 8 w wr_data [7:0] $end
 $var wire 1 : write_en $end
-$var wire 5 z pwm7 [4:0] $end
-$var wire 5 { pwm6 [4:0] $end
-$var wire 5 | pwm5 [4:0] $end
-$var wire 5 } pwm4 [4:0] $end
-$var wire 5 ~ pwm3 [4:0] $end
-$var wire 5 !" pwm2 [4:0] $end
-$var wire 5 "" pwm1 [4:0] $end
-$var wire 5 #" pwm0 [4:0] $end
-$var wire 1 $" enable7 $end
-$var wire 1 %" enable6 $end
-$var wire 1 &" enable5 $end
-$var wire 1 '" enable4 $end
-$var wire 1 (" enable3 $end
-$var wire 1 )" enable2 $end
-$var wire 1 *" enable1 $end
-$var wire 1 +" enable0 $end
-$var wire 1 ," direction7 $end
-$var wire 1 -" direction6 $end
-$var wire 1 ." direction5 $end
-$var wire 1 /" direction4 $end
-$var wire 1 0" direction3 $end
-$var wire 1 1" direction2 $end
-$var wire 1 2" direction1 $end
-$var wire 1 3" direction0 $end
-$var wire 1 4" brake7 $end
-$var wire 1 5" brake6 $end
-$var wire 1 6" brake5 $end
-$var wire 1 7" brake4 $end
-$var wire 1 8" brake3 $end
-$var wire 1 9" brake2 $end
-$var wire 1 :" brake1 $end
-$var wire 1 ;" brake0 $end
-$var reg 8 <" rd_data [7:0] $end
+$var wire 5 x pwm7 [4:0] $end
+$var wire 5 y pwm6 [4:0] $end
+$var wire 5 z pwm5 [4:0] $end
+$var wire 5 { pwm4 [4:0] $end
+$var wire 5 | pwm3 [4:0] $end
+$var wire 5 } pwm2 [4:0] $end
+$var wire 5 ~ pwm1 [4:0] $end
+$var wire 5 !" pwm0 [4:0] $end
+$var wire 1 "" enable7 $end
+$var wire 1 #" enable6 $end
+$var wire 1 $" enable5 $end
+$var wire 1 %" enable4 $end
+$var wire 1 &" enable3 $end
+$var wire 1 '" enable2 $end
+$var wire 1 (" enable1 $end
+$var wire 1 )" enable0 $end
+$var wire 1 *" direction7 $end
+$var wire 1 +" direction6 $end
+$var wire 1 ," direction5 $end
+$var wire 1 -" direction4 $end
+$var wire 1 ." direction3 $end
+$var wire 1 /" direction2 $end
+$var wire 1 0" direction1 $end
+$var wire 1 1" direction0 $end
+$var wire 1 2" brake7 $end
+$var wire 1 3" brake6 $end
+$var wire 1 4" brake5 $end
+$var wire 1 5" brake4 $end
+$var wire 1 6" brake3 $end
+$var wire 1 7" brake2 $end
+$var wire 1 8" brake1 $end
+$var wire 1 9" brake0 $end
+$var reg 8 :" rd_data [7:0] $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
@@ -161,9 +159,7 @@ $dumpall
 $end
 #0
 $dumpvars
-bx <"
-x;"
-x:"
+bx :"
 x9"
 x8"
 x7"
@@ -186,8 +182,8 @@ x'"
 x&"
 x%"
 x$"
-bx #"
-bx ""
+x#"
+x""
 bx !"
 bx ~
 bx }
@@ -195,60 +191,60 @@ bx |
 bx {
 bx z
 bx y
-bz x
-bz w
+bx x
+bx w
 bz v
-bx u
-bx t
+bz u
+bz t
 bx s
 bx r
 bx q
-b1010101 p
-b1010101 o
+bx p
+bx o
 b1010101 n
 b1010101 m
-bx l
-bz k
-bz j
+b1010101 l
+b1010101 k
+bx j
 bz i
 bz h
-b1010 g
-b1010 f
+bz g
+bz f
 b1010 e
 b1010 d
-xc
-bx b
-bx a
+b1010 c
+b1010 b
+xa
 bx `
-x_
-x^
-bx ]
-bx \
-x[
-xZ
+bx0 _
+bx ^
+x]
+x\
+bx [
+bx Z
 xY
 xX
 xW
-bx V
-bx U
-xT
-xS
-0R
+xV
+xU
+bx T
+bx S
+xR
 xQ
 0P
-1O
-b0 N
-b1010110 M
-b100 L
-0K
-1J
-xI
-xH
+xO
+1N
+0M
+b0 L
+b1010110 K
+b100 J
+0I
+1H
 1G
 0F
 1E
 bx D
-xC
+1C
 0B
 bx A
 x@
@@ -285,87 +281,85 @@ b1010 "
 b1010 !
 $end
 #1
-1W
-b0xxxxxxxxx \
+1U
+b0xxxxxxxxx Z
 1F
 #2
-0O
-0I
-0H
-b100010001010110 N
-1P
-1Q
-0T
-b0 \
+1O
+0R
+b0 Z
 0@
 0:
-0[
-0Z
 0Y
 0X
 0W
-0c
-0_
-0^
+0V
+0U
+0a
+0]
+0\
 b0 D
-b0 V
-b0 l
+b0 T
+b0 j
 b0 ;
-b0 b
-b0 y
-b0 ]
 b0 `
+b0 w
+b0 [
+b0 ^
 0E
-0J
+0H
 0F
 #3
 1F
-1K
+1I
 #4
 0F
 #5
 1F
 #6
 0F
-0K
+0I
 #7
 1F
 #8
 0F
 #9
 1F
-1K
+1I
 #10
+1M
 0F
-1J
+b100010001010110 L
+0N
+1H
 #11
-1W
-b0xxxxxxxxx \
+1U
+b0xxxxxxxxx Z
 1F
 #12
 0F
-0K
+0I
 #13
-1Y
-1X
+1W
+1V
 1F
 #14
 0F
 #15
-1c
-1Z
-0Y
+1a
+1X
+0W
 1F
-1K
+1I
 #16
 0F
 #17
 1:
-0Z
+0X
 1F
 #18
 0F
-0K
+0I
 #19
 0:
 1F
@@ -373,1620 +367,2083 @@ b0xxxxxxxxx \
 0F
 #21
 1F
-1K
+1I
 #22
-1C
+xC
 0F
 0G
 #23
-0W
+0U
 1F
 #24
 1E
 0F
-0K
+0I
 #25
-b0xxxxxxxxx a
-1[
-0X
+0C
+b0xxxxxxxxx _
+1Y
+0V
 1F
 #26
 0F
 #27
-0[
-1R
+0Y
+1P
 15
 1F
-1K
+1I
 #28
 0F
 #29
 1F
 #30
 1B
-b1000100010101100 N
-0R
+b0xxxxxxxxx0 _
+b1000100010101100 L
+0P
 05
 0F
-0K
+0I
 #31
 1F
 #32
 0F
 #33
-b0xxxxxxxxx0 a
-b1 `
-1R
+b1 ^
+1P
 15
 1F
-1K
+1I
 #34
 0F
 #35
 1F
 #36
 0B
-b1000101011000 N
-0R
+b0xxxxxxxxx00 _
+b1000101011000 L
+0P
 05
 0F
-0K
+0I
 #37
 1F
 #38
 0F
 #39
-b0xxxxxxxxx00 a
-b10 `
-1R
+b10 ^
+1P
 15
 1F
-1K
+1I
 #40
 0F
 #41
 1F
 #42
-b10001010110000 N
-0R
+b0xxxxxxxxx000 _
+b10001010110000 L
+0P
 05
 0F
-0K
+0I
 #43
 1F
 #44
 0F
 #45
-b0xxxxxxxxx000 a
-b100 `
-1R
+b100 ^
+1P
 15
 1F
-1K
+1I
 #46
 0F
 #47
 1F
 #48
-b100010101100000 N
-0R
+b0xxxxxxxxx0000 _
+b100010101100000 L
+0P
 05
 0F
-0K
+0I
 #49
 1F
 #50
 0F
 #51
-b0xxxxxxxxx0000 a
-b1000 `
-1R
+b1000 ^
+1P
 15
 1F
-1K
+1I
 #52
 0F
 #53
 1F
 #54
 1B
-b1000101011000000 N
-0R
+b0xxxxxxxxx00000 _
+b1000101011000000 L
+0P
 05
 0F
-0K
+0I
 #55
 1F
 #56
 0F
 #57
-b0xxxxxxxxx00000 a
-b10001 `
-1R
+b10001 ^
+1P
 15
 1F
-1K
+1I
 #58
 0F
 #59
 1F
 #60
 0B
-b1010110000000 N
-0R
+b0xxxxxxxxx000000 _
+b1010110000000 L
+0P
 05
 0F
-0K
+0I
 #61
 1F
 #62
 0F
 #63
-b0xxxxxxxxx000000 a
-b100010 `
-1R
+b100010 ^
+1P
 15
 1F
-1K
+1I
 #64
 0F
 #65
 1F
 #66
-b10101100000000 N
-0R
+xC
+bx0000000 _
+b10101100000000 L
+0P
 05
 0F
-0K
+0I
 #67
 1F
 #68
 0F
 #69
-bx0000000 a
-b1000100 `
-1R
+b1000100 ^
+1P
 15
 1F
-1K
+1I
 #70
 0F
 #71
 1F
 #72
-b101011000000000 N
-0R
+bx00000000 _
+b101011000000000 L
+0P
 05
 0F
-0K
+0I
 #73
 1F
 #74
 0F
 #75
-bx00000000 a
-b10001000 `
-1R
+b10001000 ^
+1P
 15
 1F
-1K
+1I
 #76
 0F
 #77
 1F
 #78
 1B
-b1010110000000000 N
-0R
+bx000000000 _
+b1010110000000000 L
+0P
 05
 0F
-0K
+0I
 #79
 1F
 #80
 0F
 #81
-bx000000000 a
-b100010001 `
-1R
+b100010001 ^
+1P
 15
 1F
-1K
+1I
 #82
 0F
 #83
 1F
 #84
 0B
-b101100000000000 N
-0R
+bx0000000000 _
+b101100000000000 L
+0P
 05
 0F
-0K
+0I
 #85
 1F
 #86
 0F
 #87
-bx0000000000 a
-b1000100010 `
-1R
+b1000100010 ^
+1P
 15
 1F
-1K
+1I
 #88
 0F
 #89
 1F
 #90
 1B
-b1011000000000000 N
-0R
+bx00000000000 _
+b1011000000000000 L
+0P
 05
 0F
-0K
+0I
 #91
 1F
 #92
 0F
 #93
-bx00000000000 a
-b10001000101 `
-1R
+b10001000101 ^
+1P
 15
 1F
-1K
+1I
 #94
 0F
 #95
 1F
 #96
 0B
-b110000000000000 N
-0R
+bx000000000000 _
+b110000000000000 L
+0P
 05
 0F
-0K
+0I
 #97
 1F
 #98
 0F
 #99
-bx000000000000 a
-b100010001010 `
-1R
+b100010001010 ^
+1P
 15
 1F
-1K
+1I
 #100
 0F
 #101
 1F
 #102
 1B
-b1100000000000000 N
-0R
+bx0000000000000 _
+b1100000000000000 L
+0P
 05
 0F
-0K
+0I
 #103
 1F
 #104
 0F
 #105
-bx0000000000000 a
-b1000100010101 `
-1R
+b1000100010101 ^
+1P
 15
 1F
-1K
+1I
 #106
 0F
 #107
 1F
 #108
-b1000000000000000 N
-0R
+bx00000000000000 _
+b1000000000000000 L
+0P
 05
 0F
-0K
+0I
 #109
 1F
 #110
 0F
 #111
-bx00000000000000 a
-b10001000101011 `
-1R
+b10001000101011 ^
+1P
 15
 1F
-1K
+1I
 #112
 0F
 #113
 1F
 #114
 0B
-b0 N
-0R
+bx000000000000000 _
+b0 L
+0P
 05
 0F
-0K
+0I
 #115
 1F
 #116
 0F
 #117
-bx000000000000000 a
-b100010001010110 `
-1R
+b100010001010110 ^
+1P
 15
 1F
-1K
+1I
 #118
 0F
 #119
 1F
 #120
-0R
+0C
+b0 _
+0P
 05
 0F
-0K
+0I
 #121
 1F
 #122
 0F
 #123
-1W
-xC
+1U
+1C
 1F
-1K
+1I
 1G
 #124
 0F
 #125
-0Q
-1T
-b100010001010110 ]
-1Y
-1X
+0O
+1R
+b100010001010110 [
+1W
+1V
 1F
 #126
-1B
-1O
-b1000010001010110 N
-0P
 0E
 0F
-0K
+0I
 #127
-1Q
-1^
+1O
+1\
 b100 D
-b100 V
-b100 l
+b100 T
+b100 j
 b1010110 ;
-b1010110 b
-b1010110 y
-1Z
-0Y
+b1010110 `
+b1010110 w
+1X
+0W
 1F
 #128
 0F
 #129
 1:
-0Z
+0X
 1F
-1K
+1I
 #130
 0F
 #131
-0;"
-1+"
-03"
-b10110 #"
+09"
+1)"
+01"
+b10110 !"
 0:
 1F
 #132
 0F
-0K
+0I
 #133
 1F
 #134
 0F
 #135
 1F
-1K
+1I
 #136
 0F
 #137
 1F
 #138
 0F
-0K
+0I
 #139
 1F
 #140
 0F
 #141
 1F
-1K
+1I
 #142
 0F
 #143
 1F
 #144
 0F
-0K
+0I
 #145
 1F
 #146
 0F
 #147
 1F
-1K
+1I
 #148
 0F
 #149
 1F
 #150
 0F
-0K
+0I
 #151
 1F
 #152
 0F
 #153
 1F
-1K
+1I
 #154
 0F
 #155
 1F
 #156
 0F
-0K
+0I
 #157
 1F
 #158
 0F
 #159
 1F
-1K
+1I
 #160
 0F
 #161
 1F
 #162
 0F
-0K
+0I
 #163
 1F
 #164
 0F
 #165
 1F
-1K
+1I
 #166
 0F
 #167
 1F
 #168
 0F
-0K
+0I
 #169
 1F
 #170
 0F
 #171
 1F
-1K
+1I
 #172
 0F
 #173
 1F
 #174
 0F
-0K
+0I
 #175
 1F
 #176
 0F
 #177
 1F
-1K
+1I
 #178
 0F
 #179
 1F
 #180
 0F
-0K
+0I
 #181
 1F
 #182
 0F
 #183
+1B
+0M
 1F
-1K
+1I
+b1000010011111111 L
+1N
 #184
 0F
 #185
-0W
-1C
+0U
+0C
 1F
 0G
 #186
 1E
 0F
-0K
+0I
 #187
-b0xxxxxxxxx a
-1[
-0X
+b0xxxxxxxxx _
+1Y
+0V
 1F
 #188
 0F
 #189
-b1000100010101101 `
-0[
-1R
+b1000100010101101 ^
+0Y
+1P
 15
 1F
-1K
+1I
 #190
 0F
 #191
 1F
 #192
 0B
-b100010101100 N
-0R
+b0xxxxxxxxx0 _
+b100111111110 L
+0P
 05
 0F
-0K
+0I
 #193
 1F
 #194
 0F
 #195
-b0xxxxxxxxx0 a
-b1000101011010 `
-1R
+b1000101011010 ^
+1P
 15
 1F
-1K
+1I
 #196
 0F
 #197
 1F
 #198
-b1000101011000 N
-0R
+b0xxxxxxxxx00 _
+b1001111111100 L
+0P
 05
 0F
-0K
+0I
 #199
 1F
 #200
 0F
 #201
-b0xxxxxxxxx00 a
-b10001010110100 `
-1R
+b10001010110100 ^
+1P
 15
 1F
-1K
+1I
 #202
 0F
 #203
 1F
 #204
-b10001010110000 N
-0R
+b0xxxxxxxxx000 _
+b10011111111000 L
+0P
 05
 0F
-0K
+0I
 #205
 1F
 #206
 0F
 #207
-b0xxxxxxxxx000 a
-b100010101101000 `
-1R
+b100010101101000 ^
+1P
 15
 1F
-1K
+1I
 #208
 0F
 #209
 1F
 #210
-b100010101100000 N
-0R
+b0xxxxxxxxx0000 _
+b100111111110000 L
+0P
 05
 0F
-0K
+0I
 #211
 1F
 #212
 0F
 #213
-b0xxxxxxxxx0000 a
-b1000101011010000 `
-1R
+b1000101011010000 ^
+1P
 15
 1F
-1K
+1I
 #214
 0F
 #215
 1F
 #216
 1B
-b1000101011000000 N
-0R
+b0xxxxxxxxx00000 _
+b1001111111100000 L
+0P
 05
 0F
-0K
+0I
 #217
 1F
 #218
 0F
 #219
-b0xxxxxxxxx00000 a
-b1010110100001 `
-1R
+b1010110100001 ^
+1P
 15
 1F
-1K
+1I
 #220
 0F
 #221
 1F
 #222
 0B
-b1010110000000 N
-0R
+b0xxxxxxxxx000000 _
+b11111111000000 L
+0P
 05
 0F
-0K
+0I
 #223
 1F
 #224
 0F
 #225
-b0xxxxxxxxx000000 a
-b10101101000010 `
-1R
+b10101101000010 ^
+1P
 15
 1F
-1K
+1I
 #226
 0F
 #227
 1F
 #228
-b10101100000000 N
-0R
+xC
+bx0000000 _
+b111111110000000 L
+0P
 05
 0F
-0K
+0I
 #229
 1F
 #230
 0F
 #231
-bx0000000 a
-b101011010000100 `
-1R
+b101011010000100 ^
+1P
 15
 1F
-1K
+1I
 #232
 0F
 #233
 1F
 #234
-b101011000000000 N
-0R
+1B
+bx00000000 _
+b1111111100000000 L
+0P
 05
 0F
-0K
+0I
 #235
 1F
 #236
 0F
 #237
-bx00000000 a
-b1010110100001000 `
-1R
+b1010110100001001 ^
+1P
 15
 1F
-1K
+1I
 #238
 0F
 #239
 1F
 #240
-1B
-b1010110000000000 N
-0R
+bx000000000 _
+b1111111000000000 L
+0P
 05
 0F
-0K
+0I
 #241
 1F
 #242
 0F
 #243
-bx000000000 a
-b101101000010001 `
-1R
+b101101000010011 ^
+1P
 15
 1F
-1K
+1I
 #244
 0F
 #245
 1F
 #246
-0B
-b101100000000000 N
-0R
+bx0000000000 _
+b1111110000000000 L
+0P
 05
 0F
-0K
+0I
 #247
 1F
 #248
 0F
 #249
-bx0000000000 a
-b1011010000100010 `
-1R
+b1011010000100111 ^
+1P
 15
 1F
-1K
+1I
 #250
 0F
 #251
 1F
 #252
-1B
-b1011000000000000 N
-0R
+bx00000000000 _
+b1111100000000000 L
+0P
 05
 0F
-0K
+0I
 #253
 1F
 #254
 0F
 #255
-bx00000000000 a
-b110100001000101 `
-1R
+b110100001001111 ^
+1P
 15
 1F
-1K
+1I
 #256
 0F
 #257
 1F
 #258
-0B
-b110000000000000 N
-0R
+bx000000000000 _
+b1111000000000000 L
+0P
 05
 0F
-0K
+0I
 #259
 1F
 #260
 0F
 #261
-bx000000000000 a
-b1101000010001010 `
-1R
+b1101000010011111 ^
+1P
 15
 1F
-1K
+1I
 #262
 0F
 #263
 1F
 #264
-1B
-b1100000000000000 N
-0R
+bx0000000000000 _
+b1110000000000000 L
+0P
 05
 0F
-0K
+0I
 #265
 1F
 #266
 0F
 #267
-bx0000000000000 a
-b1010000100010101 `
-1R
+b1010000100111111 ^
+1P
 15
 1F
-1K
+1I
 #268
 0F
 #269
 1F
 #270
-b1000000000000000 N
-0R
+bx00000000000000 _
+b1100000000000000 L
+0P
 05
 0F
-0K
+0I
 #271
 1F
 #272
 0F
 #273
-bx00000000000000 a
-b100001000101011 `
-1R
+b100001001111111 ^
+1P
 15
 1F
-1K
+1I
 #274
 0F
 #275
 1F
 #276
-0B
-b0 N
-0R
+bx000000000000000 _
+b1000000000000000 L
+0P
 05
 0F
-0K
+0I
 #277
 1F
 #278
 0F
 #279
-bx000000000000000 a
-b1000010001010110 `
-1R
+b1000010011111111 ^
+1P
 15
 1F
-1K
+1I
 #280
 0F
 #281
-1W
-0R
-xC
-05
 1F
-1G
 #282
-0O
-b100010001010110 N
-1P
-0E
+0C
+0B
+b0 _
+b0 L
+0P
+05
 0F
-0K
+0I
 #283
-0Q
-0T
-b1000010001010110 ]
-1Y
-1X
 1F
 #284
+1C
 0F
+1G
 #285
-1Q
-1Z
-0Y
-0c
-1_
-0^
+1U
 1F
-1K
+1I
 #286
 0F
 #287
-0Z
-1@
+0O
+0R
+b1000010011111111 [
+1W
+1V
 1F
 #288
+0E
 0F
-0K
+0I
 #289
-0S
-0@
-b1010110 A
-b1010110 U
-b1010110 <"
+1O
+1X
+0W
+0a
+1]
+0\
+b11111111 ;
+b11111111 `
+b11111111 w
 1F
 #290
 0F
 #291
-b1010110 \
+0X
+1@
 1F
-1K
+1I
 #292
 0F
 #293
+0Q
+0@
+b1010110 A
+b1010110 S
+b1010110 :"
 1F
 #294
 0F
-0K
+0I
 #295
+b1010110 Z
 1F
 #296
 0F
 #297
 1F
-1K
+1I
 #298
 0F
 #299
 1F
 #300
 0F
-0K
+0I
 #301
 1F
 #302
 0F
 #303
 1F
-1K
+1I
 #304
 0F
 #305
 1F
 #306
 0F
-0K
+0I
 #307
 1F
 #308
 0F
 #309
 1F
-1K
+1I
 #310
 0F
 #311
 1F
 #312
 0F
-0K
+0I
 #313
 1F
 #314
+1B
 0F
+b1111111111111111 L
 #315
 1F
-1K
+1I
 #316
+0C
 0F
+0G
 #317
+0U
 1F
 #318
+1E
 0F
-0K
+0I
 #319
+b1010110 _
+1Y
+0V
 1F
 #320
 0F
 #321
+b100111111111 ^
+0Y
+1P
+15
 1F
-1K
+1I
 #322
 0F
 #323
 1F
 #324
+b10101100 _
+b1111111111111110 L
+0P
+05
 0F
-0K
+0I
 #325
 1F
 #326
 0F
 #327
+b1001111111111 ^
+1P
+15
 1F
-1K
+1I
 #328
 0F
 #329
 1F
 #330
+b101011000 _
+b1111111111111100 L
+0P
+05
 0F
-0K
+0I
 #331
 1F
 #332
 0F
 #333
+b10011111111111 ^
+1P
+15
 1F
-1K
+1I
 #334
 0F
 #335
 1F
 #336
+b1010110000 _
+b1111111111111000 L
+0P
+05
 0F
-0K
+0I
 #337
 1F
 #338
 0F
 #339
+b100111111111111 ^
+1P
+15
 1F
-1K
+1I
 #340
 0F
 #341
 1F
 #342
+b10101100000 _
+b1111111111110000 L
+0P
+05
 0F
-0K
+0I
 #343
 1F
 #344
 0F
 #345
+b1001111111111111 ^
+1P
+15
 1F
-1K
+1I
 #346
 0F
 #347
 1F
 #348
+b101011000000 _
+b1111111111100000 L
+0P
+05
 0F
-0K
+0I
 #349
 1F
 #350
 0F
 #351
+b11111111111111 ^
+1P
+15
 1F
-1K
+1I
 #352
 0F
 #353
 1F
 #354
+b1010110000000 _
+b1111111111000000 L
+0P
+05
 0F
-0K
+0I
 #355
 1F
 #356
 0F
 #357
+b111111111111111 ^
+1P
+15
 1F
-1K
+1I
 #358
 0F
 #359
 1F
 #360
+b10101100000000 _
+b1111111110000000 L
+0P
+05
 0F
-0K
+0I
 #361
 1F
 #362
 0F
 #363
+b1111111111111111 ^
+1P
+15
 1F
-1K
+1I
 #364
 0F
 #365
 1F
 #366
+b101011000000000 _
+b1111111100000000 L
+0P
+05
 0F
-0K
+0I
 #367
 1F
 #368
 0F
 #369
+1P
+15
 1F
-1K
+1I
 #370
 0F
 #371
 1F
 #372
+1C
+b1010110000000000 _
+b1111111000000000 L
+0P
+05
 0F
-0K
+0I
 #373
 1F
 #374
 0F
 #375
+1P
+15
 1F
-1K
+1I
 #376
 0F
 #377
 1F
 #378
+0C
+b101100000000000 _
+b1111110000000000 L
+0P
+05
 0F
-0K
+0I
 #379
 1F
 #380
 0F
 #381
+1P
+15
 1F
-1K
+1I
 #382
 0F
 #383
 1F
 #384
+1C
+b1011000000000000 _
+b1111100000000000 L
+0P
+05
 0F
-0K
+0I
 #385
 1F
 #386
 0F
 #387
+1P
+15
 1F
-1K
+1I
 #388
 0F
 #389
 1F
 #390
+0C
+b110000000000000 _
+b1111000000000000 L
+0P
+05
 0F
-0K
+0I
 #391
 1F
 #392
 0F
 #393
+1P
+15
 1F
-1K
+1I
 #394
 0F
 #395
 1F
 #396
+1C
+b1100000000000000 _
+b1110000000000000 L
+0P
+05
 0F
-0K
+0I
 #397
 1F
 #398
 0F
 #399
+1P
+15
 1F
-1K
+1I
 #400
 0F
 #401
 1F
 #402
+b1000000000000000 _
+b1100000000000000 L
+0P
+05
 0F
-0K
+0I
 #403
 1F
 #404
 0F
 #405
+1P
+15
 1F
-1K
+1I
 #406
 0F
 #407
 1F
 #408
+0C
+b0 _
+b1000000000000000 L
+0P
+05
 0F
-0K
+0I
 #409
 1F
 #410
 0F
 #411
+1P
+15
 1F
-1K
+1I
 #412
 0F
 #413
 1F
 #414
+0B
+b0 L
+0P
+05
 0F
-0K
+0I
 #415
+1U
+1C
 1F
+1G
 #416
 0F
 #417
+0O
+1R
+b1111111111111111 [
+1W
+1V
 1F
-1K
+1I
 #418
 0F
 #419
+1O
+1Q
+1\
+b111111 D
+b111111 T
+b111111 j
+1X
+0W
 1F
 #420
+0E
 0F
-0K
+0I
 #421
+b101010110 Z
+1@
+0X
 1F
 #422
 0F
 #423
+xQ
+0@
+bx A
+bx S
+bx :"
 1F
-1K
+1I
 #424
 0F
 #425
+b0xxxxxxxxx Z
 1F
 #426
 0F
-0K
+0I
 #427
 1F
 #428
 0F
 #429
 1F
-1K
+1I
 #430
 0F
 #431
 1F
 #432
 0F
-0K
+0I
 #433
 1F
 #434
 0F
 #435
 1F
-1K
+1I
 #436
 0F
 #437
 1F
 #438
 0F
-0K
+0I
 #439
 1F
 #440
 0F
 #441
 1F
-1K
+1I
 #442
 0F
 #443
 1F
 #444
 0F
-0K
+0I
 #445
 1F
 #446
 0F
 #447
 1F
-1K
+1I
 #448
 0F
 #449
 1F
 #450
 0F
-0K
+0I
 #451
 1F
 #452
 0F
 #453
 1F
-1K
+1I
 #454
 0F
 #455
 1F
 #456
 0F
-0K
+0I
 #457
 1F
 #458
 0F
 #459
 1F
-1K
+1I
 #460
 0F
 #461
 1F
 #462
 0F
-0K
+0I
 #463
 1F
 #464
 0F
 #465
 1F
-1K
+1I
 #466
 0F
 #467
 1F
 #468
 0F
-0K
+0I
 #469
 1F
 #470
 0F
 #471
 1F
-1K
+1I
 #472
 0F
 #473
 1F
 #474
 0F
-0K
+0I
 #475
 1F
 #476
 0F
 #477
 1F
-1K
+1I
 #478
 0F
 #479
 1F
 #480
 0F
-0K
+0I
 #481
 1F
 #482
 0F
 #483
 1F
-1K
+1I
 #484
 0F
 #485
 1F
 #486
 0F
-0K
+0I
 #487
 1F
 #488
 0F
 #489
 1F
-1K
+1I
 #490
 0F
 #491
 1F
 #492
 0F
-0K
+0I
 #493
 1F
 #494
 0F
 #495
 1F
-1K
+1I
 #496
 0F
 #497
 1F
 #498
 0F
-0K
+0I
 #499
 1F
 #500
 0F
 #501
 1F
-1K
+1I
 #502
 0F
 #503
 1F
 #504
 0F
-0K
+0I
 #505
 1F
 #506
 0F
 #507
 1F
-1K
+1I
 #508
 0F
 #509
 1F
 #510
 0F
-0K
+0I
 #511
 1F
 #512
 0F
 #513
 1F
-1K
+1I
 #514
 0F
 #515
 1F
 #516
 0F
-0K
+0I
 #517
 1F
 #518
 0F
 #519
 1F
-1K
+1I
 #520
 0F
 #521
 1F
 #522
 0F
-0K
+0I
 #523
 1F
 #524
 0F
 #525
 1F
-1K
+1I
 #526
 0F
 #527
 1F
 #528
 0F
-0K
+0I
 #529
 1F
 #530
 0F
 #531
 1F
-1K
+1I
 #532
 0F
 #533
 1F
 #534
 0F
-0K
+0I
 #535
 1F
 #536
 0F
 #537
 1F
-1K
+1I
 #538
 0F
 #539
 1F
 #540
 0F
-0K
+0I
 #541
 1F
 #542
 0F
 #543
 1F
-1K
+1I
 #544
 0F
 #545
 1F
 #546
 0F
-0K
+0I
 #547
 1F
 #548
 0F
 #549
 1F
-1K
+1I
 #550
 0F
 #551
 1F
 #552
 0F
-0K
+0I
 #553
 1F
 #554
 0F
 #555
 1F
-1K
+1I
 #556
 0F
 #557
 1F
 #558
 0F
-0K
+0I
 #559
 1F
 #560
 0F
 #561
 1F
-1K
+1I
 #562
 0F
 #563
 1F
 #564
 0F
-0K
+0I
 #565
 1F
 #566
 0F
 #567
 1F
-1K
+1I
 #568
 0F
 #569
 1F
 #570
 0F
-0K
+0I
 #571
 1F
 #572
 0F
 #573
 1F
-1K
+1I
 #574
 0F
 #575
 1F
 #576
 0F
-0K
+0I
 #577
 1F
 #578
 0F
 #579
 1F
-1K
+1I
 #580
 0F
 #581
+1F
+#582
+0F
+0I
+#583
+1F
+#584
+0F
+#585
+1F
+1I
+#586
+0F
+#587
+1F
+#588
+0F
+0I
+#589
+1F
+#590
+0F
+#591
+1F
+1I
+#592
+0F
+#593
+1F
+#594
+0F
+0I
+#595
+1F
+#596
+0F
+#597
+1F
+1I
+#598
+0F
+#599
+1F
+#600
+0F
+0I
+#601
+1F
+#602
+0F
+#603
+1F
+1I
+#604
+0F
+#605
+1F
+#606
+0F
+0I
+#607
+1F
+#608
+0F
+#609
+1F
+1I
+#610
+0F
+#611
+1F
+#612
+0F
+0I
+#613
+1F
+#614
+0F
+#615
+1F
+1I
+#616
+0F
+#617
+1F
+#618
+0F
+0I
+#619
+1F
+#620
+0F
+#621
+1F
+1I
+#622
+0F
+#623
+1F
+#624
+0F
+0I
+#625
+1F
+#626
+0F
+#627
+1F
+1I
+#628
+0F
+#629
+1F
+#630
+0F
+0I
+#631
+1F
+#632
+0F
+#633
+1F
+1I
+#634
+0F
+#635
+1F
+#636
+0F
+0I
+#637
+1F
+#638
+0F
+#639
+1F
+1I
+#640
+0F
+#641
+1F
+#642
+0F
+0I
+#643
+1F
+#644
+0F
+#645
+1F
+1I
+#646
+0F
+#647
+1F
+#648
+0F
+0I
+#649
+1F
+#650
+0F
+#651
+1F
+1I
+#652
+0F
+#653
+1F
+#654
+0F
+0I
+#655
+1F
+#656
+0F
+#657
+1F
+1I
+#658
+0F
+#659
+1F
+#660
+0F
+0I
+#661
+1F
+#662
+0F
+#663
+1F
+1I
+#664
+0F
+#665
+1F
+#666
+0F
+0I
+#667
+1F
+#668
+0F
+#669
+1F
+1I
+#670
+0F
+#671
+1F
+#672
+0F
+0I
+#673
+1F
+#674
+0F
+#675
+1F
+1I
+#676
+0F
+#677
+1F
+#678
+0F
+0I
+#679
+1F
+#680
+0F
+#681
+1F
+1I
+#682
+0F
+#683
+1F
+#684
+0F
+0I
+#685
+1F
+#686
+0F
+#687
+1F
+1I
+#688
+0F
+#689
+1F
+#690
+0F
+0I
+#691
+1F
+#692
+0F
+#693
+1F
+1I
+#694
+0F
+#695
+1F
+#696
+0F
+0I
+#697
+1F
+#698
+0F
+#699
+1F
+1I
+#700
+0F
+#701
+1F
+#702
+0F
+0I
+#703
+1F
+#704
+0F
+#705
+1F
+1I
+#706
+0F
+#707
+1F
+#708
+0F
+0I
+#709
+1F
+#710
+0F
+#711
+1F
+1I
+#712
+0F
+#713
+1F
+#714
+0F
+0I
+#715
 1F
