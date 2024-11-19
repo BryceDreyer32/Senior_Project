@@ -11,6 +11,7 @@ module spi (
     input           [7:0]   rd_data,
 
     output                  miso,       // Master in slave out (SPI mode 0)
+    output reg              miso_clocked,
     output reg      [5:0]   address,
     output reg              write_en,
     output reg      [7:0]   wr_data,
@@ -113,7 +114,7 @@ always @(posedge csn_wenthigh or negedge reset_n) begin
 end
 
 // -------------------------------------- MISO REGISTERS --------------------------------------
-always @(posedge clock or negedge reset_n) begin
+/*always @(posedge clock or negedge reset_n) begin
     if(~reset_n) begin
         miso_reg[15:0]      <= 16'b0;
     end
@@ -125,13 +126,42 @@ always @(posedge clock or negedge reset_n) begin
     end
 end
 
-always @(posedge ~shift_en or posedge csn_wentlow) begin
-    if(csn_wentlow)
-        shift_out_reg[15:0]     <= miso_reg[15:0];
+always @(posedge clock or negedge reset_n) begin
+    if(~reset_n)
+        shift_out_reg[15:0]     <= 16'b0;
     else 
-        shift_out_reg[15:0]     <= (shift_out_reg[15:0] << 1);
+        if(csn_wentlow)
+            shift_out_reg[15:0]     <= miso_reg[15:0];
+    
 end
 
-assign miso     = shift_out_reg[15] | cs_n;
+always @(posedge ~shift_en *or posedge csn_wentlow*) begin
+//    if(csn_wentlow)
+//        shift_out_reg[15:0]     <= miso_reg[15:0];
+//    else 
+        shift_out_reg[15:0]     <= (shift_out_reg[15:0] << 1);
+end
+*/
+
+always @(posedge csn_wentlow or negedge reset_n) begin
+    if(~reset_n) begin
+        shift_out_reg[15:0]      <= 16'b0;
+    end
+
+    else begin
+        shift_out_reg[15:0] <= 16'hDEAD;
+/*        shift_out_reg[7:0]       <= rd_data[7:0];
+        shift_out_reg[8]         <= tx_parity;
+        shift_out_reg[15:9]      <= 7'b0;*/
+    end
+end
+
+always @(negedge shift_en)
+    shift_out_reg[15:0]     <= (shift_out_reg[15:0] << 1);
+
+assign miso     = shift_out_reg[15]/* | cs_n*/;
+
+always @(posedge clock)
+    miso_clocked <= miso;
 
 endmodule
