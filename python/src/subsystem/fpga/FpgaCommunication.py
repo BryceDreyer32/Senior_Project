@@ -31,12 +31,13 @@ class FpgaCommunication:
         self.spi.writebytes([msbyte, data])
 
     def fpgaRead(self, address):
-        # bit[7]   = 1 (read)
-        # bit[6]   = parity
-        # bit[5:0] = address
+        # bit[15]   = 1 (read)
+        # bit[14]   = parity
+        # bit[13:8] = address
+        # bit[7:0]  = FF
         parity = bin(((1 << Constants.Constants.RD_DATA_FRAME_RW_BIT) | address)).count('1') % 2        
-        frame = (1 << Constants.Constants.RD_DATA_FRAME_RW_BIT) | (parity << Constants.Constants.RD_DATA_FRAME_PARITY_BIT) | (address)
-        self.spi.writebytes([frame])
+        msbyte = (1 << Constants.Constants.RD_DATA_FRAME_RW_BIT-8) | (parity << Constants.Constants.RD_DATA_FRAME_PARITY_BIT-8) | address
+        self.spi.writebytes([msbyte, 0xFF])
 
         return self.spi.readbytes(2)
 

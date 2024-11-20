@@ -11,19 +11,20 @@ module spi (
     input           [7:0]   rd_data,
 
     output                  miso,       // Master in slave out (SPI mode 0)
-    output reg              miso_clocked,
     output reg      [5:0]   address,
     output reg              write_en,
     output reg      [7:0]   wr_data,
     output reg              read_en
 );
 
+wire                rx_parity, tx_parity, data_valid;
 wire                shift_en;
-wire                rx_parity, tx_parity;
-reg                 csn_wenthigh, csn_wenthigh_ff, csn_wentlow;
+reg                 shift_en_ff, shift_en_ff2;
+reg                 shift_en_wentlow;
 reg                 read, write, load_miso;
 reg                 parity;
 reg                 cs_n_ff, cs_n_ff2;
+reg                 csn_wenthigh, csn_wenthigh_ff, csn_wentlow;
 reg     [15:0]      shift_in_reg, shift_out_reg, mosi_reg, miso_reg;
 
 // The shift_en is the clock masked by cs_n
@@ -53,22 +54,29 @@ always @(posedge clock or negedge reset_n) begin
     end   
 end
 
-// data_valid asserts when the recived parity matches the calculated parity and mosi_reg is not all 1s
+// data_valid asserts when the received parity matches the calculated parity and mosi_reg is not all 1s
 assign data_valid = (mosi_reg[15:0] != 16'hFF) & ~(parity ^ rx_parity);
 
-// Synchronize the cs_n from the spi_clk domain to the FPGA clock domain
+// Synchronize the cs_n and shift_en from the spi_clk domain to the FPGA clock domain
 always @(posedge clock or negedge reset_n) begin
     if(~reset_n) begin
         cs_n_ff             <= 1'b0;
         cs_n_ff2            <= 1'b0;
+        shift_en_ff         <= 1'b0;
+        shift_en_ff2        <= 1'b0;
+        shift_en_wentlow    <= 1'b0;
         csn_wenthigh        <= 1'b0;
         csn_wenthigh_ff     <= 1'b0;
         csn_wentlow         <= 1'b0;
     end
 
     else begin
-        cs_n_ff         <= cs_n;
-        cs_n_ff2        <= cs_n_ff;
+        cs_n_ff             <= cs_n;
+        cs_n_ff2            <= cs_n_ff;
+
+        shift_en_ff         <= shift_en;
+        shift_en_ff2        <= shift_en_ff;
+        shift_en_wentlow    <= (~shift_en_ff) & shift_en_ff2;
         // csn_wenthigh is an indicator that the csn was low in the previous cycle, but has now gone high
         // csn_wentlow is the opposite 
         csn_wenthigh        <= cs_n_ff & (~cs_n_ff2);
@@ -114,7 +122,7 @@ always @(posedge csn_wenthigh or negedge reset_n) begin
 end
 
 // -------------------------------------- MISO REGISTERS --------------------------------------
-/*always @(posedge clock or negedge reset_n) begin
+always @(posedge clock or negedge reset_n) begin
     if(~reset_n) begin
         miso_reg[15:0]      <= 16'b0;
     end
@@ -129,39 +137,14 @@ end
 always @(posedge clock or negedge reset_n) begin
     if(~reset_n)
         shift_out_reg[15:0]     <= 16'b0;
-    else 
+    else begin
         if(csn_wentlow)
             shift_out_reg[15:0]     <= miso_reg[15:0];
-    
-end
-
-always @(posedge ~shift_en *or posedge csn_wentlow*) begin
-//    if(csn_wentlow)
-//        shift_out_reg[15:0]     <= miso_reg[15:0];
-//    else 
-        shift_out_reg[15:0]     <= (shift_out_reg[15:0] << 1);
-end
-*/
-
-always @(posedge csn_wentlow or negedge reset_n) begin
-    if(~reset_n) begin
-        shift_out_reg[15:0]      <= 16'b0;
-    end
-
-    else begin
-        shift_out_reg[15:0] <= 16'hDEAD;
-/*        shift_out_reg[7:0]       <= rd_data[7:0];
-        shift_out_reg[8]         <= tx_parity;
-        shift_out_reg[15:9]      <= 7'b0;*/
+        else if(shift_en_wentlow)
+            shift_out_reg[15:0]     <= (shift_out_reg[15:0] << 1);   
     end
 end
 
-always @(negedge shift_en)
-    shift_out_reg[15:0]     <= (shift_out_reg[15:0] << 1);
-
-assign miso     = shift_out_reg[15]/* | cs_n*/;
-
-always @(posedge clock)
-    miso_clocked <= miso;
+assign miso     = shift_out_reg[15] | cs_n;
 
 endmodule

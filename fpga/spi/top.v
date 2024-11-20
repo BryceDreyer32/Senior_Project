@@ -9,13 +9,8 @@ module top(
     output                  miso,        // Master in slave out (SPI mode 0)    
     
     // Only for debug use, leave out on real design
-    output  wire        write_en,
-    output  wire        read_en,
-    output  wire        miso_clocked,
-    output  wire            mirror_miso,
-    output  wire            mirror_spi_clock,
-    output  wire            mirror_cs_n,
-    output  wire            mirror_mosi
+    output  wire            write_en,
+    output  wire            read_en
 );
 
     wire            reset_n;
@@ -89,11 +84,6 @@ module top(
     wire  [7:0]   servo_position2; // Servo 2 target position
     wire  [7:0]   servo_position3; // Servo 3 target position
 
-    assign mirror_miso          = miso;
-    assign mirror_spi_clock     = spi_clock;
-    assign mirror_cs_n          = cs_n;
-    assign mirror_mosi          = mosi;
-
 
 spi spi(
 	.reset_n            (reset_n),          // Active low reset
@@ -102,7 +92,6 @@ spi spi(
 	.cs_n               (cs_n),             // Active low chip select
 	.mosi               (mosi),             // Master out slave in
 	.miso               (miso),             // Master in slave out (SPI mode 0)
-    .miso_clocked       (miso_clocked),
     .address            (address),   	    // Read / write address
     .write_en           (write_en),  	    // Write enable
     .wr_data            (wr_data),   	    // Write data

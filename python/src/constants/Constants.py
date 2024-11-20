@@ -96,7 +96,7 @@ class Constants:
     ######################################################################################
     FPGA_SPI_CHANNEL                = 0
     FPGA_SPI_DEVICE                 = 0
-    FPGA_SPI_MODE                   = 0b01
+    FPGA_SPI_MODE                   = 0b0
     FPGA_SPI_SPEED                  = 2000000
 
     BROADCAST_SWERVE_ADDR           = 0x01
@@ -151,8 +151,8 @@ class Constants:
     WR_DATA_FRAME_DATA_BASE_BIT     = 0x0
     WR_DATA_FRAME_DATA_WIDTH        = 0x8
 
-    RD_DATA_FRAME_RW_BIT            = 0x7
-    RD_DATA_FRAME_PARITY_BIT        = 0x6
+    RD_DATA_FRAME_RW_BIT            = 0xF
+    RD_DATA_FRAME_PARITY_BIT        = 0xE
     RD_DATA_FRAME_ADDRESS_BASE_BIT  = 0x0
     RD_DATA_FRAME_ADDRESS_WIDTH     = 0x6
 
