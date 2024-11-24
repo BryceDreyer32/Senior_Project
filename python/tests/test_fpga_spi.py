@@ -1,6 +1,8 @@
 # Copyright 2024
 # Bryce's Senior Project
 # Description: Test for the FPGA SPI link to Orange Pi
+# NOTE: this file is intended to be launched from the "SENIOR PROJECT"
+# folder, where you can see, arduino, fpga, python folders...
 
 # -*- coding: utf-8 -*-
 import sys
