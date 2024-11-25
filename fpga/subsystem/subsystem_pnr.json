@@ -39,7 +39,7 @@
       },
       "attributes": {
         "top": "00000000000000000000000000000001",
-        "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:4.1-462.10"
+        "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:4.1-451.10"
       },
       "ports": {
         "tang_config": {

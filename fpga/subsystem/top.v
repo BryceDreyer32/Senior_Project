@@ -35,20 +35,9 @@ module top(
     output          status_debug    // Control for LED for general debug
 );
 
-/*
-assign status_pi = clock;
+    assign          servo_pwm[0] = write_en;
+    assign          servo_pwm[1] = read_en;
 
-genvar i;
-
-wire    [15:0]      spi_out;
-wire    [15:0]      sr_pwm_target[3:0];
-wire    [11:0]      pwm_update;
-wire    [3:0]       sr_pwm_enable;
-wire    [7:0]       sr_pwm_ratio[3:0];
-wire    [7:0]       sd_pwm_ratio[3:0];
-wire    [7:0]       servo_pwm_ratio[3:0];
-wire    [3:0]       sr_pwm_update;
-*/
     wire            reset_n = 1'b1;  // reset
 
     wire  [5:0]     address;   	     // Read / write address
@@ -134,11 +123,11 @@ spi spi(
 	.cs_n               (cs_n),             // Active low chip select
 	.mosi               (mosi),             // Master out slave in
 	.miso               (miso),             // Master in slave out (SPI mode 0)
-    .address            (address),   	    // Read / write address
+    .address            (address[5:0]),	    // Read / write address
     .write_en           (write_en),  	    // Write enable
-    .wr_data            (wr_data),   	    // Write data
+    .wr_data            (wr_data[7:0]),	    // Write data
     .read_en            (read_en),   	    // Read enable
-    .rd_data            (rd_data)   	    // Read data);
+    .rd_data            (rd_data[7:0]) 	    // Read data
 );
 
 ////////////////////////////////////////////////////////////////
@@ -147,11 +136,11 @@ spi spi(
 reg_file rf(
     .reset_n            (reset_n),   	    // Active low reset
     .clock              (clock),     	    // The main clock
-    .address            (address),   	    // Read / write address
+    .address            (address[5:0]),	    // Read / write address
     .write_en           (write_en),  	    // Write enable
-    .wr_data            (wr_data),   	    // Write data
+    .wr_data            (wr_data[7:0]),	    // Write data
     .read_en            (read_en),   	    // Read enable
-    .rd_data            (rd_data),   	    // Read data
+    .rd_data            (rd_data[7:0]),	    // Read data
 				     
     .fault0             (fault0),    	    // Fault signal from motor
     .adc_temp0          (adc_temp0), 	    // Adc temperature from motor

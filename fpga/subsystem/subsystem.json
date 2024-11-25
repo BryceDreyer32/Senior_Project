@@ -23033,7 +23033,7 @@
     "top": {
       "attributes": {
         "top": "00000000000000000000000000000001",
-        "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:4.1-462.10"
+        "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:4.1-451.10"
       },
       "ports": {
         "clock": {
@@ -25482,77 +25482,77 @@
           "hide_name": 0,
           "bits": [ 50, 48, 50, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:125.21-125.34"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:114.21-114.34"
           }
         },
         "adc_temp0": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:61.21-61.30"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:50.21-50.30"
           }
         },
         "adc_temp1": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:63.21-63.30"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:52.21-52.30"
           }
         },
         "adc_temp2": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:65.21-65.30"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:54.21-54.30"
           }
         },
         "adc_temp3": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:67.21-67.30"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:56.21-56.30"
           }
         },
         "adc_temp4": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:69.21-69.30"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:58.21-58.30"
           }
         },
         "adc_temp5": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:71.21-71.30"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:60.21-60.30"
           }
         },
         "adc_temp6": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:73.21-73.30"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:62.21-62.30"
           }
         },
         "adc_temp7": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:75.21-75.30"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:64.21-64.30"
           }
         },
         "address": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:54.21-54.28"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:43.21-43.28"
           }
         },
         "brake0": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:77.21-77.27"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:66.21-66.27"
           }
         },
         "clock": {
@@ -25573,98 +25573,98 @@
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:111.21-111.35"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:100.21-100.35"
           }
         },
         "current_angle1": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:113.21-113.35"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:102.21-102.35"
           }
         },
         "current_angle2": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:115.21-115.35"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:104.21-104.35"
           }
         },
         "current_angle3": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:117.21-117.35"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:106.21-106.35"
           }
         },
         "direction0": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:79.21-79.31"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:68.21-68.31"
           }
         },
         "enable0": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:78.21-78.28"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:67.21-67.28"
           }
         },
         "fault0": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:60.21-60.27"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:49.21-49.27"
           }
         },
         "fault1": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:62.21-62.27"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:51.21-51.27"
           }
         },
         "fault2": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:64.21-64.27"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:53.21-53.27"
           }
         },
         "fault3": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:66.21-66.27"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:55.21-55.27"
           }
         },
         "fault4": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:68.21-68.27"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:57.21-57.27"
           }
         },
         "fault5": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:70.21-70.27"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:59.21-59.27"
           }
         },
         "fault6": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:72.21-72.27"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:61.21-61.27"
           }
         },
         "fault7": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:74.21-74.27"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:63.21-63.27"
           }
         },
         "miso": {
@@ -25685,28 +25685,28 @@
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:80.21-80.25"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:69.21-69.25"
           }
         },
         "rd_data": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:58.21-58.28"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:47.21-47.28"
           }
         },
         "read_en": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:57.21-57.28"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:46.21-46.28"
           }
         },
         "reset_n": {
           "hide_name": 0,
           "bits": [ 50 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:52.21-52.28"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:41.21-41.28"
           }
         },
         "rf.adc_temp0": {
@@ -26533,28 +26533,28 @@
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:119.21-119.36"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:108.21-108.36"
           }
         },
         "servo_position1": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:120.21-120.36"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:109.21-109.36"
           }
         },
         "servo_position2": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:121.21-121.36"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:110.21-110.36"
           }
         },
         "servo_position3": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:122.21-122.36"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:111.21-111.36"
           }
         },
         "servo_pwm": {
@@ -26769,7 +26769,7 @@
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:133.23-133.30"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:122.23-122.30"
           }
         },
         "spi_clock": {
@@ -26874,28 +26874,28 @@
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:110.21-110.34"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:99.21-99.34"
           }
         },
         "target_angle1": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:112.21-112.34"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:101.21-101.34"
           }
         },
         "target_angle2": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:114.21-114.34"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:103.21-103.34"
           }
         },
         "target_angle3": {
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:116.21-116.34"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:105.21-105.34"
           }
         },
         "uart_drv_0.baud_counter": {
@@ -27408,14 +27408,14 @@
           "hide_name": 0,
           "bits": [ 48, 48, 48, 48, 48, 48, 48, 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:56.21-56.28"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:45.21-45.28"
           }
         },
         "write_en": {
           "hide_name": 0,
           "bits": [ 48 ],
           "attributes": {
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:55.21-55.29"
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\subsystem\\top.v:44.21-44.29"
           }
         }
       }
