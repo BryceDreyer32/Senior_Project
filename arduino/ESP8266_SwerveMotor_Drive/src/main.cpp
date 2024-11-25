@@ -101,11 +101,24 @@ bool checkMotorTempOkay() {
 bool checkSystemTempOkay() { return true; }
    
 void processByte(uint8_t incomingByte) {
-   enableStatus   = incomingByte & (1 << ENABLE_BIT);
-   brakeStatus    = incomingByte & (1 << BRAKE_BIT);
-   dirStatus      = incomingByte & (1 << DIRECTION_BIT);
-   pwmStatus      = incomingByte & 0x3F;
+   if(incomingByte == 10)
+      return;
+
+   enableStatus   = (incomingByte >> ENABLE_BIT) & 0x01;
+   brakeStatus    = (incomingByte >> BRAKE_BIT) & 0x01;
+   dirStatus      = (incomingByte >> DIRECTION_BIT) & 0x01;
+   pwmStatus      = incomingByte & 0x1F;
    
+   Serial.print("enable = ");
+   Serial.println(enableStatus);
+   Serial.print("brake = ");
+   Serial.println(brakeStatus);
+   Serial.print("direction = ");
+   Serial.println(dirStatus);
+   Serial.print("pwm = ");
+   Serial.println(pwmStatus);
+
+
    // Write the value to the PWM and the direction before enabling
    digitalWrite(MOTOR_BRAKE_N_PIN, brakeStatus);
    digitalWrite(MOTOR_DIRECTION_PIN, dirStatus);
