@@ -474,5 +474,5 @@ end
 
 assign scl = scl_int;
 assign sda = tri_mode ? 1'bZ : sda_int;
-assign raw_angle = {read_data1[11:8], read_data0[7:0]};
+assign raw_angle = {read_data1[3:0], read_data0[7:0]};
 endmodule
