@@ -46,29 +46,25 @@ module reg_file (
     output  [4:0]   pwm3,      	     // PWM control
     output          brake4,    	     // Brake control
     output          enable4,   	     // Motor enable
-    output          direction4,	     // Motor direction
-    output  [4:0]   pwm4,      	     // PWM control  
+    output          direction4,	     // Motor direction 
     output          brake5,    	     // Brake control
     output          enable5,   	     // Motor enable
-    output          direction5,	     // Motor direction
-    output  [4:0]   pwm5,      	     // PWM control  
+    output          direction5,	     // Motor direction 
     output          brake6,    	     // Brake control
     output          enable6,   	     // Motor enable
     output          direction6,	     // Motor direction
-    output  [4:0]   pwm6,      	     // PWM control  
     output          brake7,    	     // Brake control
     output          enable7,   	     // Motor enable
-    output          direction7,	     // Motor direction
-    output  [4:0]   pwm7,      	     // PWM control  
+    output          direction7,	     // Motor direction 
 									 
-    output  [7:0]   target_angle0,   // Rotation target angle
-    input   [7:0]   current_angle0,  // The current angle
-    output  [7:0]   target_angle1,   // Rotation target angle
-    input   [7:0]   current_angle1,  // The current angle
-    output  [7:0]   target_angle2,   // Rotation target angle
-    input   [7:0]   current_angle2,  // The current angle
-    output  [7:0]   target_angle3,   // Rotation target angle
-    input   [7:0]   current_angle3,  // The current angle
+    output  [11:0]  target_angle0,   // Rotation target angle
+    input   [11:0]  current_angle0,  // The current angle
+    output  [11:0]  target_angle1,   // Rotation target angle
+    input   [11:0]  current_angle1,  // The current angle
+    output  [11:0]  target_angle2,   // Rotation target angle
+    input   [11:0]  current_angle2,  // The current angle
+    output  [11:0]  target_angle3,   // Rotation target angle
+    input   [11:0]  current_angle3,  // The current angle
 
     output  [7:0]   servo_position0, // Servo 0 target position
     output  [7:0]   servo_position1, // Servo 1 target position
@@ -76,7 +72,7 @@ module reg_file (
     output  [7:0]   servo_position3  // Servo 3 target position
 );
 
-reg     [7:0]   reg_file    [31:0];
+reg     [7:0]   reg_file    [35:0];
 
 // Read Data is just a pointer to whatever the address is set to 
 always @(posedge clock) begin
@@ -160,10 +156,10 @@ always @(posedge clock) begin
 		reg_file[12]     <=  wr_data[7:0];
 end
 
-assign brake4       = reg_file[12][7];
-assign enable4      = reg_file[12][6];
-assign direction4   = reg_file[12][5];
-assign pwm4[4:0]    = reg_file[12][4:0];
+assign brake4               = reg_file[12][7];
+assign enable4              = reg_file[12][6];
+assign direction4           = reg_file[12][5];
+assign target_angle0[11:8]  = reg_file[12][3:0];
 
 // ------------- 0xD	ROTATION0_STATUS	-------------
 always @(posedge clock) begin
@@ -184,128 +180,151 @@ always @(posedge clock) begin
 		reg_file[15]     <=  current_angle0[7:0];
 end
 
-
-// ------------- 0x10	ROTATION1_CONTROL	-------------
+// ------------- 0x10	ROTATION0_CURR_ANG2	-------------
 always @(posedge clock) begin
-	if(write_en & ((address == 6'h10) | (address == 6'h2) | (address == 6'h1)))
-		reg_file[16]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h10))
+		reg_file[16]     <=  {4'h0, current_angle0[11:8]};
 end
 
-assign brake5       = reg_file[16][7];
-assign enable5      = reg_file[16][6];
-assign direction5   = reg_file[16][5];
-assign pwm5[4:0]    = reg_file[16][4:0];
-
-// ------------- 0x11	ROTATION1_STATUS	-------------
+// ------------- 0x11	ROTATION1_CONTROL	-------------
 always @(posedge clock) begin
-	reg_file[17]     <=  {fault5, adc_temp5[6:0]};
+	if(write_en & ((address == 6'h11) | (address == 6'h2) | (address == 6'h1)))
+		reg_file[17]     <=  wr_data[7:0];
 end
 
-// ------------- 0x12	ROTATION1_TARG_ANG	-------------
+assign brake5               = reg_file[17][7];
+assign enable5              = reg_file[17][6];
+assign direction5           = reg_file[17][5];
+assign target_angle1[11:8]  = reg_file[17][3:0];
+
+// ------------- 0x12	ROTATION1_STATUS	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h12))
-		reg_file[18]     <=  wr_data[7:0];
+	reg_file[18]     <=  {fault5, adc_temp5[6:0]};
 end
 
-assign target_angle1      = reg_file[18][7:0];
-
-// ------------- 0x13	ROTATION1_CURR_ANG	-------------
+// ------------- 0x13	ROTATION1_TARG_ANG	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h13))
-		reg_file[19]     <=  current_angle1[7:0];
+		reg_file[19]     <=  wr_data[7:0];
 end
 
-// ------------- 0x14	ROTATION2_CONTROL	-------------
+assign target_angle1      = reg_file[19][7:0];
+
+// ------------- 0x14	ROTATION1_CURR_ANG	-------------
 always @(posedge clock) begin
-	if(write_en & ((address == 6'h14) | (address == 6'h2) | (address == 6'h1)))
-		reg_file[20]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h14))
+		reg_file[20]     <=  current_angle1[7:0];
 end
 
-assign brake6       = reg_file[20][7];
-assign enable6      = reg_file[20][6];
-assign direction6   = reg_file[20][5];
-assign pwm6[4:0]    = reg_file[20][4:0];
-
-// ------------- 0x15	ROTATION2_STATUS	-------------
+// ------------- 0x15	ROTATION1_CURR_ANG2	-------------
 always @(posedge clock) begin
-	reg_file[21]     <=  {fault6, adc_temp6[6:0]};
+	if(write_en & (address == 6'h15))
+		reg_file[21]     <=  {4'h0, current_angle1[11:8]};
 end
 
-// ------------- 0x16	ROTATION2_TARG_ANG	-------------
+// ------------- 0x16	ROTATION2_CONTROL	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h16))
+	if(write_en & ((address == 6'h16) | (address == 6'h2) | (address == 6'h1)))
 		reg_file[22]     <=  wr_data[7:0];
 end
 
-assign target_angle2      = reg_file[22][7:0];
+assign brake6               = reg_file[22][7];
+assign enable6              = reg_file[22][6];
+assign direction6           = reg_file[22][5];
+assign target_angle2[11:8]  = reg_file[22][3:0];
 
-// ------------- 0x17	ROTATION2_CURR_ANG	-------------
+// ------------- 0x17	ROTATION2_STATUS	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h17))
-		reg_file[23]     <=  current_angle2[7:0];
+	reg_file[23]     <=  {fault6, adc_temp6[6:0]};
 end
 
-// ------------- 0x18	ROTATION3_CONTROL	-------------
+// ------------- 0x18	ROTATION2_TARG_ANG	-------------
 always @(posedge clock) begin
-	if(write_en & ((address == 6'h18) | (address == 6'h2) | (address == 6'h1)))
+	if(write_en & (address == 6'h18))
 		reg_file[24]     <=  wr_data[7:0];
 end
 
-assign brake7       = reg_file[24][7];
-assign enable7      = reg_file[24][6];
-assign direction7   = reg_file[24][5];
-assign pwm7[4:0]    = reg_file[24][4:0];
+assign target_angle2      = reg_file[24][7:0];
 
-// ------------- 0x19	ROTATION3_STATUS	-------------
+// ------------- 0x19	ROTATION2_CURR_ANG	-------------
 always @(posedge clock) begin
-	reg_file[25]     <=  {fault7, adc_temp7[6:0]};
+	if(write_en & (address == 6'h19))
+		reg_file[25]     <=  current_angle2[7:0];
 end
 
-// ------------- 0x1A	ROTATION3_TARG_ANG	-------------
+// ------------- 0x1A	ROTATION2_CURR_ANG2	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h1A))
-		reg_file[26]     <=  wr_data[7:0];
+		reg_file[26]     <=  {4'h0, current_angle2[11:8]};
 end
 
-assign target_angle3      = reg_file[26][7:0];
-
-// ------------- 0x1B	ROTATION3_CURR_ANG	-------------
+// ------------- 0x1B	ROTATION3_CONTROL	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h1B))
-		reg_file[27]     <=  current_angle3[7:0];
+	if(write_en & ((address == 6'h1B) | (address == 6'h2) | (address == 6'h1)))
+		reg_file[27]     <=  wr_data[7:0];
 end
 
-// --------------- 0x1C	SERVO0_CONTROL	----------------
+assign brake7               = reg_file[27][7];
+assign enable7              = reg_file[27][6];
+assign direction7           = reg_file[27][5];
+assign target_angle3[11:8]  = reg_file[27][3:0];
+
+// ------------- 0x1C	ROTATION3_STATUS	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h1C))
-		reg_file[28]     <=  wr_data[7:0];
+	reg_file[28]     <=  {fault7, adc_temp7[6:0]};
 end
 
-assign servo_position0    = reg_file[28][7:0];
-
-// --------------- 0x1D	SERVO0_CONTROL	----------------
+// ------------- 0x1D	ROTATION3_TARG_ANG	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h1D))
 		reg_file[29]     <=  wr_data[7:0];
 end
 
-assign servo_position1    = reg_file[29][7:0];
+assign target_angle3      = reg_file[29][7:0];
 
-// --------------- 0x1E	SERVO0_CONTROL	----------------
+// ------------- 0x1E	ROTATION3_CURR_ANG	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h1E))
-		reg_file[30]     <=  wr_data[7:0];
+		reg_file[30]     <=  current_angle3[7:0];
 end
 
-assign servo_position2    = reg_file[30][7:0];
-
-// --------------- 0x1F	SERVO0_CONTROL	----------------
+// ------------- 0x1F	ROTATION3_CURR_ANG2	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h1F))
-		reg_file[31]     <=  wr_data[7:0];
+		reg_file[31]     <=  {4'h0, current_angle3[11:8]};
 end
 
-assign servo_position3    = reg_file[31][7:0];
+// --------------- 0x20	SERVO0_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h20))
+		reg_file[32]     <=  wr_data[7:0];
+end
+
+assign servo_position0    = reg_file[32][7:0];
+
+// --------------- 0x21	SERVO0_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h21))
+		reg_file[33]     <=  wr_data[7:0];
+end
+
+assign servo_position1    = reg_file[33][7:0];
+
+// --------------- 0x22	SERVO0_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h22))
+		reg_file[34]     <=  wr_data[7:0];
+end
+
+assign servo_position2    = reg_file[34][7:0];
+
+// --------------- 0x23	SERVO0_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h23))
+		reg_file[35]     <=  wr_data[7:0];
+end
+
+assign servo_position3    = reg_file[35][7:0];
 			
 
 endmodule

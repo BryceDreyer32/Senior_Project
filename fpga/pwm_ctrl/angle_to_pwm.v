@@ -6,8 +6,8 @@
 module angle_to_pwm(
     input               reset_n,        // Active low reset
     input               clock,          // The main clock
-    input   [7:0]       target_angle,   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    input   [7:0]       current_angle,  // The angle read from the motor encoder
+    input   [11:0]      target_angle,   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
+    input   [11:0]      current_angle,  // The angle read from the motor encoder
     input               pwm_done,       // Indicator from PWM that the pwm_ratio has been applied
     input               angle_update,   // Request to update the angle
     output reg          angle_done,     // Indicator that the angle has been applied 
@@ -28,13 +28,13 @@ localparam MED_DELTA    = 4'd11;
 localparam BIG_DELTA    = 4'd15;
 
 localparam PROFILE_DELAY_TARGET = 12'd3;
-localparam TARGET_TOLERANCE     = 8'd2; 
+localparam TARGET_TOLERANCE     = 13'd2; 
 
-reg [1:0]  ps, ns;
-reg [7:0] profile [15:0];
-reg [8:0]  delta_angle;
-reg [3:0]  num_steps;
-reg [3:0]  curr_step;
+reg [1:0]   ps, ns;
+reg [7:0]   profile         [15:0];
+reg [12:0]  delta_angle;
+reg [3:0]   num_steps;
+reg [3:0]   curr_step;
 reg [11:0]  profile_delay;
 
 
@@ -61,7 +61,7 @@ end
 always @(posedge clock or negedge reset_n)
     if(~reset_n) begin
         ps <= IDLE;
-        delta_angle[8:0]    <= 9'b0;
+        delta_angle[12:0]   <= 13'b0;
         curr_step[3:0]      <= 4'b0;
         pwm_ratio[7:0]      <= 8'd128;
         pwm_enable          <= 1'b1;
@@ -73,11 +73,11 @@ always @(posedge clock or negedge reset_n)
     else begin
         ps <= ns;
         
-        // If target_angle > current_angle then set delta_angle[8] to 0 otherwise set to 1
-        if(target_angle[7:0] >= current_angle[7:0]) 
-            delta_angle[8:0] <= {1'b0, target_angle[7:0] - current_angle[7:0]};
+        // If target_angle > current_angle then set delta_angle[12] to 0 otherwise set to 1
+        if(target_angle[11:0] >= current_angle[11:0]) 
+            delta_angle[12:0] <= {1'b0, target_angle[11:0] - current_angle[11:0]};
         else
-            delta_angle[8:0] <= {1'b1, current_angle[7:0] - target_angle[7:0]};
+            delta_angle[12:0] <= {1'b1, current_angle[11:0] - target_angle[11:0]};
 
         if(ps == IDLE) begin
             // If we are in IDLE force the ratio to 128
@@ -89,10 +89,10 @@ always @(posedge clock or negedge reset_n)
                 pwm_update <= 1'b0;
 
             //Calculate wether the angle we are going to process is small, medium, or large
-            if(delta_angle[7:0] < 8'd10)
+            if(delta_angle[12:0] < 13'd10)
                 num_steps[3:0] = SMALL_DELTA; 
 
-            else if(delta_angle[7:0] < 8'd30)
+            else if(delta_angle[12:0] < 13'd30)
                 num_steps[3:0] = MED_DELTA; 
 
             else 
@@ -101,7 +101,7 @@ always @(posedge clock or negedge reset_n)
 
         if(ps == ACCEL) begin
             // If the delta_angle is negative then subtract the acceleration value from 128
-            if(delta_angle[8] == 1'b1)
+            if(delta_angle[12] == 1'b1)
                 pwm_ratio[7:0] <= 8'd128 - profile[curr_step[3:0]];
             
             // Otherwise we add the acceleration value to 128
@@ -124,7 +124,7 @@ always @(posedge clock or negedge reset_n)
 
         else if(ps == DECCEL) begin
             // If the delta_angle is negative then subtract the decceleration value from 128
-            if(delta_angle[8] == 1'b1)
+            if(delta_angle[12] == 1'b1)
                 pwm_ratio[7:0] <= 8'd128 - profile[curr_step[3:0]];
             
             // Otherwise we add the acceleration value to 128
@@ -156,7 +156,7 @@ always @(posedge clock or negedge reset_n)
 always @(*) begin
     case(ps)
         IDLE: begin
-            if((delta_angle[7:0] > TARGET_TOLERANCE) & angle_update)
+            if((delta_angle[12:0] > TARGET_TOLERANCE) & angle_update)
                 ns = ACCEL;
             else
                 ns = IDLE;
@@ -172,24 +172,24 @@ always @(*) begin
         CRUISE: begin
             // Depending on how large of a delta_angle, we will start decelerating at different points
             if(num_steps[3:0] == SMALL_DELTA)
-                if(delta_angle[7:0] < 8'd4)
+                if(delta_angle[12:0] < 13'd4)
                     ns = DECCEL;
                 else
                     ns = CRUISE;
             else if(num_steps[3:0] == MED_DELTA)
-                if(delta_angle[7:0] < 8'd6)
+                if(delta_angle[12:0] < 13'd6)
                     ns = DECCEL;
                 else
                     ns = CRUISE;
             else //(num_steps[3:0] == BIG_DELTA)
-                if(delta_angle[7:0] < 8'd8)
+                if(delta_angle[12:0] < 13'd8)
                     ns = DECCEL;
                 else
                     ns = CRUISE;
         end
 
         DECCEL: begin
-            if(delta_angle[7:0] < TARGET_TOLERANCE)
+            if(delta_angle[12:0] < TARGET_TOLERANCE)
                 ns = IDLE;
             else
                 ns = DECCEL;

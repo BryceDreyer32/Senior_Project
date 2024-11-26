@@ -70,14 +70,14 @@ module top(
     wire          direction7;	     // Motor direction
     wire  [4:0]   pwm7;      	     // PWM control  
 
-    wire  [7:0]   target_angle0;   // Rotation target angle
-    wire  [7:0]   current_angle0;  // The current angle
-    wire  [7:0]   target_angle1;   // Rotation target angle
-    wire  [7:0]   current_angle1;  // The current angle
-    wire  [7:0]   target_angle2;   // Rotation target angle
-    wire  [7:0]   current_angle2;  // The current angle
-    wire  [7:0]   target_angle3;   // Rotation target angle
-    wire  [7:0]   current_angle3;  // The current angle
+    wire  [11:0]  target_angle0;   // Rotation target angle
+    wire  [11:0]  current_angle0;  // The current angle
+    wire  [11:0]  target_angle1;   // Rotation target angle
+    wire  [11:0]  current_angle1;  // The current angle
+    wire  [11:0]  target_angle2;   // Rotation target angle
+    wire  [11:0]  current_angle2;  // The current angle
+    wire  [11:0]  target_angle3;   // Rotation target angle
+    wire  [11:0]  current_angle3;  // The current angle
 
     wire  [7:0]   servo_position0; // Servo 0 target position
     wire  [7:0]   servo_position1; // Servo 1 target position
@@ -144,19 +144,15 @@ reg_file rf(
     .brake4             (/*brake4*/),    	    // Brake control
     .enable4            (/*enable4*/),   	    // Motor enable
     .direction4         (/*direction4*/),	    // Motor direction
-    .pwm4               (/*pwm4*/),      	    // PWM control  
     .brake5             (/*brake5*/),    	    // Brake control
     .enable5            (/*enable5*/),   	    // Motor enable
     .direction5         (/*direction5*/),	    // Motor direction
-    .pwm5               (/*pwm5*/),      	    // PWM control  
     .brake6             (/*brake6*/),    	    // Brake control
     .enable6            (/*enable6*/),   	    // Motor enable
-    .direction6         (/*direction6*/),	    // Motor direction
-    .pwm6               (/*pwm6*/),      	    // PWM control  
+    .direction6         (/*direction6*/),	    // Motor direction 
     .brake7             (/*brake7*/),    	    // Brake control
     .enable7            (/*enable7*/),   	    // Motor enable
     .direction7         (/*direction7*/),	    // Motor direction
-    .pwm7               (/*pwm7*/),      	    // PWM control  
 					 
     .target_angle0      (target_angle0),    // Rotation target angle
     .current_angle0     (current_angle0),   // The current angle
