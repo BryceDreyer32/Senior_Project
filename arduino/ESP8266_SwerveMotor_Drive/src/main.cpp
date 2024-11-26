@@ -15,6 +15,9 @@ const int MOTOR_PWM_PIN       = D2;
 const int MOTOR_FAULT_PIN     = D0;
 const int MOTOR_ADC_TEMP_PIN  = A0;
 
+const int SERIAL_BAUD         = 115200;
+// const int HW_SERIAL_BAUD      = 115200;
+
 // Constant system parameters
 const int MAX_MOTOR_TEMP      = 60;
 const int MAX_SYSTEM_TEMP     = 85;
@@ -34,6 +37,8 @@ uint8_t pwmStatus    = 0;
 int motorTemperature = 0;
 int incomingByte     = 0;
 int checkTempCount   = 0;
+
+// HardwareSerial hwSerial(2);
 
 void setup() {
    // Set the pin directions
@@ -55,7 +60,9 @@ void setup() {
    analogWriteRange(32);
 
    // Setup the UART to 115200 baud rate
-   Serial.begin(115200);
+   // hwSerial.begin(HW_SERIAL_BAUD, SERIAL_8E2);//, RXD2, TXD2);
+
+   Serial.begin(SERIAL_BAUD, SERIAL_8E2);
    Serial.print("Starting up...");  
 }
 
@@ -101,8 +108,8 @@ bool checkMotorTempOkay() {
 bool checkSystemTempOkay() { return true; }
    
 void processByte(uint8_t incomingByte) {
-   if(incomingByte == 10)
-      return;
+   // if(incomingByte == 10)
+   //   return;
 
    enableStatus   = (incomingByte >> ENABLE_BIT) & 0x01;
    brakeStatus    = (incomingByte >> BRAKE_BIT) & 0x01;

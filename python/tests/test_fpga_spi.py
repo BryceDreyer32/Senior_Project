@@ -8,6 +8,7 @@
 import sys
 import os
 import random
+import time
 
 print(os.getcwd())
 sys.path.append(os.path.realpath('python/src/constants'))
@@ -21,6 +22,7 @@ address = 0x04
 
 try:
     while True:
+        '''
         # Write a random 16-bit value to the current address
         wr_data = random.getrandbits(8)
         fpga.fpgaWrite(address, wr_data)
@@ -38,6 +40,26 @@ try:
         address += 1
         if(address == 0x20):
             address = 0x0
+        '''
+
+        print('Slower')
+        wr_data = 0x0
+        fpga.fpgaWrite(0x04, wr_data)
+        rd_data = fpga.fpgaRead(address)
+        matched = (wr_data == rd_data[1])
+        print("Address = " + hex(address) + ", Write = " + hex(wr_data) + ", Read = " + hex(rd_data[1]) + " " + hex(rd_data[0]) + ", Matched = " + str(matched))
+
+        time.sleep(2)
+
+        print('Faster')
+        wr_data = 0x0
+        fpga.fpgaWrite(0x04, wr_data)
+        rd_data = fpga.fpgaRead(address)
+        matched = (wr_data == rd_data[1])
+        print("Address = " + hex(address) + ", Write = " + hex(wr_data) + ", Read = " + hex(rd_data[1]) + " " + hex(rd_data[0]) + ", Matched = " + str(matched))
+
+        time.sleep(2)
+        
 
 except KeyboardInterrupt:
     pass

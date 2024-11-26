@@ -25,7 +25,7 @@ module top(
     output  [3:0]   sd_uart,        // The swerve drive UART
 
     // Arm Servos
-    output  [3:0]   servo_pwm,      // The arm servo PWM wave
+    output  wire [3:0]   servo_pwm,      // The arm servo PWM wave
     
     // Status and Config
     input           tang_config,    // A 1-bit pull high or low for general configuration
@@ -94,7 +94,7 @@ module top(
     wire  [7:0]     servo_position3; // Servo 3 target position
 
 
-    wire  [7:0]     BAUD_DIVISION = 8'd5;   // Select baud 115200
+    wire  [7:0]     BAUD_DIVISION = 8'd116;   // Select baud 115200
 
 ////////////////////////////////////////////////////////////////
 // SPI Controller
@@ -102,7 +102,7 @@ module top(
 spi spi(
 	.reset_n            (reset_n),          // Active low reset
 	.clock              (clock),            // The main clock
-	.spi_clk            (spi_clk),          // The SPI clock
+	.spi_clk            (spi_clock),        // The SPI clock
 	.cs_n               (cs_n),             // Active low chip select
 	.mosi               (mosi),             // Master out slave in
 	.miso               (miso),             // Master in slave out (SPI mode 0)

@@ -97,7 +97,7 @@ class Constants:
     FPGA_SPI_CHANNEL                = 0
     FPGA_SPI_DEVICE                 = 0
     FPGA_SPI_MODE                   = 0b0
-    FPGA_SPI_SPEED                  = 2000000
+    FPGA_SPI_SPEED                  = 200000
 
     BROADCAST_SWERVE_ADDR           = 0x01
     BROADCAST_SWERVE_ROTATION_ADDR  = 0x02			

@@ -1,19 +1,19 @@
 IO_LOC  "read_en" 28;
 IO_PORT "read_en" IO_TYPE=LVCMOS33;
 
-IO_LOC  "write_en" 26;
+IO_LOC  "write_en" 37;
 IO_PORT "write_en" IO_TYPE=LVCMOS33;
 
-IO_LOC  "miso" 39;
+IO_LOC  "miso" 63;
 IO_PORT "miso" IO_TYPE=LVCMOS33;
 
-IO_LOC  "mosi" 37;
+IO_LOC  "mosi" 84;
 IO_PORT "mosi" IO_TYPE=LVCMOS33;
 
-IO_LOC  "cs_n" 38;
+IO_LOC  "cs_n" 85;
 IO_PORT "cs_n" IO_TYPE=LVCMOS33;
 
-IO_LOC  "spi_clk" 36;
+IO_LOC  "spi_clk" 86;
 IO_PORT "spi_clk" IO_TYPE=LVCMOS33;
 
 IO_LOC  "clock" 52;
