@@ -23,9 +23,9 @@ localparam ACCEL  = 2'd1;
 localparam CRUISE = 2'd2;
 localparam DECCEL = 2'd3; 
 
-localparam SMALL_DELTA  = 4'd8;
-localparam MED_DELTA    = 4'd25;
-localparam BIG_DELTA    = 4'd75;
+localparam SMALL_DELTA  = 8'd50;
+localparam MED_DELTA    = 8'd120;
+localparam BIG_DELTA    = 8'd255;
 
 localparam PROFILE_DELAY_TARGET = 12'd3;
 localparam TARGET_TOLERANCE     = 13'd2; 
@@ -33,8 +33,8 @@ localparam TARGET_TOLERANCE     = 13'd2;
 reg [1:0]   ps, ns;
 reg [7:0]   profile         [15:0];
 reg [12:0]  delta_angle;
-reg [3:0]   num_steps;
-reg [3:0]   curr_step;
+reg [7:0]   num_steps;
+reg [7:0]   curr_step;
 reg [11:0]  profile_delay;
 
 // The direction we output here depends on the MSB of the delta_angle
@@ -64,13 +64,13 @@ always @(posedge clock or negedge reset_n)
     if(~reset_n) begin
         ps <= IDLE;
         delta_angle[12:0]   <= 13'b0;
-        curr_step[3:0]      <= 4'b0;
+        curr_step[7:0]      <= 8'b0;
         pwm_ratio[7:0]      <= 8'd128;
         pwm_enable          <= 1'b1;
         pwm_update          <= 1'b0;
         profile_delay[11:0] <= 12'b0;
         angle_done          <= 1'b0;
-        num_steps[3:0]      <= MED_DELTA;
+        num_steps[7:0]      <= MED_DELTA;
     end
     else begin
         ps <= ns;
@@ -83,7 +83,7 @@ always @(posedge clock or negedge reset_n)
 
         if(ps == IDLE) begin
             // If we are in IDLE force the ratio to 128
-            curr_step[3:0] <= 4'b0;
+            curr_step[7:0] <= 8'b0;
             pwm_ratio[7:0] <= 8'd128;
             if(pwm_done == 1'b0)
                 pwm_update <= 1'b1;
@@ -92,23 +92,23 @@ always @(posedge clock or negedge reset_n)
 
             //Calculate wether the angle we are going to process is small, medium, or large
             if(delta_angle[12:0] < 13'd10)
-                num_steps[3:0] = SMALL_DELTA; 
+                num_steps[7:0] <= SMALL_DELTA; 
 
             else if(delta_angle[12:0] < 13'd30)
-                num_steps[3:0] = MED_DELTA; 
+                num_steps[7:0] <= MED_DELTA; 
 
             else 
-                num_steps[3:0] = BIG_DELTA; 
+                num_steps[7:0] <= BIG_DELTA; 
         end
 
         if(ps == ACCEL) begin
             // If the delta_angle is negative then subtract the acceleration value from 128
             if(delta_angle[12] == 1'b1)
-                pwm_ratio[7:0] <= 8'd128 - profile[curr_step[3:0]];
+                pwm_ratio[7:0] <= 8'd128 - profile[curr_step[7:4]];
             
             // Otherwise we add the acceleration value to 128
             else
-                pwm_ratio[7:0] <= 8'd128 + profile[curr_step[3:0]];
+                pwm_ratio[7:0] <= 8'd128 + profile[curr_step[7:4]];
 
             if(pwm_done == 1'b0)
                 pwm_update <= 1'b1;
@@ -119,7 +119,7 @@ always @(posedge clock or negedge reset_n)
             end
 
             if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
-                curr_step[3:0] <= curr_step[3:0] + 4'b1;
+                curr_step[7:0] <= curr_step[7:0] + 8'b1;
                 profile_delay[11:0] <= 12'b0;
             end
         end
@@ -127,11 +127,11 @@ always @(posedge clock or negedge reset_n)
         else if(ps == DECCEL) begin
             // If the delta_angle is negative then subtract the decceleration value from 128
             if(delta_angle[12] == 1'b1)
-                pwm_ratio[7:0] <= 8'd128 - profile[curr_step[3:0]];
+                pwm_ratio[7:0] <= 8'd128 - profile[curr_step[7:4]];
             
             // Otherwise we add the acceleration value to 128
             else
-                pwm_ratio[7:0] <= 8'd128 + profile[curr_step[3:0]];
+                pwm_ratio[7:0] <= 8'd128 + profile[curr_step[7:4]];
 
             if(~pwm_done)
                 pwm_update <= 1'b1;
@@ -143,8 +143,8 @@ always @(posedge clock or negedge reset_n)
 
             // Decelerate until we hit the minimum value (avoid roll over)
             if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
-                if(curr_step[3:0] >= 4'b1)
-                    curr_step[3:0] <= curr_step[3:0] - 4'b1;
+                if(curr_step[7:0] >= 8'b1)
+                    curr_step[7:0] <= curr_step[7:0] - 8'b1;
                 profile_delay[11:0] <= 12'b0;
             end
         end
@@ -165,7 +165,7 @@ always @(*) begin
         end
         
         ACCEL: begin
-            if(curr_step[3:0] == num_steps[3:0])
+            if(curr_step[7:0] == num_steps[7:0])
                 ns = CRUISE;
             else
                 ns = ACCEL;
@@ -173,17 +173,17 @@ always @(*) begin
 
         CRUISE: begin
             // Depending on how large of a delta_angle, we will start decelerating at different points
-            if(num_steps[3:0] == SMALL_DELTA)
+            if(num_steps[7:0] == SMALL_DELTA)
                 if(delta_angle[12:0] < 13'd4)
                     ns = DECCEL;
                 else
                     ns = CRUISE;
-            else if(num_steps[3:0] == MED_DELTA)
+            else if(num_steps[7:0] == MED_DELTA)
                 if(delta_angle[12:0] < 13'd6)
                     ns = DECCEL;
                 else
                     ns = CRUISE;
-            else //(num_steps[3:0] == BIG_DELTA)
+            else //(num_steps[7:0] == BIG_DELTA)
                 if(delta_angle[12:0] < 13'd8)
                     ns = DECCEL;
                 else

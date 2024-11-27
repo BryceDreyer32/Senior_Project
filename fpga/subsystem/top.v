@@ -43,23 +43,6 @@ module top(
     wire            read_en;  	     // Read enable
     wire  [7:0]     rd_data;   	     // Read data
 
-    wire            fault0;    	     // Fault signal from motor
-    wire  [6:0]     adc_temp0; 	     // Adc temperature from motor
-    wire            fault1;    	     // Fault signal from motor
-    wire  [6:0]     adc_temp1; 	     // Adc temperature from motor
-    wire            fault2;    	     // Fault signal from motor
-    wire  [6:0]     adc_temp2; 	     // Adc temperature from motor
-    wire            fault3;    	     // Fault signal from motor
-    wire  [6:0]     adc_temp3; 	     // Adc temperature from motor
-    wire            fault4;    	     // Fault signal from motor
-    wire  [6:0]     adc_temp4; 	     // Adc temperature from motor
-    wire            fault5;    	     // Fault signal from motor
-    wire  [6:0]     adc_temp5; 	     // Adc temperature from motor
-    wire            fault6;    	     // Fault signal from motor
-    wire  [6:0]     adc_temp6; 	     // Adc temperature from motor
-    wire            fault7;    	     // Fault signal from motor
-    wire  [6:0]     adc_temp7; 	     // Adc temperature from motor
-
     wire            brake0;    	     // Brake control
     wire            enable0;   	     // Motor enable
     wire            direction0;	     // Motor direction
@@ -77,16 +60,16 @@ module top(
     wire            direction3;	     // Motor direction
     wire  [4:0]     pwm3;      	     // PWM control
     wire  [3:0]     sr_pwm_done, sr_pwm_enable, sr_pwm_update;
-    wire  [3:0]     sr_pwm_ratio    [7:0];
+    wire  [7:0]     sr_pwm_ratio    [3:0];
 
-    wire  [7:0]     target_angle0;   // Rotation target angle
-    wire  [7:0]     current_angle0;  // The current angle
-    wire  [7:0]     target_angle1;   // Rotation target angle
-    wire  [7:0]     current_angle1;  // The current angle
-    wire  [7:0]     target_angle2;   // Rotation target angle
-    wire  [7:0]     current_angle2;  // The current angle
-    wire  [7:0]     target_angle3;   // Rotation target angle
-    wire  [7:0]     current_angle3;  // The current angle
+    wire  [11:0]    target_angle0;   // Rotation target angle
+    wire  [11:0]    current_angle0;  // The current angle
+    wire  [11:0]    target_angle1;   // Rotation target angle
+    wire  [11:0]    current_angle1;  // The current angle
+    wire  [11:0]    target_angle2;   // Rotation target angle
+    wire  [11:0]    current_angle2;  // The current angle
+    wire  [11:0]    target_angle3;   // Rotation target angle
+    wire  [11:0]    current_angle3;  // The current angle
 
     wire  [7:0]     servo_position0; // Servo 0 target position
     wire  [7:0]     servo_position1; // Servo 1 target position
@@ -125,24 +108,27 @@ reg_file rf(
     .read_en            (read_en),   	    // Read enable
     .rd_data            (rd_data[7:0]),	    // Read data
 				     
-    .fault0             (fault0),    	    // Fault signal from motor
-    .adc_temp0          (adc_temp0), 	    // Adc temperature from motor
-    .fault1             (fault1),    	    // Fault signal from motor
-    .adc_temp1          (adc_temp1), 	    // Adc temperature from motor
-    .fault2             (fault2),    	    // Fault signal from motor
-    .adc_temp2          (adc_temp2), 	    // Adc temperature from motor
-    .fault3             (fault3),    	    // Fault signal from motor
-    .adc_temp3          (adc_temp3), 	    // Adc temperature from motor
-    .fault4             (fault4),    	    // Fault signal from motor
-    .adc_temp4          (adc_temp4), 	    // Adc temperature from motor
-    .fault5             (fault5),    	    // Fault signal from motor
-    .adc_temp5          (adc_temp5), 	    // Adc temperature from motor
-    .fault6             (fault6),    	    // Fault signal from motor
-    .adc_temp6          (adc_temp6), 	    // Adc temperature from motor
-    .fault7             (fault7),    	    // Fault signal from motor
-    .adc_temp7          (adc_temp7), 	    // Adc temperature from motor
+    // Drive Motors	inputs: Don't have UART sending back data currently, so strapping for now	     
+    .fault0             (1'b0),    	        // Fault signal from motor
+    .adc_temp0          (7'b0), 	        // Adc temperature from motor
+    .fault1             (1'b0),    	        // Fault signal from motor
+    .adc_temp1          (7'b0), 	        // Adc temperature from motor
+    .fault2             (1'b0),    	        // Fault signal from motor
+    .adc_temp2          (7'b0), 	        // Adc temperature from motor
+    .fault3             (1'b0),    	        // Fault signal from motor
+    .adc_temp3          (7'b0), 	        // Adc temperature from motor
 
-    // Drive Motors		     
+    // Rotation Motors inputs: Don't have a way to Analog to Digital convert temperature     
+    .fault4             (sr_fault[0]),    	// Fault signal from motor
+    .adc_temp4          (7'b0), 	        // Adc temperature from motor
+    .fault5             (sr_fault[1]), 	    // Fault signal from motor
+    .adc_temp5          (7'b0), 	        // Adc temperature from motor
+    .fault6             (sr_fault[2]), 	    // Fault signal from motor
+    .adc_temp6          (7'b0), 	        // Adc temperature from motor
+    .fault7             (sr_fault[3]), 	    // Fault signal from motor
+    .adc_temp7          (7'b0), 	        // Adc temperature from motor
+
+    // Drive Motors	outputs	     
 	.brake0             (brake0),    	    // Brake control
     .enable0            (enable0),   	    // Motor enable
     .direction0         (direction0),	    // Motor direction
@@ -160,7 +146,7 @@ reg_file rf(
     .direction3         (direction3),	    // Motor direction
     .pwm3               (pwm3),      	    // PWM control
 
-    // Rotation Motors
+    // Rotation Motors outputs
     .brake4             (sr_brake[0]),    	// Brake control
     .enable4            (sr_enable[0]),   	// Motor enable
     .direction4         (sr_direction[0]),	// Motor direction
@@ -260,7 +246,7 @@ pwm_ctrl pwm_ctrl0(
     //FPGA Subsystem Interface
     .target_angle           (target_angle0[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .angle_update           (1'b1),                 // Signals when an angle update is available
-    .angle_done             (),                     // Output sent when angle has been adjusted to target_angle
+    .current_angle          (current_angle0[11:0]), // Angle we are currently at from I2C
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -293,7 +279,7 @@ pwm_ctrl pwm_ctrl1(
     //FPGA Subsystem Interface
     .target_angle           (target_angle1[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .angle_update           (1'b1),                 // Signals when an angle update is available
-    .angle_done             (),                     // Output sent when angle has been adjusted to target_angle
+    .current_angle          (current_angle1[11:0]), // Angle we are currently at from I2C
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[1]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -326,7 +312,7 @@ pwm_ctrl pwm_ctrl2(
     //FPGA Subsystem Interface
     .target_angle           (target_angle2[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .angle_update           (1'b1),                 // Signals when an angle update is available
-    .angle_done             (),                     // Output sent when angle has been adjusted to target_angle
+    .current_angle          (current_angle2[11:0]), // Angle we are currently at from I2C
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[2]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -359,7 +345,7 @@ pwm_ctrl pwm_ctrl3(
     //FPGA Subsystem Interface
     .target_angle           (target_angle3[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .angle_update           (1'b1),                 // Signals when an angle update is available
-    .angle_done             (),                     // Output sent when angle has been adjusted to target_angle
+    .current_angle          (current_angle3[11:0]), // Angle we are currently at from I2C
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[3]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -390,7 +376,8 @@ pwm servo_pwm0(
     .clock                  (clock),
     .pwm_enable             (1'b1),
     .pwm_ratio              (servo_position0[7:0]),
-    .pwm_update             (1'b1), 
+    .pwm_update             (1'b1),
+    .pwm_done               (),
     .pwm_signal             (servo_pwm[0])
 );
 
@@ -400,6 +387,7 @@ pwm servo_pwm1(
     .pwm_enable             (1'b1),
     .pwm_ratio              (servo_position1[7:0]),
     .pwm_update             (1'b1), 
+    .pwm_done               (),
     .pwm_signal             (servo_pwm[1])
 );
 
@@ -409,6 +397,7 @@ pwm servo_pwm2(
     .pwm_enable             (1'b1),
     .pwm_ratio              (servo_position2[7:0]),
     .pwm_update             (1'b1), 
+    .pwm_done               (),
     .pwm_signal             (servo_pwm[2])
 );
 
@@ -418,6 +407,14 @@ pwm servo_pwm3(
     .pwm_enable             (1'b1),
     .pwm_ratio              (servo_position3[7:0]),
     .pwm_update             (1'b1), 
+    .pwm_done               (),
     .pwm_signal             (servo_pwm[3])
 );
+
+
+assign status_fault = |(sr_fault[3:0]); // Control for LED for when a fault has occurred
+assign status_pi = 1'b1;                // Control for LED for when the Orange Pi is connected
+assign status_ps4 = 1'b1;               // Control for LED for when the PS4 controller is connected
+assign status_debug = 1'b1;             // Control for LED for general debug
+
 endmodule
