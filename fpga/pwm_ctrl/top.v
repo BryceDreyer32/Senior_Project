@@ -12,7 +12,7 @@ pwm_ctrl Test(
     //FPGA Subsystem Interface
     .target_angle   (8'd10),   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .angle_update   (1'b1),   // Signals when an angle update is available
-    .angle_done     (),     // Output sent when angle has been adjusted to target_angle
+    .angle_done     (),      // Output sent when angle has been adjusted to target_angle
 
     //PWM Interface
     .pwm_done       (1'b1),       // Updated PWM ratio has been applied (1 cycle long pulse)

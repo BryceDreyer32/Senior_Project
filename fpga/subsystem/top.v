@@ -411,8 +411,7 @@ pwm servo_pwm3(
     .pwm_signal             (servo_pwm[3])
 );
 
-
-assign status_fault = |(sr_fault[3:0]); // Control for LED for when a fault has occurred
+assign status_fault = |(sr_fault[3:0]);        // Control for LED for when a fault has occurred
 assign status_pi = 1'b1;                // Control for LED for when the Orange Pi is connected
 assign status_ps4 = 1'b1;               // Control for LED for when the PS4 controller is connected
 assign status_debug = 1'b1;             // Control for LED for general debug

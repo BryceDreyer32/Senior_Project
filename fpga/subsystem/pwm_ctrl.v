@@ -9,7 +9,7 @@ module pwm_ctrl(
     //FPGA Subsystem Interface
     input   [11:0]      target_angle,   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     input               angle_update,   // Signals when an angle update is available
-//    output              angle_done,     // Output sent when angle has been adjusted to target_angle
+    output              angle_done,     // Output sent when angle has been adjusted to target_angle
     output  [11:0]      current_angle,  // Angle we are currently at from I2C
 
     //PWM Interface
@@ -23,7 +23,7 @@ module pwm_ctrl(
     inout               sda             // The I2C bi-directional data
 );  
 
-wire angle_done;
+//wire angle_done;
 
 angle_to_pwm a_to_pwm(
     .reset_n        (reset_n),  	        // Active low reset

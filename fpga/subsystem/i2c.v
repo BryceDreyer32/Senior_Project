@@ -181,6 +181,7 @@ always @(*) begin
     scl_int     = 1'b1;
     sda_int     = 1'b1;
     tri_mode    = 1'b0;
+    rd_bit      = 1'b0;
 
     case(ps)
         IDLE: begin

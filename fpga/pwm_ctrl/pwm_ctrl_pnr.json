@@ -43,7 +43,7 @@
       },
       "ports": {
         "sda": {
-          "direction": "inout",
+          "direction": "output",
           "bits": [ 7317 ]
         },
         "sck": {
@@ -52,7 +52,7 @@
         },
         "led": {
           "direction": "output",
-          "bits": [ 7560, 7558, 7556, 7554, 7552, 7550 ]
+          "bits": [ 7667, 7665, 7663, 7661, 7659, 7657 ]
         },
         "clock": {
           "direction": "input",
@@ -60,6 +60,25 @@
         }
       },
       "cells": {
+        "Test.i2c.bit_counter_DFFNR_Q_1_D_ALU_SUM_CIN_ALU_COUT_HEAD_ALULC": {
+          "hide_name": 0,
+          "type": "ALU",
+          "parameters": {
+            "ALU_MODE": "C2L"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y24/ALU0"
+          },
+          "port_directions": {
+            "I2": "input",
+            "COUT": "output"
+          },
+          "connections": {
+            "I2": [ 7684 ],
+            "COUT": [ 7695 ]
+          }
+        },
         "clockCounter_DFFR_Q_D_ALU_SUM_DUMMY_ALULC": {
           "hide_name": 0,
           "type": "ALU",
@@ -90,8 +109,8 @@
             "COUT": "output"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "COUT": [ 7592 ]
+            "I2": [ 7684 ],
+            "COUT": [ 7693 ]
           }
         },
         "ledCounter_DFFE_Q_D_ALU_SUM_DUMMY_ALULC": {
@@ -102,7 +121,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X2Y20/ALU1"
+            "NEXTPNR_BEL": "X2Y21/ALU1"
           },
           "port_directions": {
           },
@@ -117,15 +136,15 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y20/ALU0"
+            "NEXTPNR_BEL": "X1Y21/ALU0"
           },
           "port_directions": {
             "I2": "input",
             "COUT": "output"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "COUT": [ 7590 ]
+            "I2": [ 7684 ],
+            "COUT": [ 7691 ]
           }
         },
         "GSR": {
@@ -141,17 +160,15 @@
             "GSRI": "input"
           },
           "connections": {
-            "GSRI": [ 7582 ]
+            "GSRI": [ 7684 ]
           }
         },
-        "sda_IOBUF_IO": {
+        "sda_OBUF_O": {
           "hide_name": 0,
-          "type": "IOBUF",
+          "type": "OBUF",
           "parameters": {
-            "NET_I": "GND",
-            "NET_IO": "NET",
+            "NET_I": "NET",
             "NET_O": "NET",
-            "NET_OEN": "GND",
             "NET_BOTTOM_IO_PORT_A": "GND",
             "NET_BOTTOM_IO_PORT_B": "GND"
           },
@@ -166,25 +183,21 @@
           "port_directions": {
             "BOTTOM_IO_PORT_B": "input",
             "BOTTOM_IO_PORT_A": "input",
-            "OEN": "input",
             "O": "output",
-            "IO": "inout",
             "I": "input"
           },
           "connections": {
-            "BOTTOM_IO_PORT_B": [ 7583 ],
-            "BOTTOM_IO_PORT_A": [ 7583 ],
-            "OEN": [ 7583 ],
-            "O": [ 7565 ],
-            "IO": [ 7317 ],
-            "I": [ 7583 ]
+            "BOTTOM_IO_PORT_B": [ 7685 ],
+            "BOTTOM_IO_PORT_A": [ 7685 ],
+            "O": [ 7317 ],
+            "I": [ 7487 ]
           }
         },
         "sck_OBUF_O": {
           "hide_name": 0,
           "type": "OBUF",
           "parameters": {
-            "NET_I": "GND",
+            "NET_I": "NET",
             "NET_O": "NET"
           },
           "attributes": {
@@ -200,7 +213,7 @@
           },
           "connections": {
             "O": [ 7316 ],
-            "I": [ 7583 ]
+            "I": [ 7476 ]
           }
         },
         "led_OBUF_O_5": {
@@ -221,8 +234,8 @@
             "I": "input"
           },
           "connections": {
-            "O": [ 7560 ],
-            "I": [ 7541 ]
+            "O": [ 7667 ],
+            "I": [ 7646 ]
           }
         },
         "led_OBUF_O_4": {
@@ -243,8 +256,8 @@
             "I": "input"
           },
           "connections": {
-            "O": [ 7558 ],
-            "I": [ 7537 ]
+            "O": [ 7665 ],
+            "I": [ 7642 ]
           }
         },
         "led_OBUF_O_3": {
@@ -265,8 +278,8 @@
             "I": "input"
           },
           "connections": {
-            "O": [ 7556 ],
-            "I": [ 7532 ]
+            "O": [ 7663 ],
+            "I": [ 7637 ]
           }
         },
         "led_OBUF_O_2": {
@@ -287,8 +300,8 @@
             "I": "input"
           },
           "connections": {
-            "O": [ 7554 ],
-            "I": [ 7527 ]
+            "O": [ 7661 ],
+            "I": [ 7632 ]
           }
         },
         "led_OBUF_O_1": {
@@ -309,8 +322,8 @@
             "I": "input"
           },
           "connections": {
-            "O": [ 7552 ],
-            "I": [ 7521 ]
+            "O": [ 7659 ],
+            "I": [ 7626 ]
           }
         },
         "led_OBUF_O": {
@@ -331,8 +344,8 @@
             "I": "input"
           },
           "connections": {
-            "O": [ 7550 ],
-            "I": [ 7518 ]
+            "O": [ 7657 ],
+            "I": [ 7623 ]
           }
         },
         "ledCounter_DFFE_Q_D_ALU_SUM": {
@@ -343,7 +356,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X2Y20/ALU0",
+            "NEXTPNR_BEL": "X2Y21/ALU0",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -357,16 +370,16 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7517 ],
-            "I3": [ 7582 ],
-            "I1": [ 7518 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7548 ],
-            "CIN": [ 7524 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7622 ],
+            "I3": [ 7684 ],
+            "I1": [ 7623 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7655 ],
+            "CIN": [ 7629 ]
           }
         },
-        "ledCounter_DFFE_Q_CE_LUT4_F": {
+        "ledCounter_DFFE_Q_CE_MUX2_LUT5_O_I1_LUT4_F": {
           "hide_name": 0,
           "type": "LUT4",
           "parameters": {
@@ -374,8 +387,8 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X3Y20/LUT4",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "NEXTPNR_BEL": "X3Y19/LUT7",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
             "module_not_derived": "00000000000000000000000000000001"
           },
           "port_directions": {
@@ -386,11 +399,35 @@
             "F": "output"
           },
           "connections": {
-            "I3": [ 7371 ],
-            "I2": [ 7389 ],
-            "I1": [ 7407 ],
-            "I0": [ 7401 ],
-            "F": [ 7419 ]
+            "I3": [ 7380 ],
+            "I2": [ 7374 ],
+            "I1": [ 7368 ],
+            "I0": [ 7362 ],
+            "F": [ 7652 ]
+          }
+        },
+        "ledCounter_DFFE_Q_CE_MUX2_LUT5_O": {
+          "hide_name": 0,
+          "type": "MUX2_LUT5",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X3Y19/MUX6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "S0": "input",
+            "O": "output",
+            "I1": "input",
+            "I0": "input"
+          },
+          "connections": {
+            "S0": [ 7350 ],
+            "O": [ 7524 ],
+            "I1": [ 7652 ],
+            "I0": [ 7344 ]
           }
         },
         "ledCounter_DFFE_Q_5_D_LUT1_F": {
@@ -401,7 +438,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X2Y21/LUT3",
+            "NEXTPNR_BEL": "X1Y17/LUT3",
             "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:135.23-136.15",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -410,8 +447,8 @@
             "F": "output"
           },
           "connections": {
-            "I0": [ 7541 ],
-            "F": [ 7544 ]
+            "I0": [ 7646 ],
+            "F": [ 7649 ]
           }
         },
         "ledCounter_DFFE_Q_5": {
@@ -421,7 +458,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X2Y21/DFF5",
+            "NEXTPNR_BEL": "X1Y17/DFF4",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:19.7-19.56",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -432,10 +469,10 @@
             "CE": "input"
           },
           "connections": {
-            "Q": [ 7541 ],
-            "D": [ 7544 ],
-            "CLK": [ 7333 ],
-            "CE": [ 7419 ]
+            "Q": [ 7646 ],
+            "D": [ 7649 ],
+            "CLK": [ 7403 ],
+            "CE": [ 7524 ]
           }
         },
         "ledCounter_DFFE_Q_4_D_ALU_SUM_CIN_ALU_COUT": {
@@ -446,7 +483,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y20/ALU1",
+            "NEXTPNR_BEL": "X1Y21/ALU1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -460,13 +497,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7542 ],
-            "I3": [ 7582 ],
-            "I1": [ 7541 ],
-            "I0": [ 7582 ],
-            "COUT": [ 7539 ],
-            "CIN": [ 7590 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7647 ],
+            "I3": [ 7684 ],
+            "I1": [ 7646 ],
+            "I0": [ 7684 ],
+            "COUT": [ 7644 ],
+            "CIN": [ 7691 ]
           }
         },
         "ledCounter_DFFE_Q_4_D_ALU_SUM": {
@@ -477,7 +514,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y20/ALU2",
+            "NEXTPNR_BEL": "X1Y21/ALU2",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -491,71 +528,16 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7536 ],
-            "I3": [ 7582 ],
-            "I1": [ 7537 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7534 ],
-            "CIN": [ 7539 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7641 ],
+            "I3": [ 7684 ],
+            "I1": [ 7642 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7639 ],
+            "CIN": [ 7644 ]
           }
         },
         "ledCounter_DFFE_Q_4": {
-          "hide_name": 0,
-          "type": "DFFE",
-          "parameters": {
-          },
-          "attributes": {
-            "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y20/DFF2",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:19.7-19.56",
-            "module_not_derived": "00000000000000000000000000000001"
-          },
-          "port_directions": {
-            "Q": "output",
-            "D": "input",
-            "CLK": "input",
-            "CE": "input"
-          },
-          "connections": {
-            "Q": [ 7537 ],
-            "D": [ 7536 ],
-            "CLK": [ 7333 ],
-            "CE": [ 7419 ]
-          }
-        },
-        "ledCounter_DFFE_Q_3_D_ALU_SUM": {
-          "hide_name": 0,
-          "type": "ALU",
-          "parameters": {
-            "ALU_MODE": "00000000000000000000000000000010"
-          },
-          "attributes": {
-            "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y20/ALU3",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
-            "module_not_derived": "00000000000000000000000000000001"
-          },
-          "port_directions": {
-            "I2": "input",
-            "SUM": "output",
-            "I3": "input",
-            "I1": "input",
-            "I0": "input",
-            "COUT": "output",
-            "CIN": "input"
-          },
-          "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7531 ],
-            "I3": [ 7582 ],
-            "I1": [ 7532 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7529 ],
-            "CIN": [ 7534 ]
-          }
-        },
-        "ledCounter_DFFE_Q_3": {
           "hide_name": 0,
           "type": "DFFE",
           "parameters": {
@@ -573,10 +555,65 @@
             "CE": "input"
           },
           "connections": {
-            "Q": [ 7532 ],
-            "D": [ 7531 ],
-            "CLK": [ 7333 ],
-            "CE": [ 7419 ]
+            "Q": [ 7642 ],
+            "D": [ 7641 ],
+            "CLK": [ 7403 ],
+            "CE": [ 7524 ]
+          }
+        },
+        "ledCounter_DFFE_Q_3_D_ALU_SUM": {
+          "hide_name": 0,
+          "type": "ALU",
+          "parameters": {
+            "ALU_MODE": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X1Y21/ALU3",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I2": "input",
+            "SUM": "output",
+            "I3": "input",
+            "I1": "input",
+            "I0": "input",
+            "COUT": "output",
+            "CIN": "input"
+          },
+          "connections": {
+            "I2": [ 7684 ],
+            "SUM": [ 7636 ],
+            "I3": [ 7684 ],
+            "I1": [ 7637 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7634 ],
+            "CIN": [ 7639 ]
+          }
+        },
+        "ledCounter_DFFE_Q_3": {
+          "hide_name": 0,
+          "type": "DFFE",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X1Y21/DFF3",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:19.7-19.56",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "Q": "output",
+            "D": "input",
+            "CLK": "input",
+            "CE": "input"
+          },
+          "connections": {
+            "Q": [ 7637 ],
+            "D": [ 7636 ],
+            "CLK": [ 7403 ],
+            "CE": [ 7524 ]
           }
         },
         "ledCounter_DFFE_Q_2_D_ALU_SUM": {
@@ -587,7 +624,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y20/ALU4",
+            "NEXTPNR_BEL": "X1Y21/ALU4",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -601,13 +638,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7526 ],
-            "I3": [ 7582 ],
-            "I1": [ 7527 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7523 ],
-            "CIN": [ 7529 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7631 ],
+            "I3": [ 7684 ],
+            "I1": [ 7632 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7628 ],
+            "CIN": [ 7634 ]
           }
         },
         "ledCounter_DFFE_Q_2": {
@@ -617,7 +654,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y20/DFF4",
+            "NEXTPNR_BEL": "X1Y21/DFF4",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:19.7-19.56",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -628,10 +665,10 @@
             "CE": "input"
           },
           "connections": {
-            "Q": [ 7527 ],
-            "D": [ 7526 ],
-            "CLK": [ 7333 ],
-            "CE": [ 7419 ]
+            "Q": [ 7632 ],
+            "D": [ 7631 ],
+            "CLK": [ 7403 ],
+            "CE": [ 7524 ]
           }
         },
         "ledCounter_DFFE_Q_1_D_ALU_SUM": {
@@ -642,7 +679,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y20/ALU5",
+            "NEXTPNR_BEL": "X1Y21/ALU5",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -656,13 +693,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7520 ],
-            "I3": [ 7582 ],
-            "I1": [ 7521 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7524 ],
-            "CIN": [ 7523 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7625 ],
+            "I3": [ 7684 ],
+            "I1": [ 7626 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7629 ],
+            "CIN": [ 7628 ]
           }
         },
         "ledCounter_DFFE_Q_1": {
@@ -672,7 +709,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y21/DFF0",
+            "NEXTPNR_BEL": "X2Y21/DFF5",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:19.7-19.56",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -683,10 +720,10 @@
             "CE": "input"
           },
           "connections": {
-            "Q": [ 7521 ],
-            "D": [ 7520 ],
-            "CLK": [ 7333 ],
-            "CE": [ 7419 ]
+            "Q": [ 7626 ],
+            "D": [ 7625 ],
+            "CLK": [ 7403 ],
+            "CE": [ 7524 ]
           }
         },
         "ledCounter_DFFE_Q": {
@@ -696,7 +733,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X2Y20/DFF0",
+            "NEXTPNR_BEL": "X2Y21/DFF3",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:19.7-19.56",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -707,10 +744,10 @@
             "CE": "input"
           },
           "connections": {
-            "Q": [ 7518 ],
-            "D": [ 7517 ],
-            "CLK": [ 7333 ],
-            "CE": [ 7419 ]
+            "Q": [ 7623 ],
+            "D": [ 7622 ],
+            "CLK": [ 7403 ],
+            "CE": [ 7524 ]
           }
         },
         "clockCounter_DFFR_Q_D_ALU_SUM": {
@@ -735,13 +772,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7418 ],
-            "I3": [ 7582 ],
-            "I1": [ 7408 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7515 ],
-            "CIN": [ 7465 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7523 ],
+            "I3": [ 7684 ],
+            "I1": [ 7369 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7620 ],
+            "CIN": [ 7570 ]
           }
         },
         "clockCounter_DFFR_Q_9_D_ALU_SUM": {
@@ -766,13 +803,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7512 ],
-            "I3": [ 7582 ],
-            "I1": [ 7394 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7510 ],
-            "CIN": [ 7426 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7617 ],
+            "I3": [ 7684 ],
+            "I1": [ 7382 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7615 ],
+            "CIN": [ 7531 ]
           }
         },
         "clockCounter_DFFR_Q_9": {
@@ -793,10 +830,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7394 ],
-            "D": [ 7512 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7382 ],
+            "D": [ 7617 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_8_D_ALU_SUM": {
@@ -821,13 +858,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7508 ],
-            "I3": [ 7582 ],
-            "I1": [ 7392 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7506 ],
-            "CIN": [ 7510 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7613 ],
+            "I3": [ 7684 ],
+            "I1": [ 7381 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7611 ],
+            "CIN": [ 7615 ]
           }
         },
         "clockCounter_DFFR_Q_8": {
@@ -848,10 +885,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7392 ],
-            "D": [ 7508 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7381 ],
+            "D": [ 7613 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_7_D_ALU_SUM": {
@@ -876,13 +913,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7504 ],
-            "I3": [ 7582 ],
-            "I1": [ 7405 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7502 ],
-            "CIN": [ 7506 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7609 ],
+            "I3": [ 7684 ],
+            "I1": [ 7366 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7607 ],
+            "CIN": [ 7611 ]
           }
         },
         "clockCounter_DFFR_Q_7": {
@@ -903,10 +940,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7405 ],
-            "D": [ 7504 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7366 ],
+            "D": [ 7609 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_6_D_ALU_SUM": {
@@ -931,13 +968,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7500 ],
-            "I3": [ 7582 ],
-            "I1": [ 7404 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7498 ],
-            "CIN": [ 7502 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7605 ],
+            "I3": [ 7684 ],
+            "I1": [ 7365 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7603 ],
+            "CIN": [ 7607 ]
           }
         },
         "clockCounter_DFFR_Q_6": {
@@ -958,10 +995,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7404 ],
-            "D": [ 7500 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7365 ],
+            "D": [ 7605 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_5_D_ALU_SUM": {
@@ -986,13 +1023,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7496 ],
-            "I3": [ 7582 ],
-            "I1": [ 7403 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7494 ],
-            "CIN": [ 7498 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7601 ],
+            "I3": [ 7684 ],
+            "I1": [ 7364 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7599 ],
+            "CIN": [ 7603 ]
           }
         },
         "clockCounter_DFFR_Q_5": {
@@ -1013,10 +1050,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7403 ],
-            "D": [ 7496 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7364 ],
+            "D": [ 7601 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_4_D_ALU_SUM": {
@@ -1041,13 +1078,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7492 ],
-            "I3": [ 7582 ],
-            "I1": [ 7402 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7490 ],
-            "CIN": [ 7494 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7597 ],
+            "I3": [ 7684 ],
+            "I1": [ 7363 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7595 ],
+            "CIN": [ 7599 ]
           }
         },
         "clockCounter_DFFR_Q_4": {
@@ -1068,10 +1105,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7402 ],
-            "D": [ 7492 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7363 ],
+            "D": [ 7597 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_3_D_ALU_SUM": {
@@ -1096,13 +1133,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7488 ],
-            "I3": [ 7582 ],
-            "I1": [ 7411 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7486 ],
-            "CIN": [ 7490 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7593 ],
+            "I3": [ 7684 ],
+            "I1": [ 7372 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7591 ],
+            "CIN": [ 7595 ]
           }
         },
         "clockCounter_DFFR_Q_3": {
@@ -1112,7 +1149,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X4Y19/DFF3",
+            "NEXTPNR_BEL": "X5Y19/DFF2",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:31.7-31.59",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -1123,10 +1160,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7411 ],
-            "D": [ 7488 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7372 ],
+            "D": [ 7593 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_2_D_ALU_SUM": {
@@ -1151,13 +1188,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7467 ],
-            "I3": [ 7582 ],
-            "I1": [ 7410 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7464 ],
-            "CIN": [ 7486 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7572 ],
+            "I3": [ 7684 ],
+            "I1": [ 7371 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7569 ],
+            "CIN": [ 7591 ]
           }
         },
         "clockCounter_DFFR_Q_23_D_LUT1_F": {
@@ -1168,7 +1205,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y21/LUT2",
+            "NEXTPNR_BEL": "X1Y20/LUT1",
             "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:135.23-136.15",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -1177,8 +1214,8 @@
             "F": "output"
           },
           "connections": {
-            "I0": [ 7386 ],
-            "F": [ 7483 ]
+            "I0": [ 7389 ],
+            "F": [ 7588 ]
           }
         },
         "clockCounter_DFFR_Q_23": {
@@ -1188,7 +1225,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y21/DFF5",
+            "NEXTPNR_BEL": "X1Y20/DFF4",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:31.7-31.59",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -1199,10 +1236,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7386 ],
-            "D": [ 7483 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7389 ],
+            "D": [ 7588 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_22_D_ALU_SUM_CIN_ALU_COUT": {
@@ -1227,13 +1264,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7481 ],
-            "I3": [ 7582 ],
-            "I1": [ 7386 ],
-            "I0": [ 7582 ],
-            "COUT": [ 7479 ],
-            "CIN": [ 7592 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7586 ],
+            "I3": [ 7684 ],
+            "I1": [ 7389 ],
+            "I0": [ 7684 ],
+            "COUT": [ 7584 ],
+            "CIN": [ 7693 ]
           }
         },
         "clockCounter_DFFR_Q_22_D_ALU_SUM": {
@@ -1258,13 +1295,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7477 ],
-            "I3": [ 7582 ],
-            "I1": [ 7385 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7475 ],
-            "CIN": [ 7479 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7582 ],
+            "I3": [ 7684 ],
+            "I1": [ 7388 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7580 ],
+            "CIN": [ 7584 ]
           }
         },
         "clockCounter_DFFR_Q_22": {
@@ -1285,10 +1322,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7385 ],
-            "D": [ 7477 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7388 ],
+            "D": [ 7582 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_21_D_ALU_SUM": {
@@ -1313,13 +1350,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7473 ],
-            "I3": [ 7582 ],
-            "I1": [ 7384 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7471 ],
-            "CIN": [ 7475 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7578 ],
+            "I3": [ 7684 ],
+            "I1": [ 7387 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7576 ],
+            "CIN": [ 7580 ]
           }
         },
         "clockCounter_DFFR_Q_21": {
@@ -1340,10 +1377,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7384 ],
-            "D": [ 7473 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7387 ],
+            "D": [ 7578 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_20_D_ALU_SUM": {
@@ -1368,13 +1405,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7469 ],
-            "I3": [ 7582 ],
-            "I1": [ 7383 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7462 ],
-            "CIN": [ 7471 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7574 ],
+            "I3": [ 7684 ],
+            "I1": [ 7386 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7567 ],
+            "CIN": [ 7576 ]
           }
         },
         "clockCounter_DFFR_Q_20": {
@@ -1395,10 +1432,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7383 ],
-            "D": [ 7469 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7386 ],
+            "D": [ 7574 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_2": {
@@ -1408,7 +1445,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X4Y19/DFF4",
+            "NEXTPNR_BEL": "X4Y20/DFF1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:31.7-31.59",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -1419,10 +1456,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7410 ],
-            "D": [ 7467 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7371 ],
+            "D": [ 7572 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_1_D_ALU_SUM": {
@@ -1447,13 +1484,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7421 ],
-            "I3": [ 7582 ],
-            "I1": [ 7409 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7465 ],
-            "CIN": [ 7464 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7526 ],
+            "I3": [ 7684 ],
+            "I1": [ 7370 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7570 ],
+            "CIN": [ 7569 ]
           }
         },
         "clockCounter_DFFR_Q_19_D_ALU_SUM": {
@@ -1478,13 +1515,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7460 ],
-            "I3": [ 7582 ],
-            "I1": [ 7380 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7458 ],
-            "CIN": [ 7462 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7565 ],
+            "I3": [ 7684 ],
+            "I1": [ 7359 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7563 ],
+            "CIN": [ 7567 ]
           }
         },
         "clockCounter_DFFR_Q_19": {
@@ -1505,10 +1542,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7380 ],
-            "D": [ 7460 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7359 ],
+            "D": [ 7565 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_18_D_ALU_SUM": {
@@ -1533,13 +1570,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7456 ],
-            "I3": [ 7582 ],
-            "I1": [ 7378 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7454 ],
-            "CIN": [ 7458 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7561 ],
+            "I3": [ 7684 ],
+            "I1": [ 7357 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7559 ],
+            "CIN": [ 7563 ]
           }
         },
         "clockCounter_DFFR_Q_18": {
@@ -1560,10 +1597,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7378 ],
-            "D": [ 7456 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7357 ],
+            "D": [ 7561 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_17_D_ALU_SUM": {
@@ -1588,13 +1625,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7452 ],
-            "I3": [ 7582 ],
-            "I1": [ 7376 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7450 ],
-            "CIN": [ 7454 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7557 ],
+            "I3": [ 7684 ],
+            "I1": [ 7355 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7555 ],
+            "CIN": [ 7559 ]
           }
         },
         "clockCounter_DFFR_Q_17": {
@@ -1615,10 +1652,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7376 ],
-            "D": [ 7452 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7355 ],
+            "D": [ 7557 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_16_D_ALU_SUM": {
@@ -1643,13 +1680,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7448 ],
-            "I3": [ 7582 ],
-            "I1": [ 7374 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7446 ],
-            "CIN": [ 7450 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7553 ],
+            "I3": [ 7684 ],
+            "I1": [ 7353 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7551 ],
+            "CIN": [ 7555 ]
           }
         },
         "clockCounter_DFFR_Q_16": {
@@ -1670,10 +1707,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7374 ],
-            "D": [ 7448 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7353 ],
+            "D": [ 7553 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_15_D_ALU_SUM": {
@@ -1698,13 +1735,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7444 ],
-            "I3": [ 7582 ],
-            "I1": [ 7416 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7442 ],
-            "CIN": [ 7446 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7549 ],
+            "I3": [ 7684 ],
+            "I1": [ 7378 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7547 ],
+            "CIN": [ 7551 ]
           }
         },
         "clockCounter_DFFR_Q_15": {
@@ -1725,10 +1762,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7416 ],
-            "D": [ 7444 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7378 ],
+            "D": [ 7549 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_14_D_ALU_SUM": {
@@ -1753,13 +1790,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7440 ],
-            "I3": [ 7582 ],
-            "I1": [ 7415 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7438 ],
-            "CIN": [ 7442 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7545 ],
+            "I3": [ 7684 ],
+            "I1": [ 7377 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7543 ],
+            "CIN": [ 7547 ]
           }
         },
         "clockCounter_DFFR_Q_14": {
@@ -1780,10 +1817,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7415 ],
-            "D": [ 7440 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7377 ],
+            "D": [ 7545 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_13_D_ALU_SUM": {
@@ -1808,13 +1845,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7436 ],
-            "I3": [ 7582 ],
-            "I1": [ 7414 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7434 ],
-            "CIN": [ 7438 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7541 ],
+            "I3": [ 7684 ],
+            "I1": [ 7376 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7539 ],
+            "CIN": [ 7543 ]
           }
         },
         "clockCounter_DFFR_Q_13": {
@@ -1835,10 +1872,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7414 ],
-            "D": [ 7436 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7376 ],
+            "D": [ 7541 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_12_D_ALU_SUM": {
@@ -1863,13 +1900,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7432 ],
-            "I3": [ 7582 ],
-            "I1": [ 7413 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7430 ],
-            "CIN": [ 7434 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7537 ],
+            "I3": [ 7684 ],
+            "I1": [ 7375 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7535 ],
+            "CIN": [ 7539 ]
           }
         },
         "clockCounter_DFFR_Q_12": {
@@ -1879,7 +1916,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X3Y20/DFF2",
+            "NEXTPNR_BEL": "X3Y19/DFF0",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:31.7-31.59",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -1890,10 +1927,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7413 ],
-            "D": [ 7432 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7375 ],
+            "D": [ 7537 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_11_D_ALU_SUM": {
@@ -1918,13 +1955,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7428 ],
-            "I3": [ 7582 ],
-            "I1": [ 7398 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7425 ],
-            "CIN": [ 7430 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7533 ],
+            "I3": [ 7684 ],
+            "I1": [ 7384 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7530 ],
+            "CIN": [ 7535 ]
           }
         },
         "clockCounter_DFFR_Q_11": {
@@ -1945,10 +1982,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7398 ],
-            "D": [ 7428 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7384 ],
+            "D": [ 7533 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_10_D_ALU_SUM": {
@@ -1973,13 +2010,13 @@
             "CIN": "input"
           },
           "connections": {
-            "I2": [ 7582 ],
-            "SUM": [ 7423 ],
-            "I3": [ 7582 ],
-            "I1": [ 7396 ],
-            "I0": [ 7583 ],
-            "COUT": [ 7426 ],
-            "CIN": [ 7425 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7528 ],
+            "I3": [ 7684 ],
+            "I1": [ 7383 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7531 ],
+            "CIN": [ 7530 ]
           }
         },
         "clockCounter_DFFR_Q_10": {
@@ -2000,10 +2037,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7396 ],
-            "D": [ 7423 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7383 ],
+            "D": [ 7528 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q_1": {
@@ -2024,10 +2061,10 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7409 ],
-            "D": [ 7421 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7370 ],
+            "D": [ 7526 ],
+            "CLK": [ 7403 ]
           }
         },
         "clockCounter_DFFR_Q": {
@@ -2037,7 +2074,7 @@
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X5Y19/DFF4",
+            "NEXTPNR_BEL": "X5Y19/DFF0",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:33.1-39.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:31.7-31.59",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -2048,21 +2085,224 @@
             "CLK": "input"
           },
           "connections": {
-            "RESET": [ 7419 ],
-            "Q": [ 7408 ],
-            "D": [ 7418 ],
-            "CLK": [ 7333 ]
+            "RESET": [ 7524 ],
+            "Q": [ 7369 ],
+            "D": [ 7523 ],
+            "CLK": [ 7403 ]
           }
         },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_S0_LUT4_F": {
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_O_MUX2_LUT6_I1_O_LUT2_F": {
           "hide_name": 0,
-          "type": "LUT4",
+          "type": "LUT2",
           "parameters": {
-            "INIT": "0000000010000000"
+            "INIT": "1110"
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X2Y19/LUT6",
+            "NEXTPNR_BEL": "X28Y25/LUT4",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:139.23-140.26",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I1": [ 7480 ],
+            "I0": [ 7478 ],
+            "F": [ 7408 ]
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_O_MUX2_LUT6_I1": {
+          "hide_name": 0,
+          "type": "MUX2_LUT6",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/MUX1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:160.14-160.54",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "S0": "input",
+            "O": "output",
+            "I1": "input",
+            "I0": "input"
+          },
+          "connections": {
+            "S0": [ 7492 ],
+            "O": [ 7488 ],
+            "I1": [ 7511 ],
+            "I0": [ 7515 ]
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_I1_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "1111011011011111"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/LUT1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:159.41-159.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7510 ]
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_I0_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "1011011011001011"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/LUT0",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:159.41-159.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7509 ]
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_1_I1_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "1111111010011111"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/LUT3",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:158.41-158.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7514 ]
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_1_I0_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "1011111010001011"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/LUT2",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:158.41-158.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7513 ]
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_1": {
+          "hide_name": 0,
+          "type": "MUX2_LUT5",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/MUX2",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:158.41-158.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "S0": "input",
+            "O": "output",
+            "I1": "input",
+            "I0": "input"
+          },
+          "connections": {
+            "S0": [ 7500 ],
+            "O": [ 7515 ],
+            "I1": [ 7514 ],
+            "I0": [ 7513 ]
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0": {
+          "hide_name": 0,
+          "type": "MUX2_LUT5",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/MUX0",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:159.41-159.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "S0": "input",
+            "O": "output",
+            "I1": "input",
+            "I0": "input"
+          },
+          "connections": {
+            "S0": [ 7500 ],
+            "O": [ 7511 ],
+            "I1": [ 7510 ],
+            "I0": [ 7509 ]
+          }
+        },
+        "Test.i2c.wr_bit_DFF_Q_D_MUX2_LUT5_O_S0_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0000000000010100"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y24/LUT7",
             "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -2074,23 +2314,23 @@
             "F": "output"
           },
           "connections": {
-            "I3": [ 7416 ],
-            "I2": [ 7415 ],
-            "I1": [ 7414 ],
-            "I0": [ 7413 ],
-            "F": [ 7390 ]
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7504 ]
           }
         },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_O_LUT4_F_1": {
+        "Test.i2c.wr_bit_DFF_Q_D_MUX2_LUT5_O_I1_LUT4_F": {
           "hide_name": 0,
           "type": "LUT4",
           "parameters": {
-            "INIT": "0000000000001000"
+            "INIT": "0000111000101100"
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X4Y19/LUT7",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "NEXTPNR_BEL": "X27Y24/LUT5",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
             "module_not_derived": "00000000000000000000000000000001"
           },
           "port_directions": {
@@ -2101,22 +2341,254 @@
             "F": "output"
           },
           "connections": {
-            "I3": [ 7411 ],
-            "I2": [ 7410 ],
-            "I1": [ 7409 ],
+            "I3": [ 7422 ],
+            "I2": [ 7416 ],
+            "I1": [ 7411 ],
+            "I0": [ 7437 ],
+            "F": [ 7503 ]
+          }
+        },
+        "Test.i2c.wr_bit_DFF_Q_D_MUX2_LUT5_O_I0_LUT3_F": {
+          "hide_name": 0,
+          "type": "LUT3",
+          "parameters": {
+            "INIT": "10110110"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y24/LUT4",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I2": [ 7422 ],
+            "I1": [ 7416 ],
+            "I0": [ 7411 ],
+            "F": [ 7502 ]
+          }
+        },
+        "Test.i2c.wr_bit_DFF_Q_D_MUX2_LUT5_O": {
+          "hide_name": 0,
+          "type": "MUX2_LUT5",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y24/MUX4",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "S0": "input",
+            "O": "output",
+            "I1": "input",
+            "I0": "input"
+          },
+          "connections": {
+            "S0": [ 7504 ],
+            "O": [ 7498 ],
+            "I1": [ 7503 ],
+            "I0": [ 7502 ]
+          }
+        },
+        "Test.i2c.wr_bit_DFF_Q": {
+          "hide_name": 0,
+          "type": "DFF",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X26Y24/DFF5",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:44.1-68.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:13.6-13.47",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
+          },
+          "connections": {
+            "Q": [ 7500 ],
+            "D": [ 7498 ],
+            "CLK": [ 7403 ]
+          }
+        },
+        "Test.i2c.substate_DFF_Q_D_LUT2_F": {
+          "hide_name": 0,
+          "type": "LUT2",
+          "parameters": {
+            "INIT": "0110"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y25/LUT2",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:139.23-140.26",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I1": [ 7480 ],
+            "I0": [ 7478 ],
+            "F": [ 7492 ]
+          }
+        },
+        "Test.i2c.substate_DFF_Q_1_D_LUT1_F": {
+          "hide_name": 0,
+          "type": "LUT1",
+          "parameters": {
+            "INIT": "01"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y25/LUT3",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:135.23-136.15",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I0": [ 7480 ],
+            "F": [ 7494 ]
+          }
+        },
+        "Test.i2c.substate_DFF_Q_1": {
+          "hide_name": 0,
+          "type": "DFF",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y25/DFF3",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:44.1-68.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:13.6-13.47",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
+          },
+          "connections": {
+            "Q": [ 7480 ],
+            "D": [ 7494 ],
+            "CLK": [ 7403 ]
+          }
+        },
+        "Test.i2c.substate_DFF_Q": {
+          "hide_name": 0,
+          "type": "DFF",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y25/DFF2",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:44.1-68.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:13.6-13.47",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
+          },
+          "connections": {
+            "Q": [ 7478 ],
+            "D": [ 7492 ],
+            "CLK": [ 7403 ]
+          }
+        },
+        "Test.i2c.sda_LUT3_F_I1_LUT3_F": {
+          "hide_name": 0,
+          "type": "LUT3",
+          "parameters": {
+            "INIT": "01111110"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y25/LUT0",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:143.23-144.37",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7481 ]
+          }
+        },
+        "Test.i2c.sda_LUT3_F_I1_LUT2_F": {
+          "hide_name": 0,
+          "type": "LUT2",
+          "parameters": {
+            "INIT": "0100"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y25/LUT5",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:139.23-140.26",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I1": [ 7441 ],
+            "I0": [ 7434 ],
+            "F": [ 7483 ]
+          }
+        },
+        "Test.i2c.sda_LUT3_F": {
+          "hide_name": 0,
+          "type": "LUT3",
+          "parameters": {
+            "INIT": "11110100"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y25/LUT6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:143.23-144.37",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I2": [ 7488 ],
+            "I1": [ 7483 ],
             "I0": [ 7408 ],
-            "F": [ 7407 ]
+            "F": [ 7487 ]
           }
         },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_O_LUT4_F": {
+        "Test.i2c.scl_LUT4_F": {
           "hide_name": 0,
           "type": "LUT4",
           "parameters": {
-            "INIT": "0000100000000000"
+            "INIT": "1010011110101111"
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X4Y19/LUT6",
+            "NEXTPNR_BEL": "X28Y25/LUT7",
             "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -2128,22 +2600,47 @@
             "F": "output"
           },
           "connections": {
-            "I3": [ 7405 ],
-            "I2": [ 7404 ],
-            "I1": [ 7403 ],
-            "I0": [ 7402 ],
-            "F": [ 7401 ]
+            "I3": [ 7483 ],
+            "I2": [ 7481 ],
+            "I1": [ 7480 ],
+            "I0": [ 7478 ],
+            "F": [ 7476 ]
           }
         },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_I1_LUT4_F": {
+        "Test.i2c.ps_DFFN_Q_D_MUX2_LUT5_O_S0_LUT3_F": {
           "hide_name": 0,
-          "type": "LUT4",
+          "type": "LUT3",
           "parameters": {
-            "INIT": "1000000000000000"
+            "INIT": "10000000"
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X3Y20/LUT1",
+            "NEXTPNR_BEL": "X27Y23/LUT7",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:143.23-144.37",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I2": [ 7422 ],
+            "I1": [ 7416 ],
+            "I0": [ 7411 ],
+            "F": [ 7450 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_D_MUX2_LUT5_O_I1_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0110101000101010"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/LUT5",
             "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -2155,21 +2652,46 @@
             "F": "output"
           },
           "connections": {
-            "I3": [ 7398 ],
-            "I2": [ 7396 ],
-            "I1": [ 7394 ],
-            "I0": [ 7392 ],
-            "F": [ 7388 ]
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7469 ]
           }
         },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0": {
+        "Test.i2c.ps_DFFN_Q_D_MUX2_LUT5_O_I0_LUT3_F": {
+          "hide_name": 0,
+          "type": "LUT3",
+          "parameters": {
+            "INIT": "00101010"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/LUT4",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7468 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_D_MUX2_LUT5_O": {
           "hide_name": 0,
           "type": "MUX2_LUT5",
           "parameters": {
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X3Y20/MUX0",
+            "NEXTPNR_BEL": "X27Y25/MUX4",
             "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -2180,21 +2702,343 @@
             "I0": "input"
           },
           "connections": {
-            "S0": [ 7390 ],
-            "O": [ 7389 ],
-            "I1": [ 7388 ],
-            "I0": [ 7365 ]
+            "S0": [ 7450 ],
+            "O": [ 7444 ],
+            "I1": [ 7469 ],
+            "I0": [ 7468 ]
           }
         },
-        "Test.isSending_LUT1_I0_1_F_MUX2_LUT5_I0_S0_LUT4_F": {
+        "Test.i2c.ps_DFFN_Q_3_D_MUX2_LUT5_O_I1_LUT4_F": {
           "hide_name": 0,
           "type": "LUT4",
           "parameters": {
-            "INIT": "0000000000000001"
+            "INIT": "0000000001111110"
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X1Y19/LUT6",
+            "NEXTPNR_BEL": "X27Y24/LUT7",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7464 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_3_D_MUX2_LUT5_O_I0_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0110001001101010"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y24/LUT6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7463 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_3_D_MUX2_LUT5_O": {
+          "hide_name": 0,
+          "type": "MUX2_LUT5",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y24/MUX6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "S0": "input",
+            "O": "output",
+            "I1": "input",
+            "I0": "input"
+          },
+          "connections": {
+            "S0": [ 7450 ],
+            "O": [ 7461 ],
+            "I1": [ 7464 ],
+            "I0": [ 7463 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_3": {
+          "hide_name": 0,
+          "type": "DFFN",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y24/DFF2",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:75.1-87.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:7.7-7.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
+          },
+          "connections": {
+            "Q": [ 7441 ],
+            "D": [ 7461 ],
+            "CLK": [ 7408 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_2_D_MUX2_LUT5_O_I1_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0000111101110000"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y23/LUT1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7457 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_2_D_MUX2_LUT5_O_I0_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0110110101110000"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y23/LUT0",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7456 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_2_D_MUX2_LUT5_O": {
+          "hide_name": 0,
+          "type": "MUX2_LUT5",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y23/MUX0",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "S0": "input",
+            "O": "output",
+            "I1": "input",
+            "I0": "input"
+          },
+          "connections": {
+            "S0": [ 7450 ],
+            "O": [ 7454 ],
+            "I1": [ 7457 ],
+            "I0": [ 7456 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_2": {
+          "hide_name": 0,
+          "type": "DFFN",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y23/DFF4",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:75.1-87.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:7.7-7.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
+          },
+          "connections": {
+            "Q": [ 7437 ],
+            "D": [ 7454 ],
+            "CLK": [ 7408 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_1_D_MUX2_LUT5_O_I1_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0011110001001100"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/LUT7",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7449 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_1_D_MUX2_LUT5_O_I0_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0101110001001100"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/LUT6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7448 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_1_D_MUX2_LUT5_O": {
+          "hide_name": 0,
+          "type": "MUX2_LUT5",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y25/MUX6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "S0": "input",
+            "O": "output",
+            "I1": "input",
+            "I0": "input"
+          },
+          "connections": {
+            "S0": [ 7450 ],
+            "O": [ 7446 ],
+            "I1": [ 7449 ],
+            "I0": [ 7448 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_1": {
+          "hide_name": 0,
+          "type": "DFFN",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y23/DFF5",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:75.1-87.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:7.7-7.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
+          },
+          "connections": {
+            "Q": [ 7434 ],
+            "D": [ 7446 ],
+            "CLK": [ 7408 ]
+          }
+        },
+        "Test.i2c.ps_DFFN_Q": {
+          "hide_name": 0,
+          "type": "DFFN",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X28Y25/DFF1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:75.1-87.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:7.7-7.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
+          },
+          "connections": {
+            "Q": [ 7431 ],
+            "D": [ 7444 ],
+            "CLK": [ 7408 ]
+          }
+        },
+        "Test.i2c.bit_counter_DFFNR_Q_RESET_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "1001110111101011"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y23/LUT6",
             "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
             "module_not_derived": "00000000000000000000000000000001"
           },
@@ -2206,74 +3050,54 @@
             "F": "output"
           },
           "connections": {
-            "I3": [ 7386 ],
-            "I2": [ 7385 ],
-            "I1": [ 7384 ],
-            "I0": [ 7383 ],
-            "F": [ 7372 ]
+            "I3": [ 7441 ],
+            "I2": [ 7437 ],
+            "I1": [ 7434 ],
+            "I0": [ 7431 ],
+            "F": [ 7412 ]
           }
         },
-        "Test.isSending_LUT1_I0_1_F_MUX2_LUT5_I0_I1_LUT4_F": {
+        "Test.i2c.bit_counter_DFFNR_Q_D_ALU_SUM": {
           "hide_name": 0,
-          "type": "LUT4",
+          "type": "ALU",
           "parameters": {
-            "INIT": "0000000001000000"
+            "ALU_MODE": "00000000000000000000000000000010"
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X2Y20/LUT3",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "NEXTPNR_BEL": "X27Y24/ALU3",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:83.28-83.46|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
             "module_not_derived": "00000000000000000000000000000001"
           },
           "port_directions": {
-            "I3": "input",
             "I2": "input",
+            "SUM": "output",
+            "I3": "input",
             "I1": "input",
             "I0": "input",
-            "F": "output"
+            "COUT": "output",
+            "CIN": "input"
           },
           "connections": {
-            "I3": [ 7380 ],
-            "I2": [ 7378 ],
-            "I1": [ 7376 ],
-            "I0": [ 7374 ],
-            "F": [ 7370 ]
+            "I2": [ 7684 ],
+            "SUM": [ 7409 ],
+            "I3": [ 7684 ],
+            "I1": [ 7411 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7428 ],
+            "CIN": [ 7419 ]
           }
         },
-        "Test.isSending_LUT1_I0_1_F_MUX2_LUT5_I0": {
-          "hide_name": 0,
-          "type": "MUX2_LUT5",
-          "parameters": {
-          },
-          "attributes": {
-            "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X2Y20/MUX2",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
-            "module_not_derived": "00000000000000000000000000000001"
-          },
-          "port_directions": {
-            "S0": "input",
-            "O": "output",
-            "I1": "input",
-            "I0": "input"
-          },
-          "connections": {
-            "S0": [ 7372 ],
-            "O": [ 7371 ],
-            "I1": [ 7370 ],
-            "I0": [ 7368 ]
-          }
-        },
-        "Test.isSending_LUT1_I0_1": {
+        "Test.i2c.bit_counter_DFFNR_Q_2_D_LUT1_F": {
           "hide_name": 0,
           "type": "LUT1",
           "parameters": {
-            "INIT": "00"
+            "INIT": "01"
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X2Y20/LUT2",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "NEXTPNR_BEL": "X28Y23/LUT0",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:135.23-136.15",
             "module_not_derived": "00000000000000000000000000000001"
           },
           "port_directions": {
@@ -2281,45 +3105,142 @@
             "F": "output"
           },
           "connections": {
-            "I0": [  ],
-            "F": [ 7368 ]
+            "I0": [ 7422 ],
+            "F": [ 7425 ]
           }
         },
-        "Test.isSending_LUT1_I0": {
+        "Test.i2c.bit_counter_DFFNR_Q_2": {
           "hide_name": 0,
-          "type": "LUT1",
+          "type": "DFFNR",
           "parameters": {
-            "INIT": "00"
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X3Y20/LUT0",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "NEXTPNR_BEL": "X28Y23/DFF0",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:75.1-87.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:37.8-37.60",
             "module_not_derived": "00000000000000000000000000000001"
           },
           "port_directions": {
-            "I0": "input",
-            "F": "output"
+            "RESET": "input",
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
           },
           "connections": {
-            "I0": [  ],
-            "F": [ 7365 ]
+            "RESET": [ 7412 ],
+            "Q": [ 7422 ],
+            "D": [ 7425 ],
+            "CLK": [ 7408 ]
           }
         },
-        "$PACKER_GND_DRV": {
-          "hide_name": 1,
-          "type": "GOWIN_GND",
+        "Test.i2c.bit_counter_DFFNR_Q_1_D_ALU_SUM_CIN_ALU_COUT": {
+          "hide_name": 0,
+          "type": "ALU",
+          "parameters": {
+            "ALU_MODE": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y24/ALU1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:83.28-83.46|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I2": "input",
+            "SUM": "output",
+            "I3": "input",
+            "I1": "input",
+            "I0": "input",
+            "COUT": "output",
+            "CIN": "input"
+          },
+          "connections": {
+            "I2": [ 7684 ],
+            "SUM": [ 7423 ],
+            "I3": [ 7684 ],
+            "I1": [ 7422 ],
+            "I0": [ 7684 ],
+            "COUT": [ 7418 ],
+            "CIN": [ 7695 ]
+          }
+        },
+        "Test.i2c.bit_counter_DFFNR_Q_1_D_ALU_SUM": {
+          "hide_name": 0,
+          "type": "ALU",
+          "parameters": {
+            "ALU_MODE": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y24/ALU2",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:83.28-83.46|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I2": "input",
+            "SUM": "output",
+            "I3": "input",
+            "I1": "input",
+            "I0": "input",
+            "COUT": "output",
+            "CIN": "input"
+          },
+          "connections": {
+            "I2": [ 7684 ],
+            "SUM": [ 7414 ],
+            "I3": [ 7684 ],
+            "I1": [ 7416 ],
+            "I0": [ 7685 ],
+            "COUT": [ 7419 ],
+            "CIN": [ 7418 ]
+          }
+        },
+        "Test.i2c.bit_counter_DFFNR_Q_1": {
+          "hide_name": 0,
+          "type": "DFFNR",
           "parameters": {
           },
           "attributes": {
             "BEL_STRENGTH": "00000000000000000000000000000001",
-            "NEXTPNR_BEL": "X0Y0/GND"
+            "NEXTPNR_BEL": "X27Y24/DFF2",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:75.1-87.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:37.8-37.60",
+            "module_not_derived": "00000000000000000000000000000001"
           },
           "port_directions": {
-            "G": "output"
+            "RESET": "input",
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
           },
           "connections": {
-            "G": [ 7583 ]
+            "RESET": [ 7412 ],
+            "Q": [ 7416 ],
+            "D": [ 7414 ],
+            "CLK": [ 7408 ]
+          }
+        },
+        "Test.i2c.bit_counter_DFFNR_Q": {
+          "hide_name": 0,
+          "type": "DFFNR",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X27Y24/DFF3",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:75.1-87.4|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:37.8-37.60",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "RESET": "input",
+            "Q": "output",
+            "D": "input",
+            "CLK": "input"
+          },
+          "connections": {
+            "RESET": [ 7412 ],
+            "Q": [ 7411 ],
+            "D": [ 7409 ],
+            "CLK": [ 7408 ]
           }
         },
         "Test.a_to_pwm.clock_IBUF_O": {
@@ -2341,8 +3262,252 @@
             "I": "input"
           },
           "connections": {
-            "O": [ 7333 ],
+            "O": [ 7403 ],
             "I": [ 7314 ]
+          }
+        },
+        "$PACKER_GND_DRV": {
+          "hide_name": 1,
+          "type": "GOWIN_GND",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X0Y0/GND"
+          },
+          "port_directions": {
+            "G": "output"
+          },
+          "connections": {
+            "G": [ 7685 ]
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_S0_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0000000000000001"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X1Y19/LUT7",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7389 ],
+            "I2": [ 7388 ],
+            "I1": [ 7387 ],
+            "I0": [ 7386 ],
+            "F": [ 7351 ]
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_O_LUT4_F_3": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "1000000000000000"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X3Y20/LUT0",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7384 ],
+            "I2": [ 7383 ],
+            "I1": [ 7382 ],
+            "I0": [ 7381 ],
+            "F": [ 7380 ]
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_O_LUT4_F_2": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0000000010000000"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X1Y19/LUT6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7378 ],
+            "I2": [ 7377 ],
+            "I1": [ 7376 ],
+            "I0": [ 7375 ],
+            "F": [ 7374 ]
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_O_LUT4_F_1": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0000000000001000"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X4Y19/LUT7",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7372 ],
+            "I2": [ 7371 ],
+            "I1": [ 7370 ],
+            "I0": [ 7369 ],
+            "F": [ 7368 ]
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_O_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0000100000000000"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X5Y19/LUT4",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7366 ],
+            "I2": [ 7365 ],
+            "I1": [ 7364 ],
+            "I0": [ 7363 ],
+            "F": [ 7362 ]
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_I1_LUT4_F": {
+          "hide_name": 0,
+          "type": "LUT4",
+          "parameters": {
+            "INIT": "0000000001000000"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X2Y19/LUT7",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:153.41-153.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I3": "input",
+            "I2": "input",
+            "I1": "input",
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I3": [ 7359 ],
+            "I2": [ 7357 ],
+            "I1": [ 7355 ],
+            "I0": [ 7353 ],
+            "F": [ 7349 ]
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0": {
+          "hide_name": 0,
+          "type": "MUX2_LUT5",
+          "parameters": {
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X2Y19/MUX6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:154.14-154.54",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "S0": "input",
+            "O": "output",
+            "I1": "input",
+            "I0": "input"
+          },
+          "connections": {
+            "S0": [ 7351 ],
+            "O": [ 7350 ],
+            "I1": [ 7349 ],
+            "I0": [ 7347 ]
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1": {
+          "hide_name": 0,
+          "type": "LUT1",
+          "parameters": {
+            "INIT": "00"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X2Y19/LUT6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I0": [  ],
+            "F": [ 7347 ]
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0": {
+          "hide_name": 0,
+          "type": "LUT1",
+          "parameters": {
+            "INIT": "00"
+          },
+          "attributes": {
+            "BEL_STRENGTH": "00000000000000000000000000000001",
+            "NEXTPNR_BEL": "X3Y19/LUT6",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:152.41-152.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:147.23-148.48",
+            "module_not_derived": "00000000000000000000000000000001"
+          },
+          "port_directions": {
+            "I0": "input",
+            "F": "output"
+          },
+          "connections": {
+            "I0": [  ],
+            "F": [ 7344 ]
           }
         },
         "$PACKER_VCC_DRV": {
@@ -2358,40 +3523,30 @@
             "V": "output"
           },
           "connections": {
-            "V": [ 7582 ]
+            "V": [ 7684 ]
           }
         }
       },
       "netnames": {
+        "Test.i2c.bit_counter_DFFNR_Q_1_D_ALU_SUM_CIN_ALU_COUT_HEAD_ALULC": {
+          "hide_name": 0,
+          "bits": [ 7695 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/COUT0;;1"
+          }
+        },
         "clockCounter_DFFR_Q_22_D_ALU_SUM_CIN_ALU_COUT_HEAD_ALULC": {
           "hide_name": 0,
-          "bits": [ 7592 ] ,
+          "bits": [ 7693 ] ,
           "attributes": {
             "ROUTING": "X1Y19/COUT0;;1"
           }
         },
         "ledCounter_DFFE_Q_4_D_ALU_SUM_CIN_ALU_COUT_HEAD_ALULC": {
           "hide_name": 0,
-          "bits": [ 7590 ] ,
+          "bits": [ 7691 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/COUT0;;1"
-          }
-        },
-        "$sda$iobuf_i": {
-          "hide_name": 1,
-          "bits": [ 7575 ] ,
-          "attributes": {
-            "ROUTING": " "
-          }
-        },
-        "Test.sda": {
-          "hide_name": 0,
-          "bits": [ 7565 ] ,
-          "attributes": {
-            "ROUTING": " ",
-            "unused_bits": "0 ",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\pwm_ctrl.v:23.25-23.28",
-            "hdlname": "Test sda"
+            "ROUTING": "X1Y21/COUT0;;1"
           }
         },
         "sda": {
@@ -2412,7 +3567,7 @@
         },
         "led[0]": {
           "hide_name": 0,
-          "bits": [ 7560 ] ,
+          "bits": [ 7667 ] ,
           "attributes": {
             "ROUTING": " ",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:5.18-5.21"
@@ -2420,7 +3575,7 @@
         },
         "led[1]": {
           "hide_name": 0,
-          "bits": [ 7558 ] ,
+          "bits": [ 7665 ] ,
           "attributes": {
             "ROUTING": " ",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:5.18-5.21"
@@ -2428,7 +3583,7 @@
         },
         "led[2]": {
           "hide_name": 0,
-          "bits": [ 7556 ] ,
+          "bits": [ 7663 ] ,
           "attributes": {
             "ROUTING": " ",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:5.18-5.21"
@@ -2436,7 +3591,7 @@
         },
         "led[3]": {
           "hide_name": 0,
-          "bits": [ 7554 ] ,
+          "bits": [ 7661 ] ,
           "attributes": {
             "ROUTING": " ",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:5.18-5.21"
@@ -2444,7 +3599,7 @@
         },
         "led[4]": {
           "hide_name": 0,
-          "bits": [ 7552 ] ,
+          "bits": [ 7659 ] ,
           "attributes": {
             "ROUTING": " ",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:5.18-5.21"
@@ -2452,7 +3607,7 @@
         },
         "led[5]": {
           "hide_name": 0,
-          "bits": [ 7550 ] ,
+          "bits": [ 7657 ] ,
           "attributes": {
             "ROUTING": " ",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:5.18-5.21"
@@ -2460,7 +3615,7 @@
         },
         "ledCounter_DFFE_Q_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7548 ] ,
+          "bits": [ 7655 ] ,
           "attributes": {
             "ROUTING": " ",
             "unused_bits": "0 ",
@@ -2468,16 +3623,24 @@
             "abc9_carry": "00000000000000000000000000000001"
           }
         },
+        "ledCounter_DFFE_Q_CE_MUX2_LUT5_O_I1": {
+          "hide_name": 0,
+          "bits": [ 7652 ] ,
+          "attributes": {
+            "ROUTING": "X3Y19/F7;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
+          }
+        },
         "ledCounter_DFFE_Q_5_D": {
           "hide_name": 0,
-          "bits": [ 7544 ] ,
+          "bits": [ 7649 ] ,
           "attributes": {
-            "ROUTING": "X2Y21/F3;;1;X2Y21/B5;X2Y21/B5/F3;1;X2Y21/XD5;X2Y21/XD5/B5;1"
+            "ROUTING": "X1Y17/F3;;1;X1Y17/B4;X1Y17/B4/F3;1;X1Y17/XD4;X1Y17/XD4/B4;1"
           }
         },
         "ledCounter_DFFE_Q_4_D_ALU_SUM_CIN_ALU_COUT_SUM": {
           "hide_name": 0,
-          "bits": [ 7542 ] ,
+          "bits": [ 7647 ] ,
           "attributes": {
             "ROUTING": " ",
             "unused_bits": "0 "
@@ -2485,135 +3648,135 @@
         },
         "ledCounter[0]": {
           "hide_name": 0,
-          "bits": [ 7541 ] ,
+          "bits": [ 7646 ] ,
           "attributes": {
-            "ROUTING": "X2Y21/N130;X2Y21/N130/Q5;1;X2Y21/A3;X2Y21/A3/N130;1;X0Y20/N210;X0Y20/N210/W212;1;X0Y18/N240;X0Y18/N240/N212;1;X0Y16/N240;X0Y16/N240/N242;1;X0Y14/X03;X0Y14/X03/N242;1;X0Y14/A0;X0Y14/A0/X03;1;X2Y21/Q5;;1;X2Y21/SN10;X2Y21/SN10/Q5;1;X2Y20/W210;X2Y20/W210/N111;1;X1Y20/B1;X1Y20/B1/W211;1",
+            "ROUTING": "X1Y16/N270;X1Y16/N270/N131;1;X1Y14/W270;X1Y14/W270/N272;1;X0Y14/A0;X0Y14/A0/W271;1;X1Y17/N130;X1Y17/N130/Q4;1;X1Y17/A3;X1Y17/A3/N130;1;X1Y17/Q4;;1;X1Y17/S240;X1Y17/S240/Q4;1;X1Y19/S250;X1Y19/S250/S242;1;X1Y21/W250;X1Y21/W250/S252;1;X1Y21/B1;X1Y21/B1/W250;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:30.11-30.21"
           }
         },
         "ledCounter_DFFE_Q_4_D_ALU_SUM_CIN": {
           "hide_name": 0,
-          "bits": [ 7539 ] ,
+          "bits": [ 7644 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/COUT1;;1",
+            "ROUTING": "X1Y21/COUT1;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
             "abc9_carry": "00000000000000000000000000000001"
           }
         },
         "ledCounter[1]": {
           "hide_name": 0,
-          "bits": [ 7537 ] ,
+          "bits": [ 7642 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/S130;X1Y20/S130/Q2;1;X1Y20/B2;X1Y20/B2/S130;1;X1Y20/Q2;;1;X1Y20/N810;X1Y20/N810/Q2;1;X1Y16/W220;X1Y16/W220/N814;1;X0Y16/N220;X0Y16/N220/W221;1;X0Y15/D1;X0Y15/D1/N221;1",
+            "ROUTING": "X1Y20/S230;X1Y20/S230/Q3;1;X1Y21/B2;X1Y21/B2/S231;1;X1Y20/Q3;;1;X1Y20/N100;X1Y20/N100/Q3;1;X1Y19/N800;X1Y19/N800/N101;1;X1Y15/W200;X1Y15/W200/N804;1;X0Y15/D1;X0Y15/D1/W201;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:30.11-30.21"
           }
         },
         "ledCounter_DFFE_Q_4_D": {
           "hide_name": 0,
-          "bits": [ 7536 ] ,
+          "bits": [ 7641 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/F2;;1;X1Y20/XD2;X1Y20/XD2/F2;1"
+            "ROUTING": "X1Y21/F2;;1;X1Y21/SN20;X1Y21/SN20/F2;1;X1Y20/C3;X1Y20/C3/N121;1;X1Y20/XD3;X1Y20/XD3/C3;1"
           }
         },
         "ledCounter_DFFE_Q_4_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7534 ] ,
+          "bits": [ 7639 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/COUT2;;1",
+            "ROUTING": "X1Y21/COUT2;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
             "abc9_carry": "00000000000000000000000000000001"
           }
         },
         "ledCounter[2]": {
           "hide_name": 0,
-          "bits": [ 7532 ] ,
+          "bits": [ 7637 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/B3;X1Y20/B3/Q3;1;X1Y20/Q3;;1;X1Y20/EW20;X1Y20/EW20/Q3;1;X0Y20/D1;X0Y20/D1/W121;1",
+            "ROUTING": "X1Y21/EW20;X1Y21/EW20/Q3;1;X0Y21/N220;X0Y21/N220/W121;1;X0Y20/D1;X0Y20/D1/N221;1;X1Y21/Q3;;1;X1Y21/B3;X1Y21/B3/Q3;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:30.11-30.21"
           }
         },
         "ledCounter_DFFE_Q_3_D": {
           "hide_name": 0,
-          "bits": [ 7531 ] ,
+          "bits": [ 7636 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/F3;;1;X1Y20/XD3;X1Y20/XD3/F3;1"
+            "ROUTING": "X1Y21/F3;;1;X1Y21/XD3;X1Y21/XD3/F3;1"
           }
         },
         "ledCounter_DFFE_Q_3_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7529 ] ,
+          "bits": [ 7634 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/COUT3;;1",
+            "ROUTING": "X1Y21/COUT3;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
             "abc9_carry": "00000000000000000000000000000001"
           }
         },
         "ledCounter[3]": {
           "hide_name": 0,
-          "bits": [ 7527 ] ,
+          "bits": [ 7632 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/W100;X1Y20/W100/Q4;1;X0Y20/S200;X0Y20/S200/W101;1;X0Y21/D1;X0Y21/D1/S201;1;X1Y20/Q4;;1;X1Y20/X03;X1Y20/X03/Q4;1;X1Y20/B4;X1Y20/B4/X03;1",
+            "ROUTING": "X1Y21/W100;X1Y21/W100/Q4;1;X0Y21/W200;X0Y21/W200/W101;1;X0Y21/D1;X0Y21/D1/E201;1;X1Y21/Q4;;1;X1Y21/N240;X1Y21/N240/Q4;1;X1Y21/B4;X1Y21/B4/N240;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:30.11-30.21"
           }
         },
         "ledCounter_DFFE_Q_2_D": {
           "hide_name": 0,
-          "bits": [ 7526 ] ,
+          "bits": [ 7631 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/F4;;1;X1Y20/XD4;X1Y20/XD4/F4;1"
+            "ROUTING": "X1Y21/F4;;1;X1Y21/XD4;X1Y21/XD4/F4;1"
           }
         },
         "ledCounter_DFFE_Q_1_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7524 ] ,
+          "bits": [ 7629 ] ,
           "attributes": {
-            "ROUTING": "X2Y20/CIN0;;1",
+            "ROUTING": "X2Y21/CIN0;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
             "abc9_carry": "00000000000000000000000000000001"
           }
         },
         "ledCounter_DFFE_Q_2_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7523 ] ,
+          "bits": [ 7628 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/COUT4;;1",
+            "ROUTING": "X1Y21/COUT4;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:37.23-37.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
             "abc9_carry": "00000000000000000000000000000001"
           }
         },
         "ledCounter[4]": {
           "hide_name": 0,
-          "bits": [ 7521 ] ,
+          "bits": [ 7626 ] ,
           "attributes": {
-            "ROUTING": "X1Y21/N100;X1Y21/N100/Q0;1;X1Y20/B5;X1Y20/B5/N101;1;X1Y21/Q0;;1;X1Y21/W130;X1Y21/W130/Q0;1;X0Y21/S270;X0Y21/S270/W131;1;X0Y23/S220;X0Y23/S220/S272;1;X0Y24/D1;X0Y24/D1/S221;1",
+            "ROUTING": "X1Y21/S250;X1Y21/S250/W111;1;X1Y23/S200;X1Y23/S200/S252;1;X1Y24/W200;X1Y24/W200/S201;1;X0Y24/D1;X0Y24/D1/W201;1;X2Y21/Q5;;1;X2Y21/EW10;X2Y21/EW10/Q5;1;X1Y21/B5;X1Y21/B5/W111;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:30.11-30.21"
           }
         },
         "ledCounter_DFFE_Q_1_D": {
           "hide_name": 0,
-          "bits": [ 7520 ] ,
+          "bits": [ 7625 ] ,
           "attributes": {
-            "ROUTING": "X1Y20/F5;;1;X1Y20/S100;X1Y20/S100/F5;1;X1Y21/C0;X1Y21/C0/S101;1;X1Y21/XD0;X1Y21/XD0/C0;1"
+            "ROUTING": "X1Y21/F5;;1;X1Y21/EW10;X1Y21/EW10/F5;1;X2Y21/A5;X2Y21/A5/E111;1;X2Y21/XD5;X2Y21/XD5/A5;1"
           }
         },
         "ledCounter[5]": {
           "hide_name": 0,
-          "bits": [ 7518 ] ,
+          "bits": [ 7623 ] ,
           "attributes": {
-            "ROUTING": "X2Y20/X05;X2Y20/X05/Q0;1;X2Y20/B0;X2Y20/B0/X05;1;X2Y20/Q0;;1;X2Y20/S800;X2Y20/S800/Q0;1;X2Y24/W230;X2Y24/W230/S804;1;X0Y24/S230;X0Y24/S230/W232;1;X0Y25/X08;X0Y25/X08/S231;1;X0Y25/D1;X0Y25/D1/X08;1",
+            "ROUTING": "X2Y21/S100;X2Y21/S100/Q3;1;X2Y21/B0;X2Y21/B0/S100;1;X2Y21/Q3;;1;X2Y21/S800;X2Y21/S800/Q3;1;X2Y25/W200;X2Y25/W200/S804;1;X0Y25/D1;X0Y25/D1/W202;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:30.11-30.21"
           }
         },
         "ledCounter_DFFE_Q_D": {
           "hide_name": 0,
-          "bits": [ 7517 ] ,
+          "bits": [ 7622 ] ,
           "attributes": {
-            "ROUTING": "X2Y20/F0;;1;X2Y20/XD0;X2Y20/XD0/F0;1"
+            "ROUTING": "X2Y21/F0;;1;X2Y21/D3;X2Y21/D3/F0;1;X2Y21/XD3;X2Y21/XD3/D3;1"
           }
         },
         "clockCounter_DFFR_Q_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7515 ] ,
+          "bits": [ 7620 ] ,
           "attributes": {
             "ROUTING": " ",
             "unused_bits": "0 ",
@@ -2623,14 +3786,14 @@
         },
         "clockCounter_DFFR_Q_9_D": {
           "hide_name": 0,
-          "bits": [ 7512 ] ,
+          "bits": [ 7617 ] ,
           "attributes": {
             "ROUTING": "X3Y19/F3;;1;X3Y19/XD3;X3Y19/XD3/F3;1"
           }
         },
         "clockCounter_DFFR_Q_9_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7510 ] ,
+          "bits": [ 7615 ] ,
           "attributes": {
             "ROUTING": "X3Y19/COUT3;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2639,14 +3802,14 @@
         },
         "clockCounter_DFFR_Q_8_D": {
           "hide_name": 0,
-          "bits": [ 7508 ] ,
+          "bits": [ 7613 ] ,
           "attributes": {
             "ROUTING": "X3Y19/F4;;1;X3Y19/XD4;X3Y19/XD4/F4;1"
           }
         },
         "clockCounter_DFFR_Q_8_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7506 ] ,
+          "bits": [ 7611 ] ,
           "attributes": {
             "ROUTING": "X3Y19/COUT4;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2655,14 +3818,14 @@
         },
         "clockCounter_DFFR_Q_7_D": {
           "hide_name": 0,
-          "bits": [ 7504 ] ,
+          "bits": [ 7609 ] ,
           "attributes": {
             "ROUTING": "X3Y19/F5;;1;X3Y19/XD5;X3Y19/XD5/F5;1"
           }
         },
         "clockCounter_DFFR_Q_7_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7502 ] ,
+          "bits": [ 7607 ] ,
           "attributes": {
             "ROUTING": "X4Y19/CIN0;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2671,14 +3834,14 @@
         },
         "clockCounter_DFFR_Q_6_D": {
           "hide_name": 0,
-          "bits": [ 7500 ] ,
+          "bits": [ 7605 ] ,
           "attributes": {
             "ROUTING": "X4Y19/F0;;1;X4Y19/XD0;X4Y19/XD0/F0;1"
           }
         },
         "clockCounter_DFFR_Q_6_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7498 ] ,
+          "bits": [ 7603 ] ,
           "attributes": {
             "ROUTING": "X4Y19/COUT0;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2687,14 +3850,14 @@
         },
         "clockCounter_DFFR_Q_5_D": {
           "hide_name": 0,
-          "bits": [ 7496 ] ,
+          "bits": [ 7601 ] ,
           "attributes": {
             "ROUTING": "X4Y19/F1;;1;X4Y19/XD1;X4Y19/XD1/F1;1"
           }
         },
         "clockCounter_DFFR_Q_5_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7494 ] ,
+          "bits": [ 7599 ] ,
           "attributes": {
             "ROUTING": "X4Y19/COUT1;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2703,14 +3866,14 @@
         },
         "clockCounter_DFFR_Q_4_D": {
           "hide_name": 0,
-          "bits": [ 7492 ] ,
+          "bits": [ 7597 ] ,
           "attributes": {
             "ROUTING": "X4Y19/F2;;1;X4Y19/XD2;X4Y19/XD2/F2;1"
           }
         },
         "clockCounter_DFFR_Q_4_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7490 ] ,
+          "bits": [ 7595 ] ,
           "attributes": {
             "ROUTING": "X4Y19/COUT2;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2719,14 +3882,14 @@
         },
         "clockCounter_DFFR_Q_3_D": {
           "hide_name": 0,
-          "bits": [ 7488 ] ,
+          "bits": [ 7593 ] ,
           "attributes": {
-            "ROUTING": "X4Y19/F3;;1;X4Y19/XD3;X4Y19/XD3/F3;1"
+            "ROUTING": "X4Y19/F3;;1;X4Y19/E230;X4Y19/E230/F3;1;X5Y19/B2;X5Y19/B2/E231;1;X5Y19/XD2;X5Y19/XD2/B2;1"
           }
         },
         "clockCounter_DFFR_Q_3_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7486 ] ,
+          "bits": [ 7591 ] ,
           "attributes": {
             "ROUTING": "X4Y19/COUT3;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2735,14 +3898,14 @@
         },
         "clockCounter_DFFR_Q_23_D": {
           "hide_name": 0,
-          "bits": [ 7483 ] ,
+          "bits": [ 7588 ] ,
           "attributes": {
-            "ROUTING": "X1Y21/F2;;1;X1Y21/D5;X1Y21/D5/F2;1;X1Y21/XD5;X1Y21/XD5/D5;1"
+            "ROUTING": "X1Y20/F1;;1;X1Y20/B4;X1Y20/B4/F1;1;X1Y20/XD4;X1Y20/XD4/B4;1"
           }
         },
         "clockCounter_DFFR_Q_22_D_ALU_SUM_CIN_ALU_COUT_SUM": {
           "hide_name": 0,
-          "bits": [ 7481 ] ,
+          "bits": [ 7586 ] ,
           "attributes": {
             "ROUTING": " ",
             "unused_bits": "0 "
@@ -2750,7 +3913,7 @@
         },
         "clockCounter_DFFR_Q_22_D_ALU_SUM_CIN": {
           "hide_name": 0,
-          "bits": [ 7479 ] ,
+          "bits": [ 7584 ] ,
           "attributes": {
             "ROUTING": "X1Y19/COUT1;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2759,14 +3922,14 @@
         },
         "clockCounter_DFFR_Q_22_D": {
           "hide_name": 0,
-          "bits": [ 7477 ] ,
+          "bits": [ 7582 ] ,
           "attributes": {
             "ROUTING": "X1Y19/F2;;1;X1Y19/XD2;X1Y19/XD2/F2;1"
           }
         },
         "clockCounter_DFFR_Q_22_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7475 ] ,
+          "bits": [ 7580 ] ,
           "attributes": {
             "ROUTING": "X1Y19/COUT2;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2775,14 +3938,14 @@
         },
         "clockCounter_DFFR_Q_21_D": {
           "hide_name": 0,
-          "bits": [ 7473 ] ,
+          "bits": [ 7578 ] ,
           "attributes": {
             "ROUTING": "X1Y19/F3;;1;X1Y19/XD3;X1Y19/XD3/F3;1"
           }
         },
         "clockCounter_DFFR_Q_21_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7471 ] ,
+          "bits": [ 7576 ] ,
           "attributes": {
             "ROUTING": "X1Y19/COUT3;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2791,21 +3954,21 @@
         },
         "clockCounter_DFFR_Q_20_D": {
           "hide_name": 0,
-          "bits": [ 7469 ] ,
+          "bits": [ 7574 ] ,
           "attributes": {
             "ROUTING": "X1Y19/F4;;1;X1Y19/XD4;X1Y19/XD4/F4;1"
           }
         },
         "clockCounter_DFFR_Q_2_D": {
           "hide_name": 0,
-          "bits": [ 7467 ] ,
+          "bits": [ 7572 ] ,
           "attributes": {
-            "ROUTING": "X4Y19/F4;;1;X4Y19/XD4;X4Y19/XD4/F4;1"
+            "ROUTING": "X4Y19/F4;;1;X4Y19/S240;X4Y19/S240/F4;1;X4Y20/C1;X4Y20/C1/S241;1;X4Y20/XD1;X4Y20/XD1/C1;1"
           }
         },
         "clockCounter_DFFR_Q_1_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7465 ] ,
+          "bits": [ 7570 ] ,
           "attributes": {
             "ROUTING": "X5Y19/CIN0;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2814,7 +3977,7 @@
         },
         "clockCounter_DFFR_Q_2_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7464 ] ,
+          "bits": [ 7569 ] ,
           "attributes": {
             "ROUTING": "X4Y19/COUT4;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2823,7 +3986,7 @@
         },
         "clockCounter_DFFR_Q_20_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7462 ] ,
+          "bits": [ 7567 ] ,
           "attributes": {
             "ROUTING": "X1Y19/COUT4;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2832,14 +3995,14 @@
         },
         "clockCounter_DFFR_Q_19_D": {
           "hide_name": 0,
-          "bits": [ 7460 ] ,
+          "bits": [ 7565 ] ,
           "attributes": {
             "ROUTING": "X1Y19/F5;;1;X1Y19/XD5;X1Y19/XD5/F5;1"
           }
         },
         "clockCounter_DFFR_Q_19_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7458 ] ,
+          "bits": [ 7563 ] ,
           "attributes": {
             "ROUTING": "X2Y19/CIN0;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2848,14 +4011,14 @@
         },
         "clockCounter_DFFR_Q_18_D": {
           "hide_name": 0,
-          "bits": [ 7456 ] ,
+          "bits": [ 7561 ] ,
           "attributes": {
             "ROUTING": "X2Y19/F0;;1;X2Y19/XD0;X2Y19/XD0/F0;1"
           }
         },
         "clockCounter_DFFR_Q_18_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7454 ] ,
+          "bits": [ 7559 ] ,
           "attributes": {
             "ROUTING": "X2Y19/COUT0;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2864,14 +4027,14 @@
         },
         "clockCounter_DFFR_Q_17_D": {
           "hide_name": 0,
-          "bits": [ 7452 ] ,
+          "bits": [ 7557 ] ,
           "attributes": {
             "ROUTING": "X2Y19/F1;;1;X2Y19/XD1;X2Y19/XD1/F1;1"
           }
         },
         "clockCounter_DFFR_Q_17_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7450 ] ,
+          "bits": [ 7555 ] ,
           "attributes": {
             "ROUTING": "X2Y19/COUT1;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2880,14 +4043,14 @@
         },
         "clockCounter_DFFR_Q_16_D": {
           "hide_name": 0,
-          "bits": [ 7448 ] ,
+          "bits": [ 7553 ] ,
           "attributes": {
             "ROUTING": "X2Y19/F2;;1;X2Y19/XD2;X2Y19/XD2/F2;1"
           }
         },
         "clockCounter_DFFR_Q_16_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7446 ] ,
+          "bits": [ 7551 ] ,
           "attributes": {
             "ROUTING": "X2Y19/COUT2;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2896,14 +4059,14 @@
         },
         "clockCounter_DFFR_Q_15_D": {
           "hide_name": 0,
-          "bits": [ 7444 ] ,
+          "bits": [ 7549 ] ,
           "attributes": {
             "ROUTING": "X2Y19/F3;;1;X2Y19/XD3;X2Y19/XD3/F3;1"
           }
         },
         "clockCounter_DFFR_Q_15_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7442 ] ,
+          "bits": [ 7547 ] ,
           "attributes": {
             "ROUTING": "X2Y19/COUT3;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2912,14 +4075,14 @@
         },
         "clockCounter_DFFR_Q_14_D": {
           "hide_name": 0,
-          "bits": [ 7440 ] ,
+          "bits": [ 7545 ] ,
           "attributes": {
             "ROUTING": "X2Y19/F4;;1;X2Y19/XD4;X2Y19/XD4/F4;1"
           }
         },
         "clockCounter_DFFR_Q_14_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7438 ] ,
+          "bits": [ 7543 ] ,
           "attributes": {
             "ROUTING": "X2Y19/COUT4;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2928,14 +4091,14 @@
         },
         "clockCounter_DFFR_Q_13_D": {
           "hide_name": 0,
-          "bits": [ 7436 ] ,
+          "bits": [ 7541 ] ,
           "attributes": {
             "ROUTING": "X2Y19/F5;;1;X2Y19/XD5;X2Y19/XD5/F5;1"
           }
         },
         "clockCounter_DFFR_Q_13_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7434 ] ,
+          "bits": [ 7539 ] ,
           "attributes": {
             "ROUTING": "X3Y19/CIN0;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2944,14 +4107,14 @@
         },
         "clockCounter_DFFR_Q_12_D": {
           "hide_name": 0,
-          "bits": [ 7432 ] ,
+          "bits": [ 7537 ] ,
           "attributes": {
-            "ROUTING": "X3Y19/F0;;1;X3Y19/SN20;X3Y19/SN20/F0;1;X3Y20/D2;X3Y20/D2/S121;1;X3Y20/XD2;X3Y20/XD2/D2;1"
+            "ROUTING": "X3Y19/F0;;1;X3Y19/XD0;X3Y19/XD0/F0;1"
           }
         },
         "clockCounter_DFFR_Q_12_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7430 ] ,
+          "bits": [ 7535 ] ,
           "attributes": {
             "ROUTING": "X3Y19/COUT0;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2960,14 +4123,14 @@
         },
         "clockCounter_DFFR_Q_11_D": {
           "hide_name": 0,
-          "bits": [ 7428 ] ,
+          "bits": [ 7533 ] ,
           "attributes": {
             "ROUTING": "X3Y19/F1;;1;X3Y19/XD1;X3Y19/XD1/F1;1"
           }
         },
         "clockCounter_DFFR_Q_10_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7426 ] ,
+          "bits": [ 7531 ] ,
           "attributes": {
             "ROUTING": "X3Y19/COUT2;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2976,7 +4139,7 @@
         },
         "clockCounter_DFFR_Q_11_D_ALU_SUM_COUT": {
           "hide_name": 0,
-          "bits": [ 7425 ] ,
+          "bits": [ 7530 ] ,
           "attributes": {
             "ROUTING": "X3Y19/COUT1;;1",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:34.21-34.37|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
@@ -2985,330 +4148,452 @@
         },
         "clockCounter_DFFR_Q_10_D": {
           "hide_name": 0,
-          "bits": [ 7423 ] ,
+          "bits": [ 7528 ] ,
           "attributes": {
             "ROUTING": "X3Y19/F2;;1;X3Y19/XD2;X3Y19/XD2/F2;1"
           }
         },
         "clockCounter_DFFR_Q_1_D": {
           "hide_name": 0,
-          "bits": [ 7421 ] ,
+          "bits": [ 7526 ] ,
           "attributes": {
             "ROUTING": "X4Y19/F5;;1;X4Y19/XD5;X4Y19/XD5/F5;1"
           }
         },
         "ledCounter_DFFE_Q_CE": {
           "hide_name": 0,
-          "bits": [ 7419 ] ,
+          "bits": [ 7524 ] ,
           "attributes": {
-            "ROUTING": "X2Y19/LSR2;X2Y19/LSR2/X05;1;X1Y21/LSR2;X1Y21/LSR2/X05;1;X4Y19/LSR1;X4Y19/LSR1/X07;1;X3Y20/X07;X3Y20/X07/F4;1;X3Y20/LSR1;X3Y20/LSR1/X07;1;X4Y19/LSR2;X4Y19/LSR2/X07;1;X4Y19/X07;X4Y19/X07/E241;1;X4Y19/LSR0;X4Y19/LSR0/X07;1;X1Y19/LSR2;X1Y19/LSR2/X07;1;X2Y20/S240;X2Y20/S240/W241;1;X2Y21/X05;X2Y21/X05/S241;1;X2Y21/CE2;X2Y21/CE2/X05;1;X2Y19/X07;X2Y19/X07/W241;1;X2Y19/LSR0;X2Y19/LSR0/X07;1;X3Y19/LSR0;X3Y19/LSR0/X05;1;X3Y19/LSR2;X3Y19/LSR2/X05;1;X1Y20/CE2;X1Y20/CE2/X07;1;X3Y19/E240;X3Y19/E240/N241;1;X5Y19/X07;X5Y19/X07/E242;1;X5Y19/LSR2;X5Y19/LSR2/X07;1;X3Y19/W240;X3Y19/W240/N241;1;X1Y19/X07;X1Y19/X07/W242;1;X1Y19/LSR1;X1Y19/LSR1/X07;1;X1Y20/X07;X1Y20/X07/W242;1;X1Y20/CE1;X1Y20/CE1/X07;1;X3Y20/N240;X3Y20/N240/F4;1;X3Y19/X05;X3Y19/X05/N241;1;X3Y19/LSR1;X3Y19/LSR1/X05;1;X2Y20/X07;X2Y20/X07/W241;1;X2Y20/CE0;X2Y20/CE0/X07;1;X2Y20/N240;X2Y20/N240/W241;1;X2Y19/X05;X2Y19/X05/N241;1;X2Y19/LSR1;X2Y19/LSR1/X05;1;X3Y20/F4;;1;X3Y20/W240;X3Y20/W240/F4;1;X1Y20/S240;X1Y20/S240/W242;1;X1Y21/X05;X1Y21/X05/S241;1;X1Y21/CE0;X1Y21/CE0/X05;1"
+            "ROUTING": "X1Y20/CE1;X1Y20/CE1/X05;1;X2Y21/CE2;X2Y21/CE2/X07;1;X4Y19/S230;X4Y19/S230/E131;1;X4Y20/X08;X4Y20/X08/S231;1;X4Y20/LSR0;X4Y20/LSR0/X08;1;X2Y19/S260;X2Y19/S260/W261;1;X2Y21/X07;X2Y21/X07/S262;1;X2Y21/CE1;X2Y21/CE1/X07;1;X2Y19/LSR2;X2Y19/LSR2/X07;1;X3Y19/LSR0;X3Y19/LSR0/W211;1;X3Y19/LSR2;X3Y19/LSR2/W211;1;X2Y19/LSR1;X2Y19/LSR1/X07;1;X1Y21/CE1;X1Y21/CE1/X07;1;X2Y19/X07;X2Y19/X07/W261;1;X2Y19/LSR0;X2Y19/LSR0/X07;1;X4Y19/LSR2;X4Y19/LSR2/X07;1;X1Y20/X05;X1Y20/X05/S261;1;X1Y20/LSR2;X1Y20/LSR2/X05;1;X1Y19/LSR1;X1Y19/LSR1/X07;1;X5Y19/LSR0;X5Y19/LSR0/E271;1;X4Y19/E270;X4Y19/E270/E131;1;X5Y19/LSR1;X5Y19/LSR1/E271;1;X4Y19/LSR1;X4Y19/LSR1/X07;1;X3Y19/E130;X3Y19/E130/OF6;1;X3Y19/W810;X3Y19/W810/E130;1;X4Y19/W210;X4Y19/W210/E818;1;X3Y19/LSR1;X3Y19/LSR1/W211;1;X1Y19/X07;X1Y19/X07/W262;1;X1Y19/LSR2;X1Y19/LSR2/X07;1;X1Y19/S260;X1Y19/S260/W262;1;X1Y21/X07;X1Y21/X07/S262;1;X1Y21/CE2;X1Y21/CE2/X07;1;X3Y19/W260;X3Y19/W260/OF6;1;X1Y19/N260;X1Y19/N260/W262;1;X1Y17/X07;X1Y17/X07/N262;1;X1Y17/CE2;X1Y17/CE2/X07;1;X3Y19/OF6;;1;X3Y19/E260;X3Y19/E260/OF6;1;X4Y19/X07;X4Y19/X07/E261;1;X4Y19/LSR0;X4Y19/LSR0/X07;1"
           }
         },
         "clockCounter_DFFR_Q_D": {
           "hide_name": 0,
-          "bits": [ 7418 ] ,
+          "bits": [ 7523 ] ,
           "attributes": {
-            "ROUTING": "X5Y19/F0;;1;X5Y19/D4;X5Y19/D4/F0;1;X5Y19/XD4;X5Y19/XD4/D4;1"
+            "ROUTING": "X5Y19/F0;;1;X5Y19/XD0;X5Y19/XD0/F0;1"
           }
         },
-        "clockCounter[8]": {
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_1_O": {
+          "hide_name": 0,
+          "bits": [ 7515 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/OF2;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:157.9-157.11"
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_1_I1": {
+          "hide_name": 0,
+          "bits": [ 7514 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/F3;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:158.41-158.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_1_I0": {
+          "hide_name": 0,
+          "bits": [ 7513 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/F2;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:158.41-158.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_O": {
+          "hide_name": 0,
+          "bits": [ 7511 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/OF0;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:157.13-157.15"
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_I1": {
+          "hide_name": 0,
+          "bits": [ 7510 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/F1;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:159.41-159.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_I0": {
+          "hide_name": 0,
+          "bits": [ 7509 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/F0;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:159.41-159.66|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
+          }
+        },
+        "Test.i2c.wr_bit_DFF_Q_D_MUX2_LUT5_O_S0[4]": {
+          "hide_name": 0,
+          "bits": [ 7504 ] ,
+          "attributes": {
+            "ROUTING": "X28Y24/F7;;1;X28Y24/W270;X28Y24/W270/F7;1;X27Y24/X08;X27Y24/X08/W271;1;X27Y24/SEL4;X27Y24/SEL4/X08;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.wr_bit_DFF_Q_D_MUX2_LUT5_O_I1": {
+          "hide_name": 0,
+          "bits": [ 7503 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/F5;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
+          }
+        },
+        "Test.i2c.wr_bit_DFF_Q_D_MUX2_LUT5_O_I0": {
+          "hide_name": 0,
+          "bits": [ 7502 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/F4;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
+          }
+        },
+        "Test.i2c.substate_DFF_Q_D[4]": {
+          "hide_name": 0,
+          "bits": [ 7500 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/SEL2;X27Y25/SEL2/X08;1;X26Y24/Q5;;1;X26Y24/E130;X26Y24/E130/Q5;1;X27Y24/S230;X27Y24/S230/E131;1;X27Y25/X08;X27Y25/X08/S231;1;X27Y25/SEL0;X27Y25/SEL0/X08;1",
+            "hdlname": "Test i2c wr_bit",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:41.17-41.23",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.wr_bit_DFF_Q_D": {
+          "hide_name": 0,
+          "bits": [ 7498 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/OF4;;1;X27Y24/EW20;X27Y24/EW20/OF4;1;X26Y24/D5;X26Y24/D5/W121;1;X26Y24/XD5;X26Y24/XD5/D5;1"
+          }
+        },
+        "Test.i2c.substate_DFF_Q_1_D": {
+          "hide_name": 0,
+          "bits": [ 7494 ] ,
+          "attributes": {
+            "ROUTING": "X28Y25/F3;;1;X28Y25/XD3;X28Y25/XD3/F3;1"
+          }
+        },
+        "Test.i2c.substate_DFF_Q_D[5]": {
+          "hide_name": 0,
+          "bits": [ 7492 ] ,
+          "attributes": {
+            "ROUTING": "X28Y25/XD2;X28Y25/XD2/F2;1;X28Y25/F2;;1;X28Y25/W220;X28Y25/W220/F2;1;X27Y25/X01;X27Y25/X01/W221;1;X27Y25/SEL1;X27Y25/SEL1/X01;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_O_MUX2_LUT6_I1_O[2]": {
+          "hide_name": 0,
+          "bits": [ 7488 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/OF1;;1;X27Y25/E210;X27Y25/E210/OF1;1;X28Y25/X06;X28Y25/X06/E211;1;X28Y25/C6;X28Y25/C6/X06;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.sda": {
+          "hide_name": 0,
+          "bits": [ 7487 ] ,
+          "attributes": {
+            "ROUTING": "X28Y25/F6;;1;X28Y25/SN10;X28Y25/SN10/F6;1;X28Y26/E210;X28Y26/E210/S111;1;X30Y26/S210;X30Y26/S210/E212;1;X30Y28/E210;X30Y28/E210/S212;1;X30Y28/A0;X30Y28/A0/E210;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\pwm_ctrl.v:23.25-23.28",
+            "hdlname": "Test sda"
+          }
+        },
+        "Test.i2c.sda_LUT3_F_I1[3]": {
+          "hide_name": 0,
+          "bits": [ 7483 ] ,
+          "attributes": {
+            "ROUTING": "X28Y25/X04;X28Y25/X04/F5;1;X28Y25/D7;X28Y25/D7/X04;1;X28Y25/F5;;1;X28Y25/N250;X28Y25/N250/F5;1;X28Y25/B6;X28Y25/B6/N250;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.sda_LUT3_F_I1[2]": {
+          "hide_name": 0,
+          "bits": [ 7481 ] ,
+          "attributes": {
+            "ROUTING": "X28Y25/F0;;1;X28Y25/N130;X28Y25/N130/F0;1;X28Y25/C7;X28Y25/C7/N130;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.sda_LUT3_F_I1[1]": {
+          "hide_name": 0,
+          "bits": [ 7480 ] ,
+          "attributes": {
+            "ROUTING": "X28Y25/E250;X28Y25/E250/S130;1;X28Y25/B4;X28Y25/B4/E250;1;X28Y25/W130;X28Y25/W130/Q3;1;X28Y25/B7;X28Y25/B7/W130;1;X28Y25/X02;X28Y25/X02/Q3;1;X28Y25/A3;X28Y25/A3/X02;1;X28Y25/Q3;;1;X28Y25/S130;X28Y25/S130/Q3;1;X28Y25/B2;X28Y25/B2/S130;1",
+            "hdlname": "Test i2c substate",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:38.17-38.25",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.sda_LUT3_F_I1[0]": {
+          "hide_name": 0,
+          "bits": [ 7478 ] ,
+          "attributes": {
+            "ROUTING": "X28Y25/X01;X28Y25/X01/Q2;1;X28Y25/A7;X28Y25/A7/X01;1;X28Y25/A2;X28Y25/A2/X05;1;X28Y25/Q2;;1;X28Y25/X05;X28Y25/X05/Q2;1;X28Y25/A4;X28Y25/A4/X05;1",
+            "hdlname": "Test i2c substate",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:38.17-38.25",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.sck": {
+          "hide_name": 0,
+          "bits": [ 7476 ] ,
+          "attributes": {
+            "ROUTING": "X28Y25/F7;;1;X28Y25/S270;X28Y25/S270/F7;1;X28Y27/E270;X28Y27/E270/S272;1;X30Y27/S270;X30Y27/S270/E272;1;X30Y28/E270;X30Y28/E270/S271;1;X30Y28/D1;X30Y28/D1/E270;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\pwm_ctrl.v:22.25-22.28",
+            "hdlname": "Test sck"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_D_MUX2_LUT5_O_I1": {
+          "hide_name": 0,
+          "bits": [ 7469 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/F5;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_D_MUX2_LUT5_O_I0": {
+          "hide_name": 0,
+          "bits": [ 7468 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/F4;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_3_D_MUX2_LUT5_O_I1": {
+          "hide_name": 0,
+          "bits": [ 7464 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/F7;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_3_D_MUX2_LUT5_O_I0": {
+          "hide_name": 0,
+          "bits": [ 7463 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/F6;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_3_D": {
+          "hide_name": 0,
+          "bits": [ 7461 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/OF6;;1;X27Y24/E260;X27Y24/E260/OF6;1;X28Y24/C2;X28Y24/C2/E261;1;X28Y24/XD2;X28Y24/XD2/C2;1"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_2_D_MUX2_LUT5_O_I1": {
+          "hide_name": 0,
+          "bits": [ 7457 ] ,
+          "attributes": {
+            "ROUTING": "X27Y23/F1;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_2_D_MUX2_LUT5_O_I0": {
+          "hide_name": 0,
+          "bits": [ 7456 ] ,
+          "attributes": {
+            "ROUTING": "X27Y23/F0;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_2_D": {
+          "hide_name": 0,
+          "bits": [ 7454 ] ,
+          "attributes": {
+            "ROUTING": "X27Y23/OF0;;1;X27Y23/E100;X27Y23/E100/OF0;1;X27Y23/A4;X27Y23/A4/E100;1;X27Y23/XD4;X27Y23/XD4/A4;1"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_D_MUX2_LUT5_O_S0[4]": {
+          "hide_name": 0,
+          "bits": [ 7450 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/X06;X27Y24/X06/S271;1;X27Y24/SEL6;X27Y24/SEL6/X06;1;X27Y25/SEL4;X27Y25/SEL4/X06;1;X27Y23/X08;X27Y23/X08/F7;1;X27Y23/SEL0;X27Y23/SEL0/X08;1;X27Y23/F7;;1;X27Y23/S270;X27Y23/S270/F7;1;X27Y25/X06;X27Y25/X06/S272;1;X27Y25/SEL6;X27Y25/SEL6/X06;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_1_D_MUX2_LUT5_O_I1": {
+          "hide_name": 0,
+          "bits": [ 7449 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/F7;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_1_D_MUX2_LUT5_O_I0": {
+          "hide_name": 0,
+          "bits": [ 7448 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/F6;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_1_D": {
+          "hide_name": 0,
+          "bits": [ 7446 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/OF6;;1;X27Y25/SN20;X27Y25/SN20/OF6;1;X27Y24/N260;X27Y24/N260/N121;1;X27Y23/E260;X27Y23/E260/N261;1;X28Y23/C5;X28Y23/C5/E261;1;X28Y23/XD5;X28Y23/XD5/C5;1"
+          }
+        },
+        "Test.i2c.ps_DFFN_Q_D": {
+          "hide_name": 0,
+          "bits": [ 7444 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/OF4;;1;X27Y25/EW20;X27Y25/EW20/OF4;1;X28Y25/C1;X28Y25/C1/E121;1;X28Y25/XD1;X28Y25/XD1/C1;1"
+          }
+        },
+        "Test.i2c.ps[0]": {
+          "hide_name": 0,
+          "bits": [ 7441 ] ,
+          "attributes": {
+            "ROUTING": "X27Y23/D1;X27Y23/D1/N221;1;X27Y25/D1;X27Y25/D1/S221;1;X28Y23/W220;X28Y23/W220/N121;1;X27Y23/D6;X27Y23/D6/W221;1;X27Y25/D6;X27Y25/D6/X07;1;X28Y24/SN20;X28Y24/SN20/Q2;1;X28Y25/B5;X28Y25/B5/S121;1;X27Y24/N220;X27Y24/N220/W221;1;X27Y23/D0;X27Y23/D0/N221;1;X28Y24/S130;X28Y24/S130/Q2;1;X28Y24/D7;X28Y24/D7/S130;1;X27Y25/D0;X27Y25/D0/S221;1;X27Y25/D5;X27Y25/D5/X07;1;X27Y24/D6;X27Y24/D6/W221;1;X27Y25/X07;X27Y25/X07/S221;1;X27Y25/D7;X27Y25/D7/X07;1;X27Y25/D2;X27Y25/D2/S221;1;X27Y24/S220;X27Y24/S220/W221;1;X27Y25/D3;X27Y25/D3/S221;1;X28Y24/Q2;;1;X28Y24/W220;X28Y24/W220/Q2;1;X27Y24/D7;X27Y24/D7/W221;1",
+            "force_downto": "00000000000000000000000000000001",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "hdlname": "Test i2c ps"
+          }
+        },
+        "Test.i2c.ps[1]": {
+          "hide_name": 0,
+          "bits": [ 7437 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/E240;X27Y24/E240/S241;1;X28Y24/C7;X28Y24/C7/E241;1;X27Y23/C0;X27Y23/C0/W230;1;X27Y25/C2;X27Y25/C2/S242;1;X27Y25/C1;X27Y25/C1/S242;1;X27Y24/S200;X27Y24/S200/S101;1;X27Y25/C6;X27Y25/C6/S201;1;X27Y23/S100;X27Y23/S100/Q4;1;X27Y24/A5;X27Y24/A5/S101;1;X27Y24/C7;X27Y24/C7/S131;1;X27Y23/C1;X27Y23/C1/W230;1;X27Y23/W230;X27Y23/W230/W100;1;X27Y25/C4;X27Y25/C4/X05;1;X27Y25/E240;X27Y25/E240/S242;1;X28Y25/C0;X28Y25/C0/E241;1;X27Y25/C3;X27Y25/C3/S242;1;X27Y23/S130;X27Y23/S130/Q4;1;X27Y25/C0;X27Y25/C0/S242;1;X27Y23/N130;X27Y23/N130/Q4;1;X27Y23/C6;X27Y23/C6/N130;1;X27Y25/C5;X27Y25/C5/X05;1;X27Y23/W100;X27Y23/W100/Q4;1;X27Y24/C6;X27Y24/C6/S131;1;X27Y23/Q4;;1;X27Y23/S240;X27Y23/S240/Q4;1;X27Y25/X05;X27Y25/X05/S242;1;X27Y25/C7;X27Y25/C7/X05;1",
+            "force_downto": "00000000000000000000000000000001",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "hdlname": "Test i2c ps"
+          }
+        },
+        "Test.i2c.ps[2]": {
+          "hide_name": 0,
+          "bits": [ 7434 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/W250;X27Y25/W250/S252;1;X27Y25/B1;X27Y25/B1/W250;1;X27Y25/B0;X27Y25/B0/X04;1;X27Y24/B7;X27Y24/B7/S251;1;X27Y24/B6;X27Y24/B6/S251;1;X28Y24/B7;X28Y24/B7/S251;1;X27Y25/S250;X27Y25/S250/S252;1;X27Y25/B2;X27Y25/B2/S250;1;X27Y23/B0;X27Y23/B0/W111;1;X27Y23/B6;X27Y23/B6/W111;1;X27Y25/B6;X27Y25/B6/S252;1;X27Y25/B7;X27Y25/B7/S252;1;X27Y25/B4;X27Y25/B4/S252;1;X27Y23/S250;X27Y23/S250/W111;1;X27Y25/B5;X27Y25/B5/S252;1;X28Y25/B0;X28Y25/B0/W250;1;X28Y23/EW10;X28Y23/EW10/Q5;1;X27Y23/B1;X27Y23/B1/W111;1;X28Y25/W250;X28Y25/W250/S252;1;X27Y25/X04;X27Y25/X04/W251;1;X27Y25/B3;X27Y25/B3/X04;1;X28Y23/Q5;;1;X28Y23/S250;X28Y23/S250/Q5;1;X28Y25/S200;X28Y25/S200/S252;1;X28Y25/A5;X28Y25/A5/S200;1",
+            "force_downto": "00000000000000000000000000000001",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "hdlname": "Test i2c ps"
+          }
+        },
+        "Test.i2c.ps[3]": {
+          "hide_name": 0,
+          "bits": [ 7431 ] ,
+          "attributes": {
+            "ROUTING": "X27Y25/A0;X27Y25/A0/N200;1;X27Y25/A2;X27Y25/A2/N210;1;X27Y23/A6;X27Y23/A6/X03;1;X27Y25/A7;X27Y25/A7/W200;1;X27Y24/A7;X27Y24/A7/N211;1;X28Y25/S810;X28Y25/S810/Q1;1;X28Y24/S210;X28Y24/S210/N818;1;X28Y24/A7;X28Y24/A7/S210;1;X28Y25/W210;X28Y25/W210/Q1;1;X27Y25/N210;X27Y25/N210/W211;1;X27Y25/A3;X27Y25/A3/N210;1;X27Y24/W200;X27Y24/W200/N201;1;X27Y24/A6;X27Y24/A6/W200;1;X27Y23/A1;X27Y23/A1/X03;1;X27Y23/X03;X27Y23/X03/N202;1;X27Y23/A0;X27Y23/A0/X03;1;X27Y25/N200;X27Y25/N200/W101;1;X27Y25/A1;X27Y25/A1/N200;1;X27Y25/A5;X27Y25/A5/S200;1;X27Y25/W200;X27Y25/W200/W101;1;X27Y25/A6;X27Y25/A6/W200;1;X28Y25/W100;X28Y25/W100/Q1;1;X27Y25/S200;X27Y25/S200/W101;1;X27Y25/A4;X27Y25/A4/S200;1;X28Y25/Q1;;1;X28Y25/E210;X28Y25/E210/Q1;1;X28Y25/A0;X28Y25/A0/E210;1",
+            "force_downto": "00000000000000000000000000000001",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "hdlname": "Test i2c ps"
+          }
+        },
+        "Test.i2c.bit_counter_DFFNR_Q_D_ALU_SUM_COUT": {
+          "hide_name": 0,
+          "bits": [ 7428 ] ,
+          "attributes": {
+            "ROUTING": " ",
+            "unused_bits": "0 ",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:83.28-83.46|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
+            "abc9_carry": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.bit_counter_DFFNR_Q_2_D": {
+          "hide_name": 0,
+          "bits": [ 7425 ] ,
+          "attributes": {
+            "ROUTING": "X28Y23/F0;;1;X28Y23/XD0;X28Y23/XD0/F0;1"
+          }
+        },
+        "Test.i2c.bit_counter_DFFNR_Q_1_D_ALU_SUM_CIN_ALU_COUT_SUM": {
+          "hide_name": 0,
+          "bits": [ 7423 ] ,
+          "attributes": {
+            "ROUTING": " ",
+            "unused_bits": "0 "
+          }
+        },
+        "Test.i2c.bit_counter[0]": {
+          "hide_name": 0,
+          "bits": [ 7422 ] ,
+          "attributes": {
+            "ROUTING": "X28Y23/SN10;X28Y23/SN10/Q0;1;X28Y24/W210;X28Y24/W210/S111;1;X27Y24/B1;X27Y24/B1/W211;1;X28Y23/S200;X28Y23/S200/Q0;1;X28Y24/W200;X28Y24/W200/S201;1;X27Y24/D5;X27Y24/D5/W201;1;X27Y23/S200;X27Y23/S200/W101;1;X27Y24/C4;X27Y24/C4/S201;1;X28Y23/X01;X28Y23/X01/Q0;1;X28Y23/A0;X28Y23/A0/X01;1;X28Y23/Q0;;1;X28Y23/W100;X28Y23/W100/Q0;1;X27Y23/C7;X27Y23/C7/W101;1",
+            "force_downto": "00000000000000000000000000000001",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "hdlname": "Test i2c bit_counter"
+          }
+        },
+        "Test.i2c.bit_counter_DFFNR_Q_1_D_ALU_SUM_COUT": {
+          "hide_name": 0,
+          "bits": [ 7419 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/COUT2;;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:83.28-83.46|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
+            "abc9_carry": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.bit_counter_DFFNR_Q_1_D_ALU_SUM_CIN": {
+          "hide_name": 0,
+          "bits": [ 7418 ] ,
+          "attributes": {
+            "ROUTING": "X27Y24/COUT1;;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:83.28-83.46|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/arith_map.v:57.7-63.5|d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_sim.v:886.25-886.29",
+            "abc9_carry": "00000000000000000000000000000001"
+          }
+        },
+        "Test.i2c.bit_counter[1]": {
           "hide_name": 0,
           "bits": [ 7416 ] ,
           "attributes": {
-            "ROUTING": "X2Y19/B3;X2Y19/B3/Q3;1;X2Y19/Q3;;1;X2Y19/X02;X2Y19/X02/Q3;1;X2Y19/D6;X2Y19/D6/X02;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+            "ROUTING": "X27Y24/N100;X27Y24/N100/Q2;1;X27Y24/C5;X27Y24/C5/N100;1;X27Y24/B4;X27Y24/B4/X01;1;X27Y24/SN10;X27Y24/SN10/Q2;1;X27Y23/N250;X27Y23/N250/N111;1;X27Y23/B7;X27Y23/B7/N250;1;X27Y24/Q2;;1;X27Y24/X01;X27Y24/X01/Q2;1;X27Y24/B2;X27Y24/B2/X01;1",
+            "force_downto": "00000000000000000000000000000001",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "hdlname": "Test i2c bit_counter"
           }
         },
-        "clockCounter[9]": {
-          "hide_name": 0,
-          "bits": [ 7415 ] ,
-          "attributes": {
-            "ROUTING": "X2Y19/N130;X2Y19/N130/Q4;1;X2Y19/C6;X2Y19/C6/N130;1;X2Y19/Q4;;1;X2Y19/N240;X2Y19/N240/Q4;1;X2Y19/B4;X2Y19/B4/N240;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "clockCounter[10]": {
+        "Test.i2c.bit_counter_DFFNR_Q_1_D": {
           "hide_name": 0,
           "bits": [ 7414 ] ,
           "attributes": {
-            "ROUTING": "X2Y19/B6;X2Y19/B6/X08;1;X2Y19/Q5;;1;X2Y19/X08;X2Y19/X08/Q5;1;X2Y19/B5;X2Y19/B5/X08;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+            "ROUTING": "X27Y24/F2;;1;X27Y24/XD2;X27Y24/XD2/F2;1"
           }
         },
-        "clockCounter[11]": {
+        "Test.i2c.bit_counter_DFFNR_Q_RESET": {
           "hide_name": 0,
-          "bits": [ 7413 ] ,
+          "bits": [ 7412 ] ,
           "attributes": {
-            "ROUTING": "X3Y19/X07;X3Y19/X07/N221;1;X3Y19/B0;X3Y19/B0/X07;1;X3Y20/Q2;;1;X3Y20/N220;X3Y20/N220/Q2;1;X3Y19/W220;X3Y19/W220/N221;1;X2Y19/X01;X2Y19/X01/W221;1;X2Y19/A6;X2Y19/A6/X01;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+            "ROUTING": "X27Y23/W130;X27Y23/W130/F6;1;X27Y23/E270;X27Y23/E270/W130;1;X28Y23/LSR0;X28Y23/LSR0/E271;1;X27Y23/F6;;1;X27Y23/S260;X27Y23/S260/F6;1;X27Y24/X05;X27Y24/X05/S261;1;X27Y24/LSR1;X27Y24/LSR1/X05;1"
           }
         },
-        "clockCounter[20]": {
+        "Test.i2c.bit_counter[2]": {
           "hide_name": 0,
           "bits": [ 7411 ] ,
           "attributes": {
-            "ROUTING": "X4Y19/B3;X4Y19/B3/Q3;1;X4Y19/Q3;;1;X4Y19/X02;X4Y19/X02/Q3;1;X4Y19/D7;X4Y19/D7/X02;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+            "ROUTING": "X27Y24/E100;X27Y24/E100/Q3;1;X27Y24/A4;X27Y24/A4/E100;1;X27Y24/SN20;X27Y24/SN20/Q3;1;X27Y23/A7;X27Y23/A7/N121;1;X27Y24/B3;X27Y24/B3/Q3;1;X27Y24/Q3;;1;X27Y24/W100;X27Y24/W100/Q3;1;X27Y24/B5;X27Y24/B5/W100;1",
+            "force_downto": "00000000000000000000000000000001",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "hdlname": "Test i2c bit_counter"
           }
         },
-        "clockCounter[21]": {
-          "hide_name": 0,
-          "bits": [ 7410 ] ,
-          "attributes": {
-            "ROUTING": "X4Y19/N240;X4Y19/N240/Q4;1;X4Y19/B4;X4Y19/B4/N240;1;X4Y19/Q4;;1;X4Y19/N130;X4Y19/N130/Q4;1;X4Y19/C7;X4Y19/C7/N130;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "clockCounter[22]": {
+        "Test.i2c.bit_counter_DFFNR_Q_D": {
           "hide_name": 0,
           "bits": [ 7409 ] ,
           "attributes": {
-            "ROUTING": "X4Y19/W100;X4Y19/W100/Q5;1;X4Y19/B5;X4Y19/B5/W100;1;X4Y19/Q5;;1;X4Y19/N250;X4Y19/N250/Q5;1;X4Y19/B7;X4Y19/B7/N250;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+            "ROUTING": "X27Y24/F3;;1;X27Y24/XD3;X27Y24/XD3/F3;1"
           }
         },
-        "clockCounter[23]": {
+        "Test.i2c.wr_bit_MUX2_LUT5_S0_O_MUX2_LUT6_I1_O[0]": {
           "hide_name": 0,
           "bits": [ 7408 ] ,
           "attributes": {
-            "ROUTING": "X5Y19/S240;X5Y19/S240/Q4;1;X5Y19/B0;X5Y19/B0/S240;1;X5Y19/Q4;;1;X5Y19/EW10;X5Y19/EW10/Q4;1;X4Y19/S210;X4Y19/S210/W111;1;X4Y19/A7;X4Y19/A7/S210;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_O[1]": {
-          "hide_name": 0,
-          "bits": [ 7407 ] ,
-          "attributes": {
-            "ROUTING": "X4Y19/F7;;1;X4Y19/S100;X4Y19/S100/F7;1;X4Y20/W240;X4Y20/W240/S101;1;X3Y20/X03;X3Y20/X03/W241;1;X3Y20/B4;X3Y20/B4/X03;1",
+            "ROUTING": "X28Y23/CLK0;X28Y23/CLK0/N242;1;X28Y25/A6;X28Y25/A6/X03;1;X28Y24/CLK1;X28Y24/CLK1/N241;1;X27Y23/CLK2;X27Y23/CLK2/N242;1;X28Y25/N240;X28Y25/N240/F4;1;X28Y23/CLK2;X28Y23/CLK2/N242;1;X28Y25/X03;X28Y25/X03/F4;1;X28Y25/CLK0;X28Y25/CLK0/X03;1;X28Y25/F4;;1;X28Y25/W240;X28Y25/W240/F4;1;X27Y25/N240;X27Y25/N240/W241;1;X27Y24/CLK1;X27Y24/CLK1/N241;1",
             "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
             "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "clockCounter[16]": {
-          "hide_name": 0,
-          "bits": [ 7405 ] ,
-          "attributes": {
-            "ROUTING": "X3Y19/E100;X3Y19/E100/Q5;1;X4Y19/D6;X4Y19/D6/E101;1;X3Y19/Q5;;1;X3Y19/E250;X3Y19/E250/Q5;1;X3Y19/B5;X3Y19/B5/E250;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "clockCounter[17]": {
-          "hide_name": 0,
-          "bits": [ 7404 ] ,
-          "attributes": {
-            "ROUTING": "X4Y19/B0;X4Y19/B0/X05;1;X4Y19/Q0;;1;X4Y19/X05;X4Y19/X05/Q0;1;X4Y19/C6;X4Y19/C6/X05;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "clockCounter[18]": {
-          "hide_name": 0,
-          "bits": [ 7403 ] ,
-          "attributes": {
-            "ROUTING": "X4Y19/B1;X4Y19/B1/Q1;1;X4Y19/Q1;;1;X4Y19/W130;X4Y19/W130/Q1;1;X4Y19/B6;X4Y19/B6/W130;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "clockCounter[19]": {
-          "hide_name": 0,
-          "bits": [ 7402 ] ,
-          "attributes": {
-            "ROUTING": "X4Y19/E130;X4Y19/E130/Q2;1;X4Y19/A6;X4Y19/A6/E130;1;X4Y19/Q2;;1;X4Y19/S130;X4Y19/S130/Q2;1;X4Y19/B2;X4Y19/B2/S130;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_O[0]": {
-          "hide_name": 0,
-          "bits": [ 7401 ] ,
-          "attributes": {
-            "ROUTING": "X4Y19/F6;;1;X4Y19/SN10;X4Y19/SN10/F6;1;X4Y20/W250;X4Y20/W250/S111;1;X3Y20/A4;X3Y20/A4/W251;1",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "clockCounter[12]": {
-          "hide_name": 0,
-          "bits": [ 7398 ] ,
-          "attributes": {
-            "ROUTING": "X3Y19/B1;X3Y19/B1/Q1;1;X3Y19/Q1;;1;X3Y19/S210;X3Y19/S210/Q1;1;X3Y20/X08;X3Y20/X08/S211;1;X3Y20/D1;X3Y20/D1/X08;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "clockCounter[13]": {
-          "hide_name": 0,
-          "bits": [ 7396 ] ,
-          "attributes": {
-            "ROUTING": "X3Y19/X01;X3Y19/X01/Q2;1;X3Y19/B2;X3Y19/B2/X01;1;X3Y19/Q2;;1;X3Y19/S100;X3Y19/S100/Q2;1;X3Y20/C1;X3Y20/C1/S101;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "clockCounter[14]": {
-          "hide_name": 0,
-          "bits": [ 7394 ] ,
-          "attributes": {
-            "ROUTING": "X3Y19/B3;X3Y19/B3/Q3;1;X3Y19/Q3;;1;X3Y19/S230;X3Y19/S230/Q3;1;X3Y20/B1;X3Y20/B1/S231;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "clockCounter[15]": {
-          "hide_name": 0,
-          "bits": [ 7392 ] ,
-          "attributes": {
-            "ROUTING": "X3Y19/N240;X3Y19/N240/Q4;1;X3Y19/B4;X3Y19/B4/N240;1;X3Y19/Q4;;1;X3Y19/S130;X3Y19/S130/Q4;1;X3Y20/A1;X3Y20/A1/S131;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_S0[4]": {
-          "hide_name": 0,
-          "bits": [ 7390 ] ,
-          "attributes": {
-            "ROUTING": "X2Y19/F6;;1;X2Y19/EW10;X2Y19/EW10/F6;1;X3Y19/S250;X3Y19/S250/E111;1;X3Y20/X06;X3Y20/X06/S251;1;X3Y20/SEL0;X3Y20/SEL0/X06;1",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_O[2]": {
-          "hide_name": 0,
-          "bits": [ 7389 ] ,
-          "attributes": {
-            "ROUTING": "X3Y20/OF0;;1;X3Y20/W100;X3Y20/W100/OF0;1;X3Y20/E230;X3Y20/E230/W100;1;X3Y20/C4;X3Y20/C4/E230;1",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_I1": {
-          "hide_name": 0,
-          "bits": [ 7388 ] ,
-          "attributes": {
-            "ROUTING": "X3Y20/F1;;1",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
-          }
-        },
-        "clockCounter[0]": {
-          "hide_name": 0,
-          "bits": [ 7386 ] ,
-          "attributes": {
-            "ROUTING": "X1Y21/A2;X1Y21/A2/N130;1;X1Y19/X02;X1Y19/X02/N231;1;X1Y19/D6;X1Y19/D6/X02;1;X1Y21/Q5;;1;X1Y21/N130;X1Y21/N130/Q5;1;X1Y20/N230;X1Y20/N230/N131;1;X1Y19/B1;X1Y19/B1/N231;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "clockCounter[1]": {
-          "hide_name": 0,
-          "bits": [ 7385 ] ,
-          "attributes": {
-            "ROUTING": "X1Y19/N130;X1Y19/N130/Q2;1;X1Y19/C6;X1Y19/C6/N130;1;X1Y19/Q2;;1;X1Y19/X01;X1Y19/X01/Q2;1;X1Y19/B2;X1Y19/B2/X01;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "clockCounter[2]": {
-          "hide_name": 0,
-          "bits": [ 7384 ] ,
-          "attributes": {
-            "ROUTING": "X1Y19/B3;X1Y19/B3/Q3;1;X1Y19/Q3;;1;X1Y19/W130;X1Y19/W130/Q3;1;X1Y19/B6;X1Y19/B6/W130;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "clockCounter[3]": {
-          "hide_name": 0,
-          "bits": [ 7383 ] ,
-          "attributes": {
-            "ROUTING": "X1Y19/N240;X1Y19/N240/Q4;1;X1Y19/B4;X1Y19/B4/N240;1;X1Y19/Q4;;1;X1Y19/E130;X1Y19/E130/Q4;1;X1Y19/A6;X1Y19/A6/E130;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
-          }
-        },
-        "clockCounter[4]": {
-          "hide_name": 0,
-          "bits": [ 7380 ] ,
-          "attributes": {
-            "ROUTING": "X1Y19/X08;X1Y19/X08/Q5;1;X1Y19/B5;X1Y19/B5/X08;1;X1Y19/Q5;;1;X1Y19/EW20;X1Y19/EW20/Q5;1;X2Y19/S260;X2Y19/S260/E121;1;X2Y20/E260;X2Y20/E260/S261;1;X2Y20/D3;X2Y20/D3/E260;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "clockCounter[5]": {
-          "hide_name": 0,
-          "bits": [ 7378 ] ,
-          "attributes": {
-            "ROUTING": "X2Y20/C3;X2Y20/C3/S101;1;X2Y19/Q0;;1;X2Y19/S100;X2Y19/S100/Q0;1;X2Y19/B0;X2Y19/B0/S100;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "clockCounter[6]": {
-          "hide_name": 0,
-          "bits": [ 7376 ] ,
-          "attributes": {
-            "ROUTING": "X2Y19/SN10;X2Y19/SN10/Q1;1;X2Y20/B3;X2Y20/B3/S111;1;X2Y19/Q1;;1;X2Y19/B1;X2Y19/B1/Q1;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "clockCounter[7]": {
-          "hide_name": 0,
-          "bits": [ 7374 ] ,
-          "attributes": {
-            "ROUTING": "X2Y20/A3;X2Y20/A3/S131;1;X2Y19/Q2;;1;X2Y19/S130;X2Y19/S130/Q2;1;X2Y19/B2;X2Y19/B2/S130;1",
-            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "Test.isSending_LUT1_I0_1_F_MUX2_LUT5_I0_S0[4]": {
-          "hide_name": 0,
-          "bits": [ 7372 ] ,
-          "attributes": {
-            "ROUTING": "X1Y19/F6;;1;X1Y19/SN10;X1Y19/SN10/F6;1;X1Y20/E210;X1Y20/E210/S111;1;X2Y20/X06;X2Y20/X06/E211;1;X2Y20/SEL2;X2Y20/SEL2/X06;1",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "Test.isSending_LUT1_I0_F_MUX2_LUT5_I0_O[3]": {
-          "hide_name": 0,
-          "bits": [ 7371 ] ,
-          "attributes": {
-            "ROUTING": "X2Y20/OF2;;1;X2Y20/E220;X2Y20/E220/OF2;1;X3Y20/D4;X3Y20/D4/E221;1",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
-            "force_downto": "00000000000000000000000000000001"
-          }
-        },
-        "Test.isSending_LUT1_I0_1_F_MUX2_LUT5_I0_I1": {
-          "hide_name": 0,
-          "bits": [ 7370 ] ,
-          "attributes": {
-            "ROUTING": "X2Y20/F3;;1",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
-          }
-        },
-        "Test.isSending_LUT1_I0_1_F": {
-          "hide_name": 0,
-          "bits": [ 7368 ] ,
-          "attributes": {
-            "ROUTING": "X2Y20/F2;;1",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
-          }
-        },
-        "Test.isSending_LUT1_I0_F": {
-          "hide_name": 0,
-          "bits": [ 7365 ] ,
-          "attributes": {
-            "ROUTING": "X3Y20/F0;;1",
-            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
-          }
-        },
-        "$PACKER_GND": {
-          "hide_name": 1,
-          "bits": [ 7583 ] ,
-          "attributes": {
-            "ROUTING": "X1Y20/A3;X1Y20/A3/N210;1;X2Y19/A4;X2Y19/A4/W210;1;X4Y19/A5;X4Y19/A5/W210;1;X2Y19/A0;X2Y19/A0/E210;1;X1Y20/A4;X1Y20/A4/W210;1;X4Y19/A2;X4Y19/A2/N210;1;X3Y19/A0;X3Y19/A0/E210;1;X4Y19/A1;X4Y19/A1/E210;1;X4Y19/W210;X4Y19/W210/VSS;1;X4Y19/A4;X4Y19/A4/W210;1;X1Y19/A4;X1Y19/A4/W210;1;X2Y19/W210;X2Y19/W210/VSS;1;X2Y19/A5;X2Y19/A5/W210;1;X5Y19/E210;X5Y19/E210/VSS;1;X5Y19/A0;X5Y19/A0/E210;1;X1Y19/W210;X1Y19/W210/VSS;1;X1Y19/A5;X1Y19/A5/W210;1;X2Y19/E210;X2Y19/E210/VSS;1;X2Y19/A1;X2Y19/A1/E210;1;X1Y20/W210;X1Y20/W210/VSS;1;X1Y20/A5;X1Y20/A5/W210;1;X3Y19/A5;X3Y19/A5/W210;1;X30Y28/B0;X30Y28/B0/N231;1;X30Y28/N270;X30Y28/N270/VSS;1;X30Y28/D6;X30Y28/D6/N270;1;X30Y28/E270;X30Y28/E270/VSS;1;X30Y28/D1;X30Y28/D1/E270;1;X3Y19/E210;X3Y19/E210/VSS;1;X3Y19/A1;X3Y19/A1/E210;1;X3Y19/A2;X3Y19/A2/N210;1;X4Y19/N210;X4Y19/N210/VSS;1;X4Y19/A3;X4Y19/A3/N210;1;X1Y19/A2;X1Y19/A2/N210;1;X3Y19/W210;X3Y19/W210/VSS;1;X3Y19/A4;X3Y19/A4/W210;1;X3Y19/N210;X3Y19/N210/VSS;1;X3Y19/A3;X3Y19/A3/N210;1;X2Y19/A2;X2Y19/A2/N210;1;X1Y20/N210;X1Y20/N210/VSS;1;X1Y20/A2;X1Y20/A2/N210;1;X1Y19/N210;X1Y19/N210/VSS;1;X1Y19/A3;X1Y19/A3/N210;1;X30Y28/S230;X30Y28/S230/VSS;1;X30Y28/C6;X30Y28/C6/S230;1;X2Y20/E210;X2Y20/E210/VSS;1;X2Y20/A0;X2Y20/A0/E210;1;X4Y19/E210;X4Y19/E210/VSS;1;X4Y19/A0;X4Y19/A0/E210;1;X2Y19/N210;X2Y19/N210/VSS;1;X2Y19/A3;X2Y19/A3/N210;1;X0Y0/VSS;;1;X30Y28/S270;X30Y28/S270/VSS;1;X30Y28/A0;X30Y28/A0/N271;1"
           }
         },
         "Test.clock": {
           "hide_name": 0,
-          "bits": [ 7333 ] ,
+          "bits": [ 7403 ] ,
           "attributes": {
-            "ROUTING": "X2Y21/CLK2;X2Y21/CLK2/GB00;5;X1Y20/CLK1;X1Y20/CLK1/GB00;5;X1Y20/CLK2;X1Y20/CLK2/GB00;5;X1Y21/CLK0;X1Y21/CLK0/GB00;5;X2Y20/CLK0;X2Y20/CLK0/GB00;5;X3Y19/CLK2;X3Y19/CLK2/GB00;5;X4Y19/CLK0;X4Y19/CLK0/GB00;5;X4Y19/CLK1;X4Y19/CLK1/GB00;5;X1Y21/GB00;X3Y21/GBO0/GT00;5;X1Y21/CLK2;X1Y21/CLK2/GB00;5;X1Y19/CLK1;X1Y19/CLK1/GB00;5;X1Y19/CLK2;X1Y19/CLK2/GB00;5;X2Y19/CLK0;X2Y19/CLK0/GB00;5;X2Y19/CLK1;X2Y19/CLK1/GB00;5;X2Y19/CLK2;X2Y19/CLK2/GB00;5;X3Y20/GBO0;X3Y20/GBO0/GT00;5;X3Y20/CLK1;X3Y20/CLK1/GB00;5;X3Y19/CLK0;X3Y19/CLK0/GB00;5;X3Y19/CLK1;X3Y19/CLK1/GB00;5;X4Y19/CLK2;X4Y19/CLK2/GB00;5;X11Y19/SPINE16;X27Y9/SPINE16/PCLKR1;5;X3Y19/GT00;X3Y19/GT00/SPINE16;5;X4Y19/GB00;X3Y19/GBO0/GT00;5;X5Y19/CLK2;X5Y19/CLK2/GB00;5;X26Y9/PCLKR1;;5",
+            "ROUTING": "X3Y17/GBO0;X3Y17/GBO0/GT00;5;X1Y17/CLK2;X1Y17/CLK2/GB00;5;X1Y20/CLK1;X1Y20/CLK1/GB00;5;X1Y21/CLK1;X1Y21/CLK1/GB00;5;X1Y21/CLK2;X1Y21/CLK2/GB00;5;X2Y21/CLK2;X2Y21/CLK2/GB00;5;X1Y21/GB00;X3Y21/GBO0/GT00;5;X2Y21/CLK1;X2Y21/CLK1/GB00;5;X3Y19/CLK2;X3Y19/CLK2/GB00;5;X4Y19/CLK0;X4Y19/CLK0/GB00;5;X4Y19/CLK1;X4Y19/CLK1/GB00;5;X5Y19/CLK1;X5Y19/CLK1/GB00;5;X1Y20/CLK2;X1Y20/CLK2/GB00;5;X1Y19/CLK1;X1Y19/CLK1/GB00;5;X3Y20/GBO0;X3Y20/GBO0/GT00;5;X4Y20/CLK0;X4Y20/CLK0/GB00;5;X1Y19/CLK2;X1Y19/CLK2/GB00;5;X2Y19/CLK0;X2Y19/CLK0/GB00;5;X2Y19/CLK1;X2Y19/CLK1/GB00;5;X2Y19/CLK2;X2Y19/CLK2/GB00;5;X3Y19/CLK0;X3Y19/CLK0/GB00;5;X3Y19/CLK1;X3Y19/CLK1/GB00;5;X4Y19/CLK2;X4Y19/CLK2/GB00;5;X3Y19/GT00;X3Y19/GT00/SPINE16;5;X4Y19/GB00;X3Y19/GBO0/GT00;5;X5Y19/CLK0;X5Y19/CLK0/GB00;5;X11Y19/SPINE16;X27Y9/SPINE16/PCLKR1;5;X23Y19/GT00;X23Y19/GT00/SPINE16;5;X23Y24/GBO0;X23Y24/GBO0/GT00;5;X26Y24/CLK2;X26Y24/CLK2/GB00;5;X35Y19/SPINE24;X28Y9/SPINE24/PCLKR1;5;X31Y21/GT00;X31Y19/GT00/SPINE24;5;X29Y25/GB00;X31Y25/GBO0/GT00;5;X28Y25/CLK1;X28Y25/CLK1/GB00;5;X26Y9/PCLKR1;;5",
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\i2c.v:6.25-6.30",
             "hdlname": "Test i2c clock"
           }
@@ -3321,11 +4606,292 @@
             "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:2.11-2.16"
           }
         },
+        "$PACKER_GND": {
+          "hide_name": 1,
+          "bits": [ 7685 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/A0;X2Y19/A0/E210;1;X27Y24/A3;X27Y24/A3/N210;1;X1Y19/A5;X1Y19/A5/W210;1;X30Y28/S260;X30Y28/S260/VSS;1;X30Y28/D6;X30Y28/D6/N261;1;X2Y19/A2;X2Y19/A2/N210;1;X3Y19/A1;X3Y19/A1/E210;1;X3Y19/A3;X3Y19/A3/N210;1;X4Y19/A5;X4Y19/A5/X06;1;X4Y19/A1;X4Y19/A1/E210;1;X3Y19/A4;X3Y19/A4/W210;1;X2Y19/A4;X2Y19/A4/W210;1;X3Y19/W210;X3Y19/W210/VSS;1;X3Y19/A5;X3Y19/A5/W210;1;X4Y19/X06;X4Y19/X06/E211;1;X4Y19/A4;X4Y19/A4/X06;1;X2Y19/E210;X2Y19/E210/VSS;1;X2Y19/A1;X2Y19/A1/E210;1;X5Y19/E210;X5Y19/E210/VSS;1;X5Y19/A0;X5Y19/A0/E210;1;X1Y21/A2;X1Y21/A2/N210;1;X1Y19/A3;X1Y19/A3/N210;1;X30Y28/S230;X30Y28/S230/VSS;1;X30Y28/C6;X30Y28/C6/S230;1;X1Y21/A5;X1Y21/A5/W210;1;X4Y19/A2;X4Y19/A2/N210;1;X1Y21/N210;X1Y21/N210/VSS;1;X1Y21/A3;X1Y21/A3/N210;1;X2Y19/N210;X2Y19/N210/VSS;1;X2Y19/A3;X2Y19/A3/N210;1;X2Y21/E210;X2Y21/E210/VSS;1;X2Y21/A0;X2Y21/A0/E210;1;X1Y19/N210;X1Y19/N210/VSS;1;X1Y19/A2;X1Y19/A2/N210;1;X3Y19/N210;X3Y19/N210/VSS;1;X3Y19/A2;X3Y19/A2/N210;1;X2Y19/W210;X2Y19/W210/VSS;1;X2Y19/A5;X2Y19/A5/W210;1;X1Y19/W210;X1Y19/W210/VSS;1;X1Y19/A4;X1Y19/A4/W210;1;X4Y19/E210;X4Y19/E210/VSS;1;X4Y19/A0;X4Y19/A0/E210;1;X27Y24/N210;X27Y24/N210/VSS;1;X27Y24/A2;X27Y24/A2/N210;1;X1Y21/W210;X1Y21/W210/VSS;1;X1Y21/A4;X1Y21/A4/W210;1;X3Y19/E210;X3Y19/E210/VSS;1;X3Y19/A0;X3Y19/A0/E210;1;X0Y0/VSS;;1;X4Y19/N210;X4Y19/N210/VSS;1;X4Y19/A3;X4Y19/A3/N210;1"
+          }
+        },
+        "clockCounter[0]": {
+          "hide_name": 0,
+          "bits": [ 7389 ] ,
+          "attributes": {
+            "ROUTING": "X1Y19/B1;X1Y19/B1/N131;1;X1Y20/X03;X1Y20/X03/Q4;1;X1Y20/A1;X1Y20/A1/X03;1;X1Y20/Q4;;1;X1Y20/N130;X1Y20/N130/Q4;1;X1Y19/D7;X1Y19/D7/N131;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[1]": {
+          "hide_name": 0,
+          "bits": [ 7388 ] ,
+          "attributes": {
+            "ROUTING": "X1Y19/S130;X1Y19/S130/Q2;1;X1Y19/B2;X1Y19/B2/S130;1;X1Y19/Q2;;1;X1Y19/E220;X1Y19/E220/Q2;1;X1Y19/C7;X1Y19/C7/E220;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[2]": {
+          "hide_name": 0,
+          "bits": [ 7387 ] ,
+          "attributes": {
+            "ROUTING": "X1Y19/W130;X1Y19/W130/Q3;1;X1Y19/B7;X1Y19/B7/W130;1;X1Y19/Q3;;1;X1Y19/B3;X1Y19/B3/Q3;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[3]": {
+          "hide_name": 0,
+          "bits": [ 7386 ] ,
+          "attributes": {
+            "ROUTING": "X1Y19/N240;X1Y19/N240/Q4;1;X1Y19/B4;X1Y19/B4/N240;1;X1Y19/Q4;;1;X1Y19/E130;X1Y19/E130/Q4;1;X1Y19/A7;X1Y19/A7/E130;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[12]": {
+          "hide_name": 0,
+          "bits": [ 7384 ] ,
+          "attributes": {
+            "ROUTING": "X3Y19/SN20;X3Y19/SN20/Q1;1;X3Y20/D0;X3Y20/D0/S121;1;X3Y19/Q1;;1;X3Y19/B1;X3Y19/B1/Q1;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[13]": {
+          "hide_name": 0,
+          "bits": [ 7383 ] ,
+          "attributes": {
+            "ROUTING": "X3Y19/X01;X3Y19/X01/Q2;1;X3Y19/B2;X3Y19/B2/X01;1;X3Y19/Q2;;1;X3Y19/S100;X3Y19/S100/Q2;1;X3Y20/C0;X3Y20/C0/S101;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[14]": {
+          "hide_name": 0,
+          "bits": [ 7382 ] ,
+          "attributes": {
+            "ROUTING": "X3Y19/B3;X3Y19/B3/Q3;1;X3Y19/Q3;;1;X3Y19/SN10;X3Y19/SN10/Q3;1;X3Y20/B0;X3Y20/B0/S111;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[15]": {
+          "hide_name": 0,
+          "bits": [ 7381 ] ,
+          "attributes": {
+            "ROUTING": "X3Y19/S130;X3Y19/S130/Q4;1;X3Y20/A0;X3Y20/A0/S131;1;X3Y19/Q4;;1;X3Y19/X03;X3Y19/X03/Q4;1;X3Y19/B4;X3Y19/B4/X03;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_O[3]": {
+          "hide_name": 0,
+          "bits": [ 7380 ] ,
+          "attributes": {
+            "ROUTING": "X3Y20/F0;;1;X3Y20/N200;X3Y20/N200/F0;1;X3Y19/X07;X3Y19/X07/N201;1;X3Y19/D7;X3Y19/D7/X07;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "clockCounter[8]": {
+          "hide_name": 0,
+          "bits": [ 7378 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/B3;X2Y19/B3/Q3;1;X2Y19/Q3;;1;X2Y19/W230;X2Y19/W230/Q3;1;X1Y19/X02;X1Y19/X02/W231;1;X1Y19/D6;X1Y19/D6/X02;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[9]": {
+          "hide_name": 0,
+          "bits": [ 7377 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/N240;X2Y19/N240/Q4;1;X2Y19/B4;X2Y19/B4/N240;1;X2Y19/Q4;;1;X2Y19/W240;X2Y19/W240/Q4;1;X1Y19/C6;X1Y19/C6/W241;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[10]": {
+          "hide_name": 0,
+          "bits": [ 7376 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/EW10;X2Y19/EW10/Q5;1;X1Y19/B6;X1Y19/B6/W111;1;X2Y19/Q5;;1;X2Y19/E250;X2Y19/E250/Q5;1;X2Y19/B5;X2Y19/B5/E250;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[11]": {
+          "hide_name": 0,
+          "bits": [ 7375 ] ,
+          "attributes": {
+            "ROUTING": "X3Y19/X05;X3Y19/X05/Q0;1;X3Y19/B0;X3Y19/B0/X05;1;X3Y19/Q0;;1;X3Y19/W130;X3Y19/W130/Q0;1;X2Y19/W270;X2Y19/W270/W131;1;X1Y19/A6;X1Y19/A6/W271;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_O[2]": {
+          "hide_name": 0,
+          "bits": [ 7374 ] ,
+          "attributes": {
+            "ROUTING": "X1Y19/F6;;1;X1Y19/E260;X1Y19/E260/F6;1;X3Y19/C7;X3Y19/C7/E262;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "clockCounter[20]": {
+          "hide_name": 0,
+          "bits": [ 7372 ] ,
+          "attributes": {
+            "ROUTING": "X5Y19/EW10;X5Y19/EW10/Q2;1;X4Y19/B3;X4Y19/B3/W111;1;X5Y19/Q2;;1;X5Y19/EW20;X5Y19/EW20/Q2;1;X4Y19/D7;X4Y19/D7/W121;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[21]": {
+          "hide_name": 0,
+          "bits": [ 7371 ] ,
+          "attributes": {
+            "ROUTING": "X4Y19/E250;X4Y19/E250/N111;1;X4Y19/B4;X4Y19/B4/E250;1;X4Y20/Q1;;1;X4Y20/SN10;X4Y20/SN10/Q1;1;X4Y19/C7;X4Y19/C7/N111;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[22]": {
+          "hide_name": 0,
+          "bits": [ 7370 ] ,
+          "attributes": {
+            "ROUTING": "X4Y19/B7;X4Y19/B7/X08;1;X4Y19/Q5;;1;X4Y19/X08;X4Y19/X08/Q5;1;X4Y19/B5;X4Y19/B5/X08;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[23]": {
+          "hide_name": 0,
+          "bits": [ 7369 ] ,
+          "attributes": {
+            "ROUTING": "X5Y19/X05;X5Y19/X05/Q0;1;X5Y19/B0;X5Y19/B0/X05;1;X5Y19/Q0;;1;X5Y19/W130;X5Y19/W130/Q0;1;X4Y19/A7;X4Y19/A7/W131;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_O[1]": {
+          "hide_name": 0,
+          "bits": [ 7368 ] ,
+          "attributes": {
+            "ROUTING": "X4Y19/F7;;1;X4Y19/W820;X4Y19/W820/F7;1;X3Y19/E240;X3Y19/E240/E828;1;X3Y19/B7;X3Y19/B7/E240;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "clockCounter[16]": {
+          "hide_name": 0,
+          "bits": [ 7366 ] ,
+          "attributes": {
+            "ROUTING": "X3Y19/B5;X3Y19/B5/E250;1;X3Y19/Q5;;1;X3Y19/E250;X3Y19/E250/Q5;1;X5Y19/X04;X5Y19/X04/E252;1;X5Y19/D4;X5Y19/D4/X04;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[17]": {
+          "hide_name": 0,
+          "bits": [ 7365 ] ,
+          "attributes": {
+            "ROUTING": "X4Y19/S100;X4Y19/S100/Q0;1;X4Y19/B0;X4Y19/B0/S100;1;X4Y19/Q0;;1;X4Y19/EW20;X4Y19/EW20/Q0;1;X5Y19/C4;X5Y19/C4/E121;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[18]": {
+          "hide_name": 0,
+          "bits": [ 7364 ] ,
+          "attributes": {
+            "ROUTING": "X4Y19/B1;X4Y19/B1/Q1;1;X4Y19/Q1;;1;X4Y19/E130;X4Y19/E130/Q1;1;X5Y19/B4;X5Y19/B4/E131;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "clockCounter[19]": {
+          "hide_name": 0,
+          "bits": [ 7363 ] ,
+          "attributes": {
+            "ROUTING": "X4Y19/EW10;X4Y19/EW10/Q2;1;X5Y19/A4;X5Y19/A4/E111;1;X4Y19/Q2;;1;X4Y19/X01;X4Y19/X01/Q2;1;X4Y19/B2;X4Y19/B2/X01;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24"
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_O[0]": {
+          "hide_name": 0,
+          "bits": [ 7362 ] ,
+          "attributes": {
+            "ROUTING": "X5Y19/F4;;1;X5Y19/W820;X5Y19/W820/F4;1;X2Y19/E270;X2Y19/E270/E828;1;X3Y19/A7;X3Y19/A7/E271;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "clockCounter[4]": {
+          "hide_name": 0,
+          "bits": [ 7359 ] ,
+          "attributes": {
+            "ROUTING": "X1Y19/E100;X1Y19/E100/Q5;1;X2Y19/D7;X2Y19/D7/E101;1;X1Y19/Q5;;1;X1Y19/X08;X1Y19/X08/Q5;1;X1Y19/B5;X1Y19/B5/X08;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "clockCounter[5]": {
+          "hide_name": 0,
+          "bits": [ 7357 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/C7;X2Y19/C7/X05;1;X2Y19/Q0;;1;X2Y19/X05;X2Y19/X05/Q0;1;X2Y19/B0;X2Y19/B0/X05;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "clockCounter[6]": {
+          "hide_name": 0,
+          "bits": [ 7355 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/W130;X2Y19/W130/Q1;1;X2Y19/B7;X2Y19/B7/W130;1;X2Y19/Q1;;1;X2Y19/B1;X2Y19/B1/Q1;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "clockCounter[7]": {
+          "hide_name": 0,
+          "bits": [ 7353 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/A7;X2Y19/A7/X01;1;X2Y19/Q2;;1;X2Y19/X01;X2Y19/X01/Q2;1;X2Y19/B2;X2Y19/B2/X01;1",
+            "src": "d:\\Senior_Project_Local\\Senior_Project\\fpga\\pwm_ctrl\\top.v:31.12-31.24",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_S0[4]": {
+          "hide_name": 0,
+          "bits": [ 7351 ] ,
+          "attributes": {
+            "ROUTING": "X1Y19/F7;;1;X1Y19/W100;X1Y19/W100/F7;1;X1Y19/E230;X1Y19/E230/W100;1;X2Y19/X06;X2Y19/X06/E231;1;X2Y19/SEL6;X2Y19/SEL6/X06;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_O[4]": {
+          "hide_name": 0,
+          "bits": [ 7350 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/OF6;;1;X2Y19/E260;X2Y19/E260/OF6;1;X3Y19/SEL6;X3Y19/SEL6/E261;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:130.20-130.21",
+            "force_downto": "00000000000000000000000000000001"
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F_MUX2_LUT5_I0_I1": {
+          "hide_name": 0,
+          "bits": [ 7349 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/F7;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.13-151.15"
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_1_F": {
+          "hide_name": 0,
+          "bits": [ 7347 ] ,
+          "attributes": {
+            "ROUTING": "X2Y19/F6;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
+          }
+        },
+        "Test.a_to_pwm.angle_done_LUT1_I0_F": {
+          "hide_name": 0,
+          "bits": [ 7344 ] ,
+          "attributes": {
+            "ROUTING": "X3Y19/F6;;1",
+            "src": "d:\\Senior_Project_Local\\oss-cad-suite\\bin\\../share/yosys/gowin/cells_map.v:151.9-151.11"
+          }
+        },
         "$PACKER_VCC": {
           "hide_name": 1,
-          "bits": [ 7582 ] ,
+          "bits": [ 7684 ] ,
           "attributes": {
-            "ROUTING": "X2Y19/D2;X2Y19/D2/S270;1;X1Y19/C3;X1Y19/C3/W220;1;X4Y19/D5;X4Y19/D5/X04;1;X1Y19/D3;X1Y19/D3/X03;1;X2Y19/D5;X2Y19/D5/X04;1;X3Y19/C2;X3Y19/C2/X04;1;X2Y20/X08;X2Y20/X08/VCC;1;X2Y20/D0;X2Y20/D0/X08;1;X2Y19/C1;X2Y19/C1/X04;1;X3Y19/C4;X3Y19/C4/X08;1;X1Y19/D4;X1Y19/D4/N260;1;X1Y20/C0;X1Y20/C0/X04;1;X1Y19/D2;X1Y19/D2/X03;1;X1Y19/C0;X1Y19/C0/N220;1;X1Y19/D1;X1Y19/D1/X03;1;X1Y20/D5;X1Y20/D5/N260;1;X4Y19/C3;X4Y19/C3/X04;1;X4Y19/D2;X4Y19/D2/X08;1;X4Y19/D3;X4Y19/D3/X08;1;X3Y19/D0;X3Y19/D0/X03;1;X2Y19/D1;X2Y19/D1/E270;1;X4Y19/D4;X4Y19/D4/X04;1;X1Y20/D1;X1Y20/D1/X08;1;X3Y19/X08;X3Y19/X08/VCC;1;X3Y19/C5;X3Y19/C5/X08;1;X1Y20/D3;X1Y20/D3/X08;1;X1Y20/C2;X1Y20/C2/X04;1;X3Y19/D4;X3Y19/D4/X04;1;X1Y20/X04;X1Y20/X04/VCC;1;X1Y20/C3;X1Y20/C3/X04;1;X1Y20/N260;X1Y20/N260/VCC;1;X1Y20/D4;X1Y20/D4/N260;1;X2Y20/N220;X2Y20/N220/VCC;1;X2Y20/C0;X2Y20/C0/N220;1;X4Y19/C5;X4Y19/C5/X08;1;X3Y19/D5;X3Y19/D5/X04;1;X1Y19/X03;X1Y19/X03/VCC;1;X1Y19/A1;X1Y19/A1/X03;1;X4Y19/C2;X4Y19/C2/X04;1;X2Y19/C5;X2Y19/C5/S220;1;X2Y19/S270;X2Y19/S270/VCC;1;X2Y19/D3;X2Y19/D3/S270;1;X1Y19/N260;X1Y19/N260/VCC;1;X1Y19/D5;X1Y19/D5/N260;1;X1Y20/C4;X1Y20/C4/X08;1;X2Y19/C2;X2Y19/C2/X04;1;X2Y19/E270;X2Y19/E270/VCC;1;X2Y19/D0;X2Y19/D0/E270;1;X1Y20/D2;X1Y20/D2/X08;1;X3Y19/D1;X3Y19/D1/X03;1;X2Y19/D4;X2Y19/D4/X04;1;X3Y19/D3;X3Y19/D3/X03;1;X4Y19/X08;X4Y19/X08/VCC;1;X4Y19/C4;X4Y19/C4/X08;1;X3Y19/C0;X3Y19/C0/X04;1;X1Y19/W220;X1Y19/W220/VCC;1;X1Y19/C2;X1Y19/C2/W220;1;X4Y19/C0;X4Y19/C0/X04;1;X4Y19/X04;X4Y19/X04/VCC;1;X4Y19/C1;X4Y19/C1/X04;1;X3Y19/X03;X3Y19/X03/VCC;1;X3Y19/D2;X3Y19/D2/X03;1;X1Y19/N220;X1Y19/N220/VCC;1;X1Y19/C1;X1Y19/C1/N220;1;X3Y19/C3;X3Y19/C3/X04;1;X2Y19/S220;X2Y19/S220/VCC;1;X2Y19/C4;X2Y19/C4/S220;1;X5Y19/X04;X5Y19/X04/VCC;1;X5Y19/C0;X5Y19/C0/X04;1;X2Y19/C3;X2Y19/C3/X04;1;X2Y19/X04;X2Y19/X04/VCC;1;X2Y19/C0;X2Y19/C0/X04;1;X5Y19/X08;X5Y19/X08/VCC;1;X5Y19/D0;X5Y19/D0/X08;1;X1Y19/C4;X1Y19/C4/S220;1;X4Y19/D1;X4Y19/D1/E270;1;X1Y19/S220;X1Y19/S220/VCC;1;X1Y19/C5;X1Y19/C5/S220;1;X1Y20/X08;X1Y20/X08/VCC;1;X1Y20/C5;X1Y20/C5/X08;1;X1Y20/N200;X1Y20/N200/VCC;1;X1Y20/A1;X1Y20/A1/N200;1;X0Y0/N220;X0Y0/N220/VCC;1;X0Y0/C4;X0Y0/C4/S221;1;X1Y20/N220;X1Y20/N220/VCC;1;X1Y20/C1;X1Y20/C1/N220;1;X3Y19/X04;X3Y19/X04/VCC;1;X3Y19/C1;X3Y19/C1/X04;1;X0Y0/VCC;;1;X4Y19/E270;X4Y19/E270/VCC;1;X4Y19/D0;X4Y19/D0/E270;1"
+            "ROUTING": "X4Y19/D4;X4Y19/D4/X04;1;X1Y21/D2;X1Y21/D2/X03;1;X1Y19/D2;X1Y19/D2/X03;1;X1Y21/C0;X1Y21/C0/X04;1;X1Y21/C3;X1Y21/C3/X04;1;X1Y19/D5;X1Y19/D5/X04;1;X2Y19/C4;X2Y19/C4/X08;1;X5Y19/X03;X5Y19/X03/VCC;1;X5Y19/D0;X5Y19/D0/X03;1;X3Y19/C5;X3Y19/C5/X08;1;X1Y19/C3;X1Y19/C3/X04;1;X1Y21/D4;X1Y21/D4/X04;1;X2Y19/C0;X2Y19/C0/X04;1;X3Y19/C1;X3Y19/C1/N220;1;X5Y19/N220;X5Y19/N220/VCC;1;X5Y19/C0;X5Y19/C0/N220;1;X4Y19/C3;X4Y19/C3/X04;1;X2Y19/D4;X2Y19/D4/X04;1;X1Y21/D1;X1Y21/D1/X03;1;X3Y19/D0;X3Y19/D0/X08;1;X2Y21/X04;X2Y21/X04/VCC;1;X2Y21/C0;X2Y21/C0/X04;1;X2Y19/D0;X2Y19/D0/X08;1;X2Y19/D1;X2Y19/D1/X08;1;X0Y0/N220;X0Y0/N220/VCC;1;X0Y0/C4;X0Y0/C4/S221;1;X3Y19/D2;X3Y19/D2/X08;1;X1Y19/D4;X1Y19/D4/X04;1;X1Y19/C4;X1Y19/C4/S220;1;X4Y19/D0;X4Y19/D0/S260;1;X2Y19/D2;X2Y19/D2/X08;1;X27Y24/D2;X27Y24/D2/X03;1;X27Y24/C2;X27Y24/C2/X04;1;X3Y19/N220;X3Y19/N220/VCC;1;X3Y19/C0;X3Y19/C0/N220;1;X2Y19/D3;X2Y19/D3/X08;1;X1Y21/C5;X1Y21/C5/X08;1;X3Y19/D3;X3Y19/D3/X08;1;X2Y19/C3;X2Y19/C3/X04;1;X3Y19/D1;X3Y19/D1/X08;1;X1Y21/C2;X1Y21/C2/X04;1;X3Y19/C2;X3Y19/C2/W220;1;X1Y19/D1;X1Y19/D1/X03;1;X1Y19/X03;X1Y19/X03/VCC;1;X1Y19/D3;X1Y19/D3/X03;1;X1Y19/X04;X1Y19/X04/VCC;1;X1Y19/C2;X1Y19/C2/X04;1;X27Y24/D3;X27Y24/D3/X03;1;X3Y19/D5;X3Y19/D5/N260;1;X27Y24/A1;X27Y24/A1/X03;1;X27Y24/C3;X27Y24/C3/X04;1;X4Y19/C0;X4Y19/C0/X04;1;X2Y21/X08;X2Y21/X08/VCC;1;X2Y21/D0;X2Y21/D0/X08;1;X4Y19/C1;X4Y19/C1/X04;1;X1Y19/S220;X1Y19/S220/VCC;1;X1Y19/C5;X1Y19/C5/S220;1;X2Y19/D5;X2Y19/D5/X04;1;X2Y19/C1;X2Y19/C1/X04;1;X1Y21/D3;X1Y21/D3/X03;1;X1Y21/X03;X1Y21/X03/VCC;1;X1Y21/A1;X1Y21/A1/X03;1;X4Y19/C5;X4Y19/C5/S220;1;X4Y19/S260;X4Y19/S260/VCC;1;X4Y19/D1;X4Y19/D1/S260;1;X1Y21/C1;X1Y21/C1/X04;1;X1Y19/N200;X1Y19/N200/VCC;1;X1Y19/A1;X1Y19/A1/N200;1;X4Y19/C2;X4Y19/C2/X04;1;X1Y21/X08;X1Y21/X08/VCC;1;X1Y21/C4;X1Y21/C4/X08;1;X1Y19/C0;X1Y19/C0/N220;1;X3Y19/N260;X3Y19/N260/VCC;1;X3Y19/D4;X3Y19/D4/N260;1;X4Y19/D2;X4Y19/D2/S270;1;X4Y19/S220;X4Y19/S220/VCC;1;X4Y19/C4;X4Y19/C4/S220;1;X3Y19/X08;X3Y19/X08/VCC;1;X3Y19/C4;X3Y19/C4/X08;1;X1Y19/N220;X1Y19/N220/VCC;1;X1Y19/C1;X1Y19/C1/N220;1;X1Y21/X04;X1Y21/X04/VCC;1;X1Y21/D5;X1Y21/D5/X04;1;X2Y19/X08;X2Y19/X08/VCC;1;X2Y19/C5;X2Y19/C5/X08;1;X27Y24/C0;X27Y24/C0/X04;1;X27Y24/X04;X27Y24/X04/VCC;1;X27Y24/C1;X27Y24/C1/X04;1;X2Y19/X04;X2Y19/X04/VCC;1;X2Y19/C2;X2Y19/C2/X04;1;X4Y19/X04;X4Y19/X04/VCC;1;X4Y19/D5;X4Y19/D5/X04;1;X27Y24/X03;X27Y24/X03/VCC;1;X27Y24/D1;X27Y24/D1/X03;1;X3Y19/W220;X3Y19/W220/VCC;1;X3Y19/C3;X3Y19/C3/W220;1;X0Y0/VCC;;1;X4Y19/S270;X4Y19/S270/VCC;1;X4Y19/D3;X4Y19/D3/S270;1"
           }
         }
       }
