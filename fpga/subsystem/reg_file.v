@@ -172,7 +172,7 @@ always @(posedge clock) begin
 		reg_file[14]     <=  wr_data[7:0];
 end
 
-assign target_angle0      = reg_file[14][7:0];
+assign target_angle0[7:0] = reg_file[14][7:0];
 
 // ------------- 0xF	ROTATION0_CURR_ANG	-------------
 always @(posedge clock) begin
@@ -208,7 +208,7 @@ always @(posedge clock) begin
 		reg_file[19]     <=  wr_data[7:0];
 end
 
-assign target_angle1      = reg_file[19][7:0];
+assign target_angle1[7:0] = reg_file[19][7:0];
 
 // ------------- 0x14	ROTATION1_CURR_ANG	-------------
 always @(posedge clock) begin
@@ -244,7 +244,7 @@ always @(posedge clock) begin
 		reg_file[24]     <=  wr_data[7:0];
 end
 
-assign target_angle2      = reg_file[24][7:0];
+assign target_angle2[7:0] = reg_file[24][7:0];
 
 // ------------- 0x19	ROTATION2_CURR_ANG	-------------
 always @(posedge clock) begin
@@ -280,7 +280,7 @@ always @(posedge clock) begin
 		reg_file[29]     <=  wr_data[7:0];
 end
 
-assign target_angle3      = reg_file[29][7:0];
+assign target_angle3[7:0] = reg_file[29][7:0];
 
 // ------------- 0x1E	ROTATION3_CURR_ANG	-------------
 always @(posedge clock) begin

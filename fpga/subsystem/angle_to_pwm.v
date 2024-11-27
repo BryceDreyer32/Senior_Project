@@ -24,8 +24,8 @@ localparam CRUISE = 2'd2;
 localparam DECCEL = 2'd3; 
 
 localparam SMALL_DELTA  = 4'd8;
-localparam MED_DELTA    = 4'd11;
-localparam BIG_DELTA    = 4'd15;
+localparam MED_DELTA    = 4'd25;
+localparam BIG_DELTA    = 4'd75;
 
 localparam PROFILE_DELAY_TARGET = 12'd3;
 localparam TARGET_TOLERANCE     = 13'd2; 
@@ -37,6 +37,8 @@ reg [3:0]   num_steps;
 reg [3:0]   curr_step;
 reg [11:0]  profile_delay;
 
+// The direction we output here depends on the MSB of the delta_angle
+assign pwm_direction = delta_angle[12];
 
 // Initialize the profile
 always @(negedge reset_n) begin

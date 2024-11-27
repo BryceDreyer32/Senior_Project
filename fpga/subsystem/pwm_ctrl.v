@@ -42,10 +42,8 @@ i2c i2c(
     .clock          (clock),                // The main clock
     .angle_done     (angle_done),           // Whether or not we are at the target angle
     .raw_angle      (current_angle[11:0]),  // The raw angle from the AS5600            
-    .scl            (scl),                  // The I2C clock
+    .scl            (sck),                  // The I2C clock
     .sda            (sda)                   // The I2C bi-directional data
 );
- 
-assign sda = isSending ? sdaOutReg : 1'bz;
 
 endmodule
