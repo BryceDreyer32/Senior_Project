@@ -180,14 +180,12 @@ assign target_angle0[7:0] = reg_file[14][7:0];
 
 // ------------- 0xF	ROTATION0_CURR_ANG	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'hF))
-		reg_file[15]     <=  current_angle0[7:0];
+	reg_file[15]     <=  current_angle0[7:0];
 end
 
 // ------------- 0x10	ROTATION0_CURR_ANG2	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h10))
-		reg_file[16]     <=  {4'h0, current_angle0[11:8]};
+    reg_file[16]     <=  {4'h0, current_angle0[11:8]};
 end
 
 // ------------- 0x11	ROTATION1_CONTROL	-------------
@@ -216,14 +214,12 @@ assign target_angle1[7:0] = reg_file[19][7:0];
 
 // ------------- 0x14	ROTATION1_CURR_ANG	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h14))
-		reg_file[20]     <=  current_angle1[7:0];
+	reg_file[20]     <=  current_angle1[7:0];
 end
 
 // ------------- 0x15	ROTATION1_CURR_ANG2	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h15))
-		reg_file[21]     <=  {4'h0, current_angle1[11:8]};
+	reg_file[21]     <=  {4'h0, current_angle1[11:8]};
 end
 
 // ------------- 0x16	ROTATION2_CONTROL	-------------
@@ -252,14 +248,12 @@ assign target_angle2[7:0] = reg_file[24][7:0];
 
 // ------------- 0x19	ROTATION2_CURR_ANG	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h19))
-		reg_file[25]     <=  current_angle2[7:0];
+	reg_file[25]     <=  current_angle2[7:0];
 end
 
 // ------------- 0x1A	ROTATION2_CURR_ANG2	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h1A))
-		reg_file[26]     <=  {4'h0, current_angle2[11:8]};
+	reg_file[26]     <=  {4'h0, current_angle2[11:8]};
 end
 
 // ------------- 0x1B	ROTATION3_CONTROL	-------------
@@ -288,14 +282,12 @@ assign target_angle3[7:0] = reg_file[29][7:0];
 
 // ------------- 0x1E	ROTATION3_CURR_ANG	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h1E))
-		reg_file[30]     <=  current_angle3[7:0];
+	reg_file[30]     <=  current_angle3[7:0];
 end
 
 // ------------- 0x1F	ROTATION3_CURR_ANG2	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h1F))
-		reg_file[31]     <=  {4'h0, current_angle3[11:8]};
+	reg_file[31]     <=  {4'h0, current_angle3[11:8]};
 end
 
 // --------------- 0x20	SERVO0_CONTROL	----------------
@@ -342,6 +334,6 @@ always @(posedge clock) begin
 end
 
 assign led_test_enable      = reg_file[37][4];
-assign led_values           = reg_file[37][3:0];
+assign led_values[3:0]      = reg_file[37][3:0];
 
 endmodule
