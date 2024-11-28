@@ -34,7 +34,7 @@ fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, target_val)
 print("ROTATION0_CONTROL_ADDR.data        = " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_CONTROL_ADDR)[1]))
 print("ROTATION0_CURRENT_ANGLE2_ADDR.data = " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR)[1]))
 
-time.sleep(5)
+time.sleep(2)
 
 try:
     while True:
@@ -43,7 +43,11 @@ try:
 
         lsb_data = fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE_ADDR)
         msb_data = fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR)
-        rd_data = (msb_data[1] << 8) | lsb_data[1]
+        print("msb_data = " + hex((msb_data[1] << 16) | msb_data[0]))
+        print("lsb_data = " + hex((lsb_data[1] << 16) | lsb_data[0]))
+        rd_data = ((msb_data[1] << 8) | lsb_data[1]) & 0xFFF
+
+        #print('msb data = ' + hex(msb_data[1]) + ", lsb_data = " + hex(lsb_data[1]))
 
         print("Target angle  = " + hex(angle & 0xFFF))
         print("Current angle = " + hex(rd_data))

@@ -1,8 +1,8 @@
 module test();
     reg             reset_n = 0;        // Active low reset
     reg             clock = 0;          // The main clock
-    reg     [7:0]   target_angle = 0;   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    reg     [7:0]   current_angle = 0;  // The angle read from the motor encoder
+    reg     [11:0]   target_angle = 0;   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
+    reg     [11:0]   current_angle = 0;  // The angle read from the motor encoder
     reg             pwm_done;       // Indicator from PWM that the pwm_ratio has been applied
     reg             angle_update = 0;   // Request to update the angle
     wire            angle_done;     // Indicator that the angle has been applied 
@@ -28,7 +28,7 @@ initial begin
     
     $display("Setting reset");
     pwm_done    = 1'd0;
-    #10 reset_n = 1;
+    #90 reset_n = 1;
 
 
     $display("----------------------------------");
@@ -42,8 +42,27 @@ initial begin
     //    timeout = timeout - 1;
     //end
 
+    #14900  force sda = 0;  // ACK
+    #500    force sda = 1;  // DATA
+    #500    force sda = 0;
+    #500    force sda = 1;
+    #500    force sda = 0;
+    #500    force sda = 0;
+    #500    force sda = 1;
+    #500    force sda = 0;
+    #500    force sda = 1;
+    #500    force sda = 0;  // ACK
+    #500    force sda = 0;  // DATA
+    #500    force sda = 0;
+    #500    force sda = 1;
+    #500    force sda = 1;
+    #500    force sda = 1;
+    #500    force sda = 1;
+    #500    force sda = 0;
+    #500    force sda = 0;
+    #500    release sda;
 
-    #30000 $finish;
+    #2000 $finish;
 end
 
 pwm_ctrl dut(

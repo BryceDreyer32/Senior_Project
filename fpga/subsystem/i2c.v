@@ -11,9 +11,6 @@ module i2c(
     inout               sda             // The I2C bi-directional data
 );
 
-localparam      ENCODER_ADDRESS     = 7'h36;
-localparam      CLOCK_DIV_RATIO     = 6'h32;
-
 localparam      IDLE        = 4'h0;
 localparam      START       = 4'h1;
 localparam      DEV_WR      = 4'h2;
@@ -104,7 +101,7 @@ always @(*) begin
         end
 
         DEV_WR: begin
-            if(bit_counter == 4'h7)
+            if(bit_counter == 3'h7)
                 ns = ACK0;
             else
                 ns = DEV_WR;
@@ -115,7 +112,7 @@ always @(*) begin
         end
 
         READ_ADDR: begin
-            if(bit_counter == 4'h7)
+            if(bit_counter == 3'h7)
                 ns = ACK1;
             else
                 ns = READ_ADDR;
@@ -131,7 +128,7 @@ always @(*) begin
         end
 
         DEV_RD: begin
-            if(bit_counter == 4'h7)
+            if(bit_counter == 3'h7)
                 ns = ACK2;
             else
                 ns = DEV_RD; 
@@ -142,7 +139,7 @@ always @(*) begin
         end
 
         DATA0: begin
-            if(bit_counter == 4'h7)
+            if(bit_counter == 3'h7)
                 ns = ACK3;
             else
                 ns = DATA0;
@@ -153,7 +150,7 @@ always @(*) begin
         end
 
         DATA1: begin
-            if(bit_counter == 4'h7)
+            if(bit_counter == 3'h7)
                 ns = NACK;
             else 
                 ns = DATA1;
