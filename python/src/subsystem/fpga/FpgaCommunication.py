@@ -31,15 +31,28 @@ class FpgaCommunication:
         self.spi.writebytes([msbyte, data])
 
     def fpgaRead(self, address):
+        # First we write the read command, then the address, and data we just set to FF
         # bit[15]   = 1 (read)
         # bit[14]   = parity
         # bit[13:8] = address
         # bit[7:0]  = FF
         parity = bin(((1 << Constants.Constants.RD_DATA_FRAME_RW_BIT) | address)).count('1') % 2        
-        msbyte = (1 << Constants.Constants.RD_DATA_FRAME_RW_BIT-8) | (parity << Constants.Constants.RD_DATA_FRAME_PARITY_BIT-8) | address
+        msbyte = (1 << (Constants.Constants.RD_DATA_FRAME_RW_BIT-8)) | (parity << (Constants.Constants.RD_DATA_FRAME_PARITY_BIT-8)) | (address & 0x3F)
         self.spi.writebytes([msbyte, 0xFF])
 
-        return self.spi.readbytes(2)
+        # Then we read back 2 bytes
+        data = self.spi.readbytes(2)
+
+        # Parity consists of a "1" for the read command, the data, and the address
+        parity = (1 + bin(data[1]).count('1') + bin(address).count('1')) % 2
+
+        #print('data[1] = ' + hex(data[1]) + ', data[0] = ' + hex(data[0]) + ', parity = ' + str(parity))
+
+        if(data[0] == parity):
+            return data[1]
+        else:
+            print("Parity error on SPI received read data")
+            return data[1]
 
     def fpgaCloseConnection(self):
         self.spi.close()

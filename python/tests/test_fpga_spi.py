@@ -31,10 +31,10 @@ try:
         rd_data = fpga.fpgaRead(address)
 
         # Check if the data matches (for status registers, we expect mismatch)
-        matched = (wr_data == rd_data[1])
+        matched = (wr_data == rd_data)
 
         # Print out the result
-        print("Address = " + hex(address) + ", Write = " + hex(wr_data) + ", Read = " + hex(rd_data[1]) + " " + hex(rd_data[0]) + ", Matched = " + str(matched))
+        print("Address = " + hex(address) + ", Write = " + hex(wr_data) + ", Read = " + hex(rd_data) + ", Matched = " + str(matched))
 
         # Increment address until end of the register space, then go back to 0
         if(address == 0x1f):

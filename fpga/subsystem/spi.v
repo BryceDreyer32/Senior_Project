@@ -21,11 +21,11 @@ wire                rx_parity, tx_parity, data_valid;
 wire                shift_en;
 reg                 shift_en_ff, shift_en_ff2;
 reg                 shift_en_wentlow;
-reg                 read, write, load_miso;
+reg                 read, write;
 reg                 parity;
 reg                 cs_n_ff, cs_n_ff2;
 reg                 csn_wenthigh, csn_wenthigh_ff, csn_wentlow;
-reg     [15:0]      shift_in_reg, shift_out_reg, mosi_reg, miso_reg;
+reg     [15:0]      shift_in_reg, shift_out_reg, mosi_reg;
 
 // The shift_en is the clock masked by cs_n
 assign shift_en = spi_clk & (~cs_n);
@@ -123,23 +123,17 @@ end
 
 // -------------------------------------- MISO REGISTERS --------------------------------------
 always @(posedge clock or negedge reset_n) begin
-    if(~reset_n) begin
-        miso_reg[15:0]      <= 16'b0;
-    end
-
-    else begin
-        miso_reg[7:0]       <= rd_data[7:0];
-        miso_reg[8]         <= tx_parity;
-        miso_reg[15:9]      <= 7'b0;
-    end
-end
-
-always @(posedge clock or negedge reset_n) begin
     if(~reset_n)
         shift_out_reg[15:0]     <= 16'b0;
     else begin
+        // Before a read is done, the read-command and address are written in via SPI
+        // On the consequent assertion of cs_n, we load the data into the shift reg
+        // and then shift it out every time we detect the shift_en went low
+        // (Note that this is done because the SPI clock is constantly gated off, so 
+        // we can't rely on it to load in data, etc - hence we use the main clock 
+        // and look for transitions that are happening on SPI)
         if(csn_wentlow)
-            shift_out_reg[15:0]     <= miso_reg[15:0];
+            shift_out_reg[15:0]     <= {7'b0, tx_parity, rd_data[7:0]};
         else if(shift_en_wentlow)
             shift_out_reg[15:0]     <= (shift_out_reg[15:0] << 1);   
     end
