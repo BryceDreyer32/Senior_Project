@@ -76,6 +76,10 @@ module top(
     wire  [7:0]     servo_position2; // Servo 2 target position
     wire  [7:0]     servo_position3; // Servo 3 target position
 
+    wire  [7:0]     debug_signals;   // Debug signals
+    wire            led_test_enable; // Enable the led testing
+    wire  [3:0]     led_values;      // Test led values
+
 
     wire  [7:0]     BAUD_DIVISION = 8'd116;   // Select baud 115200
 
@@ -169,10 +173,14 @@ reg_file rf(
     .target_angle3      (target_angle3),    // Rotation target angle
     .current_angle3     (current_angle3),   // The current angle
 	
-    .servo_position0    (servo_position0), // Servo 0 target position
-    .servo_position1    (servo_position1), // Servo 1 target position
-    .servo_position2    (servo_position2), // Servo 2 target position
-    .servo_position3    (servo_position3)  // Servo 3 target position
+    .servo_position0    (servo_position0),  // Servo 0 target position
+    .servo_position1    (servo_position1),  // Servo 1 target position
+    .servo_position2    (servo_position2),  // Servo 2 target position
+    .servo_position3    (servo_position3),  // Servo 3 target position
+
+    .debug_signals      (8'b0),             // Debug signals
+    .led_test_enable    (led_test_enable),  // Enable the led testing
+    .led_values         (led_values[3:0])   // Test led values
 );
 
 ////////////////////////////////////////////////////////////////
@@ -411,9 +419,9 @@ pwm servo_pwm3(
     .pwm_signal             (servo_pwm[3])
 );
 
-assign status_fault = |(sr_fault[3:0]);        // Control for LED for when a fault has occurred
-assign status_pi = 1'b1;                // Control for LED for when the Orange Pi is connected
-assign status_ps4 = 1'b1;               // Control for LED for when the PS4 controller is connected
-assign status_debug = 1'b1;             // Control for LED for general debug
+assign status_fault = led_test_enable ? led_values[0] : |(sr_fault[3:0]);   // Control for LED for when a fault has occurred
+assign status_pi    = led_test_enable ? led_values[1] :  1'b0;              // Control for LED for when the Orange Pi is connected
+assign status_ps4   = led_test_enable ? led_values[2] :  1'b0;              // Control for LED for when the PS4 controller is connected
+assign status_debug = led_test_enable ? led_values[3] :  1'b0;              // Control for LED for general debug
 
 endmodule

@@ -3,27 +3,50 @@
 // Description: This is the RTL for PWM Control
 
 module pwm_ctrl(
-    input               reset_n,        // Active low reset
-    input               clock,          // The main clock
+    input                   reset_n,        // Active low reset
+    input                   clock,          // The main clock
 
     //FPGA Subsystem Interface
-    input   [11:0]      target_angle,   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    input               angle_update,   // Signals when an angle update is available
-    output              angle_done,     // Output sent when angle has been adjusted to target_angle
-    output  [11:0]      current_angle,  // Angle we are currently at from I2C
+    input           [11:0]  target_angle,   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
+    input                   angle_update,   // Signals when an angle update is available
+    output                  angle_done,     // Output sent when angle has been adjusted to target_angle
+    output  reg     [11:0]  current_angle,  // Angle we are currently at from I2C
 
     //PWM Interface
-    input               pwm_done,       // Updated PWM ratio has been applied (1 cycle long pulse)
-    output              pwm_enable,     // Enables the PWM output
-    output  [7:0]       pwm_ratio,      // The high-time of the PWM signal out of 255.
-    output              pwm_update,     // Request an update to the PWM ratio
+    input                   pwm_done,       // Updated PWM ratio has been applied (1 cycle long pulse)
+    output                  pwm_enable,     // Enables the PWM output
+    output          [7:0]   pwm_ratio,      // The high-time of the PWM signal out of 255.
+    output                  pwm_update,     // Request an update to the PWM ratio
 
     //I2C Interface
-    output              sck,            // The I2C clock
-    inout               sda             // The I2C bi-directional data
+    output                  sck,            // The I2C clock
+    inout                   sda             // The I2C bi-directional data
 );  
 
-//wire angle_done;
+reg     [5:0]   clk_counter;
+reg             rd_done_ff, rd_done_ff2;
+wire            rd_done;
+wire    [11:0]  curr_ang;
+
+// Clock division and crossing
+always @(negedge reset_n or posedge clock) begin
+    if(~reset_n) begin
+        clk_counter[5:0]    <= 6'b0;  
+        rd_done_ff          <= 1'b0;
+        rd_done_ff2         <= 1'b0;
+        current_angle[11:0] <= 12'b0;
+    end
+
+    else begin
+        clk_counter[5:0]    <= clk_counter[5:0] + 6'b1;
+        rd_done_ff          <= rd_done;
+        rd_done_ff2         <= rd_done_ff; 
+
+        // When rd_done rises we capture the new value
+        if(rd_done_ff & (~rd_done_ff2))
+            current_angle[11:0]     <=  curr_ang[11:0];      
+    end
+end
 
 angle_to_pwm a_to_pwm(
     .reset_n        (reset_n),  	        // Active low reset
@@ -41,9 +64,10 @@ angle_to_pwm a_to_pwm(
 
 i2c i2c(    
     .reset_n        (reset_n),              // Active low reset
-    .clock          (clock),                // The main clock
+    .clock          (clk_counter[5]),       // The main clock
     .angle_done     (angle_done),           // Whether or not we are at the target angle
-    .raw_angle      (current_angle[11:0]),  // The raw angle from the AS5600            
+    .raw_angle      (curr_ang[11:0]),       // The raw angle from the AS5600 
+    .rd_done        (rd_done),              // I2C read done pulse           
     .scl            (sck),                  // The I2C clock
     .sda            (sda)                   // The I2C bi-directional data
 );

@@ -5,7 +5,8 @@ module i2c(
     input               reset_n,        // Active low reset
     input               clock,          // The main clock
     input               angle_done,     // Whether or not we are at the target angle
-    output      [11:0]  raw_angle,      // The raw angle from the AS5600            
+    output      [11:0]  raw_angle,      // The raw angle from the AS5600     
+    output  reg         rd_done,        // I2C read done pulse
     output              scl,            // The I2C clock
     inout               sda             // The I2C bi-directional data
 );
@@ -38,7 +39,7 @@ reg     [3:0]   ns, ps;
 reg     [1:0]   substate;
 wire            PHASE1, PHASE2, PHASE3, PHASE4;
 reg             scl_int, sda_int, tri_mode;
-reg             wr_bit, rd_bit;
+reg             wr_bit;
 reg     [7:0]   read_data0, read_data1;
 
 always @(posedge clock or negedge reset_n) begin
@@ -47,6 +48,7 @@ always @(posedge clock or negedge reset_n) begin
         wr_bit          <= 1'h0;
         read_data0[7:0] <= 8'b0;
         read_data1[7:0] <= 8'b0;
+        rd_done         <= 1'b0;
     end
     else begin
         substate[1:0]   <= substate[1:0] + 2'h1;
@@ -60,10 +62,12 @@ always @(posedge clock or negedge reset_n) begin
             wr_bit    <= 1'bx;
 
         if((ps == DATA0) & PHASE3)
-            read_data1[8'd7 - bit_counter] = rd_bit;
+            read_data1[8'd7 - bit_counter] <= sda;
         
         else if((ps == DATA1) & PHASE3)
-            read_data0[8'd7 - bit_counter] = rd_bit;
+            read_data0[8'd7 - bit_counter] <= sda;
+            
+        rd_done <= (ps == STOP);
     end
 end
 
@@ -181,7 +185,6 @@ always @(*) begin
     scl_int     = 1'b1;
     sda_int     = 1'b1;
     tri_mode    = 1'b0;
-    rd_bit      = 1'b0;
 
     case(ps)
         IDLE: begin
@@ -369,7 +372,6 @@ always @(*) begin
              else if(PHASE4) begin
                 scl_int = 1'b1;
                 sda_int = 1'bZ;
-                rd_bit  = sda;
             end
         end
 
@@ -411,7 +413,6 @@ always @(*) begin
              else if(PHASE4) begin
                 scl_int = 1'b1;
                 sda_int = 1'bZ;
-                rd_bit  = sda;
             end
         end
 

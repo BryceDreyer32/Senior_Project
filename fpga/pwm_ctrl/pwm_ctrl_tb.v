@@ -43,7 +43,7 @@ initial begin
     //end
 
 
-    #20000 $finish;
+    #30000 $finish;
 end
 
 pwm_ctrl dut(

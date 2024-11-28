@@ -69,10 +69,14 @@ module reg_file (
     output  [7:0]   servo_position0, // Servo 0 target position
     output  [7:0]   servo_position1, // Servo 1 target position
     output  [7:0]   servo_position2, // Servo 2 target position
-    output  [7:0]   servo_position3  // Servo 3 target position
+    output  [7:0]   servo_position3, // Servo 3 target position
+
+    input   [7:0]   debug_signals,   // Debug signals
+    output          led_test_enable, // Enable the led testing
+    output  [3:0]   led_values       // Test led values
 );
 
-reg     [7:0]   reg_file    [35:0];
+reg     [7:0]   reg_file    [37:0];
 
 // Read Data is just a pointer to whatever the address is set to 
 always @(posedge clock) begin
@@ -172,7 +176,7 @@ always @(posedge clock) begin
 		reg_file[14]     <=  wr_data[7:0];
 end
 
-assign target_angle0[7:0] = reg_file[14][7:0];
+assign target_angle0      = reg_file[14][7:0];
 
 // ------------- 0xF	ROTATION0_CURR_ANG	-------------
 always @(posedge clock) begin
@@ -208,7 +212,7 @@ always @(posedge clock) begin
 		reg_file[19]     <=  wr_data[7:0];
 end
 
-assign target_angle1[7:0] = reg_file[19][7:0];
+assign target_angle1      = reg_file[19][7:0];
 
 // ------------- 0x14	ROTATION1_CURR_ANG	-------------
 always @(posedge clock) begin
@@ -244,7 +248,7 @@ always @(posedge clock) begin
 		reg_file[24]     <=  wr_data[7:0];
 end
 
-assign target_angle2[7:0] = reg_file[24][7:0];
+assign target_angle2      = reg_file[24][7:0];
 
 // ------------- 0x19	ROTATION2_CURR_ANG	-------------
 always @(posedge clock) begin
@@ -280,7 +284,7 @@ always @(posedge clock) begin
 		reg_file[29]     <=  wr_data[7:0];
 end
 
-assign target_angle3[7:0] = reg_file[29][7:0];
+assign target_angle3      = reg_file[29][7:0];
 
 // ------------- 0x1E	ROTATION3_CURR_ANG	-------------
 always @(posedge clock) begin
@@ -325,6 +329,19 @@ always @(posedge clock) begin
 end
 
 assign servo_position3    = reg_file[35][7:0];
-			
+
+// ---------------   0x24	DEBUG   ----------------
+always @(posedge clock) begin
+	reg_file[36]     <=  debug_signals[7:0];
+end
+
+// ------------- 0x25	LED_TEST	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h25))
+		reg_file[37]     <=  wr_data[7:0];
+end
+
+assign led_test_enable      = reg_file[37][4];
+assign led_values           = reg_file[37][3:0];
 
 endmodule
