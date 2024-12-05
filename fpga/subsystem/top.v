@@ -178,7 +178,7 @@ reg_file rf(
     .servo_position2    (servo_position2),  // Servo 2 target position
     .servo_position3    (servo_position3),  // Servo 3 target position
 
-    .debug_signals      (8'b0),             // Debug signals
+    .debug_signals      (debug_signals[7:0]),// Debug signals
     .led_test_enable    (led_test_enable),  // Enable the led testing
     .led_values         (led_values[3:0])   // Test led values
 );
@@ -247,6 +247,7 @@ uart uart_drv_3(
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor0
 ////////////////////////////////////////////////////////////////
+wire angle_done;
 pwm_ctrl pwm_ctrl0(
     .reset_n                (reset_n),              // Active low reset
     .clock                  (clock),                // The main clock
@@ -254,6 +255,7 @@ pwm_ctrl pwm_ctrl0(
     //FPGA Subsystem Interface
     .target_angle           (target_angle0[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .angle_update           (1'b1),                 // Signals when an angle update is available
+    .angle_done             (angle_done),
     .current_angle          (current_angle0[11:0]), // Angle we are currently at from I2C
 
     //PWM Interface
@@ -266,6 +268,8 @@ pwm_ctrl pwm_ctrl0(
     .sck                    (scl[0]),               // The I2C clock
     .sda                    (sda[0])                // The I2C bi-directional data
 );
+
+assign debug_signals[7:0] = {sr_pwm_done[0], sr_pwm_enable[0], sr_pwm_ratio[0][3:0], sr_pwm_update[0], angle_done};
 
 pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
