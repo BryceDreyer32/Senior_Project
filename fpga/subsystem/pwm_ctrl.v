@@ -18,6 +18,8 @@ module pwm_ctrl(
     output          [7:0]   pwm_ratio,      // The high-time of the PWM signal out of 255.
     output                  pwm_update,     // Request an update to the PWM ratio
 
+    output          [7:0]   debug_signals,
+
     //I2C Interface
     output                  sck,            // The I2C clock
     inout                   sda             // The I2C bi-directional data
@@ -56,9 +58,10 @@ angle_to_pwm a_to_pwm(
     .pwm_done       (pwm_done),             // Indicator from PWM that the pwm_ratio has been applied
     .angle_update   (angle_update),         // Request to update the angle
     .angle_done     (angle_done),           // Indicator that the angle has been applied 
+    .debug_signals  (debug_signals[7:0]),
     .pwm_enable     (pwm_enable),   
     .pwm_update     (pwm_update),           // Request an update to the PWM ratio
-    .pwm_ratio      (pwm_ratio),            // The high-time of the PWM signal out of 255.
+    .pwm_ratio      (pwm_ratio[7:0]),       // The high-time of the PWM signal out of 255.
     .pwm_direction  ()                      // The direction of the motor
 );  
 

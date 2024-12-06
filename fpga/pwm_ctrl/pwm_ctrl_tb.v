@@ -34,8 +34,8 @@ initial begin
     $display("----------------------------------");
     $display("--- Starting Medium Angle Test ---");
     $display("----------------------------------"); 
-    target_angle =   8'd23;
-    current_angle =  8'd10;
+    target_angle =   12'd23;
+    current_angle =  12'd10;
     #10 angle_update = 1'b1;
     //while(~angle_done) begin
     //    #4000 current_angle[7:0] = current_angle[7:0] + 8'b1;

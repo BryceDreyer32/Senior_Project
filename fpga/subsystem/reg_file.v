@@ -71,12 +71,12 @@ module reg_file (
     output  [7:0]   servo_position2, // Servo 2 target position
     output  [7:0]   servo_position3, // Servo 3 target position
 
-    input   [7:0]   debug_signals,   // Debug signals
+    input   [31:0]  debug_signals,   // Debug signals
     output          led_test_enable, // Enable the led testing
     output  [3:0]   led_values       // Test led values
 );
 
-reg     [7:0]   reg_file    [37:0];
+reg     [7:0]   reg_file    [40:0];
 
 // Read Data is just a pointer to whatever the address is set to 
 always @(posedge clock) begin
@@ -327,13 +327,28 @@ always @(posedge clock) begin
 	reg_file[36]     <=  debug_signals[7:0];
 end
 
-// ------------- 0x25	LED_TEST	-------------
+// ---------------   0x25	DEBUG   ----------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h25))
-		reg_file[37]     <=  wr_data[7:0];
+	reg_file[37]     <=  debug_signals[15:8];
 end
 
-assign led_test_enable      = reg_file[37][4];
-assign led_values[3:0]      = reg_file[37][3:0];
+// ---------------   0x26	DEBUG   ----------------
+always @(posedge clock) begin
+	reg_file[38]     <=  debug_signals[23:16];
+end
+
+// ---------------   0x27	DEBUG   ----------------
+always @(posedge clock) begin
+	reg_file[39]     <=  debug_signals[31:24];
+end
+
+// ------------- 0x28	LED_TEST	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h28))
+		reg_file[40]     <=  wr_data[7:0];
+end
+
+assign led_test_enable      = reg_file[40][4];
+assign led_values[3:0]      = reg_file[40][3:0];
 
 endmodule

@@ -1,8 +1,8 @@
 module test();
     reg             reset_n = 0;        // Active low reset
     reg             clock = 0;          // The main clock
-    reg     [7:0]   target_angle = 0;   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    reg     [7:0]   current_angle = 0;  // The angle read from the motor encoder
+    reg     [11:0]  target_angle = 0;   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
+    reg     [11:0]  current_angle = 0;  // The angle read from the motor encoder
     wire            pwm_done;       // Indicator from PWM that the pwm_ratio has been applied
     reg             angle_update = 0;   // Request to update the angle
     wire            angle_done;     // Indicator that the angle has been applied 
@@ -32,27 +32,27 @@ initial begin
     $display("---------------------------------");
     $display("--- Starting Small Angle Test ---");
     $display("---------------------------------"); 
-    target_angle = 8'd18;
-    current_angle = 8'd10;
+    target_angle = 12'd100;
+    current_angle = 12'd10;
     #10 angle_update = 1'b1;
     while(~done) begin
-        #4000 current_angle[7:0] = current_angle[7:0] + 8'b1;
+        #4000 current_angle[11:0] = current_angle[11:0] + 12'b1;
         timeout = timeout - 1;
     end
     #10000;
 
-    $display("---------------------------------");
+    /*$display("---------------------------------");
     $display("--- Starting Small Angle Test ---");
     $display("---------------------------------"); 
-    target_angle = 8'd10;
-    current_angle = 8'd18;
+    target_angle = 12'd10;
+    current_angle = 12'd18;
     #10 angle_update = 1'b1;
     while(done) begin
-        #4000 current_angle[7:0] = current_angle[7:0] - 8'b1;
+        #40 current_angle[11:0] = current_angle[11:0] - 12'b1;
         timeout = timeout - 1;
     end
 
-/*
+
     $display("----------------------------------");
     $display("--- Starting Medium Angle Test ---");
     $display("----------------------------------"); 
