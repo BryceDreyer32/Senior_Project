@@ -18,6 +18,7 @@ module pwm_ctrl(
     output                  pwm_enable,     // Enables the PWM output
     output          [7:0]   pwm_ratio,      // The high-time of the PWM signal out of 255.
     output                  pwm_update,     // Request an update to the PWM ratio
+    output                  pwm_direction,  // Direction to drive the motor
 
     output          [7:0]   debug_signals,
 
@@ -64,6 +65,7 @@ angle_to_pwm a_to_pwm(
     .pwm_enable     (pwm_enable),   
     .pwm_update     (pwm_update),           // Request an update to the PWM ratio
     .pwm_ratio      (pwm_ratio[7:0]),       // The high-time of the PWM signal out of 255.
+    .pwm_direction  (pwm_direction)         // Direction to drive the motor
 );  
 
 i2c i2c(    

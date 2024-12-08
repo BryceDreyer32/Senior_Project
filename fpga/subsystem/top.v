@@ -59,7 +59,7 @@ module top(
     wire            enable3;   	     // Motor enable
     wire            direction3;	     // Motor direction
     wire  [4:0]     pwm3;      	     // PWM control
-    wire  [3:0]     sr_pwm_done, sr_pwm_enable, sr_pwm_update;
+    wire  [3:0]     sr_pwm_done, sr_pwm_enable, sr_pwm_update, sr_pwm_direction;
     wire  [7:0]     sr_pwm_ratio    [3:0];
 
     wire  [11:0]    target_angle0;   // Rotation target angle
@@ -164,16 +164,16 @@ reg_file rf(
     // Rotation Motors outputs
     .brake4             (sr_brake[0]),    	// Brake control
     .enable4            (sr_enable[0]),   	// Motor enable
-    .direction4         (sr_direction[0]),	// Motor direction
+    .direction4         (),//sr_direction[0]),	// Motor direction
     .brake5             (sr_brake[1]),    	// Brake control
     .enable5            (sr_enable[1]),   	// Motor enable
-    .direction5         (sr_direction[1]),	// Motor direction
+    .direction5         (),//sr_direction[1]),	// Motor direction
     .brake6             (sr_brake[2]),    	// Brake control
     .enable6            (sr_enable[2]),   	// Motor enable
-    .direction6         (sr_direction[2]),	// Motor direction 
+    .direction6         (),//sr_direction[2]),	// Motor direction 
     .brake7             (sr_brake[3]),    	// Brake control
     .enable7            (sr_enable[3]),   	// Motor enable
-    .direction7         (sr_direction[3]),	// Motor direction  
+    .direction7         (),//sr_direction[3]),	// Motor direction  
 					 
     .target_angle0      (target_angle0),    // Rotation target angle
     .current_angle0     (current_angle0),   // The current angle
@@ -287,6 +287,7 @@ pwm_ctrl pwm_ctrl0(
     .pwm_enable             (sr_pwm_enable[0]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
+    .pwm_direction          (sr_direction[0]),      // Direction to drive the motor
 
     .debug_signals          (pwm_ctrl0_debug[7:0]),
 
@@ -298,7 +299,7 @@ pwm_ctrl pwm_ctrl0(
 assign debug_signals[31:0] = {  8'b0,                   // 31:24
                                 pwm_ctrl0_debug[7:0],   // 23:16
                                 sr_pwm_ratio[0][7:0],   // 15:8
-                                4'b0, sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
+                                3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
 
 pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
@@ -329,6 +330,7 @@ pwm_ctrl pwm_ctrl1(
     .pwm_enable             (sr_pwm_enable[1]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[1]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[1]),     // Request an update to the PWM ratio
+    .pwm_direction          (sr_direction[1]),      // Direction to drive the motor
 
     //I2C Interface
     .sck                    (scl[1]),               // The I2C clock
@@ -364,6 +366,7 @@ pwm_ctrl pwm_ctrl2(
     .pwm_enable             (sr_pwm_enable[2]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[2]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[2]),     // Request an update to the PWM ratio
+    .pwm_direction          (sr_direction[2]),      // Direction to drive the motor
 
     //I2C Interface
     .sck                    (scl[2]),               // The I2C clock
@@ -399,6 +402,7 @@ pwm_ctrl pwm_ctrl3(
     .pwm_enable             (sr_pwm_enable[3]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[3]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[3]),     // Request an update to the PWM ratio
+    .pwm_direction          (sr_direction[3]),      // Direction to drive the motor
 
     //I2C Interface
     .sck                    (scl[3]),               // The I2C clock
