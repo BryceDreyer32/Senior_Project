@@ -70,7 +70,18 @@ module top(
     wire  [11:0]    current_angle2;  // The current angle
     wire  [11:0]    target_angle3;   // Rotation target angle
     wire  [11:0]    current_angle3;  // The current angle
-
+    wire            abort_angle0;    // Aborts rotating to angle
+    wire            abort_angle1;    // Aborts rotating to angle
+    wire            abort_angle2;    // Aborts rotating to angle
+    wire            abort_angle3;    // Aborts rotating to angle
+    wire            update_angle0;   // Start rotation to angle
+    wire            update_angle1;   // Start rotation to angle
+    wire            update_angle2;   // Start rotation to angle
+    wire            update_angle3;   // Start rotation to angle
+    wire            angle_done0;     // Arrived at target angle
+    wire            angle_done1;     // Arrived at target angle
+    wire            angle_done2;     // Arrived at target angle
+    wire            angle_done3;     // Arrived at target angle    
     wire  [7:0]     servo_position0; // Servo 0 target position
     wire  [7:0]     servo_position1; // Servo 1 target position
     wire  [7:0]     servo_position2; // Servo 2 target position
@@ -80,7 +91,6 @@ module top(
     wire  [7:0]     pwm_ctrl0_debug;
     wire            led_test_enable; // Enable the led testing
     wire  [3:0]     led_values;      // Test led values
-
 
     wire  [7:0]     BAUD_DIVISION = 8'd116;   // Select baud 115200
 
@@ -173,7 +183,20 @@ reg_file rf(
     .current_angle2     (current_angle2),   // The current angle
     .target_angle3      (target_angle3),    // Rotation target angle
     .current_angle3     (current_angle3),   // The current angle
-	
+
+    .abort_angle0       (abort_angle0),     // Aborts rotating to angle
+    .abort_angle1       (abort_angle1),     // Aborts rotating to angle
+    .abort_angle2       (abort_angle2),     // Aborts rotating to angle
+    .abort_angle3       (abort_angle3),     // Aborts rotating to angle
+    .update_angle0      (update_angle0),    // Start rotation to angle
+    .update_angle1      (update_angle1),    // Start rotation to angle
+    .update_angle2      (update_angle2),    // Start rotation to angle
+    .update_angle3      (update_angle3),    // Start rotation to angle
+    .angle_done0        (angle_done0),      // Start rotation to angle
+    .angle_done1        (angle_done1),      // Start rotation to angle
+    .angle_done2        (angle_done2),      // Start rotation to angle
+    .angle_done3        (angle_done3),      // Start rotation to angle
+
     .servo_position0    (servo_position0),  // Servo 0 target position
     .servo_position1    (servo_position1),  // Servo 1 target position
     .servo_position2    (servo_position2),  // Servo 2 target position
@@ -248,16 +271,16 @@ uart uart_drv_3(
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor0
 ////////////////////////////////////////////////////////////////
-wire angle_done;
 pwm_ctrl pwm_ctrl0(
     .reset_n                (reset_n),              // Active low reset
     .clock                  (clock),                // The main clock
 
     //FPGA Subsystem Interface
     .target_angle           (target_angle0[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    .angle_update           (1'b1),                 // Signals when an angle update is available
-    .angle_done             (angle_done),
+    .angle_update           (update_angle0),        // Signals when an angle update is available
     .current_angle          (current_angle0[11:0]), // Angle we are currently at from I2C
+    .abort_angle            (abort_angle0),         // Aborts the angle adjustment
+    .angle_done             (angle_done0),          // Output sent when angle has been adjusted to target_angle
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -275,7 +298,7 @@ pwm_ctrl pwm_ctrl0(
 assign debug_signals[31:0] = {  8'b0,
                                 pwm_ctrl0_debug[7:0],
                                 sr_pwm_ratio[0][7:0],
-                                4'b0, sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done};
+                                4'b0, sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
 
 pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
@@ -296,8 +319,10 @@ pwm_ctrl pwm_ctrl1(
 
     //FPGA Subsystem Interface
     .target_angle           (target_angle1[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    .angle_update           (1'b1),                 // Signals when an angle update is available
+    .angle_update           (update_angle1),        // Signals when an angle update is available
     .current_angle          (current_angle1[11:0]), // Angle we are currently at from I2C
+    .abort_angle            (abort_angle1),         // Aborts the angle adjustment
+    .angle_done             (angle_done1),          // Output sent when angle has been adjusted to target_angle
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[1]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -329,8 +354,10 @@ pwm_ctrl pwm_ctrl2(
 
     //FPGA Subsystem Interface
     .target_angle           (target_angle2[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    .angle_update           (1'b1),                 // Signals when an angle update is available
+    .angle_update           (update_angle2),        // Signals when an angle update is available
     .current_angle          (current_angle2[11:0]), // Angle we are currently at from I2C
+    .abort_angle            (abort_angle2),         // Aborts the angle adjustment
+    .angle_done             (angle_done2),          // Output sent when angle has been adjusted to target_angle
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[2]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -362,8 +389,10 @@ pwm_ctrl pwm_ctrl3(
 
     //FPGA Subsystem Interface
     .target_angle           (target_angle3[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    .angle_update           (1'b1),                 // Signals when an angle update is available
+    .angle_update           (update_angle3),        // Signals when an angle update is available
     .current_angle          (current_angle3[11:0]), // Angle we are currently at from I2C
+    .abort_angle            (abort_angle3),         // Aborts the angle adjustment
+    .angle_done             (angle_done3),          // Output sent when angle has been adjusted to target_angle
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[3]),       // Updated PWM ratio has been applied (1 cycle long pulse)

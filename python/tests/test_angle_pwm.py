@@ -18,7 +18,7 @@ import FpgaCommunication
 
 # FPGA instance
 fpga = FpgaCommunication.FpgaCommunication(Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
-angle = 800
+angle = 100
 
 # Set brake_n = 1, enable = 1, direction = 0, angle[11:8]
 control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
@@ -52,10 +52,10 @@ try:
         # If we hit the target, then flip the target
         if(abs((angle & 0xFFF) - (rd_data & 0xFFF)) < 10 ):
             print("--- Found angle, flipping target ---")
-            if(angle == 800):
-                angle = 4000
+            if(angle == 100):
+                angle = 200
             else:
-                angle = 800
+                angle = 100
 
         rd_data = 0
         rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG0_STATUS_ADDR) << 0)
@@ -64,7 +64,20 @@ try:
         rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG3_STATUS_ADDR) << 24)
         print("Debug Data = " + hex(rd_data & 0xFFFFFFFF))
 
+        # bits [26:24] are state
+        state = (rd_data >> 24) & 0x7
+        match(state):
+            case 0:  print("State = IDLE")
+            case 1:  print("State = CALC")
+            case 2:  print("State = ACCEL")
+            case 3:  print("State = CRUISE")
+            case 4:  print("State = DECCEL")
+            case _:  print("Invalid state!")
+
         
 
 except KeyboardInterrupt:
     pass
+
+
+

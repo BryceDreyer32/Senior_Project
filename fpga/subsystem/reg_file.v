@@ -65,6 +65,18 @@ module reg_file (
     input   [11:0]  current_angle2,  // The current angle
     output  [11:0]  target_angle3,   // Rotation target angle
     input   [11:0]  current_angle3,  // The current angle
+    output  reg     update_angle0,   // Start rotation to angle
+    output  reg     update_angle1,   // Start rotation to angle
+    output  reg     update_angle2,   // Start rotation to angle
+    output  reg     update_angle3,   // Start rotation to angle
+    output  reg     abort_angle0,    // Aborts rotating to angle
+    output  reg     abort_angle1,    // Aborts rotating to angle
+    output  reg     abort_angle2,    // Aborts rotating to angle
+    output  reg     abort_angle3,    // Aborts rotating to angle
+    input           angle_done0,     // Arrived at target angle
+    input           angle_done1,     // Arrived at target angle
+    input           angle_done2,     // Arrived at target angle
+    input           angle_done3,     // Arrived at target angle
 
     output  [7:0]   servo_position0, // Servo 0 target position
     output  [7:0]   servo_position1, // Servo 1 target position
@@ -185,7 +197,18 @@ end
 
 // ------------- 0x10	ROTATION0_CURR_ANG2	-------------
 always @(posedge clock) begin
-    reg_file[16]     <=  {4'h0, current_angle0[11:8]};
+    reg_file[16]     <=  {angle_done0, 3'h0, current_angle0[11:8]};
+    
+    if(write_en & (address == 6'h10) & wr_data[4])
+        abort_angle0 <= 1'b1;
+    else
+        abort_angle0 <= 1'b0;
+    
+    if(write_en & (address == 6'h10) & wr_data[5])
+        update_angle0 <= 1'b1;
+    else
+        update_angle0 <= 1'b0;
+        
 end
 
 // ------------- 0x11	ROTATION1_CONTROL	-------------
@@ -219,7 +242,17 @@ end
 
 // ------------- 0x15	ROTATION1_CURR_ANG2	-------------
 always @(posedge clock) begin
-	reg_file[21]     <=  {4'h0, current_angle1[11:8]};
+	reg_file[21]     <=  {angle_done1, 3'h0, current_angle1[11:8]};
+
+    if(write_en & (address == 6'h15) & wr_data[4])
+        abort_angle1 <= 1'b1;
+    else
+        abort_angle1 <= 1'b0;
+
+    if(write_en & (address == 6'h15) & wr_data[5])
+        update_angle1 <= 1'b1;
+    else
+        update_angle1 <= 1'b0;
 end
 
 // ------------- 0x16	ROTATION2_CONTROL	-------------
@@ -253,7 +286,17 @@ end
 
 // ------------- 0x1A	ROTATION2_CURR_ANG2	-------------
 always @(posedge clock) begin
-	reg_file[26]     <=  {4'h0, current_angle2[11:8]};
+	reg_file[26]     <=  {angle_done2, 3'h0, current_angle2[11:8]};
+
+    if(write_en & (address == 6'h1A) & wr_data[4])
+        abort_angle2 <= 1'b1;
+    else
+        abort_angle2 <= 1'b0;
+
+    if(write_en & (address == 6'h1A) & wr_data[5])
+        update_angle2 <= 1'b1;
+    else
+        update_angle2 <= 1'b0;
 end
 
 // ------------- 0x1B	ROTATION3_CONTROL	-------------
@@ -287,7 +330,17 @@ end
 
 // ------------- 0x1F	ROTATION3_CURR_ANG2	-------------
 always @(posedge clock) begin
-	reg_file[31]     <=  {4'h0, current_angle3[11:8]};
+	reg_file[31]     <=  {angle_done3, 3'h0, current_angle3[11:8]};
+
+    if(write_en & (address == 6'h1F) & wr_data[4])
+        abort_angle3 <= 1'b1;
+    else
+        abort_angle3 <= 1'b0;
+
+    if(write_en & (address == 6'h1F) & wr_data[5])
+        update_angle3 <= 1'b1;
+    else
+        update_angle3 <= 1'b0;
 end
 
 // --------------- 0x20	SERVO0_CONTROL	----------------

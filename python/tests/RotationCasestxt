@@ -1,0 +1,73 @@
+Example 1: Simple forward case
+    curr = 10
+    target = 20
+    Want to go clockwise 10
+
+    1)  target - current    [CLOCKWISE]
+        = 20 - 10
+        = 10
+
+    2) 4096 - target + current  [COUNTER-CLOCKWISE]
+        = 4096 - 20 + 10
+        = 4086
+
+Example 2: Simple forward backwards
+    curr = 20
+    target = 10
+    Want to go counter-clockwise 10
+
+    1) current - target     [COUNTER-CLOCKWISE]
+        = 20 - 10
+        = 10
+    
+    2) 4096 + target - current  [CLOCKWISE]
+        = 4096 + 20 - 10
+        = 4086
+
+Example 3: Going clockwise through the zero-point
+    curr = 4086
+    target = 10
+    Want to go clockwise 4096 - 4086 + 20 = 30
+
+    1)  target - current   [CLOCKWISE]
+        = 4086 - 10 
+        = 4076
+    
+    2) 4096 + target - current  [CLOCKWISE]
+        = 4096 + 10 - 4086
+        = 20
+
+Example 4: Going counter-clockwise through zero-point
+    curr = 10
+    target = 4086
+    Want to go counter-clockwise 30
+
+    1) target - current     [COUNTER-CLOCKWISE]
+        = 4086 - 10
+        = 4076
+
+    2) 4096 + current - target     [CLOCKWISE]
+        = 4096 +10 - 4086
+        = 20
+
+
+Algorighm:
+    calc1 = current_angle - target_angle;
+    calc2 = target_angle - current_angle;
+    calc3 = 4096 - target_angle + current_angle;
+    calc4 = 4096 - current_angle + target_angle;
+
+    decision = calc1;
+    direction = 1; // CCW
+    if(calc2 < decision) begin
+      decision = calc2;
+      direction = 0; // CW      
+    end
+    if(calc3 < decision) begin
+      decision = calc3;
+      direction = 1; // CCW
+    end
+    if(calc4 < decision) begin
+      decision = calc4;
+      direction = 0; // CW
+    end   

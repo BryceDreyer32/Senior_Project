@@ -11,6 +11,7 @@ module pwm_ctrl(
     input                   angle_update,   // Signals when an angle update is available
     output                  angle_done,     // Output sent when angle has been adjusted to target_angle
     output  reg     [11:0]  current_angle,  // Angle we are currently at from I2C
+    input                   abort_angle,    // Aborts rotating to angle
 
     //PWM Interface
     input                   pwm_done,       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -55,6 +56,7 @@ angle_to_pwm a_to_pwm(
     .clock          (clock),	            // The main clock
     .target_angle   (target_angle[11:0]),   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .current_angle  (current_angle[11:0]),  // The angle read from the motor encoder
+    .abort_angle    (abort_angle),          // Aborts rotating to angle
     .pwm_done       (pwm_done),             // Indicator from PWM that the pwm_ratio has been applied
     .angle_update   (angle_update),         // Request to update the angle
     .angle_done     (angle_done),           // Indicator that the angle has been applied 
@@ -62,7 +64,6 @@ angle_to_pwm a_to_pwm(
     .pwm_enable     (pwm_enable),   
     .pwm_update     (pwm_update),           // Request an update to the PWM ratio
     .pwm_ratio      (pwm_ratio[7:0]),       // The high-time of the PWM signal out of 255.
-    .pwm_direction  ()                      // The direction of the motor
 );  
 
 i2c i2c(    
