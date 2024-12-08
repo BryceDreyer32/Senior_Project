@@ -135,6 +135,11 @@ class Constants:
     SERVO1_CONTROL_ADDR			    = 0x21
     SERVO2_CONTROL_ADDR			    = 0x22
     SERVO3_CONTROL_ADDR			    = 0x23
+    DEBUG0_STATUS_ADDR			    = 0x24
+    DEBUG1_STATUS_ADDR			    = 0x25
+    DEBUG2_STATUS_ADDR			    = 0x26
+    DEBUG3_STATUS_ADDR			    = 0x27
+    LED_TEST_ADDR			        = 0x28
 			
     MOTOR_CONTROL_BRAKE_BIT         = 0x7
     MOTOR_CONTROL_ENABLE_BIT        = 0x6

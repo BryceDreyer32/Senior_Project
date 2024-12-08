@@ -7,7 +7,7 @@ import sys
 import os
 #sys.path.append( '../../Constants.Constantsants' )
 #from Constants.Constantsants.Constants.Constantsants import Constants.Constantsants
-sys.path.append(os.path.realpath('python/src/Constants.Constantsants'))
+sys.path.append(os.path.realpath('python/src/Constants.Constants'))
 import Constants
 
 class FpgaCommunication:

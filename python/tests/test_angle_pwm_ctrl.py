@@ -1,6 +1,10 @@
 # Copyright 2024
 # Bryce's Senior Project
-# Description: Test for the FPGA I2C and angle code
+# Description: Test for the PWM Control functionality in the FPGA: given a target angle, 
+# the FPGA code should accelerate the PWM (depending on delta-angle) and decelerate as 
+# the current-angle shows it is approaching the target angle. This also requires that 
+# the FPGA is sending UART data over to the ESP for it to convert to PWM signal.
+# This is a pretty comprehensive test of all FPGA functions...
 # NOTE: this file is intended to be launched from the "SENIOR PROJECT"
 # folder, where you can see, arduino, fpga, python folders...
 
@@ -48,21 +52,6 @@ try:
 
         print("Target angle  = " + hex(angle & 0xFFF))
         print("Current angle = " + hex(rd_data))
-
-        # If we hit the target, then flip the target
-        if(abs((angle & 0xFFF) - (rd_data & 0xFFF)) < 10 ):
-            print("--- Found angle, flipping target ---")
-            if(angle == 800):
-                angle = 4000
-            else:
-                angle = 800
-
-        rd_data = 0
-        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG0_STATUS_ADDR) << 0)
-        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG1_STATUS_ADDR) << 8)
-        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG2_STATUS_ADDR) << 16)
-        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG3_STATUS_ADDR) << 24)
-        print("Debug Data = " + hex(rd_data & 0xFFFFFFFF))
 
         
 
