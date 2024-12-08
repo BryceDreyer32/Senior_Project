@@ -295,9 +295,9 @@ pwm_ctrl pwm_ctrl0(
     .sda                    (sda[0])                // The I2C bi-directional data
 );
 
-assign debug_signals[31:0] = {  8'b0,
-                                pwm_ctrl0_debug[7:0],
-                                sr_pwm_ratio[0][7:0],
+assign debug_signals[31:0] = {  8'b0,                   // 31:24
+                                pwm_ctrl0_debug[7:0],   // 23:16
+                                sr_pwm_ratio[0][7:0],   // 15:8
                                 4'b0, sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
 
 pwm sr_pwm0(

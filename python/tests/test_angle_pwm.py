@@ -34,6 +34,11 @@ fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, target_val)
 print("ROTATION0_CONTROL_ADDR.data        = " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_CONTROL_ADDR)))
 print("ROTATION0_CURRENT_ANGLE2_ADDR.data = " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR)))
 
+# Start the rotation
+fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
+time.sleep(1)
+fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
+
 try:
     while True:
 
@@ -57,6 +62,10 @@ try:
             else:
                 angle = 100
 
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
+            time.sleep(1)
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
+
         rd_data = 0
         rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG0_STATUS_ADDR) << 0)
         rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG1_STATUS_ADDR) << 8)
@@ -65,7 +74,7 @@ try:
         print("Debug Data = " + hex(rd_data & 0xFFFFFFFF))
 
         # bits [26:24] are state
-        state = (rd_data >> 24) & 0x7
+        state = (rd_data >> 16) & 0x7
         match(state):
             case 0:  print("State = IDLE")
             case 1:  print("State = CALC")

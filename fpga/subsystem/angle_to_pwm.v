@@ -20,18 +20,19 @@ module angle_to_pwm(
 );
 
 // States
-localparam IDLE   = 3'd0;
-localparam CALC   = 3'd1;
-localparam ACCEL  = 3'd2;
-localparam CRUISE = 3'd3;
-localparam DECCEL = 3'd4; 
+localparam IDLE     = 3'd0;
+localparam CALC     = 3'd1;
+localparam ACCEL    = 3'd2;
+localparam CRUISE   = 3'd3;
+localparam DECCEL   = 3'd4; 
+localparam SHUTDOWN = 3'd5;
 
 localparam SMALL_DELTA  = 4'd8;
 localparam MED_DELTA    = 4'd10;
 localparam BIG_DELTA    = 4'd14;
 
 localparam PROFILE_DELAY_TARGET = 12'd30;
-localparam TARGET_TOLERANCE     = 13'd20; 
+localparam TARGET_TOLERANCE     = 12'd20; 
 
 reg   [2:0] ps, ns;
 reg   [7:0] profile         [15:0];
@@ -41,7 +42,7 @@ reg   [3:0] curr_step;
 wire [11:0] profile_delay;
 reg  [11:0] calc1, calc2, calc3, calc4;
 
-assign debug_signals = {5'b0, ps[2:0]};
+assign debug_signals = {1'b0, angle_update, abort_angle, pwm_done, pwm_update, ps[2:0]};
 
 // Initialize the profile
 assign profile[0][7:0]  = 8'd11;
@@ -92,10 +93,7 @@ always @(posedge clock or negedge reset_n)
             // If we are in IDLE force the ratio to 0
             curr_step[3:0] <= 4'b0;
             pwm_ratio[7:0] <= 8'd0;
-            if(pwm_done == 1'b0)
-                pwm_update <= 1'b1;
-            else 
-                pwm_update <= 1'b0;
+            pwm_update      <= 1'b0;
         end
 
         else if( ps == CALC) begin
@@ -140,22 +138,14 @@ always @(posedge clock or negedge reset_n)
                 if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
                     profile_delay[11:0] <= 12'b0;
-                    pwm_update <= 1'b1;
                 end
             end
-
-            // Otherwise, we're waiting for PWM to update
-            else
-                pwm_update <= 1'b0;
         end
 
         else if(ps == CRUISE) begin
             // Continue to run at max speed
             curr_step[3:0]  <= 4'hF;
             pwm_ratio[7:0]  <= profile[curr_step[3:0]];
-
-            // Hold the update high so it's in place for the DECCEL phase
-            pwm_update <= 1'b1;
         end
 
         else if(ps == DECCEL) begin
@@ -168,16 +158,15 @@ always @(posedge clock or negedge reset_n)
                 if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
                     curr_step[3:0] <= curr_step[3:0] - 4'b1;
                     profile_delay[11:0] <= 12'b0;
-                    pwm_update <= 1'b1;
                 end
             end
-
-            // Otherwise, we're waiting for PWM to update
-            else
-                pwm_update <= 1'b0;
         end
 
-        if((ps == DECCEL) & (ns == IDLE))
+        else if(ps == SHUTDOWN) begin
+            pwm_ratio[7:0] <= 8'b0;
+        end
+
+        if((ps == SHUTDOWN) & (ns == IDLE))
             angle_done <= 1'b1;
         else
             angle_done <= 1'b0; 
@@ -233,9 +222,16 @@ always @(*) begin
 
         DECCEL: begin
             if(delta_angle[11:0] < TARGET_TOLERANCE)
-                ns = IDLE;
+                ns = SHUTDOWN;
             else
                 ns = DECCEL;
+        end
+
+        SHUTDOWN: begin
+            if(pwm_done)
+                ns = IDLE;
+            else
+                ns = SHUTDOWN;
         end
 
         default: begin 
