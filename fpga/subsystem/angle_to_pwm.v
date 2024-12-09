@@ -25,22 +25,23 @@ localparam CALC     = 3'd1;
 localparam ACCEL    = 3'd2;
 localparam CRUISE   = 3'd3;
 localparam DECCEL   = 3'd4; 
-localparam SHUTDOWN = 3'd5;
+localparam SHUTDOWN = 3'd5; 
 
 localparam SMALL_DELTA  = 4'd8;
 localparam MED_DELTA    = 4'd10;
 localparam BIG_DELTA    = 4'd14;
 
-localparam PROFILE_DELAY_TARGET = 12'd30;
-localparam TARGET_TOLERANCE     = 12'd20; 
+localparam PROFILE_DELAY_TARGET = 12'd2;
+localparam TARGET_TOLERANCE     = 12'd5; 
 
 reg   [2:0] ps, ns;
-reg   [7:0] profile         [15:0];
-reg  [11:0] delta_angle;
+wire  [7:0] profile         [15:0];
+wire [11:0] delta_angle;
 reg   [3:0] num_steps;
 reg   [3:0] curr_step;
-wire [11:0] profile_delay;
-reg  [11:0] calc1, calc2, calc3, calc4;
+reg  [11:0] profile_delay;
+wire        calc_updated;
+reg         enable_calc;
 
 assign debug_signals = {1'b0, angle_update, abort_angle, pwm_done, pwm_update, ps[2:0]};
 
@@ -66,69 +67,50 @@ assign profile[15][7:0] = 8'd206;
 always @(posedge clock or negedge reset_n)
     if(~reset_n) begin
         ps <= IDLE;
-        delta_angle[11:0]   <= 12'b0;
         curr_step[3:0]      <= 4'b0;
         pwm_ratio[7:0]      <= 8'd0;
         pwm_enable          <= 1'b1;
         pwm_update          <= 1'b0;
         profile_delay[11:0] <= 12'b0;
         angle_done          <= 1'b0;
+        enable_calc         <= 1'b0;
         num_steps[3:0]      <= MED_DELTA;
-        calc1[11:0]         <= 12'b0;
-        calc2[11:0]         <= 12'b0;
-        calc3[11:0]         <= 12'b0;
-        calc4[11:0]         <= 12'b0;
     end
     else begin
         ps                  <= ns;
         pwm_enable          <= 1'b1;
         
-        // Calculate the various options of rotation direction
-        calc1 <= current_angle - target_angle;
-        calc2 <= target_angle - current_angle;
-        calc3 <= 4096 - target_angle + current_angle;
-        calc4 <= 4096 - current_angle + target_angle;
-        
         if(ps == IDLE) begin
             // If we are in IDLE force the ratio to 0
-            curr_step[3:0] <= 4'b0;
-            pwm_ratio[7:0] <= 8'd0;
+            curr_step[3:0]  <= 4'b0;
+            pwm_ratio[7:0]  <= 8'd0;
             pwm_update      <= 1'b0;
+            enable_calc     <= 1'b0;
         end
 
         else if( ps == CALC) begin
-            // Determine the fastest path to the target (and assign to delta_angle), and which direction to rotate
-            delta_angle         <= calc1;
-            pwm_direction       <= 1'b1; // CCW
-            if(calc2 < delta_angle) begin
-                delta_angle     <= calc2;
-                pwm_direction   <= 1'b0; // CW      
+            enable_calc     <= 1'b1;
+
+            // Wait for the calc_updated to assert before doing the calculation
+            if(calc_updated) begin
+                // Calculate wether the angle we are going to process is small, medium, or large
+                if(delta_angle[11:0] < 12'd30)
+                    num_steps[3:0] <= SMALL_DELTA; 
+
+                else if(delta_angle[11:0] < 12'd50)
+                    num_steps[3:0] <= MED_DELTA; 
+
+                else 
+                    num_steps[3:0] <= BIG_DELTA; 
+
+                // Send the first notification to PWM of an update
+                pwm_update <= 1'b1;                
             end
-            if(calc3 < delta_angle) begin
-                delta_angle     <= calc3;
-                pwm_direction   <= 1'b1; // CCW
-            end
-            if(calc4 < delta_angle) begin
-                delta_angle     <= calc4;
-                pwm_direction   <= 1'b0; // CW
-            end               
-
-            // Calculate wether the angle we are going to process is small, medium, or large
-            if(delta_angle[11:0] < 12'd10)
-                num_steps[3:0] <= SMALL_DELTA; 
-
-            else if(delta_angle[11:0] < 12'd30)
-                num_steps[3:0] <= MED_DELTA; 
-
-            else 
-                num_steps[3:0] <= BIG_DELTA; 
-
-            // Send the first notification to PWM of an update
-            pwm_ratio[7:0] <= profile[0];
-            pwm_update <= 1'b1;
         end
 
         else if(ps == ACCEL) begin
+            pwm_ratio[7:0] <= profile[curr_step[3:0]];
+
             // Check if the PWM ratio has been absorbed
             if( pwm_done == 1'b1 ) begin
                 // If so, then we can proceed
@@ -149,6 +131,8 @@ always @(posedge clock or negedge reset_n)
         end
 
         else if(ps == DECCEL) begin
+            pwm_ratio[7:0] <= profile[curr_step[3:0]];
+
             // Check if the PWM ratio has been absorbed
             if( pwm_done == 1'b1 ) begin
                 // If so, then we can proceed
@@ -181,13 +165,19 @@ always @(*) begin
                 ns = IDLE;
         end
         
-        CALC:
+        CALC: begin
             if(abort_angle)
                 ns = IDLE;
-            else if((delta_angle[11:0] > TARGET_TOLERANCE))
-                ns = ACCEL;
+
+            if(calc_updated) begin
+                if(delta_angle[11:0] > TARGET_TOLERANCE)
+                    ns = ACCEL;
+                else
+                    ns = IDLE;
+            end
             else
-                ns = IDLE;
+                ns = CALC;
+        end
 
         ACCEL: begin
             if(abort_angle)
@@ -202,22 +192,26 @@ always @(*) begin
             if(abort_angle)
                 ns = DECCEL;
 
-            // Depending on how large of a delta_angle, we will start decelerating at different points
-            else if(num_steps[3:0] == SMALL_DELTA)
-                if(delta_angle[11:0] < 12'd16)
-                    ns = DECCEL;
-                else
-                    ns = CRUISE;
-            else if(num_steps[3:0] == MED_DELTA)
-                if(delta_angle[11:0] < 12'd32)
-                    ns = DECCEL;
-                else
-                    ns = CRUISE;
-            else //(num_steps[7:0] == BIG_DELTA)
-                if(delta_angle[11:0] < 12'd64)
-                    ns = DECCEL;
-                else
-                    ns = CRUISE;
+            if(calc_updated) begin
+                // Depending on how large of a delta_angle, we will start decelerating at different points
+                if(num_steps[3:0] == SMALL_DELTA)
+                    if(delta_angle[11:0] < 12'd5)
+                        ns = DECCEL;
+                    else
+                        ns = CRUISE;
+                else if(num_steps[3:0] == MED_DELTA)
+                    if(delta_angle[11:0] < 12'd8)
+                        ns = DECCEL;
+                    else
+                        ns = CRUISE;
+                else //(num_steps[7:0] == BIG_DELTA)
+                    if(delta_angle[11:0] < 12'd10)
+                        ns = DECCEL;
+                    else
+                        ns = CRUISE;
+            end
+            else
+                ns = CRUISE;
         end
 
         DECCEL: begin
@@ -239,6 +233,18 @@ always @(*) begin
         end 
     endcase
 end
+
+calculate_delta calc (
+    .reset_n        (reset_n),      
+    .clock          (clock),        
+    .enable_calc    (enable_calc),  
+    .target_angle   (target_angle[11:0]), 
+    .current_angle  (current_angle[11:0]),
+    .dir_shortest   (dir_shortest), 
+    .delta_angle    (delta_angle[11:0]),  
+    .calc_updated   (calc_updated)
+);
+
 endmodule
 
 
