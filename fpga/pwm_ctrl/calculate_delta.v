@@ -29,7 +29,7 @@ always @(posedge clock or negedge reset_n) begin
         calc2[11:0]             <= 12'b0;
         calc3[11:0]             <= 12'b0;
         calc4[11:0]             <= 12'b0;
-        calc_cnt[1:0]           <= 3'b0;
+        calc_cnt[1:0]           <= 2'b0;
         delta_angle[11:0]       <= 12'b0;
         dir_shortest            <= 1'b0;
     end 

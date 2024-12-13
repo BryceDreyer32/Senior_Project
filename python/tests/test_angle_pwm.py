@@ -20,6 +20,9 @@ import FpgaCommunication
 fpga = FpgaCommunication.FpgaCommunication(Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
 angle = 100
 
+fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, 0x0)
+time.sleep(5)
+
 # Set brake_n = 1, enable = 1, direction = 0, angle[11:8]
 control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
 print("Writing control_val = " + hex(control_val))
@@ -44,27 +47,35 @@ try:
 
         time.sleep(1)
 
-        lsb_data = fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE_ADDR)
-        msb_data = fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR)
+        target = fpga.fpgaRead(Constants.Constants.ROTATION0_CONTROL_ADDR) << 8
+        target = target | fpga.fpgaRead(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR)
+        print("Target angle  = " + str(target & 0xFFF))
 
-        rd_data = ((msb_data << 8) | lsb_data) & 0xFFF
-
-        #print('msb data = ' + hex(msb_data[1]) + ", lsb_data = " + hex(lsb_data[1]))
-
-        print("Target angle  = " + hex(angle & 0xFFF))
-        print("Current angle = " + hex(rd_data))
+        current = fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE_ADDR)
+        current = current | fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR) << 8
+        print("Current angle = " + str(current & 0xFFF))
 
         # If we hit the target, then flip the target
-        if(abs((angle & 0xFFF) - (rd_data & 0xFFF)) < 10 ):
+        if(abs((angle & 0xFFF) - (current & 0xFFF)) < 10 ):
             print("--- Found angle, flipping target ---")
             if(angle == 100):
-                angle = 200
+                angle = 800
             else:
                 angle = 100
 
+            # Brake, disable
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, angle & 0xFF)
+            control_val = ((0<<7) | (0<<6) | (0<<5) | ((angle & 0xF00) >> 8))
+
+            # UnBrake, enable
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
+            control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
+
+            # Write update angle
             fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
+
             time.sleep(1)
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
 
         rd_data = 0
         rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG0_STATUS_ADDR) << 0)
