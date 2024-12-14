@@ -36,6 +36,6 @@ always @( posedge clock or negedge reset_n ) begin
 end
 
 // Output pwm_signal is 1 when pwm_enable is set and the pwm_counter <= pwm_target
-assign pwm_signal = pwm_enable & (pwm_counter[7:0] <= pwm_target[7:0]);
+assign pwm_signal = pwm_enable & (pwm_counter[7:0] < pwm_target[7:0]);
 
 endmodule

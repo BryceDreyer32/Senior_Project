@@ -30,20 +30,39 @@ initial begin
     $display("Setting reset");
     #10 reset_n = 1;
 
-    $display("---------------------------------");
-    $display("--- Starting Small Angle Test ---");
-    $display("---------------------------------"); 
+    $display("----------------------------------");
+    $display("--- Starting startup Fail Test ---");
+    $display("---          Time = %0t         ---", $time);
+    $display("----------------------------------"); 
+    timeout = 50;
     target_angle = 12'd100;
     current_angle = 12'd10;
     #10 angle_update = 1'b1;
-    while((timeout >= 0) & (current_angle != target_angle)) begin
-        #1000 current_angle[11:0] = current_angle[11:0] + 12'b1;
+    #10 angle_update = 1'b0;
+    while((timeout >= 0) & (current_angle != target_angle) & (angle_to_pwm.ps != 4'd6)) begin
+        #2000 current_angle[11:0] = current_angle[11:0] + 12'b1;
         timeout = timeout - 1;
     end
     angle_update = 1'b0;
 
-    #10000;
+    #5000;
 
+    $display("----------------------------------");
+    $display("--- Starting startup Pass Test ---");
+    $display("---         Time = %0t      ---", $time);
+    $display("----------------------------------"); 
+    timeout = 50;
+    target_angle = 12'd100;
+    current_angle = 12'd10;
+    #10 angle_update = 1'b1;
+    #10 angle_update = 1'b0;
+    while((timeout >= 0) & (current_angle != target_angle)) begin
+        #1500 current_angle[11:0] = current_angle[11:0] + 12'b1;
+        timeout = timeout - 1;
+    end
+    angle_update = 1'b0;
+/*
+    #10000;
     timeout = 50;
     target_angle = 12'd10;
     current_angle = 12'd100;
@@ -54,7 +73,7 @@ initial begin
     end
     angle_update = 1'b0;
 
-
+*/
     /*$display("---------------------------------");
     $display("--- Starting Small Angle Test ---");
     $display("---------------------------------"); 
@@ -92,12 +111,18 @@ initial begin
     #10000 $finish;
 end
 
-angle_to_pwm dut0(
+angle_to_pwm angle_to_pwm(
     .reset_n        (reset_n),  	    // Active low reset
     .clock          (clock),	        // The main clock
     .target_angle   (target_angle),     // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .current_angle  (current_angle),    // The angle read from the motor encoder
-    .abort_angle    (abort_angle),
+    .abort_angle    (abort_angle),      // Aborts rotating to angle
+    .enable_hammer  (1'b1),             // Enables hammer acceleration (vs linear)
+    .fwd_count      (4'hF),             // Number of times to apply the forward hammer
+    .rvs_count      (4'h4),             // Number of times to apply the reverse hammer
+    .retry_count    (2'h2),             // Number of retry attempts before admitting defeat
+    .consec_chg     (3'h2),             // Number of consecutive changes we want to see before claiming success
+    .startup_fail   (),                 // Error: Motor stalled, unable to startup
     .pwm_done       (pwm_done),         // Indicator from PWM that the pwm_ratio has been applied
     .angle_update   (angle_update),     // Request to update the angle
     .angle_done     (angle_done),       // Indicator that the angle has been applied 
@@ -107,7 +132,7 @@ angle_to_pwm dut0(
     .pwm_direction  (pwm_direction)     // The direction of the motor
     );
 
-pwm dut(
+pwm pwm(
     .reset_n        (reset_n),
     .clock          (clock),
     .pwm_enable     (pwm_enable),
@@ -118,7 +143,7 @@ pwm dut(
 );
 
 initial begin
-    $dumpfile("a_to_p.vcd");
+    $dumpfile("angle_to_pwm.vcd");
     $dumpvars(0,test);
   end
 

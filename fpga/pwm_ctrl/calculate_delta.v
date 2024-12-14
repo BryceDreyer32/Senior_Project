@@ -10,7 +10,7 @@ module calculate_delta (
     input       [11:0]  current_angle,  // The angle read from the motor encoder
     output  reg         dir_shortest,   // The direction to travel for the shortest path from current -> target
     output  reg [11:0]  delta_angle,    // The shortest distance from current -> target
-    output              calc_updated    // Pulse indicating that the calculation has been updated
+    output  reg         calc_updated    // Pulse indicating that the calculation has been updated
 );
 
 localparam IDLE         = 3'd0;
@@ -20,7 +20,8 @@ localparam REPORT       = 3'd3;
 
 reg   [2:0]     ps, ns;
 reg   [1:0]     calc_cnt;
-reg  [11:0]     calc1, calc2, calc3, calc4;
+reg  [11:0]     calc1, calc2, calc3, calc4, delta_angle_int;
+reg             dir_shortest_int;
 
 always @(posedge clock or negedge reset_n) begin
     if(~reset_n) begin
@@ -30,12 +31,15 @@ always @(posedge clock or negedge reset_n) begin
         calc3[11:0]             <= 12'b0;
         calc4[11:0]             <= 12'b0;
         calc_cnt[1:0]           <= 2'b0;
+        delta_angle_int[11:0]   <= 12'b0;
+        dir_shortest_int        <= 1'b0;
         delta_angle[11:0]       <= 12'b0;
         dir_shortest            <= 1'b0;
     end 
     
     else begin
         ps              <= ns;
+        calc_updated    <= 1'b0;
 
         // Perform the calculations for various possible scenarios
         if(ps == CALC_DELTA) begin
@@ -50,37 +54,41 @@ always @(posedge clock or negedge reset_n) begin
             // an incorrect result
             case(calc_cnt[1:0])
                 2'b00: begin
-                    delta_angle         <= calc1;
-                    dir_shortest        <= 1'b1; // CCW
+                    delta_angle_int         <= calc1;
+                    dir_shortest_int        <= 1'b1; // CCW
                 end
                 
                 2'b01: begin
-                    if(calc2 < delta_angle) begin
-                        delta_angle     <= calc2;
-                        dir_shortest    <= 1'b0; // CW      
+                    if(calc2 < delta_angle_int) begin
+                        delta_angle_int     <= calc2;
+                        dir_shortest_int    <= 1'b0; // CW      
                     end
                 end
 
                 2'b10: begin
-                    if(calc3 < delta_angle) begin
-                        delta_angle     <= calc3;
-                        dir_shortest    <= 1'b1; // CCW
+                    if(calc3 < delta_angle_int) begin
+                        delta_angle_int     <= calc3;
+                        dir_shortest_int    <= 1'b1; // CCW
                     end
                 end
 
                 2'b11: begin
-                    if(calc4 < delta_angle) begin
-                        delta_angle     <= calc4;
-                        dir_shortest    <= 1'b0; // CW
+                    if(calc4 < delta_angle_int) begin
+                        delta_angle_int     <= calc4;
+                        dir_shortest_int    <= 1'b0; // CW
                     end
                 end
             endcase
             calc_cnt[1:0] <= calc_cnt[1:0] + 2'b1;
         end
+        else if(ps == REPORT) begin
+            delta_angle[11:0]   <= delta_angle_int[11:0];
+            dir_shortest        <= dir_shortest_int;
+            calc_updated        <= 1'b1;
+        end
+
     end
 end
-
-assign calc_updated = (ps == REPORT);
 
 always @(*) begin
     case(ps) 
@@ -106,8 +114,9 @@ always @(*) begin
             ns = IDLE;
         end
 
+        default: ns = IDLE;
+
     endcase
 end
-
 
 endmodule
