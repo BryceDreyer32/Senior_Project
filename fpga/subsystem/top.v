@@ -95,7 +95,7 @@ module top(
     wire  [7:0]     servo_position3; // Servo 3 target position
 
     wire  [31:0]    debug_signals;   // Debug signals
-    wire  [7:0]     pwm_ctrl0_debug;
+    wire  [15:0]    pwm_ctrl0_debug;
     wire            led_test_enable; // Enable the led testing
     wire  [3:0]     led_values;      // Test led values
 
@@ -311,15 +311,14 @@ pwm_ctrl pwm_ctrl0(
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
 
-    .debug_signals          (pwm_ctrl0_debug[7:0]),
+    .debug_signals          (pwm_ctrl0_debug[15:0]),
 
     //I2C Interface
     .sck                    (scl[0]),               // The I2C clock
     .sda                    (sda[0])                // The I2C bi-directional data
 );
 
-assign debug_signals[31:0] = {  8'b0,                   // 31:24
-                                pwm_ctrl0_debug[7:0],   // 23:16
+assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],   // 31:16
                                 sr_pwm_ratio[0][7:0],   // 15:8
                                 3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
 

@@ -6,8 +6,8 @@
 module angle_to_pwm(
     input               reset_n,        // Active low reset
     input               clock,          // The main clock
-    input   [11:0]      target_angle,   // The angle the wheel needs to move on the 4096 points/rotation scale
-    input   [11:0]      current_angle,  // The angle read from the motor encoder
+    input       [11:0]  target_angle,   // The angle the wheel needs to move on the 4096 points/rotation scale
+    input       [11:0]  current_angle,  // The angle read from the motor encoder
     input               pwm_done,       // Indicator from PWM that the pwm_ratio has been applied
     input               angle_update,   // Request to update the angle
     input               abort_angle,    // Aborts rotating to angle
@@ -19,11 +19,11 @@ module angle_to_pwm(
     input       [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
     output reg          startup_fail,   // Error: Motor stalled, unable to startup
 
-    output  [7:0]       debug_signals,
+    output      [15:0]  debug_signals,
     output reg          angle_done,     // Indicator that the angle has been applied 
     output reg          pwm_enable,     // PWM enable
     output reg          pwm_update,     // Request an update to the PWM ratio
-    output reg [7:0]    pwm_ratio,      // The high-time of the PWM signal out of 255.
+    output reg  [7:0]   pwm_ratio,      // The high-time of the PWM signal out of 255.
     output reg          pwm_direction   // The direction of the motor
 );
 
@@ -63,7 +63,8 @@ reg   [2:0] chg_cnt;
 reg         hammer_chk;
 reg         run_stall;
 
-assign debug_signals = {1'b0, angle_update, abort_angle, pwm_done, pwm_update, ps[2:0]};
+assign debug_signals = {startup_fail, run_stall, retry_cnt[1:0], pwm_direction, angle_update, abort_angle, pwm_done,
+                        chg_cnt[2:0], pwm_update, ps[3:0]};
 
 // Initialize the acceleration and deceleration profiles
 assign hammer_profile[0][7:0]  = 8'd40;

@@ -27,7 +27,7 @@ module pwm_ctrl(
     output          [7:0]   pwm_ratio,      // The high-time of the PWM signal out of 255.
     output                  pwm_update,     // Request an update to the PWM ratio
     
-    output          [7:0]   debug_signals,
+    output          [15:0]  debug_signals,
 
     // I2C Interface
     output                  sck,            // The I2C clock
@@ -66,6 +66,7 @@ angle_to_pwm a_to_pwm(
     .current_angle  (current_angle[11:0]),  // The angle read from the motor encoder
     .pwm_done       (pwm_done),             // Indicator from PWM that the pwm_ratio has been applied
     .angle_update   (angle_update),         // Request to update the angle
+    .debug_signals  (debug_signals[15:0]),
     .angle_done     (angle_done),           // Indicator that the angle has been applied 
     .abort_angle    (abort_angle),          // Aborts rotating to angle
     .enable_hammer  (enable_hammer),        // Enables hammer acceleration (vs linear)
