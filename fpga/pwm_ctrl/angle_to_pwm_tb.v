@@ -52,12 +52,32 @@ initial begin
     $display("---         Time = %0t      ---", $time);
     $display("----------------------------------"); 
     timeout = 50;
+//    force angle_to_pwm.PROFILE_DELAY_TARGET = 12'd5;
     target_angle = 12'd100;
     current_angle = 12'd10;
     #10 angle_update = 1'b1;
     #10 angle_update = 1'b0;
     while((timeout >= 0) & (current_angle != target_angle)) begin
-        #1500 current_angle[11:0] = current_angle[11:0] + 12'b1;
+        #1000 current_angle[11:0] = current_angle[11:0] + 12'b1;
+        timeout = timeout - 1;
+    end
+    angle_update = 1'b0;
+
+    $display("----------------------------------");
+    $display("---  Starting run stall Test   ---");
+    $display("---         Time = %0t     ---", $time);
+    $display("----------------------------------"); 
+    timeout = 50;
+    target_angle = 12'd100;
+    current_angle = 12'd10;
+    #10 angle_update = 1'b1;
+    #10 angle_update = 1'b0;
+    while((timeout >= 0) & (current_angle != target_angle)) begin
+        // Move for the first 5 sections, then stall out
+        if(timeout > 30)
+            #1500 current_angle[11:0] = current_angle[11:0] + 12'b1;
+        else
+            #1500;
         timeout = timeout - 1;
     end
     angle_update = 1'b0;

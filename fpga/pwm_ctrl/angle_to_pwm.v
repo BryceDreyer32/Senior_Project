@@ -43,7 +43,7 @@ localparam SMALL_DELTA  = 4'd8;
 localparam MED_DELTA    = 4'd10;
 localparam BIG_DELTA    = 4'd14;
 
-localparam PROFILE_DELAY_TARGET = 12'd4;
+localparam PROFILE_DELAY_TARGET = 12'd5;
 localparam TARGET_TOLERANCE     = 12'd5; 
 
 reg   [3:0] ps, ns;
@@ -61,6 +61,7 @@ reg         pwm_done_ff, pwm_done_went_high;
 reg   [1:0] retry_cnt;
 reg   [2:0] chg_cnt;
 reg         hammer_chk;
+reg         run_stall;
 
 assign debug_signals = {1'b0, angle_update, abort_angle, pwm_done, pwm_update, ps[2:0]};
 
@@ -119,6 +120,7 @@ always @(posedge clock or negedge reset_n)
         hammer_chk          <= 1'b0;
         chg_cnt[2:0]        <= 3'b0;
         startup_fail        <= 1'b0;
+        run_stall           <= 1'b0;
     end
     else begin
         ps                  <= ns;
@@ -146,8 +148,14 @@ always @(posedge clock or negedge reset_n)
         end
 
         else if( ps == CALC) begin
+            curr_step[3:0]  <= 4'b0;
+            pwm_ratio[7:0]  <= 8'd0;
             enable_calc     <= 1'b1;
             retry_cnt[1:0]  <= 2'b0;
+            startup_fail    <= 1'b0;
+            run_stall       <= 1'b0;
+            chg_cnt[2:0]    <= 3'b0;
+            hammer_chk      <= 1'b0;
 
             // Wait for the calc_updated to assert before doing the calculation
             if(calc_updated) begin
@@ -235,7 +243,7 @@ always @(posedge clock or negedge reset_n)
 
                     // Check if the angle has changed by > 3
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
-                        if((curr_ang_ff[11:0] - current_angle[11:0]) > 12'd3)
+                        if((curr_ang_ff[11:0] - current_angle[11:0]) < 12'd3)
                             chg_cnt[2:0]    <= chg_cnt[2:0] + 3'b1;
                     end
                     else begin
@@ -263,6 +271,29 @@ always @(posedge clock or negedge reset_n)
             // Continue to run at max speed
             curr_step[3:0]  <= 4'h7;
             pwm_ratio[7:0]  <= linear_profile[curr_step[3:0]];
+
+            // Check for stalls
+            if( pwm_done_went_high == 1'b1 ) begin
+                // If so, then we can proceed
+                profile_delay[11:0] <= profile_delay + 12'h1;
+
+                // If we've waited long enough, then go to the next acceleration step
+                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
+                    profile_delay[11:0] <= 12'b0;
+
+                    // If the angle hasn't changed by at least 5, then flag a stall
+                    if(curr_ang_ff[11:0] > current_angle[11:0]) begin
+                        if((curr_ang_ff[11:0] - current_angle[11:0]) < 12'd3)
+                            run_stall   <= 1'b1;
+                    end
+                    else begin
+                        if((current_angle[11:0] - curr_ang_ff[11:0]) < 12'd3)
+                            run_stall   <= 1'b1;
+                    end
+                    
+                    curr_ang_ff[11:0]   <= current_angle[11:0];
+                end
+            end
         end
 
         else if(ps == DECEL ) begin
@@ -365,9 +396,12 @@ always @(*) begin
 
         CRUISE: begin
             if(abort_angle)
-                ns = DECEL ;
+                ns = DECEL;
+            
+            else if(run_stall)
+                ns = CALC;
 
-            if(calc_updated) begin
+            else if(calc_updated) begin
                 // Depending on how large of a delta_angle, we will start decelerating at different points
                 if(num_steps[3:0] == SMALL_DELTA)
                     if(delta_angle[11:0] < 12'd5)
