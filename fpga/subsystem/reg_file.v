@@ -421,14 +421,14 @@ always @(posedge clock) begin
 	reg_file[54]     <=  debug_signals[23:16];
 end
 
-// ---------------   0x27	DEBUG   ----------------
+// ---------------   0x37	DEBUG   ----------------
 always @(posedge clock) begin
 	reg_file[55]     <=  debug_signals[31:24];
 end
 
-// ------------- 0x28	LED_TEST	-------------
+// ------------- 0x38	LED_TEST	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h28))
+	if(write_en & (address == 6'h38))
 		reg_file[56]     <=  wr_data[7:0];
 end
 
