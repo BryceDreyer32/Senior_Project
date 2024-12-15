@@ -81,6 +81,18 @@ initial begin
         timeout = timeout - 1;
     end
     angle_update = 1'b0;
+
+    $display("----------------------------------");
+    $display("---    Fully stalled Test      ---");
+    $display("---        Time = %0t      ---", $time);
+    $display("----------------------------------"); 
+    timeout = 50;
+    target_angle = 12'd100;
+    current_angle = 12'd10;
+    #10 angle_update = 1'b1;
+    #10 angle_update = 1'b0;
+    #100000
+
 /*
     #10000;
     timeout = 50;

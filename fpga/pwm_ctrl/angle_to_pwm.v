@@ -43,7 +43,7 @@ localparam SMALL_DELTA  = 4'd8;
 localparam MED_DELTA    = 4'd10;
 localparam BIG_DELTA    = 4'd14;
 
-localparam PROFILE_DELAY_TARGET = 12'd5;
+localparam PROFILE_DELAY_TARGET = 12'd3;
 localparam TARGET_TOLERANCE     = 12'd5; 
 
 reg   [3:0] ps, ns;

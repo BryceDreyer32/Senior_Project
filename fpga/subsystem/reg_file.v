@@ -363,7 +363,7 @@ end
 
 assign enable_hammer = reg_file[32][7];
 assign retry_count[1:0] = reg_file[32][6:5];
-assign consec_chg[2:0]  = reg_file[32][5:3];
+assign consec_chg[2:0]  = reg_file[32][4:2];
 
 // ------------ 0x21	ROTATION_GEN_CTRL2	------------
 always @(posedge clock) begin

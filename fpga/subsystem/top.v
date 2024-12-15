@@ -309,6 +309,7 @@ pwm_ctrl pwm_ctrl0(
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[0]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
+    .pwm_direction          (sr_direction[0]),      // The direction of the motor
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
 
     .debug_signals          (pwm_ctrl0_debug[15:0]),
@@ -318,7 +319,7 @@ pwm_ctrl pwm_ctrl0(
     .sda                    (sda[0])                // The I2C bi-directional data
 );
 
-assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],   // 31:16
+assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
                                 sr_pwm_ratio[0][7:0],   // 15:8
                                 3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
 
@@ -358,6 +359,7 @@ pwm_ctrl pwm_ctrl1(
     .pwm_done               (sr_pwm_done[1]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[1]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[1]),      // The high-time of the PWM signal out of 255.
+    .pwm_direction          (sr_direction[1]),      // The direction of the motor
     .pwm_update             (sr_pwm_update[1]),     // Request an update to the PWM ratio
 
     //I2C Interface
@@ -401,6 +403,7 @@ pwm_ctrl pwm_ctrl2(
     .pwm_done               (sr_pwm_done[2]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[2]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[2]),      // The high-time of the PWM signal out of 255.
+    .pwm_direction          (sr_direction[2]),      // The direction of the motor
     .pwm_update             (sr_pwm_update[2]),     // Request an update to the PWM ratio
 
     //I2C Interface
@@ -444,6 +447,7 @@ pwm_ctrl pwm_ctrl3(
     .pwm_done               (sr_pwm_done[3]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[3]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[3]),      // The high-time of the PWM signal out of 255.
+    .pwm_direction          (sr_direction[3]),      // The direction of the motor
     .pwm_update             (sr_pwm_update[3]),     // Request an update to the PWM ratio
 
     //I2C Interface
