@@ -9,8 +9,9 @@ module reg_file (
     input           write_en,  	     // Write enable
     input   [7:0]   wr_data,   	     // Write data
     input           read_en,  	     // Read enable
-    output reg [7:0]   rd_data,   	     // Read data
+    output reg [7:0]   rd_data,   	 // Read data
 								     
+    // DRIVE MOTORS
     input           fault0,    	     // Fault signal from motor
     input   [6:0]   adc_temp0, 	     // Adc temperature from motor
     input           fault1,    	     // Fault signal from motor
@@ -57,6 +58,17 @@ module reg_file (
     output          enable7,   	     // Motor enable
     output          direction7,	     // Motor direction 
 									 
+    // ROTATION MOTORS
+    input               startup_fail4,  // Error: Motor stalled, unable to startup
+    input               startup_fail5,  // Error: Motor stalled, unable to startup
+    input               startup_fail6,  // Error: Motor stalled, unable to startup
+    input               startup_fail7,  // Error: Motor stalled, unable to startup
+    output              enable_hammer,  // Enables hammer acceleration (vs linear)
+    output      [3:0]   fwd_count,      // Number of times to apply the forward hammer
+    output      [3:0]   rvs_count,      // Number of times to apply the reverse hammer
+    output      [1:0]   retry_count,    // Number of retry attempts before admitting defeat
+    output      [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
+
     output  [11:0]  target_angle0,   // Rotation target angle
     input   [11:0]  current_angle0,  // The current angle
     output  [11:0]  target_angle1,   // Rotation target angle
@@ -88,7 +100,7 @@ module reg_file (
     output  [3:0]   led_values       // Test led values
 );
 
-reg     [7:0]   reg_file    [40:0];
+reg     [7:0]   reg_file    [56:0];
 
 // Read Data is just a pointer to whatever the address is set to 
 always @(posedge clock) begin
@@ -179,7 +191,7 @@ assign target_angle0[11:8]  = reg_file[12][3:0];
 
 // ------------- 0xD	ROTATION0_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[13]     <=  {fault4, adc_temp4[6:0]};
+	reg_file[13]     <=  {fault4, startup_fail4, adc_temp4[5:0]};
 end
 
 // ------------- 0xE	ROTATION0_TARG_ANG	-------------
@@ -224,7 +236,7 @@ assign target_angle1[11:8]  = reg_file[17][3:0];
 
 // ------------- 0x12	ROTATION1_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[18]     <=  {fault5, adc_temp5[6:0]};
+	reg_file[18]     <=  {fault5, startup_fail5, adc_temp5[5:0]};
 end
 
 // ------------- 0x13	ROTATION1_TARG_ANG	-------------
@@ -268,7 +280,7 @@ assign target_angle2[11:8]  = reg_file[22][3:0];
 
 // ------------- 0x17	ROTATION2_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[23]     <=  {fault6, adc_temp6[6:0]};
+	reg_file[23]     <=  {fault6, startup_fail6, adc_temp6[5:0]};
 end
 
 // ------------- 0x18	ROTATION2_TARG_ANG	-------------
@@ -312,7 +324,7 @@ assign target_angle3[11:8]  = reg_file[27][3:0];
 
 // ------------- 0x1C	ROTATION3_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[28]     <=  {fault7, adc_temp7[6:0]};
+	reg_file[28]     <=  {fault7, startup_fail7, adc_temp7[5:0]};
 end
 
 // ------------- 0x1D	ROTATION3_TARG_ANG	-------------
@@ -343,65 +355,84 @@ always @(posedge clock) begin
         update_angle3 <= 1'b0;
 end
 
-// --------------- 0x20	SERVO0_CONTROL	----------------
+// ------------ 0x20	ROTATION_GEN_CTRL1	------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h20))
 		reg_file[32]     <=  wr_data[7:0];
 end
 
-assign servo_position0    = reg_file[32][7:0];
+assign enable_hammer = reg_file[32][7];
+assign retry_count[1:0] = reg_file[32][6:5];
+assign consec_chg[2:0]  = reg_file[32][5:3];
 
-// --------------- 0x21	SERVO0_CONTROL	----------------
+// ------------ 0x21	ROTATION_GEN_CTRL2	------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h21))
 		reg_file[33]     <=  wr_data[7:0];
 end
 
+assign fwd_count[3:0] = reg_file[33][7:4];
+assign rvs_count[3:0] = reg_file[33][3:0];
+
+// --------------- 0x30	SERVO0_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h30))
+		reg_file[48]     <=  wr_data[7:0];
+end
+
+assign servo_position0    = reg_file[32][7:0];
+
+// --------------- 0x31	SERVO0_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h31))
+		reg_file[49]     <=  wr_data[7:0];
+end
+
 assign servo_position1    = reg_file[33][7:0];
 
-// --------------- 0x22	SERVO0_CONTROL	----------------
+// --------------- 0x32	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h22))
-		reg_file[34]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h32))
+		reg_file[50]     <=  wr_data[7:0];
 end
 
 assign servo_position2    = reg_file[34][7:0];
 
-// --------------- 0x23	SERVO0_CONTROL	----------------
+// --------------- 0x33	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h23))
-		reg_file[35]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h33))
+		reg_file[51]     <=  wr_data[7:0];
 end
 
 assign servo_position3    = reg_file[35][7:0];
 
-// ---------------   0x24	DEBUG   ----------------
+// ---------------   0x34	DEBUG   ----------------
 always @(posedge clock) begin
-	reg_file[36]     <=  debug_signals[7:0];
+	reg_file[52]     <=  debug_signals[7:0];
 end
 
-// ---------------   0x25	DEBUG   ----------------
+// ---------------   0x35	DEBUG   ----------------
 always @(posedge clock) begin
-	reg_file[37]     <=  debug_signals[15:8];
+	reg_file[53]     <=  debug_signals[15:8];
 end
 
-// ---------------   0x26	DEBUG   ----------------
+// ---------------   0x36	DEBUG   ----------------
 always @(posedge clock) begin
-	reg_file[38]     <=  debug_signals[23:16];
+	reg_file[54]     <=  debug_signals[23:16];
 end
 
 // ---------------   0x27	DEBUG   ----------------
 always @(posedge clock) begin
-	reg_file[39]     <=  debug_signals[31:24];
+	reg_file[55]     <=  debug_signals[31:24];
 end
 
 // ------------- 0x28	LED_TEST	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h28))
-		reg_file[40]     <=  wr_data[7:0];
+		reg_file[56]     <=  wr_data[7:0];
 end
 
-assign led_test_enable      = reg_file[40][4];
-assign led_values[3:0]      = reg_file[40][3:0];
+assign led_test_enable      = reg_file[56][4];
+assign led_values[3:0]      = reg_file[56][3:0];
 
 endmodule

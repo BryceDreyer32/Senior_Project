@@ -62,6 +62,13 @@ module top(
     wire  [3:0]     sr_pwm_done, sr_pwm_enable, sr_pwm_update, sr_pwm_direction;
     wire  [7:0]     sr_pwm_ratio    [3:0];
 
+    wire            startup_fail0, startup_fail1, startup_fail2, startup_fail3; // Startup failure (motor siezed)
+    wire            startup_fail4, startup_fail5, startup_fail6, startup_fail7;
+    wire            enable_hammer;          // Enables hammer acceleration (vs linear)
+    wire  [3:0]     fwd_count, rvs_count;   // Number of times to apply the forward, reverse hammer
+    wire  [1:0]     retry_count;            // Number of retry attempts before admitting defeat
+    wire  [2:0]     consec_chg;             // Number of consecutive changes we want to see before claiming success
+
     wire  [11:0]    target_angle0;   // Rotation target angle
     wire  [11:0]    current_angle0;  // The current angle
     wire  [11:0]    target_angle1;   // Rotation target angle
@@ -162,7 +169,15 @@ reg_file rf(
     .pwm3               (pwm3),      	    // PWM control
 
     // Rotation Motors outputs
-    .brake4             (sr_brake[0]),    	// Brake control
+    .startup_fail4      (startup_fail4),    // Error: Motor stalled, unable to startup
+    .startup_fail5      (startup_fail5),    // Error: Motor stalled, unable to startup
+    .startup_fail6      (startup_fail6),    // Error: Motor stalled, unable to startup
+    .startup_fail7      (startup_fail7),    // Error: Motor stalled, unable to startup
+    .enable_hammer      (enable_hammer),    // Enables hammer acceleration (vs linear)
+    .fwd_count          (fwd_count[3:0]),   // Number of times to apply the forward hammer
+    .rvs_count          (rvs_count[3:0]),   // Number of times to apply the reverse hammer
+    .retry_count        (retry_count[1:0]), // Number of retry attempts before admitting defeat
+    .consec_chg         (consec_chg[2:0]),  // Number of consecutive changes we want to see before claiming success    .brake4             (sr_brake[0]),    	// Brake control
     .enable4            (sr_enable[0]),   	// Motor enable
     .direction4         (),//sr_direction[0]),	// Motor direction
     .brake5             (sr_brake[1]),    	// Brake control
@@ -275,19 +290,26 @@ pwm_ctrl pwm_ctrl0(
     .reset_n                (reset_n),              // Active low reset
     .clock                  (clock),                // The main clock
 
-    //FPGA Subsystem Interface
+    // FPGA Subsystem Interface
     .target_angle           (target_angle0[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .angle_update           (update_angle0),        // Signals when an angle update is available
     .current_angle          (current_angle0[11:0]), // Angle we are currently at from I2C
     .abort_angle            (abort_angle0),         // Aborts the angle adjustment
     .angle_done             (angle_done0),          // Output sent when angle has been adjusted to target_angle
 
-    //PWM Interface
+    // Acceleration hammer interface
+    .enable_hammer          (enable_hammer),        // Enables hammer acceleration (vs linear)
+    .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
+    .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
+    .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
+    .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
+    .startup_fail           (startup_fail4),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+
+    // PWM Interface
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[0]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
-    .pwm_direction          (sr_direction[0]),      // Direction to drive the motor
 
     .debug_signals          (pwm_ctrl0_debug[7:0]),
 
@@ -318,19 +340,26 @@ pwm_ctrl pwm_ctrl1(
     .reset_n                (reset_n),              // Active low reset
     .clock                  (clock),                // The main clock
 
-    //FPGA Subsystem Interface
+    // PGA Subsystem Interface
     .target_angle           (target_angle1[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .angle_update           (update_angle1),        // Signals when an angle update is available
     .current_angle          (current_angle1[11:0]), // Angle we are currently at from I2C
     .abort_angle            (abort_angle1),         // Aborts the angle adjustment
     .angle_done             (angle_done1),          // Output sent when angle has been adjusted to target_angle
 
-    //PWM Interface
+    // Acceleration hammer interface
+    .enable_hammer          (enable_hammer),        // Enables hammer acceleration (vs linear)
+    .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
+    .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
+    .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
+    .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
+    .startup_fail           (startup_fail5),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+
+    // PWM Interface
     .pwm_done               (sr_pwm_done[1]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[1]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[1]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[1]),     // Request an update to the PWM ratio
-    .pwm_direction          (sr_direction[1]),      // Direction to drive the motor
 
     //I2C Interface
     .sck                    (scl[1]),               // The I2C clock
@@ -361,12 +390,19 @@ pwm_ctrl pwm_ctrl2(
     .abort_angle            (abort_angle2),         // Aborts the angle adjustment
     .angle_done             (angle_done2),          // Output sent when angle has been adjusted to target_angle
 
+    // Acceleration hammer interface
+    .enable_hammer          (enable_hammer),        // Enables hammer acceleration (vs linear)
+    .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
+    .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
+    .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
+    .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
+    .startup_fail           (startup_fail6),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+
     //PWM Interface
     .pwm_done               (sr_pwm_done[2]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[2]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[2]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[2]),     // Request an update to the PWM ratio
-    .pwm_direction          (sr_direction[2]),      // Direction to drive the motor
 
     //I2C Interface
     .sck                    (scl[2]),               // The I2C clock
@@ -397,12 +433,19 @@ pwm_ctrl pwm_ctrl3(
     .abort_angle            (abort_angle3),         // Aborts the angle adjustment
     .angle_done             (angle_done3),          // Output sent when angle has been adjusted to target_angle
 
+    // Acceleration hammer interface
+    .enable_hammer          (enable_hammer),        // Enables hammer acceleration (vs linear)
+    .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
+    .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
+    .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
+    .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
+    .startup_fail           (startup_fail7),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+
     //PWM Interface
     .pwm_done               (sr_pwm_done[3]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[3]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[3]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[3]),     // Request an update to the PWM ratio
-    .pwm_direction          (sr_direction[3]),      // Direction to drive the motor
 
     //I2C Interface
     .sck                    (scl[3]),               // The I2C clock
