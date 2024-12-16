@@ -25,6 +25,7 @@ module pwm_ctrl(
     input                   pwm_done,       // Updated PWM ratio has been applied (1 cycle long pulse)
     output                  pwm_enable,     // Enables the PWM output
     output          [7:0]   pwm_ratio,      // The high-time of the PWM signal out of 255.
+    output                  pwm_direction,  // The direction of the motor
     output                  pwm_update,     // Request an update to the PWM ratio
     
     output          [15:0]  debug_signals,
@@ -77,7 +78,8 @@ angle_to_pwm a_to_pwm(
     .startup_fail   (startup_fail),         // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
     .pwm_enable     (pwm_enable),   
     .pwm_update     (pwm_update),           // Request an update to the PWM ratio
-    .pwm_ratio      (pwm_ratio)             // The high-time of the PWM signal out of 255.
+    .pwm_ratio      (pwm_ratio),            // The high-time of the PWM signal out of 255.
+    .pwm_direction  (pwm_direction)         // The direction of the motor
 );  
 
 i2c i2c(    

@@ -43,7 +43,7 @@ localparam SMALL_DELTA  = 4'd8;
 localparam MED_DELTA    = 4'd10;
 localparam BIG_DELTA    = 4'd14;
 
-localparam PROFILE_DELAY_TARGET = 12'd3;
+localparam PROFILE_DELAY_TARGET = 12'd5;
 localparam TARGET_TOLERANCE     = 12'd5; 
 
 reg   [3:0] ps, ns;
@@ -102,7 +102,7 @@ assign linear_profile[14][7:0] = 8'd200;
 assign linear_profile[15][7:0] = 8'd206;
 
 
-always @(posedge clock or negedge reset_n)
+always @(negedge reset_n or posedge clock)
     if(~reset_n) begin
         ps                  <= IDLE;
         curr_step[3:0]      <= 4'b0;
@@ -116,7 +116,7 @@ always @(posedge clock or negedge reset_n)
         angle_done          <= 1'b0;
         enable_calc         <= 1'b0;
         num_steps[3:0]      <= MED_DELTA;
-        pwm_direction       <= dir_shortest;
+        pwm_direction       <= 1'b0;
         retry_cnt           <= 2'b0;
         hammer_chk          <= 1'b0;
         chg_cnt[2:0]        <= 3'b0;
@@ -142,6 +142,7 @@ always @(posedge clock or negedge reset_n)
             // If we are in IDLE force the ratio to 0
             curr_step[3:0]  <= 4'b0;
             pwm_ratio[7:0]  <= 8'd0;
+            pwm_direction   <= dir_shortest;
             pwm_update      <= 1'b0;
             enable_calc     <= 1'b0;
             chg_cnt[2:0]    <= 3'b0;
@@ -151,6 +152,7 @@ always @(posedge clock or negedge reset_n)
         else if( ps == CALC) begin
             curr_step[3:0]  <= 4'b0;
             pwm_ratio[7:0]  <= 8'd0;
+            pwm_direction   <= dir_shortest;
             enable_calc     <= 1'b1;
             retry_cnt[1:0]  <= 2'b0;
             startup_fail    <= 1'b0;
