@@ -35,30 +35,31 @@ module top(
     output          status_debug    // Control for LED for general debug
 );
 
-    wire            reset_n = 1'b1;  // reset
+    reg             reset_n;        // reset
+    reg   [2:0]     reset_cntr;     
 
-    wire  [5:0]     address;   	     // Read / write address
-    wire            write_en;  	     // Write enable
-    wire  [7:0]     wr_data;   	     // Write data
-    wire            read_en;  	     // Read enable
-    wire  [7:0]     rd_data;   	     // Read data
+    wire  [5:0]     address;   	    // Read / write address
+    wire            write_en;  	    // Write enable
+    wire  [7:0]     wr_data;   	    // Write data
+    wire            read_en;  	    // Read enable
+    wire  [7:0]     rd_data;   	    // Read data
 
-    wire            brake0;    	     // Brake control
-    wire            enable0;   	     // Motor enable
-    wire            direction0;	     // Motor direction
-    wire  [4:0]     pwm0;      	     // PWM control  
-    wire            brake1;    	     // Brake control
-    wire            enable1;   	     // Motor enable
-    wire            direction1;	     // Motor direction
-    wire  [4:0]     pwm1;      	     // PWM control  
-    wire            brake2;    	     // Brake control
-    wire            enable2;   	     // Motor enable
-    wire            direction2;	     // Motor direction
-    wire  [4:0]     pwm2;      	     // PWM control  
-    wire            brake3;    	     // Brake control
-    wire            enable3;   	     // Motor enable
-    wire            direction3;	     // Motor direction
-    wire  [4:0]     pwm3;      	     // PWM control
+    wire            brake0;    	    // Brake control
+    wire            enable0;   	    // Motor enable
+    wire            direction0;	    // Motor direction
+    wire  [4:0]     pwm0;      	    // PWM control  
+    wire            brake1;    	    // Brake control
+    wire            enable1;   	    // Motor enable
+    wire            direction1;	    // Motor direction
+    wire  [4:0]     pwm1;      	    // PWM control  
+    wire            brake2;    	    // Brake control
+    wire            enable2;   	    // Motor enable
+    wire            direction2;	    // Motor direction
+    wire  [4:0]     pwm2;      	    // PWM control  
+    wire            brake3;    	    // Brake control
+    wire            enable3;   	    // Motor enable
+    wire            direction3;	    // Motor direction
+    wire  [4:0]     pwm3;      	    // PWM control
     wire  [3:0]     sr_pwm_done, sr_pwm_enable, sr_pwm_update, sr_pwm_direction;
     wire  [7:0]     sr_pwm_ratio    [3:0];
 
@@ -98,8 +99,21 @@ module top(
     wire  [15:0]    pwm_ctrl0_debug;
     wire            led_test_enable; // Enable the led testing
     wire  [3:0]     led_values;      // Test led values
+    wire            pi_connected, ps4_connected;
 
     wire  [7:0]     BAUD_DIVISION = 8'd116;   // Select baud 115200
+
+////////////////////////////////////////////////////////////////
+// Reset Controller
+////////////////////////////////////////////////////////////////
+always @(posedge clock) begin
+    if(reset_cntr[2:0] < 3'h7) begin
+        reset_cntr[2:0] <= reset_cntr[2:0] + 3'b1;
+        reset_n         <= 1'b0;
+    end
+    else // if reset_cntr == 3'h7
+        reset_n <= 1'b1;
+end
 
 ////////////////////////////////////////////////////////////////
 // SPI Controller
@@ -178,6 +192,7 @@ reg_file rf(
     .rvs_count          (rvs_count[3:0]),   // Number of times to apply the reverse hammer
     .retry_count        (retry_count[1:0]), // Number of retry attempts before admitting defeat
     .consec_chg         (consec_chg[2:0]),  // Number of consecutive changes we want to see before claiming success    .brake4             (sr_brake[0]),    	// Brake control
+    .brake4             (sr_brake[0]),    	// Brake control
     .enable4            (sr_enable[0]),   	// Motor enable
     .direction4         (),//sr_direction[0]),	// Motor direction
     .brake5             (sr_brake[1]),    	// Brake control
@@ -219,6 +234,8 @@ reg_file rf(
 
     .debug_signals      (debug_signals[31:0]),// Debug signals
     .led_test_enable    (led_test_enable),  // Enable the led testing
+    .pi_connected       (pi_connected),     // Orange Pi connected
+    .ps4_connected      (ps4_connected),    // PS4 connected
     .led_values         (led_values[3:0])   // Test led values
 );
 
@@ -509,8 +526,8 @@ pwm servo_pwm3(
 );
 
 assign status_fault = led_test_enable ? led_values[0] : |(sr_fault[3:0]);   // Control for LED for when a fault has occurred
-assign status_pi    = led_test_enable ? led_values[1] :  1'b0;              // Control for LED for when the Orange Pi is connected
-assign status_ps4   = led_test_enable ? led_values[2] :  1'b0;              // Control for LED for when the PS4 controller is connected
-assign status_debug = led_test_enable ? led_values[3] :  1'b0;              // Control for LED for general debug
+assign status_pi    = led_test_enable ? led_values[1] : pi_connected;       // Control for LED for when the Orange Pi is connected
+assign status_ps4   = led_test_enable ? led_values[2] : ps4_connected;      // Control for LED for when the PS4 controller is connected
+assign status_debug = led_test_enable ? led_values[3] : 1'b1;              // Control for LED for general debug
 
 endmodule

@@ -97,6 +97,8 @@ module reg_file (
 
     input   [31:0]  debug_signals,   // Debug signals
     output          led_test_enable, // Enable the led testing
+    output          pi_connected,    // Orange Pi connected
+    output          ps4_connected,   // PS4 connected
     output  [3:0]   led_values       // Test led values
 );
 
@@ -434,5 +436,7 @@ end
 
 assign led_test_enable      = reg_file[56][4];
 assign led_values[3:0]      = reg_file[56][3:0];
+assign pi_connected         = reg_file[56][5];
+assign ps4_connected        = reg_file[56][6];
 
 endmodule

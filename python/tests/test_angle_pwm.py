@@ -124,6 +124,26 @@ try:
         print("   run_stall         = " + str((rd_data >> 30) & 0x1))
         print("   startup_fail      = " + str((rd_data >> 31) & 0x1))
         print(" -------------------------------------------")
+
+        # If we're in the HAMMER_FAIL state, wait a bit and then try again
+        if(state == 6):
+            # Brake, disable
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, angle & 0xFF)
+            control_val = ((0<<7) | (0<<6) | (0<<5) | ((angle & 0xF00) >> 8))
+
+            print('HAMMER_FAIL. Retrying...')
+            time.sleep(2)
+
+            # UnBrake, enable
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
+            control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
+
+            # Write update angle
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
+
 #assign debug_signals = {startup_fail, run_stall, retry_cnt[1:0], pwm_direction, angle_update, abort_angle, pwm_done,
 #                        chg_cnt[2:0], pwm_update, ps[3:0]};
 
