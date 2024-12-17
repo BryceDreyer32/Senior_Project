@@ -68,6 +68,7 @@ module reg_file (
     output      [3:0]   rvs_count,      // Number of times to apply the reverse hammer
     output      [1:0]   retry_count,    // Number of retry attempts before admitting defeat
     output      [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
+    output      [7:0]   delay_target,   // Number of times to remain on each profile step
 
     output  [11:0]  target_angle0,   // Rotation target angle
     input   [11:0]  current_angle0,  // The current angle
@@ -95,11 +96,12 @@ module reg_file (
     output  [7:0]   servo_position2, // Servo 2 target position
     output  [7:0]   servo_position3, // Servo 3 target position
 
-    input   [31:0]  debug_signals,   // Debug signals
-    output          led_test_enable, // Enable the led testing
-    output          pi_connected,    // Orange Pi connected
-    output          ps4_connected,   // PS4 connected
-    output  [3:0]   led_values       // Test led values
+    input   [31:0]  debug_signals,      // Debug signals
+    output          led_test_enable,    // Enable the led testing
+    output          motor_hot_led,      // Hot motor led
+    output          pi_connected_led,   // Orange Pi connected
+    output          ps4_connected_led,  // PS4 connected
+    output          fault_led,          // Fault led
 );
 
 reg     [7:0]   reg_file    [56:0];
@@ -376,6 +378,14 @@ end
 assign fwd_count[3:0] = reg_file[33][7:4];
 assign rvs_count[3:0] = reg_file[33][3:0];
 
+// ------------ 0x22	ROTATION_GEN_CTRL3	------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h22))
+		reg_file[34]     <=  wr_data[7:0];
+end
+
+assign delay_target[7:0] = reg_file[34][7:0];
+
 // --------------- 0x30	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h30))
@@ -435,8 +445,9 @@ always @(posedge clock) begin
 end
 
 assign led_test_enable      = reg_file[56][4];
-assign led_values[3:0]      = reg_file[56][3:0];
-assign pi_connected         = reg_file[56][5];
-assign ps4_connected        = reg_file[56][6];
+assign motor_hot_led        = reg_file[56][3];
+assign ps4_connected_led    = reg_file[56][2];
+assign pi_connected_led     = reg_file[56][1];
+assign fault_led            = reg_file[56][0];
 
 endmodule

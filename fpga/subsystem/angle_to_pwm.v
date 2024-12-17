@@ -17,6 +17,7 @@ module angle_to_pwm(
     input       [3:0]   rvs_count,      // Number of times to apply the reverse hammer
     input       [1:0]   retry_count,    // Number of retry attempts before admitting defeat
     input       [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
+    input       [7:0]   delay_target,   // Number of times to remain on each profile step
     output reg          startup_fail,   // Error: Motor stalled, unable to startup
 
     output      [15:0]  debug_signals,
@@ -43,7 +44,6 @@ localparam SMALL_DELTA  = 4'd8;
 localparam MED_DELTA    = 4'd10;
 localparam BIG_DELTA    = 4'd14;
 
-localparam PROFILE_DELAY_TARGET = 12'd5;
 localparam TARGET_TOLERANCE     = 12'd5; 
 
 reg   [3:0] ps, ns;
@@ -53,7 +53,7 @@ wire [11:0] delta_angle;
 reg  [11:0] curr_ang_ff;
 reg   [3:0] num_steps;
 reg   [3:0] curr_step;
-reg  [11:0] profile_delay;
+reg   [7:0] profile_delay;
 wire        calc_updated;
 wire        dir_shortest;
 reg         enable_calc;
@@ -112,7 +112,7 @@ always @(negedge reset_n or posedge clock)
         pwm_update          <= 1'b0;
         pwm_done_ff         <= 1'b0;
         pwm_done_went_high  <= 1'b0;
-        profile_delay[11:0] <= 12'b0;
+        profile_delay[7:0]  <= 8'b0;
         angle_done          <= 1'b0;
         enable_calc         <= 1'b0;
         num_steps[3:0]      <= MED_DELTA;
@@ -183,12 +183,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[7:0] <= profile_delay + 12'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
+                if(profile_delay[7:0] == delay_target[7:0]) begin
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[7:0] <= 12'b0;
                 end
             end
         end
@@ -201,12 +201,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[7:0] <= profile_delay + 12'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
+                if(profile_delay[7:0] == delay_target[7:0]) begin
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[7:0] <= 12'b0;
 
                     // Check if the angle has changed by > 3
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
@@ -237,12 +237,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[7:0] <= profile_delay + 12'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
+                if(profile_delay[7:0] == delay_target[7:0]) begin
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[7:0] <= 12'b0;
 
                     // Check if the angle has changed by > 3
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
@@ -278,11 +278,11 @@ always @(negedge reset_n or posedge clock)
             // Check for stalls
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[7:0] <= profile_delay + 12'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
-                    profile_delay[11:0] <= 12'b0;
+                if(profile_delay[7:0] == delay_target[7:0]) begin
+                    profile_delay[7:0] <= 12'b0;
 
                     // If the angle hasn't changed by at least 5, then flag a stall
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
@@ -305,12 +305,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[7:0] <= profile_delay + 12'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
+                if(profile_delay[7:0] == delay_target[7:0]) begin
                     curr_step[3:0] <= curr_step[3:0] - 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[7:0] <= 12'b0;
                 end
             end
         end

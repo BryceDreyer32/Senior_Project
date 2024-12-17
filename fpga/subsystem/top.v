@@ -69,6 +69,7 @@ module top(
     wire  [3:0]     fwd_count, rvs_count;   // Number of times to apply the forward, reverse hammer
     wire  [1:0]     retry_count;            // Number of retry attempts before admitting defeat
     wire  [2:0]     consec_chg;             // Number of consecutive changes we want to see before claiming success
+    wire  [7:0]     delay_target;           // Number of times to remain on each profile step
 
     wire  [11:0]    target_angle0;   // Rotation target angle
     wire  [11:0]    current_angle0;  // The current angle
@@ -98,8 +99,7 @@ module top(
     wire  [31:0]    debug_signals;   // Debug signals
     wire  [15:0]    pwm_ctrl0_debug;
     wire            led_test_enable; // Enable the led testing
-    wire  [3:0]     led_values;      // Test led values
-    wire            pi_connected, ps4_connected;
+    wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
 
     wire  [7:0]     BAUD_DIVISION = 8'd116;   // Select baud 115200
 
@@ -191,7 +191,8 @@ reg_file rf(
     .fwd_count          (fwd_count[3:0]),   // Number of times to apply the forward hammer
     .rvs_count          (rvs_count[3:0]),   // Number of times to apply the reverse hammer
     .retry_count        (retry_count[1:0]), // Number of retry attempts before admitting defeat
-    .consec_chg         (consec_chg[2:0]),  // Number of consecutive changes we want to see before claiming success    .brake4             (sr_brake[0]),    	// Brake control
+    .consec_chg         (consec_chg[2:0]),  // Number of consecutive changes we want to see before claiming success
+    .delay_target       (delay_target[7:0]),// Number of times to remain on each profile step
     .brake4             (sr_brake[0]),    	// Brake control
     .enable4            (sr_enable[0]),   	// Motor enable
     .direction4         (),//sr_direction[0]),	// Motor direction
@@ -232,11 +233,12 @@ reg_file rf(
     .servo_position2    (servo_position2),  // Servo 2 target position
     .servo_position3    (servo_position3),  // Servo 3 target position
 
-    .debug_signals      (debug_signals[31:0]),// Debug signals
-    .led_test_enable    (led_test_enable),  // Enable the led testing
-    .pi_connected       (pi_connected),     // Orange Pi connected
-    .ps4_connected      (ps4_connected),    // PS4 connected
-    .led_values         (led_values[3:0])   // Test led values
+    .debug_signals      (debug_signals[31:0]),  // Debug signals
+    .led_test_enable    (led_test_enable),      // Enable the led testing
+    .pi_connected_led   (pi_connected_led),     // Orange Pi connected
+    .ps4_connected_led  (ps4_connected_led),    // PS4 connected
+    .fault_led          (fault_led),            // Fault led
+    .motor_hot_led      (motor_hot_led)         // Hot motor led
 );
 
 ////////////////////////////////////////////////////////////////
@@ -320,6 +322,7 @@ pwm_ctrl pwm_ctrl0(
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
+    .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step    
     .startup_fail           (startup_fail4),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     // PWM Interface
@@ -370,6 +373,7 @@ pwm_ctrl pwm_ctrl1(
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
+    .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
     .startup_fail           (startup_fail5),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     // PWM Interface
@@ -414,6 +418,7 @@ pwm_ctrl pwm_ctrl2(
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
+    .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
     .startup_fail           (startup_fail6),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     //PWM Interface
@@ -458,6 +463,7 @@ pwm_ctrl pwm_ctrl3(
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
+    .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
     .startup_fail           (startup_fail7),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     //PWM Interface
@@ -525,9 +531,9 @@ pwm servo_pwm3(
     .pwm_signal             (servo_pwm[3])
 );
 
-assign status_fault = led_test_enable ? led_values[0] : |(sr_fault[3:0]);   // Control for LED for when a fault has occurred
-assign status_pi    = led_test_enable ? led_values[1] : pi_connected;       // Control for LED for when the Orange Pi is connected
-assign status_ps4   = led_test_enable ? led_values[2] : ps4_connected;      // Control for LED for when the PS4 controller is connected
-assign status_debug = led_test_enable ? led_values[3] : 1'b1;              // Control for LED for general debug
+assign status_fault = led_test_enable ? fault_led       : |(sr_fault[3:0]);   // Control for LED for when a fault has occurred
+assign status_pi    = led_test_enable ? 1'b1            : pi_connected;       // Control for LED for when the Orange Pi is connected
+assign status_ps4   = led_test_enable ? 1'b1            : ps4_connected;      // Control for LED for when the PS4 controller is connected
+assign status_debug = led_test_enable ? motor_hot_led   : 1'b1;              // Control for LED for general debug
 
 endmodule

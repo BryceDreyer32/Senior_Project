@@ -19,6 +19,7 @@ module pwm_ctrl(
     input           [3:0]   rvs_count,      // Number of times to apply the reverse hammer
     input           [1:0]   retry_count,    // Number of retry attempts before admitting defeat
     input           [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
+    input           [7:0]   delay_target,   // Number of times to remain on each profile step
     output                  startup_fail,   // Error: Motor stalled, unable to startup
 
     // PWM Interface
@@ -75,6 +76,7 @@ angle_to_pwm a_to_pwm(
     .rvs_count      (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count    (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg     (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
+    .delay_target   (delay_target[7:0]),    // Number of times to remain on each profile step
     .startup_fail   (startup_fail),         // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
     .pwm_enable     (pwm_enable),   
     .pwm_update     (pwm_update),           // Request an update to the PWM ratio

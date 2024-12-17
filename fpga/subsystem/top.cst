@@ -110,7 +110,7 @@ IO_LOC  "status_debug" 79;
 IO_PORT "status_debug" IO_TYPE=LVCMOS18;
 
 IO_LOC  "status_ps4" 80;
-IO_PORT "status_ps4" IO_TYPE=LVCMOS18;
+IO_PORT "status_ps4" DRIVE=24 IO_TYPE=LVCMOS18;
 
 IO_LOC  "status_pi" 81;
 IO_PORT "status_pi" IO_TYPE=LVCMOS18;
