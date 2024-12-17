@@ -9,7 +9,7 @@ module pwm
     input [7:0] pwm_ratio,  // The high-time of the PWM signal out of 255.
     input       pwm_update, // Request an update to the PWM ratio
     output reg  pwm_done,   // Updated PWM ratio has been applied (pulse)
-    output      pwm_signal  // The output PWM wave
+    output reg  pwm_signal  // The output PWM wave
 );
 
 reg [7:0]   pwm_counter;
@@ -20,6 +20,7 @@ always @( posedge clock or negedge reset_n ) begin
         pwm_counter <= 8'h0;
         pwm_target  <= 8'h0;
         pwm_done    <= 1'b0;
+        pwm_signal  <= 1'b0;
     end
     else begin
         // Increment the counter (let it roll over)
@@ -30,12 +31,17 @@ always @( posedge clock or negedge reset_n ) begin
             pwm_target <= pwm_ratio;
             pwm_done   <= 1'b1;
         end
-        else
+        // otherwise, if the count < target, then pwm high (if enabled)
+        else if(pwm_counter[7:0] < pwm_target[7:0]) begin
+            pwm_signal <= pwm_enable;
             pwm_done   <= 1'b0;
+        end
+        // else pwm outputs low
+        else begin
+            pwm_signal <= 1'b0;
+            pwm_done   <= 1'b0;
+        end
     end
 end
-
-// Output pwm_signal is 1 when pwm_enable is set and the pwm_counter <= pwm_target
-assign pwm_signal = pwm_enable & (pwm_counter[7:0] < pwm_target[7:0]);
 
 endmodule

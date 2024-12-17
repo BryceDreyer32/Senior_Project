@@ -19,6 +19,17 @@ import FpgaCommunication
 # FPGA instance
 fpga = FpgaCommunication.FpgaCommunication(Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
 
+print("LEDs on")
+fpga.fpgaWrite(Constants.Constants.LED_TEST_ADDR, (0x1 << 5) | (0x1 << 6))
+#while 1:
+#    print("LEDs on")
+#    fpga.fpgaWrite(Constants.Constants.LED_TEST_ADDR, (0x1 << 5) | (0x1 << 6))
+#    time.sleep(1)
+
+#    print("LEDs off")
+#    fpga.fpgaWrite(Constants.Constants.LED_TEST_ADDR, (0x0 << 5) | (0x0 << 6))
+#    time.sleep(1)
+
 # Set brake_n = 0, enable = 0
 fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, 0x0)
 
@@ -99,7 +110,7 @@ try:
         print("Debug Data = " + hex(rd_data & 0xFFFFFFFF))
 
         # bits [19:16] are state
-        state = (rd_data >> 15) & 0xF
+        state = (rd_data >> 16) & 0xF
         match(state):
             case 0:  print("   State             = IDLE           ")
             case 1:  print("   State             = CALC           ")
