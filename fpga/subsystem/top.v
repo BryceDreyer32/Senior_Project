@@ -37,6 +37,7 @@ module top(
 
     reg             reset_n;        // reset
     reg   [2:0]     reset_cntr;     
+    reg             clock_div2;
 
     wire  [5:0]     address;   	    // Read / write address
     wire            write_en;  	    // Write enable
@@ -113,6 +114,13 @@ always @(posedge clock) begin
     end
     else // if reset_cntr == 3'h7
         reset_n <= 1'b1;
+end
+
+////////////////////////////////////////////////////////////////
+// Clock Division
+////////////////////////////////////////////////////////////////
+always @(posedge clock) begin
+    clock_div2  <=  ~clock_div2;
 end
 
 ////////////////////////////////////////////////////////////////
@@ -345,7 +353,7 @@ assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
 
 pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock),                // The main clock
+    .clock                  (clock_div2),           // The main clock
     .pwm_enable             (sr_pwm_enable[0]),     // PWM enable
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
@@ -390,7 +398,7 @@ pwm_ctrl pwm_ctrl1(
 
 pwm sr_pwm1(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock),                // The main clock
+    .clock                  (clock_div2),           // The main clock
     .pwm_enable             (sr_pwm_enable[1]),     // PWM enable
     .pwm_ratio              (sr_pwm_ratio[1]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[1]),     // Request an update to the PWM ratio
@@ -435,7 +443,7 @@ pwm_ctrl pwm_ctrl2(
 
 pwm sr_pwm2(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock),                // The main clock
+    .clock                  (clock_div2),           // The main clock
     .pwm_enable             (sr_pwm_enable[2]),     // PWM enable
     .pwm_ratio              (sr_pwm_ratio[2]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[2]),     // Request an update to the PWM ratio
@@ -480,7 +488,7 @@ pwm_ctrl pwm_ctrl3(
 
 pwm sr_pwm3(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock),                // The main clock
+    .clock                  (clock_div2),           // The main clock
     .pwm_enable             (sr_pwm_enable[3]),     // PWM enable
     .pwm_ratio              (sr_pwm_ratio[3]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[3]),     // Request an update to the PWM ratio

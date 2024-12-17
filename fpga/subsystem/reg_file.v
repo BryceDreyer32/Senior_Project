@@ -392,7 +392,7 @@ always @(posedge clock) begin
 		reg_file[48]     <=  wr_data[7:0];
 end
 
-assign servo_position0    = reg_file[32][7:0];
+assign servo_position0    = reg_file[48][7:0];
 
 // --------------- 0x31	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
@@ -400,7 +400,7 @@ always @(posedge clock) begin
 		reg_file[49]     <=  wr_data[7:0];
 end
 
-assign servo_position1    = reg_file[33][7:0];
+assign servo_position1    = reg_file[49][7:0];
 
 // --------------- 0x32	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
@@ -408,7 +408,7 @@ always @(posedge clock) begin
 		reg_file[50]     <=  wr_data[7:0];
 end
 
-assign servo_position2    = reg_file[34][7:0];
+assign servo_position2    = reg_file[50][7:0];
 
 // --------------- 0x33	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
@@ -416,7 +416,7 @@ always @(posedge clock) begin
 		reg_file[51]     <=  wr_data[7:0];
 end
 
-assign servo_position3    = reg_file[35][7:0];
+assign servo_position3    = reg_file[51][7:0];
 
 // ---------------   0x34	DEBUG   ----------------
 always @(posedge clock) begin
