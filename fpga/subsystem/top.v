@@ -35,71 +35,75 @@ module top(
     output          status_debug    // Control for LED for general debug
 );
 
-    reg             reset_n;        // reset
-    reg   [2:0]     reset_cntr;     
-    reg             clock_div2;
+    reg             reset_n;                // reset
+    reg   [2:0]     reset_cntr;             
+    reg             clock_div2;     
 
-    wire  [5:0]     address;   	    // Read / write address
-    wire            write_en;  	    // Write enable
-    wire  [7:0]     wr_data;   	    // Write data
-    wire            read_en;  	    // Read enable
-    wire  [7:0]     rd_data;   	    // Read data
+    wire  [5:0]     address;   	            // Read / write address
+    wire            write_en;  	            // Write enable
+    wire  [7:0]     wr_data;   	            // Write data
+    wire            read_en;  	            // Read enable
+    wire  [7:0]     rd_data;   	            // Read data
 
-    wire            brake0;    	    // Brake control
-    wire            enable0;   	    // Motor enable
-    wire            direction0;	    // Motor direction
-    wire  [4:0]     pwm0;      	    // PWM control  
-    wire            brake1;    	    // Brake control
-    wire            enable1;   	    // Motor enable
-    wire            direction1;	    // Motor direction
-    wire  [4:0]     pwm1;      	    // PWM control  
-    wire            brake2;    	    // Brake control
-    wire            enable2;   	    // Motor enable
-    wire            direction2;	    // Motor direction
-    wire  [4:0]     pwm2;      	    // PWM control  
-    wire            brake3;    	    // Brake control
-    wire            enable3;   	    // Motor enable
-    wire            direction3;	    // Motor direction
-    wire  [4:0]     pwm3;      	    // PWM control
+    wire            brake0;    	            // Brake control
+    wire            enable0;   	            // Motor enable
+    wire            direction0;	            // Motor direction
+    wire  [4:0]     pwm0;      	            // PWM control  
+    wire            brake1;    	            // Brake control
+    wire            enable1;   	            // Motor enable
+    wire            direction1;	            // Motor direction
+    wire  [4:0]     pwm1;      	            // PWM control  
+    wire            brake2;    	            // Brake control
+    wire            enable2;   	            // Motor enable
+    wire            direction2;	            // Motor direction
+    wire  [4:0]     pwm2;      	            // PWM control  
+    wire            brake3;    	            // Brake control
+    wire            enable3;   	            // Motor enable
+    wire            direction3;	            // Motor direction
+    wire  [4:0]     pwm3;      	            // PWM control
     wire  [3:0]     sr_pwm_done, sr_pwm_enable, sr_pwm_update, sr_pwm_direction;
     wire  [7:0]     sr_pwm_ratio    [3:0];
 
     wire            startup_fail0, startup_fail1, startup_fail2, startup_fail3; // Startup failure (motor siezed)
     wire            startup_fail4, startup_fail5, startup_fail6, startup_fail7;
     wire            enable_hammer;          // Enables hammer acceleration (vs linear)
+    wire            enable_stall_chk;       // Enable the stall check
     wire  [3:0]     fwd_count, rvs_count;   // Number of times to apply the forward, reverse hammer
     wire  [1:0]     retry_count;            // Number of retry attempts before admitting defeat
     wire  [2:0]     consec_chg;             // Number of consecutive changes we want to see before claiming success
     wire  [7:0]     delay_target;           // Number of times to remain on each profile step
+    wire  [7:0]     profile_offset;         // An offset that is added to each of the profile steps
+    wire  [7:0]     cruise_power;           // The amount of power to apply during the cruise phase
 
-    wire  [11:0]    target_angle0;   // Rotation target angle
-    wire  [11:0]    current_angle0;  // The current angle
-    wire  [11:0]    target_angle1;   // Rotation target angle
-    wire  [11:0]    current_angle1;  // The current angle
-    wire  [11:0]    target_angle2;   // Rotation target angle
-    wire  [11:0]    current_angle2;  // The current angle
-    wire  [11:0]    target_angle3;   // Rotation target angle
-    wire  [11:0]    current_angle3;  // The current angle
-    wire            abort_angle0;    // Aborts rotating to angle
-    wire            abort_angle1;    // Aborts rotating to angle
-    wire            abort_angle2;    // Aborts rotating to angle
-    wire            abort_angle3;    // Aborts rotating to angle
-    wire            update_angle0;   // Start rotation to angle
-    wire            update_angle1;   // Start rotation to angle
-    wire            update_angle2;   // Start rotation to angle
-    wire            update_angle3;   // Start rotation to angle
-    wire            angle_done0;     // Arrived at target angle
-    wire            angle_done1;     // Arrived at target angle
-    wire            angle_done2;     // Arrived at target angle
-    wire            angle_done3;     // Arrived at target angle    
-    wire  [7:0]     servo_position0; // Servo 0 target position
-    wire  [7:0]     servo_position1; // Servo 1 target position
-    wire  [7:0]     servo_position2; // Servo 2 target position
-    wire  [7:0]     servo_position3; // Servo 3 target position
 
-    wire  [31:0]    debug_signals;   // Debug signals
-    wire  [15:0]    pwm_ctrl0_debug;
-    wire            led_test_enable; // Enable the led testing
+    wire  [11:0]    target_angle0;          // Rotation target angle
+    wire  [11:0]    current_angle0;         // The current angle
+    wire  [11:0]    target_angle1;          // Rotation target angle
+    wire  [11:0]    current_angle1;         // The current angle
+    wire  [11:0]    target_angle2;          // Rotation target angle
+    wire  [11:0]    current_angle2;         // The current angle
+    wire  [11:0]    target_angle3;          // Rotation target angle
+    wire  [11:0]    current_angle3;         // The current angle
+    wire            abort_angle0;           // Aborts rotating to angle
+    wire            abort_angle1;           // Aborts rotating to angle
+    wire            abort_angle2;           // Aborts rotating to angle
+    wire            abort_angle3;           // Aborts rotating to angle
+    wire            update_angle0;          // Start rotation to angle
+    wire            update_angle1;          // Start rotation to angle
+    wire            update_angle2;          // Start rotation to angle
+    wire            update_angle3;          // Start rotation to angle
+    wire            angle_done0;            // Arrived at target angle
+    wire            angle_done1;            // Arrived at target angle
+    wire            angle_done2;            // Arrived at target angle
+    wire            angle_done3;            // Arrived at target angle    
+    wire  [7:0]     servo_position0;        // Servo 0 target position
+    wire  [7:0]     servo_position1;        // Servo 1 target position
+    wire  [7:0]     servo_position2;        // Servo 2 target position
+    wire  [7:0]     servo_position3;        // Servo 3 target position
+
+    wire  [31:0]    debug_signals;          // Debug signals
+    wire  [15:0]    pwm_ctrl0_debug;        
+    wire            led_test_enable;        // Enable the led testing
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
 
     wire  [7:0]     BAUD_DIVISION = 8'd116;   // Select baud 115200
@@ -196,6 +200,9 @@ reg_file rf(
     .startup_fail6      (startup_fail6),    // Error: Motor stalled, unable to startup
     .startup_fail7      (startup_fail7),    // Error: Motor stalled, unable to startup
     .enable_hammer      (enable_hammer),    // Enables hammer acceleration (vs linear)
+    .enable_stall_chk   (enable_stall_chk), // Enable the stall check
+    .profile_offset     (profile_offset[7:0]),  // An offset that is added to each of the profile steps
+    .cruise_power       (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .fwd_count          (fwd_count[3:0]),   // Number of times to apply the forward hammer
     .rvs_count          (rvs_count[3:0]),   // Number of times to apply the reverse hammer
     .retry_count        (retry_count[1:0]), // Number of retry attempts before admitting defeat
@@ -326,11 +333,14 @@ pwm_ctrl pwm_ctrl0(
 
     // Acceleration hammer interface
     .enable_hammer          (enable_hammer),        // Enables hammer acceleration (vs linear)
+    .enable_stall_chk       (enable_stall_chk),     // Enable the stall check
     .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step    
+    .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
+    .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .startup_fail           (startup_fail4),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     // PWM Interface
@@ -377,11 +387,14 @@ pwm_ctrl pwm_ctrl1(
 
     // Acceleration hammer interface
     .enable_hammer          (enable_hammer),        // Enables hammer acceleration (vs linear)
+    .enable_stall_chk       (enable_stall_chk),     // Enable the stall check
     .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
+    .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
+    .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .startup_fail           (startup_fail5),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     // PWM Interface
@@ -422,11 +435,14 @@ pwm_ctrl pwm_ctrl2(
 
     // Acceleration hammer interface
     .enable_hammer          (enable_hammer),        // Enables hammer acceleration (vs linear)
+    .enable_stall_chk       (enable_stall_chk),     // Enable the stall check
     .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
+    .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
+    .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .startup_fail           (startup_fail6),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     //PWM Interface
@@ -467,11 +483,14 @@ pwm_ctrl pwm_ctrl3(
 
     // Acceleration hammer interface
     .enable_hammer          (enable_hammer),        // Enables hammer acceleration (vs linear)
+    .enable_stall_chk       (enable_stall_chk),     // Enable the stall check
     .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
+    .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
+    .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .startup_fail           (startup_fail7),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     //PWM Interface

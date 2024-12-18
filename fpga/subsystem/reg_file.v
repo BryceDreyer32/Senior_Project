@@ -64,11 +64,14 @@ module reg_file (
     input               startup_fail6,  // Error: Motor stalled, unable to startup
     input               startup_fail7,  // Error: Motor stalled, unable to startup
     output              enable_hammer,  // Enables hammer acceleration (vs linear)
+    output              enable_stall_chk,   // Enable the stall check
     output      [3:0]   fwd_count,      // Number of times to apply the forward hammer
     output      [3:0]   rvs_count,      // Number of times to apply the reverse hammer
     output      [1:0]   retry_count,    // Number of retry attempts before admitting defeat
     output      [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
     output      [7:0]   delay_target,   // Number of times to remain on each profile step
+    output      [7:0]   profile_offset, // An offset that is added to each of the profile steps
+    output      [7:0]   cruise_power,   // The amount of power to apply during the cruise phase
 
     output  [11:0]  target_angle0,   // Rotation target angle
     input   [11:0]  current_angle0,  // The current angle
@@ -359,7 +362,7 @@ always @(posedge clock) begin
         update_angle3 <= 1'b0;
 end
 
-// ------------ 0x20	ROTATION_GEN_CTRL1	------------
+// ------------ 0x20	ROTATION_GEN_CTRL	------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h20))
 		reg_file[32]     <=  wr_data[7:0];
@@ -368,8 +371,9 @@ end
 assign enable_hammer = reg_file[32][7];
 assign retry_count[1:0] = reg_file[32][6:5];
 assign consec_chg[2:0]  = reg_file[32][4:2];
+assign enable_stall_chk = reg_file[32][1];
 
-// ------------ 0x21	ROTATION_GEN_CTRL2	------------
+// ------------ 0x21	HAMMER_FWD_RVS	------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h21))
 		reg_file[33]     <=  wr_data[7:0];
@@ -378,13 +382,29 @@ end
 assign fwd_count[3:0] = reg_file[33][7:4];
 assign rvs_count[3:0] = reg_file[33][3:0];
 
-// ------------ 0x22	ROTATION_GEN_CTRL3	------------
+// ------------ 0x22	HAMMER_DELAY_TARGET	------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h22))
 		reg_file[34]     <=  wr_data[7:0];
 end
 
 assign delay_target[7:0] = reg_file[34][7:0];
+
+// ------------ 0x23	PROFILE_OFFSET	------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h23))
+		reg_file[35]     <=  wr_data[7:0];
+end
+
+assign profile_offset[7:0] = reg_file[35][7:0];
+
+// ------------ 0x24	CRUISE_POWER	------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h24))
+		reg_file[36]     <=  wr_data[7:0];
+end
+
+assign cruise_power[7:0] = reg_file[36][7:0];
 
 // --------------- 0x30	SERVO0_CONTROL	----------------
 always @(posedge clock) begin

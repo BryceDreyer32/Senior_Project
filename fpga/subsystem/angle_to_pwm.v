@@ -4,28 +4,31 @@
 //              and includes the acceleration and deceleration profiles. 
 
 module angle_to_pwm(
-    input               reset_n,        // Active low reset
-    input               clock,          // The main clock
-    input       [11:0]  target_angle,   // The angle the wheel needs to move on the 4096 points/rotation scale
-    input       [11:0]  current_angle,  // The angle read from the motor encoder
-    input               pwm_done,       // Indicator from PWM that the pwm_ratio has been applied
-    input               angle_update,   // Request to update the angle
-    input               abort_angle,    // Aborts rotating to angle
+    input               reset_n,            // Active low reset
+    input               clock,              // The main clock
+    input       [11:0]  target_angle,       // The angle the wheel needs to move on the 4096 points/rotation scale
+    input       [11:0]  current_angle,      // The angle read from the motor encoder
+    input               pwm_done,           // Indicator from PWM that the pwm_ratio has been applied
+    input               angle_update,       // Request to update the angle
+    input               abort_angle,        // Aborts rotating to angle
 
-    input               enable_hammer,  // Enables hammer acceleration (vs linear)
-    input       [3:0]   fwd_count,      // Number of times to apply the forward hammer
-    input       [3:0]   rvs_count,      // Number of times to apply the reverse hammer
-    input       [1:0]   retry_count,    // Number of retry attempts before admitting defeat
-    input       [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
-    input       [7:0]   delay_target,   // Number of times to remain on each profile step
-    output reg          startup_fail,   // Error: Motor stalled, unable to startup
+    input               enable_hammer,      // Enables hammer acceleration (vs linear)
+    input               enable_stall_chk,   // Enable the stall check
+    input       [3:0]   fwd_count,          // Number of times to apply the forward hammer
+    input       [3:0]   rvs_count,          // Number of times to apply the reverse hammer
+    input       [1:0]   retry_count,        // Number of retry attempts before admitting defeat
+    input       [2:0]   consec_chg,         // Number of consecutive changes we want to see before claiming success
+    input       [7:0]   delay_target,       // Number of times to remain on each profile step
+    input       [7:0]   profile_offset,     // An offset that is added to each of the profile steps
+    input       [7:0]   cruise_power,       // The amount of power to apply during the cruise phase
+    output reg          startup_fail,       // Error: Motor stalled, unable to startup
 
-    output      [15:0]  debug_signals,
-    output reg          angle_done,     // Indicator that the angle has been applied 
-    output reg          pwm_enable,     // PWM enable
-    output reg          pwm_update,     // Request an update to the PWM ratio
-    output reg  [7:0]   pwm_ratio,      // The high-time of the PWM signal out of 255.
-    output reg          pwm_direction   // The direction of the motor
+    output      [15:0]  debug_signals,  
+    output reg          angle_done,         // Indicator that the angle has been applied 
+    output reg          pwm_enable,         // PWM enable
+    output reg          pwm_update,         // Request an update to the PWM ratio
+    output reg  [7:0]   pwm_ratio,          // The high-time of the PWM signal out of 255.
+    output reg          pwm_direction       // The direction of the motor
 );
 
 // States
@@ -69,39 +72,39 @@ assign debug_signals = {startup_fail, run_stall, retry_cnt[1:0], pwm_direction, 
 assign profile_delay_target[11:0] = delay_target[7:0] << 4;
 
 // Initialize the acceleration and deceleration profiles
-assign hammer_profile[0][7:0]  = 8'd40;
-assign hammer_profile[1][7:0]  = 8'd80;
-assign hammer_profile[2][7:0]  = 8'd100;
-assign hammer_profile[3][7:0]  = 8'd40;
-assign hammer_profile[4][7:0]  = 8'd60;
-assign hammer_profile[5][7:0]  = 8'd40;
-assign hammer_profile[6][7:0]  = 8'd80;
-assign hammer_profile[7][7:0]  = 8'd40;
-assign hammer_profile[8][7:0]  = 8'd100;
-assign hammer_profile[9][7:0]  = 8'd40;
-assign hammer_profile[10][7:0] = 8'd80;
-assign hammer_profile[11][7:0] = 8'd40;
-assign hammer_profile[12][7:0] = 8'd100;
-assign hammer_profile[13][7:0] = 8'd40;
-assign hammer_profile[14][7:0] = 8'd80;
-assign hammer_profile[15][7:0] = 8'd0;
+assign hammer_profile[0][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[1][7:0]  = 8'd80  + profile_offset[7:0];
+assign hammer_profile[2][7:0]  = 8'd100 + profile_offset[7:0];
+assign hammer_profile[3][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[4][7:0]  = 8'd60  + profile_offset[7:0];
+assign hammer_profile[5][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[6][7:0]  = 8'd80  + profile_offset[7:0];
+assign hammer_profile[7][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[8][7:0]  = 8'd100 + profile_offset[7:0];
+assign hammer_profile[9][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[10][7:0] = 8'd80  + profile_offset[7:0];
+assign hammer_profile[11][7:0] = 8'd40  + profile_offset[7:0];
+assign hammer_profile[12][7:0] = 8'd100 + profile_offset[7:0];
+assign hammer_profile[13][7:0] = 8'd40  + profile_offset[7:0];
+assign hammer_profile[14][7:0] = 8'd80  + profile_offset[7:0];
+assign hammer_profile[15][7:0] = 8'd0   + profile_offset[7:0];
 
-assign linear_profile[0][7:0]  = 8'd4;
-assign linear_profile[1][7:0]  = 8'd12;
-assign linear_profile[2][7:0]  = 8'd19;
-assign linear_profile[3][7:0]  = 8'd26;
-assign linear_profile[4][7:0]  = 8'd33;
-assign linear_profile[5][7:0]  = 8'd40;
-assign linear_profile[6][7:0]  = 8'd45;
-assign linear_profile[7][7:0]  = 8'd51;
-assign linear_profile[8][7:0]  = 8'd56;
-assign linear_profile[9][7:0]  = 8'd61;
-assign linear_profile[10][7:0] = 8'd66;
-assign linear_profile[11][7:0] = 8'd70;
-assign linear_profile[12][7:0] = 8'd74;
-assign linear_profile[13][7:0] = 8'd77;
-assign linear_profile[14][7:0] = 8'd80;
-assign linear_profile[15][7:0] = 8'd82;
+assign linear_profile[0][7:0]  = 8'd4  + profile_offset[7:0];
+assign linear_profile[1][7:0]  = 8'd12 + profile_offset[7:0];
+assign linear_profile[2][7:0]  = 8'd19 + profile_offset[7:0];
+assign linear_profile[3][7:0]  = 8'd26 + profile_offset[7:0];
+assign linear_profile[4][7:0]  = 8'd33 + profile_offset[7:0];
+assign linear_profile[5][7:0]  = 8'd40 + profile_offset[7:0];
+assign linear_profile[6][7:0]  = 8'd45 + profile_offset[7:0];
+assign linear_profile[7][7:0]  = 8'd51 + profile_offset[7:0];
+assign linear_profile[8][7:0]  = 8'd56 + profile_offset[7:0];
+assign linear_profile[9][7:0]  = 8'd61 + profile_offset[7:0];
+assign linear_profile[10][7:0] = 8'd66 + profile_offset[7:0];
+assign linear_profile[11][7:0] = 8'd70 + profile_offset[7:0];
+assign linear_profile[12][7:0] = 8'd74 + profile_offset[7:0];
+assign linear_profile[13][7:0] = 8'd77 + profile_offset[7:0];
+assign linear_profile[14][7:0] = 8'd80 + profile_offset[7:0];
+assign linear_profile[15][7:0] = 8'd82 + profile_offset[7:0];
 
 
 always @(negedge reset_n or posedge clock)
@@ -180,7 +183,10 @@ always @(negedge reset_n or posedge clock)
         end
 
         else if(ps == ACCEL) begin
-            pwm_ratio[7:0] <= hammer_profile[curr_step[3:0]];
+            if(enable_hammer)
+                pwm_ratio[7:0] <= hammer_profile[curr_step[3:0]];
+            else
+                pwm_ratio[7:0] <= linear_profile[curr_step[3:0]];
 
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
@@ -274,8 +280,7 @@ always @(negedge reset_n or posedge clock)
 
         else if(ps == CRUISE) begin
             // Continue to run at max speed
-            curr_step[3:0]  <= 4'h7;
-            pwm_ratio[7:0]  <= linear_profile[curr_step[3:0]];
+            pwm_ratio[7:0]  <= cruise_power[7:0];
 
             // Check for stalls
             if( pwm_done_went_high == 1'b1 ) begin
@@ -403,7 +408,7 @@ always @(*) begin
             if(abort_angle)
                 ns = DECEL;
             
-            else if(run_stall)
+            else if(run_stall & enable_stall_chk)
                 ns = CALC;
 
             else if(calc_updated) begin
