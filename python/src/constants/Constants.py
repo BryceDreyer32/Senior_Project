@@ -131,8 +131,11 @@ class Constants:
     ROTATION3_ROTATION_ADDR		    = 0x1D
     ROTATION3_CURRENT_ANGLE_ADDR    = 0x1E
     ROTATION3_CURRENT_ANGLE2_ADDR   = 0x1F
-    ROTATION_GEN_CTRL1_ADDR         = 0x20
-    ROTATION_GEN_CTRL2_ADDR         = 0x21
+    ROTATION_GEN_CTRL_ADDR          = 0x20
+    HAMMER_FWD_RVS_ADDR             = 0x21
+    HAMMER_DELAY_TARGET_ADDRESS     = 0x22
+    PROFILE_OFFSET_ADDR             = 0x23
+    CRUISE_POWER_ADDR               = 0x24
 
     SERVO0_CONTROL_ADDR			    = 0x30
     SERVO1_CONTROL_ADDR			    = 0x31
@@ -143,7 +146,7 @@ class Constants:
     DEBUG1_STATUS_ADDR			    = 0x35
     DEBUG2_STATUS_ADDR			    = 0x36
     DEBUG3_STATUS_ADDR			    = 0x37
-    LED_TEST_ADDR			        = 0x38
+    LED_CONTROL_ADDR			    = 0x38
 			
     MOTOR_CONTROL_BRAKE_BIT         = 0x7
     MOTOR_CONTROL_ENABLE_BIT        = 0x6
