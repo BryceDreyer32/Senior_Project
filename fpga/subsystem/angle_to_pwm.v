@@ -22,6 +22,7 @@ module angle_to_pwm(
     input       [7:0]   profile_offset,     // An offset that is added to each of the profile steps
     input       [7:0]   cruise_power,       // The amount of power to apply during the cruise phase
     output reg          startup_fail,       // Error: Motor stalled, unable to startup
+    output reg  [63:0]  angle_chg,          // Change in angle
     input       [127:0] pwm_profile,        // 16 * 8 bit pwm profile 
 
 
@@ -197,8 +198,14 @@ always @(negedge reset_n or posedge clock)
 
                 // If we've waited long enough, then go to the next acceleration step
                 if(profile_delay[11:0] == profile_delay_target[11:0]) begin
+                    if(curr_ang_ff[11:0] > current_angle[11:0]) 
+                        angle_chg[curr_step[3:0]*3-1:curr_step[3:0]*2]      <= curr_ang_ff[11:0] - current_angle[11:0];
+                    else
+                        angle_chg[curr_step[3:0]*3-1:curr_step[3:0]*2]      <= current_angle[11:0] - curr_ang_ff[11:0];
+                    
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
                     profile_delay[11:0] <= 12'b0;
+                    curr_ang_ff[11:0]   <= current_angle[11:0];
                 end
             end
         end
@@ -407,7 +414,8 @@ always @(*) begin
         end
 
         CRUISE: begin
-            if(abort_angle)
+            ns = IDLE;
+/*            if(abort_angle)
                 ns = DECEL;
             
             else if(run_stall & enable_stall_chk)
@@ -432,8 +440,8 @@ always @(*) begin
                         ns = CRUISE;
             end
             else
-                ns = CRUISE;
-        end
+                ns = CRUISE;*/
+        end 
 
         DECEL : begin
             if(delta_angle[11:0] < TARGET_TOLERANCE)

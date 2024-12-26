@@ -105,10 +105,11 @@ module reg_file (
     output          pi_connected_led,   // Orange Pi connected
     output          ps4_connected_led,  // PS4 connected
     output          fault_led,          // Fault led
+    input   [63:0]  angle_chg,          // Change in angle
     output  [127:0] pwm_profile         // 16 * 8 bit pwm profile 
 );
 
-reg     [7:0]   reg_file    [72:0];
+reg     [7:0]   reg_file    [80:0];
 
 // Read Data is just a pointer to whatever the address is set to 
 always @(posedge clock) begin
@@ -512,5 +513,15 @@ assign pwm_profile =   {reg_file[72], reg_file[71], reg_file[70], reg_file[69],
                         reg_file[64], reg_file[63], reg_file[62], reg_file[61],
                         reg_file[60], reg_file[59], reg_file[58], reg_file[57]};
 
+always @(posedge clock) begin
+    reg_file[73]    <= angle_chg[1*8-1:0*8];
+    reg_file[74]    <= angle_chg[2*8-1:1*8];
+    reg_file[75]    <= angle_chg[3*8-1:2*8];
+    reg_file[76]    <= angle_chg[4*8-1:3*8];
+    reg_file[77]    <= angle_chg[5*8-1:4*8];
+    reg_file[78]    <= angle_chg[6*8-1:5*8];
+    reg_file[79]    <= angle_chg[7*8-1:6*8];
+    reg_file[80]    <= angle_chg[8*8-1:7*8];
+end
 
 endmodule

@@ -105,7 +105,9 @@ module top(
     wire  [15:0]    pwm_ctrl0_debug;        
     wire            led_test_enable;        // Enable the led testing
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
-    wire  [127:0]   pwm_profile;            // 16 * 8 bit pwm profile 
+    wire  [127:0]   pwm_profile;            // 16 * 8 bit pwm profile
+    wire  [63:0]    angle_chg;              // Change in angle
+ 
 
     wire  [7:0]     BAUD_DIVISION = 8'd116;   // Select baud 115200
 
@@ -258,6 +260,7 @@ reg_file rf(
     .ps4_connected_led  (ps4_connected_led),    // PS4 connected
     .fault_led          (fault_led),            // Fault led
     .motor_hot_led      (motor_hot_led),        // Hot motor led
+    .angle_chg          (angle_chg[63:0]),      // Change in angle
     .pwm_profile        (pwm_profile[127:0])    // 16 * 8 bit pwm profile 
 );
 
@@ -347,6 +350,7 @@ pwm_ctrl pwm_ctrl0(
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .startup_fail           (startup_fail4),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+    .angle_chg              (angle_chg[63:0]),      // Change in angle
     .pwm_profile            (pwm_profile[127:0]),   // 16 * 8 bit pwm profile 
 
     // PWM Interface
