@@ -105,9 +105,10 @@ module reg_file (
     output          pi_connected_led,   // Orange Pi connected
     output          ps4_connected_led,  // PS4 connected
     output          fault_led,          // Fault led
+    output  [127:0] pwm_profile         // 16 * 8 bit pwm profile 
 );
 
-reg     [7:0]   reg_file    [56:0];
+reg     [7:0]   reg_file    [72:0];
 
 // Read Data is just a pointer to whatever the address is set to 
 always @(posedge clock) begin
@@ -469,5 +470,47 @@ assign motor_hot_led        = reg_file[56][3];
 assign ps4_connected_led    = reg_file[56][2];
 assign pi_connected_led     = reg_file[56][1];
 assign fault_led            = reg_file[56][0];
+
+// ------------- 0x39	PROFILE	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h39))
+		reg_file[57]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h3A))
+		reg_file[58]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h3B))
+		reg_file[59]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h3C))
+		reg_file[60]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h3D))
+		reg_file[61]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h3E))
+		reg_file[62]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h3F))
+		reg_file[63]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h40))
+		reg_file[64]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h41))
+		reg_file[65]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h42))
+		reg_file[66]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h43))
+		reg_file[67]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h44))
+		reg_file[68]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h45))
+		reg_file[69]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h46))
+		reg_file[70]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h47))
+		reg_file[71]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h48))
+		reg_file[72]     <=  wr_data[7:0];
+end
+
+assign pwm_profile =   {reg_file[72], reg_file[71], reg_file[70], reg_file[69],
+                        reg_file[68], reg_file[67], reg_file[66], reg_file[65],
+                        reg_file[64], reg_file[63], reg_file[62], reg_file[61],
+                        reg_file[60], reg_file[59], reg_file[58], reg_file[57]};
+
 
 endmodule

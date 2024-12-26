@@ -37,7 +37,7 @@ module top(
 
     reg             reset_n;                // reset
     reg   [2:0]     reset_cntr;             
-    reg             clock_div2;     
+    reg   [3:0]     clock_div_cntr;     
 
     wire  [5:0]     address;   	            // Read / write address
     wire            write_en;  	            // Write enable
@@ -105,6 +105,7 @@ module top(
     wire  [15:0]    pwm_ctrl0_debug;        
     wire            led_test_enable;        // Enable the led testing
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
+    wire  [127:0]   pwm_profile;            // 16 * 8 bit pwm profile 
 
     wire  [7:0]     BAUD_DIVISION = 8'd116;   // Select baud 115200
 
@@ -123,8 +124,11 @@ end
 ////////////////////////////////////////////////////////////////
 // Clock Division
 ////////////////////////////////////////////////////////////////
-always @(posedge clock) begin
-    clock_div2  <=  ~clock_div2;
+always @(posedge clock or negedge reset_n) begin
+    if(~reset_n)
+        clock_div_cntr[3:0]     <= 4'b0;
+    else
+        clock_div_cntr[3:0]     <= clock_div_cntr[3:0] + 4'b1;
 end
 
 ////////////////////////////////////////////////////////////////
@@ -253,7 +257,8 @@ reg_file rf(
     .pi_connected_led   (pi_connected_led),     // Orange Pi connected
     .ps4_connected_led  (ps4_connected_led),    // PS4 connected
     .fault_led          (fault_led),            // Fault led
-    .motor_hot_led      (motor_hot_led)         // Hot motor led
+    .motor_hot_led      (motor_hot_led),        // Hot motor led
+    .pwm_profile        (pwm_profile[127:0])    // 16 * 8 bit pwm profile 
 );
 
 ////////////////////////////////////////////////////////////////
@@ -342,6 +347,7 @@ pwm_ctrl pwm_ctrl0(
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .startup_fail           (startup_fail4),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+    .pwm_profile            (pwm_profile[127:0]),   // 16 * 8 bit pwm profile 
 
     // PWM Interface
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -363,14 +369,14 @@ assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
 
 pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock_div2),           // The main clock
+    .clock                  (clock_div_cntr[1]),    // The main clock
     .pwm_enable             (sr_pwm_enable[0]),     // PWM enable
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[0])             // The output PWM wave
 );
-
+/*
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor1
 ////////////////////////////////////////////////////////////////
@@ -411,7 +417,7 @@ pwm_ctrl pwm_ctrl1(
 
 pwm sr_pwm1(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock_div2),           // The main clock
+    .clock                  (clock_div_cntr[1]),    // The main clock
     .pwm_enable             (sr_pwm_enable[1]),     // PWM enable
     .pwm_ratio              (sr_pwm_ratio[1]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[1]),     // Request an update to the PWM ratio
@@ -459,7 +465,7 @@ pwm_ctrl pwm_ctrl2(
 
 pwm sr_pwm2(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock_div2),           // The main clock
+    .clock                  (clock_div_cntr[1]),    // The main clock
     .pwm_enable             (sr_pwm_enable[2]),     // PWM enable
     .pwm_ratio              (sr_pwm_ratio[2]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[2]),     // Request an update to the PWM ratio
@@ -507,14 +513,14 @@ pwm_ctrl pwm_ctrl3(
 
 pwm sr_pwm3(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock_div2),           // The main clock
+    .clock                  (clock_div_cntr[1]),    // The main clock
     .pwm_enable             (sr_pwm_enable[3]),     // PWM enable
     .pwm_ratio              (sr_pwm_ratio[3]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[3]),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[3]),       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[3])             // The output PWM wave
 );
-
+*/
 ////////////////////////////////////////////////////////////////
 // Servos
 ////////////////////////////////////////////////////////////////

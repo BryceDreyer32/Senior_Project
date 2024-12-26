@@ -24,6 +24,8 @@ module pwm_ctrl(
     input           [7:0]   profile_offset,     // An offset that is added to each of the profile steps
     input           [7:0]   cruise_power,       // The amount of power to apply during the cruise phase
     output                  startup_fail,       // Error: Motor stalled, unable to startup
+    input           [127:0] pwm_profile,        // 16 * 8 bit pwm profile 
+
     
     // PWM Interface    
     input                   pwm_done,           // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -84,6 +86,7 @@ angle_to_pwm a_to_pwm(
     .profile_offset     (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power       (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .startup_fail       (startup_fail),         // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+    .pwm_profile        (pwm_profile[127:0]),   // 16 * 8 bit pwm profile 
     .pwm_enable         (pwm_enable),   
     .pwm_update         (pwm_update),           // Request an update to the PWM ratio
     .pwm_ratio          (pwm_ratio),            // The high-time of the PWM signal out of 255.

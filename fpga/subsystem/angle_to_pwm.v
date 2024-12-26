@@ -22,6 +22,8 @@ module angle_to_pwm(
     input       [7:0]   profile_offset,     // An offset that is added to each of the profile steps
     input       [7:0]   cruise_power,       // The amount of power to apply during the cruise phase
     output reg          startup_fail,       // Error: Motor stalled, unable to startup
+    input       [127:0] pwm_profile,        // 16 * 8 bit pwm profile 
+
 
     output      [15:0]  debug_signals,  
     output reg          angle_done,         // Indicator that the angle has been applied 
@@ -89,22 +91,22 @@ assign hammer_profile[13][7:0] = 8'd40  + profile_offset[7:0];
 assign hammer_profile[14][7:0] = 8'd80  + profile_offset[7:0];
 assign hammer_profile[15][7:0] = 8'd0   + profile_offset[7:0];
 
-assign linear_profile[0][7:0]  = 8'd4  + profile_offset[7:0];
-assign linear_profile[1][7:0]  = 8'd12 + profile_offset[7:0];
-assign linear_profile[2][7:0]  = 8'd19 + profile_offset[7:0];
-assign linear_profile[3][7:0]  = 8'd26 + profile_offset[7:0];
-assign linear_profile[4][7:0]  = 8'd33 + profile_offset[7:0];
-assign linear_profile[5][7:0]  = 8'd40 + profile_offset[7:0];
-assign linear_profile[6][7:0]  = 8'd45 + profile_offset[7:0];
-assign linear_profile[7][7:0]  = 8'd51 + profile_offset[7:0];
-assign linear_profile[8][7:0]  = 8'd56 + profile_offset[7:0];
-assign linear_profile[9][7:0]  = 8'd61 + profile_offset[7:0];
-assign linear_profile[10][7:0] = 8'd66 + profile_offset[7:0];
-assign linear_profile[11][7:0] = 8'd70 + profile_offset[7:0];
-assign linear_profile[12][7:0] = 8'd74 + profile_offset[7:0];
-assign linear_profile[13][7:0] = 8'd77 + profile_offset[7:0];
-assign linear_profile[14][7:0] = 8'd80 + profile_offset[7:0];
-assign linear_profile[15][7:0] = 8'd82 + profile_offset[7:0];
+assign linear_profile[0][7:0]  = pwm_profile[1*8-1:0*8] + profile_offset[7:0];
+assign linear_profile[1][7:0]  = pwm_profile[2*8-1:1*8] + profile_offset[7:0];
+assign linear_profile[2][7:0]  = pwm_profile[3*8-1:2*8] + profile_offset[7:0];
+assign linear_profile[3][7:0]  = pwm_profile[4*8-1:3*8] + profile_offset[7:0];
+assign linear_profile[4][7:0]  = pwm_profile[5*8-1:4*8] + profile_offset[7:0];
+assign linear_profile[5][7:0]  = pwm_profile[6*8-1:5*8] + profile_offset[7:0];
+assign linear_profile[6][7:0]  = pwm_profile[7*8-1:6*8] + profile_offset[7:0];
+assign linear_profile[7][7:0]  = pwm_profile[8*8-1:7*8] + profile_offset[7:0];
+assign linear_profile[8][7:0]  = pwm_profile[9*8-1:8*8] + profile_offset[7:0];
+assign linear_profile[9][7:0]  = pwm_profile[10*8-1:9*8] + profile_offset[7:0];
+assign linear_profile[10][7:0] = pwm_profile[11*8-1:10*8] + profile_offset[7:0];
+assign linear_profile[11][7:0] = pwm_profile[12*8-1:11*8] + profile_offset[7:0];
+assign linear_profile[12][7:0] = pwm_profile[13*8-1:12*8] + profile_offset[7:0];
+assign linear_profile[13][7:0] = pwm_profile[14*8-1:13*8] + profile_offset[7:0];
+assign linear_profile[14][7:0] = pwm_profile[15*8-1:14*8] + profile_offset[7:0];
+assign linear_profile[15][7:0] = pwm_profile[16*8-1:15*8] + profile_offset[7:0];
 
 
 always @(negedge reset_n or posedge clock)
