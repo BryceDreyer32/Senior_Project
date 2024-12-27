@@ -59,7 +59,7 @@ wire [11:0] delta_angle;
 reg  [11:0] curr_ang_ff;
 reg   [3:0] num_steps;
 reg   [3:0] curr_step;
-reg  [11:0] profile_delay, profile_delay_target;
+reg  [23:0] profile_delay, profile_delay_target;
 wire        calc_updated;
 wire        dir_shortest;
 reg         enable_calc;
@@ -72,7 +72,7 @@ reg         run_stall;
 assign debug_signals = {startup_fail, run_stall, retry_cnt[1:0], pwm_direction, angle_update, abort_angle, pwm_done,
                         chg_cnt[2:0], pwm_update, ps[3:0]};
 
-assign profile_delay_target[11:0] = delay_target[7:0] << 4;
+assign profile_delay_target[23:0] = delay_target[7:0] << 4;
 
 // Initialize the acceleration and deceleration profiles
 assign hammer_profile[0][7:0]  = 8'd40  + profile_offset[7:0];
@@ -120,7 +120,7 @@ always @(negedge reset_n or posedge clock)
         pwm_update          <= 1'b0;
         pwm_done_ff         <= 1'b0;
         pwm_done_went_high  <= 1'b0;
-        profile_delay[11:0] <= 12'b0;
+        profile_delay[23:0] <= 24'b0;
         angle_done          <= 1'b0;
         enable_calc         <= 1'b0;
         num_steps[3:0]      <= MED_DELTA;
@@ -194,17 +194,17 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == profile_delay_target[11:0]) begin
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                     if(curr_ang_ff[11:0] > current_angle[11:0]) 
-                        angle_chg[curr_step[3:0]*3-1:curr_step[3:0]*2]      <= curr_ang_ff[11:0] - current_angle[11:0];
+                        angle_chg[(curr_step[3:0]*4)+3:curr_step[3:0]*4]      <= curr_ang_ff[11:0] - current_angle[11:0];
                     else
-                        angle_chg[curr_step[3:0]*3-1:curr_step[3:0]*2]      <= current_angle[11:0] - curr_ang_ff[11:0];
+                        angle_chg[(curr_step[3:0]*4)+3:curr_step[3:0]*4]      <= current_angle[11:0] - curr_ang_ff[11:0];
                     
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[23:0] <= 24'b0;
                     curr_ang_ff[11:0]   <= current_angle[11:0];
                 end
             end
@@ -218,12 +218,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == profile_delay_target[11:0]) begin
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[23:0] <= 24'b0;
 
                     // Check if the angle has changed by > 3
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
@@ -254,12 +254,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == profile_delay_target[11:0]) begin
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[23:0] <= 24'b0;
 
                     // Check if the angle has changed by > 3
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
@@ -294,11 +294,11 @@ always @(negedge reset_n or posedge clock)
             // Check for stalls
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == profile_delay_target[11:0]) begin
-                    profile_delay[11:0] <= 12'b0;
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
+                    profile_delay[23:0] <= 24'b0;
 
                     // If the angle hasn't changed by at least 5, then flag a stall
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
@@ -321,12 +321,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == profile_delay_target[11:0]) begin
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                     curr_step[3:0] <= curr_step[3:0] - 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[23:0] <= 24'b0;
                 end
             end
         end
@@ -451,7 +451,7 @@ always @(*) begin
         end
 
         SHUTDOWN: begin
-            if(pwm_done)
+            if(pwm_done_went_high == 1'b1)
                 ns = IDLE;
             else
                 ns = SHUTDOWN;

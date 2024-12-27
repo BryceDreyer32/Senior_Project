@@ -407,7 +407,7 @@ always @(posedge clock) begin
 end
 
 assign cruise_power[7:0] = reg_file[36][7:0];
-
+/*
 // --------------- 0x30	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h30))
@@ -471,57 +471,57 @@ assign motor_hot_led        = reg_file[56][3];
 assign ps4_connected_led    = reg_file[56][2];
 assign pi_connected_led     = reg_file[56][1];
 assign fault_led            = reg_file[56][0];
-
+*/
 // ------------- 0x39	PROFILE	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h39))
-		reg_file[57]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h3A))
-		reg_file[58]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h3B))
-		reg_file[59]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h3C))
-		reg_file[60]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h3D))
-		reg_file[61]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h3E))
-		reg_file[62]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h3F))
-		reg_file[63]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h40))
-		reg_file[64]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h41))
-		reg_file[65]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h42))
-		reg_file[66]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h43))
-		reg_file[67]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h44))
-		reg_file[68]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h45))
-		reg_file[69]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h46))
-		reg_file[70]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h47))
-		reg_file[71]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h48))
-		reg_file[72]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h25))
+		reg_file[37]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h26))
+		reg_file[38]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h27))
+		reg_file[39]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h28))
+		reg_file[40]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h29))
+		reg_file[41]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h2A))
+		reg_file[42]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h2B))
+		reg_file[43]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h2C))
+		reg_file[44]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h2D))
+		reg_file[45]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h2E))
+		reg_file[46]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h2F))
+		reg_file[47]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h30))
+		reg_file[48]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h31))
+		reg_file[49]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h32))
+		reg_file[50]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h33))
+		reg_file[51]     <=  wr_data[7:0];
+    if(write_en & (address == 6'h34))
+		reg_file[52]     <=  wr_data[7:0];
 end
 
-assign pwm_profile =   {reg_file[72], reg_file[71], reg_file[70], reg_file[69],
-                        reg_file[68], reg_file[67], reg_file[66], reg_file[65],
-                        reg_file[64], reg_file[63], reg_file[62], reg_file[61],
-                        reg_file[60], reg_file[59], reg_file[58], reg_file[57]};
+assign pwm_profile =   {reg_file[52], reg_file[51], reg_file[50], reg_file[49],
+                        reg_file[48], reg_file[47], reg_file[46], reg_file[45],
+                        reg_file[44], reg_file[43], reg_file[42], reg_file[41],
+                        reg_file[40], reg_file[39], reg_file[38], reg_file[37]};
 
 always @(posedge clock) begin
-    reg_file[73]    <= angle_chg[1*8-1:0*8];
-    reg_file[74]    <= angle_chg[2*8-1:1*8];
-    reg_file[75]    <= angle_chg[3*8-1:2*8];
-    reg_file[76]    <= angle_chg[4*8-1:3*8];
-    reg_file[77]    <= angle_chg[5*8-1:4*8];
-    reg_file[78]    <= angle_chg[6*8-1:5*8];
-    reg_file[79]    <= angle_chg[7*8-1:6*8];
-    reg_file[80]    <= angle_chg[8*8-1:7*8];
+    reg_file[53]    <= angle_chg[1*8-1:0*8];
+    reg_file[54]    <= angle_chg[2*8-1:1*8];
+    reg_file[55]    <= angle_chg[3*8-1:2*8];
+    reg_file[56]    <= angle_chg[4*8-1:3*8];
+    reg_file[57]    <= angle_chg[5*8-1:4*8];
+    reg_file[58]    <= angle_chg[6*8-1:5*8];
+    reg_file[59]    <= angle_chg[7*8-1:6*8];
+    reg_file[60]    <= angle_chg[8*8-1:7*8];
 end
 
 endmodule
