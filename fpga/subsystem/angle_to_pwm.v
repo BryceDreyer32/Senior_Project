@@ -22,7 +22,7 @@ module angle_to_pwm(
     input       [7:0]   profile_offset,     // An offset that is added to each of the profile steps
     input       [7:0]   cruise_power,       // The amount of power to apply during the cruise phase
     output reg          startup_fail,       // Error: Motor stalled, unable to startup
-    output reg  [63:0]  angle_chg,          // Change in angle
+    output      [63:0]  angle_chg,          // Change in angle
     input       [127:0] pwm_profile,        // 16 * 8 bit pwm profile 
 
 
@@ -59,7 +59,8 @@ wire [11:0] delta_angle;
 reg  [11:0] curr_ang_ff;
 reg   [3:0] num_steps;
 reg   [3:0] curr_step;
-reg  [23:0] profile_delay, profile_delay_target;
+reg  [23:0] profile_delay;
+wire [23:0] profile_delay_target;
 wire        calc_updated;
 wire        dir_shortest;
 reg         enable_calc;
@@ -68,11 +69,18 @@ reg   [1:0] retry_cnt;
 reg   [2:0] chg_cnt;
 reg         hammer_chk;
 reg         run_stall;
+reg   [3:0] angle_chg_temp  [15:0];
+wire        angle_chg_hi, angle_chg_lo;
 
 assign debug_signals = {startup_fail, run_stall, retry_cnt[1:0], pwm_direction, angle_update, abort_angle, pwm_done,
                         chg_cnt[2:0], pwm_update, ps[3:0]};
 
 assign profile_delay_target[23:0] = delay_target[7:0] << 4;
+
+assign angle_chg[63:0] = {angle_chg_temp[15], angle_chg_temp[14], angle_chg_temp[13], angle_chg_temp[12], 
+                          angle_chg_temp[11], angle_chg_temp[10], angle_chg_temp[9], angle_chg_temp[8], 
+                          angle_chg_temp[7], angle_chg_temp[6], angle_chg_temp[5], angle_chg_temp[4], 
+                          angle_chg_temp[3], angle_chg_temp[2], angle_chg_temp[1], angle_chg_temp[0]};
 
 // Initialize the acceleration and deceleration profiles
 assign hammer_profile[0][7:0]  = 8'd40  + profile_offset[7:0];
@@ -199,9 +207,9 @@ always @(negedge reset_n or posedge clock)
                 // If we've waited long enough, then go to the next acceleration step
                 if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                     if(curr_ang_ff[11:0] > current_angle[11:0]) 
-                        angle_chg[(curr_step[3:0]*4)+3:curr_step[3:0]*4]      <= curr_ang_ff[11:0] - current_angle[11:0];
+                        angle_chg_temp[curr_step[3:0]]      <= curr_ang_ff[11:0] - current_angle[11:0];
                     else
-                        angle_chg[(curr_step[3:0]*4)+3:curr_step[3:0]*4]      <= current_angle[11:0] - curr_ang_ff[11:0];
+                        angle_chg_temp[curr_step[3:0]]      <= current_angle[11:0] - curr_ang_ff[11:0];
                     
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
                     profile_delay[23:0] <= 24'b0;

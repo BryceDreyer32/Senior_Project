@@ -4,27 +4,34 @@
 //              and includes the acceleration and deceleration profiles. 
 
 module angle_to_pwm(
-    input               reset_n,        // Active low reset
-    input               clock,          // The main clock
-    input       [11:0]  target_angle,   // The angle the wheel needs to move on the 4096 points/rotation scale
-    input       [11:0]  current_angle,  // The angle read from the motor encoder
-    input               pwm_done,       // Indicator from PWM that the pwm_ratio has been applied
-    input               angle_update,   // Request to update the angle
-    input               abort_angle,    // Aborts rotating to angle
+    input               reset_n,            // Active low reset
+    input               clock,              // The main clock
+    input       [11:0]  target_angle,       // The angle the wheel needs to move on the 4096 points/rotation scale
+    input       [11:0]  current_angle,      // The angle read from the motor encoder
+    input               pwm_done,           // Indicator from PWM that the pwm_ratio has been applied
+    input               angle_update,       // Request to update the angle
+    input               abort_angle,        // Aborts rotating to angle
 
-    input               enable_hammer,  // Enables hammer acceleration (vs linear)
-    input       [3:0]   fwd_count,      // Number of times to apply the forward hammer
-    input       [3:0]   rvs_count,      // Number of times to apply the reverse hammer
-    input       [1:0]   retry_count,    // Number of retry attempts before admitting defeat
-    input       [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
-    output reg          startup_fail,   // Error: Motor stalled, unable to startup
+    input               enable_hammer,      // Enables hammer acceleration (vs linear)
+    input               enable_stall_chk,   // Enable the stall check
+    input       [3:0]   fwd_count,          // Number of times to apply the forward hammer
+    input       [3:0]   rvs_count,          // Number of times to apply the reverse hammer
+    input       [1:0]   retry_count,        // Number of retry attempts before admitting defeat
+    input       [2:0]   consec_chg,         // Number of consecutive changes we want to see before claiming success
+    input       [7:0]   delay_target,       // Number of times to remain on each profile step
+    input       [7:0]   profile_offset,     // An offset that is added to each of the profile steps
+    input       [7:0]   cruise_power,       // The amount of power to apply during the cruise phase
+    output reg          startup_fail,       // Error: Motor stalled, unable to startup
+    output      [63:0]  angle_chg,          // Change in angle
+    input       [127:0] pwm_profile,        // 16 * 8 bit pwm profile 
 
-    output      [15:0]  debug_signals,
-    output reg          angle_done,     // Indicator that the angle has been applied 
-    output reg          pwm_enable,     // PWM enable
-    output reg          pwm_update,     // Request an update to the PWM ratio
-    output reg  [7:0]   pwm_ratio,      // The high-time of the PWM signal out of 255.
-    output reg          pwm_direction   // The direction of the motor
+
+    output      [15:0]  debug_signals,  
+    output reg          angle_done,         // Indicator that the angle has been applied 
+    output reg          pwm_enable,         // PWM enable
+    output reg          pwm_update,         // Request an update to the PWM ratio
+    output reg  [7:0]   pwm_ratio,          // The high-time of the PWM signal out of 255.
+    output reg          pwm_direction       // The direction of the motor
 );
 
 // States
@@ -43,7 +50,6 @@ localparam SMALL_DELTA  = 4'd8;
 localparam MED_DELTA    = 4'd10;
 localparam BIG_DELTA    = 4'd14;
 
-localparam PROFILE_DELAY_TARGET = 12'd5;
 localparam TARGET_TOLERANCE     = 12'd5; 
 
 reg   [3:0] ps, ns;
@@ -53,7 +59,8 @@ wire [11:0] delta_angle;
 reg  [11:0] curr_ang_ff;
 reg   [3:0] num_steps;
 reg   [3:0] curr_step;
-reg  [11:0] profile_delay;
+reg  [23:0] profile_delay;
+wire [23:0] profile_delay_target;
 wire        calc_updated;
 wire        dir_shortest;
 reg         enable_calc;
@@ -62,44 +69,53 @@ reg   [1:0] retry_cnt;
 reg   [2:0] chg_cnt;
 reg         hammer_chk;
 reg         run_stall;
+reg   [3:0] angle_chg_temp  [15:0];
+wire        angle_chg_hi, angle_chg_lo;
 
 assign debug_signals = {startup_fail, run_stall, retry_cnt[1:0], pwm_direction, angle_update, abort_angle, pwm_done,
                         chg_cnt[2:0], pwm_update, ps[3:0]};
 
-// Initialize the acceleration and deceleration profiles
-assign hammer_profile[0][7:0]  = 8'd40;
-assign hammer_profile[1][7:0]  = 8'd80;
-assign hammer_profile[2][7:0]  = 8'd140;
-assign hammer_profile[3][7:0]  = 8'd0;
-assign hammer_profile[4][7:0]  = 8'd100;
-assign hammer_profile[5][7:0]  = 8'd0;
-assign hammer_profile[6][7:0]  = 8'd120;
-assign hammer_profile[7][7:0]  = 8'd0;
-assign hammer_profile[8][7:0]  = 8'd140;
-assign hammer_profile[9][7:0]  = 8'd0;
-assign hammer_profile[10][7:0] = 8'd160;
-assign hammer_profile[11][7:0] = 8'd0;
-assign hammer_profile[12][7:0] = 8'd180;
-assign hammer_profile[13][7:0] = 8'd0;
-assign hammer_profile[14][7:0] = 8'd200;
-assign hammer_profile[15][7:0] = 8'd0;
+assign profile_delay_target[23:0] = delay_target[7:0] << 4;
 
-assign linear_profile[0][7:0]  = 8'd11;
-assign linear_profile[1][7:0]  = 8'd29;
-assign linear_profile[2][7:0]  = 8'd48;
-assign linear_profile[3][7:0]  = 8'd65;
-assign linear_profile[4][7:0]  = 8'd82;
-assign linear_profile[5][7:0]  = 8'd99;
-assign linear_profile[6][7:0]  = 8'd113;
-assign linear_profile[7][7:0]  = 8'd128;
-assign linear_profile[8][7:0]  = 8'd141;
-assign linear_profile[9][7:0]  = 8'd153;
-assign linear_profile[10][7:0] = 8'd164;
-assign linear_profile[11][7:0] = 8'd174;
-assign linear_profile[12][7:0] = 8'd185;
-assign linear_profile[13][7:0] = 8'd193;
-assign linear_profile[14][7:0] = 8'd200;
-assign linear_profile[15][7:0] = 8'd206;
+assign angle_chg[63:0] = {angle_chg_temp[15], angle_chg_temp[14], angle_chg_temp[13], angle_chg_temp[12], 
+                          angle_chg_temp[11], angle_chg_temp[10], angle_chg_temp[9], angle_chg_temp[8], 
+                          angle_chg_temp[7], angle_chg_temp[6], angle_chg_temp[5], angle_chg_temp[4], 
+                          angle_chg_temp[3], angle_chg_temp[2], angle_chg_temp[1], angle_chg_temp[0]};
+
+// Initialize the acceleration and deceleration profiles
+assign hammer_profile[0][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[1][7:0]  = 8'd80  + profile_offset[7:0];
+assign hammer_profile[2][7:0]  = 8'd100 + profile_offset[7:0];
+assign hammer_profile[3][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[4][7:0]  = 8'd60  + profile_offset[7:0];
+assign hammer_profile[5][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[6][7:0]  = 8'd80  + profile_offset[7:0];
+assign hammer_profile[7][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[8][7:0]  = 8'd100 + profile_offset[7:0];
+assign hammer_profile[9][7:0]  = 8'd40  + profile_offset[7:0];
+assign hammer_profile[10][7:0] = 8'd80  + profile_offset[7:0];
+assign hammer_profile[11][7:0] = 8'd40  + profile_offset[7:0];
+assign hammer_profile[12][7:0] = 8'd100 + profile_offset[7:0];
+assign hammer_profile[13][7:0] = 8'd40  + profile_offset[7:0];
+assign hammer_profile[14][7:0] = 8'd80  + profile_offset[7:0];
+assign hammer_profile[15][7:0] = 8'd0   + profile_offset[7:0];
+
+assign linear_profile[0][7:0]  = pwm_profile[1*8-1:0*8] + profile_offset[7:0];
+assign linear_profile[1][7:0]  = pwm_profile[2*8-1:1*8] + profile_offset[7:0];
+assign linear_profile[2][7:0]  = pwm_profile[3*8-1:2*8] + profile_offset[7:0];
+assign linear_profile[3][7:0]  = pwm_profile[4*8-1:3*8] + profile_offset[7:0];
+assign linear_profile[4][7:0]  = pwm_profile[5*8-1:4*8] + profile_offset[7:0];
+assign linear_profile[5][7:0]  = pwm_profile[6*8-1:5*8] + profile_offset[7:0];
+assign linear_profile[6][7:0]  = pwm_profile[7*8-1:6*8] + profile_offset[7:0];
+assign linear_profile[7][7:0]  = pwm_profile[8*8-1:7*8] + profile_offset[7:0];
+assign linear_profile[8][7:0]  = pwm_profile[9*8-1:8*8] + profile_offset[7:0];
+assign linear_profile[9][7:0]  = pwm_profile[10*8-1:9*8] + profile_offset[7:0];
+assign linear_profile[10][7:0] = pwm_profile[11*8-1:10*8] + profile_offset[7:0];
+assign linear_profile[11][7:0] = pwm_profile[12*8-1:11*8] + profile_offset[7:0];
+assign linear_profile[12][7:0] = pwm_profile[13*8-1:12*8] + profile_offset[7:0];
+assign linear_profile[13][7:0] = pwm_profile[14*8-1:13*8] + profile_offset[7:0];
+assign linear_profile[14][7:0] = pwm_profile[15*8-1:14*8] + profile_offset[7:0];
+assign linear_profile[15][7:0] = pwm_profile[16*8-1:15*8] + profile_offset[7:0];
 
 
 always @(negedge reset_n or posedge clock)
@@ -112,7 +128,7 @@ always @(negedge reset_n or posedge clock)
         pwm_update          <= 1'b0;
         pwm_done_ff         <= 1'b0;
         pwm_done_went_high  <= 1'b0;
-        profile_delay[11:0] <= 12'b0;
+        profile_delay[23:0] <= 24'b0;
         angle_done          <= 1'b0;
         enable_calc         <= 1'b0;
         num_steps[3:0]      <= MED_DELTA;
@@ -178,17 +194,26 @@ always @(negedge reset_n or posedge clock)
         end
 
         else if(ps == ACCEL) begin
-            pwm_ratio[7:0] <= hammer_profile[curr_step[3:0]];
+            if(enable_hammer)
+                pwm_ratio[7:0] <= hammer_profile[curr_step[3:0]];
+            else
+                pwm_ratio[7:0] <= linear_profile[curr_step[3:0]];
 
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
+                    if(curr_ang_ff[11:0] > current_angle[11:0]) 
+                        angle_chg_temp[curr_step[3:0]]      <= curr_ang_ff[11:0] - current_angle[11:0];
+                    else
+                        angle_chg_temp[curr_step[3:0]]      <= current_angle[11:0] - curr_ang_ff[11:0];
+                    
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[23:0] <= 24'b0;
+                    curr_ang_ff[11:0]   <= current_angle[11:0];
                 end
             end
         end
@@ -201,12 +226,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[23:0] <= 24'b0;
 
                     // Check if the angle has changed by > 3
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
@@ -237,12 +262,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                     curr_step[3:0] <= curr_step[3:0] + 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[23:0] <= 24'b0;
 
                     // Check if the angle has changed by > 3
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
@@ -272,17 +297,16 @@ always @(negedge reset_n or posedge clock)
 
         else if(ps == CRUISE) begin
             // Continue to run at max speed
-            curr_step[3:0]  <= 4'h7;
-            pwm_ratio[7:0]  <= linear_profile[curr_step[3:0]];
+            pwm_ratio[7:0]  <= cruise_power[7:0];
 
             // Check for stalls
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
-                    profile_delay[11:0] <= 12'b0;
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
+                    profile_delay[23:0] <= 24'b0;
 
                     // If the angle hasn't changed by at least 5, then flag a stall
                     if(curr_ang_ff[11:0] > current_angle[11:0]) begin
@@ -305,12 +329,12 @@ always @(negedge reset_n or posedge clock)
             // Check if the PWM ratio has been absorbed
             if( pwm_done_went_high == 1'b1 ) begin
                 // If so, then we can proceed
-                profile_delay[11:0] <= profile_delay + 12'h1;
+                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                 // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[11:0] == PROFILE_DELAY_TARGET) begin
+                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                     curr_step[3:0] <= curr_step[3:0] - 4'b1;
-                    profile_delay[11:0] <= 12'b0;
+                    profile_delay[23:0] <= 24'b0;
                 end
             end
         end
@@ -398,10 +422,11 @@ always @(*) begin
         end
 
         CRUISE: begin
-            if(abort_angle)
+            ns = IDLE;
+/*            if(abort_angle)
                 ns = DECEL;
             
-            else if(run_stall)
+            else if(run_stall & enable_stall_chk)
                 ns = CALC;
 
             else if(calc_updated) begin
@@ -423,8 +448,8 @@ always @(*) begin
                         ns = CRUISE;
             end
             else
-                ns = CRUISE;
-        end
+                ns = CRUISE;*/
+        end 
 
         DECEL : begin
             if(delta_angle[11:0] < TARGET_TOLERANCE)
@@ -434,7 +459,7 @@ always @(*) begin
         end
 
         SHUTDOWN: begin
-            if(pwm_done)
+            if(pwm_done_went_high == 1'b1)
                 ns = IDLE;
             else
                 ns = SHUTDOWN;

@@ -14,6 +14,11 @@ module test();
     reg      [12:0]  timeout = 50;
     wire            pwm_signal;
     reg             done;
+    wire    [127:0] pwm_profile;
+
+assign pwm_profile = {8'd98, 8'd95, 8'd92, 8'd88, 8'd83, 8'd78, 8'd73, 8'd67, 8'd61, 8'd54, 8'd47, 8'd39, 8'd31, 8'd23, 8'd14, 8'd5};
+
+
 always
     #1  clock = ~clock;
 
@@ -91,7 +96,7 @@ initial begin
     current_angle = 12'd10;
     #10 angle_update = 1'b1;
     #10 angle_update = 1'b0;
-    #100000
+    #10000;
 
 /*
     #10000;
@@ -149,12 +154,17 @@ angle_to_pwm angle_to_pwm(
     .target_angle   (target_angle),     // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .current_angle  (current_angle),    // The angle read from the motor encoder
     .abort_angle    (abort_angle),      // Aborts rotating to angle
-    .enable_hammer  (1'b1),             // Enables hammer acceleration (vs linear)
+    .enable_hammer  (1'b0),             // Enables hammer acceleration (vs linear)
     .fwd_count      (4'hF),             // Number of times to apply the forward hammer
     .rvs_count      (4'h4),             // Number of times to apply the reverse hammer
     .retry_count    (2'h2),             // Number of retry attempts before admitting defeat
     .consec_chg     (3'h2),             // Number of consecutive changes we want to see before claiming success
+    .delay_target   (8'h2),             // Number of times to remain on each profile step
+    .profile_offset (8'h5),             // An offset that is added to each of the profile steps
+    .cruise_power   (8'h60),            // The amount of power to apply during the cruise phase
+    .angle_chg      (),                 // Change in angle
     .startup_fail   (),                 // Error: Motor stalled, unable to startup
+    .pwm_profile    (pwm_profile),      // 16 * 8 bit pwm profile 
     .pwm_done       (pwm_done),         // Indicator from PWM that the pwm_ratio has been applied
     .angle_update   (angle_update),     // Request to update the angle
     .angle_done     (angle_done),       // Indicator that the angle has been applied 
