@@ -94,7 +94,7 @@ for run in range(0,3):
         # Start the test
         fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
         fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
-        time.sleep(1)
+        time.sleep(10)
 
         # Set brake_n = 0, enable = 0
         print("--- DISABLING ---")
