@@ -569,8 +569,8 @@ pwm servo_pwm3(
 );
 
 assign status_fault = led_test_enable ? fault_led       : |(sr_fault[3:0]);   // Control for LED for when a fault has occurred
-assign status_pi    = led_test_enable ? 1'b1            : pi_connected;       // Control for LED for when the Orange Pi is connected
-assign status_ps4   = led_test_enable ? 1'b1            : ps4_connected;      // Control for LED for when the PS4 controller is connected
+assign status_pi    = led_test_enable ? 1'b1            : pi_connected_led;   // Control for LED for when the Orange Pi is connected
+assign status_ps4   = led_test_enable ? 1'b1            : ps4_connected_led;  // Control for LED for when the PS4 controller is connected
 assign status_debug = led_test_enable ? motor_hot_led   : 1'b1;               // Control for LED for general debug
 
 endmodule

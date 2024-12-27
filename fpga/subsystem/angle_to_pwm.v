@@ -75,7 +75,7 @@ wire        angle_chg_hi, angle_chg_lo;
 assign debug_signals = {startup_fail, run_stall, retry_cnt[1:0], pwm_direction, angle_update, abort_angle, pwm_done,
                         chg_cnt[2:0], pwm_update, ps[3:0]};
 
-assign profile_delay_target[23:0] = delay_target[7:0] << 4;
+assign profile_delay_target[23:0] = delay_target[7:0] << 12;
 
 assign angle_chg[63:0] = {angle_chg_temp[15], angle_chg_temp[14], angle_chg_temp[13], angle_chg_temp[12], 
                           angle_chg_temp[11], angle_chg_temp[10], angle_chg_temp[9], angle_chg_temp[8], 

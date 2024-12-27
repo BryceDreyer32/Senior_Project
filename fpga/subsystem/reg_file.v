@@ -508,10 +508,10 @@ always @(posedge clock) begin
 		reg_file[52]     <=  wr_data[7:0];
 end
 
-assign pwm_profile =   {reg_file[52], reg_file[51], reg_file[50], reg_file[49],
-                        reg_file[48], reg_file[47], reg_file[46], reg_file[45],
-                        reg_file[44], reg_file[43], reg_file[42], reg_file[41],
-                        reg_file[40], reg_file[39], reg_file[38], reg_file[37]};
+assign pwm_profile[127:0] =  {reg_file[52], reg_file[51], reg_file[50], reg_file[49],
+                              reg_file[48], reg_file[47], reg_file[46], reg_file[45],
+                              reg_file[44], reg_file[43], reg_file[42], reg_file[41],
+                              reg_file[40], reg_file[39], reg_file[38], reg_file[37]};
 
 always @(posedge clock) begin
     reg_file[53]    <= angle_chg[1*8-1:0*8];

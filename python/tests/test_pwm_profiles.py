@@ -42,7 +42,7 @@ value = fwd_count | rvs_count
 fpga.fpgaWrite(Constants.Constants.HAMMER_FWD_RVS_ADDR, value)
 
 # Set the number of times to stay at each PWM value
-fpga.fpgaWrite(Constants.Constants.HAMMER_DELAY_TARGET_ADDRESS, 0x20)
+fpga.fpgaWrite(Constants.Constants.HAMMER_DELAY_TARGET_ADDRESS, 0x1)
 
 # Set the offset to add to each step in the hammer & acceleration profiles
 fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0)
@@ -69,7 +69,7 @@ test_profile = [[5,14,23,31,39,47,54,61,67,73,78,83,88,92,95,98],
 
 np_results = np.zeros((4, 16))
 
-for run in range(0,10):
+for run in range(0,3):
     for test_idx in range(0,4):
         print("-------------------------------------------")
         print("STARTING TEST " + str(test_idx + 1))

@@ -51,7 +51,7 @@ value = fwd_count | rvs_count
 fpga.fpgaWrite(Constants.Constants.HAMMER_FWD_RVS_ADDR, value)
 
 # Set the number of times to stay at each PWM value
-fpga.fpgaWrite(Constants.Constants.HAMMER_DELAY_TARGET_ADDRESS, 0x40)
+fpga.fpgaWrite(Constants.Constants.HAMMER_DELAY_TARGET_ADDRESS, 0x01)
 
 # Set the offset to add to each step in the hammer & acceleration profiles
 fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0)
