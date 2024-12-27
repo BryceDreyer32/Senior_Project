@@ -148,23 +148,8 @@ class Constants:
     DEBUG3_STATUS_ADDR			    = 0x37
     LED_CONTROL_ADDR			    = 0x38
 
-    PWM_PROFILE0_ADDR               = 0x39
-    PWM_PROFILE1_ADDR               = 0x3A
-    PWM_PROFILE2_ADDR               = 0x3B
-    PWM_PROFILE3_ADDR               = 0x3C
-    PWM_PROFILE4_ADDR               = 0x3D
-    PWM_PROFILE5_ADDR               = 0x3E
-    PWM_PROFILE6_ADDR               = 0x3F
-    PWM_PROFILE7_ADDR               = 0x40
-    PWM_PROFILE8_ADDR               = 0x41
-    PWM_PROFILE9_ADDR               = 0x42
-    PWM_PROFILE10_ADDR              = 0x43
-    PWM_PROFILE11_ADDR              = 0x44
-    PWM_PROFILE12_ADDR              = 0x45
-    PWM_PROFILE13_ADDR              = 0x46
-    PWM_PROFILE14_ADDR              = 0x47
-    PWM_PROFILE15_ADDR              = 0x48
-    ANGLE_CHG_BASE_ADDR             = 0x49
+    PWM_PROFILE_BASE_ADDR           = 0x25
+    ANGLE_CHG_BASE_ADDR             = 0x35
 
     MOTOR_CONTROL_BRAKE_BIT         = 0x7
     MOTOR_CONTROL_ENABLE_BIT        = 0x6
