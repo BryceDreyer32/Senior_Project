@@ -373,7 +373,7 @@ assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
 
 pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock_div_cntr[1]),    // The main clock
+    .clock                  (clock),    // The main clock
     .pwm_enable             (sr_pwm_enable[0]),     // PWM enable
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
