@@ -137,9 +137,10 @@ class Constants:
     PROFILE_OFFSET_ADDR             = 0x23
     CRUISE_POWER_ADDR               = 0x24
 
+    SERVO_CONTROL_ADDRESS           = 0x2F
     BASE_SERVO_CONTROL_ADDR			= 0x30
-    CENTER_SERVO_CONTROL_ADDR	    = 0x31
-    WRIST_SERVO_CONTROL_ADDR		= 0x32
+    WRIST_SERVO_CONTROL_ADDR		= 0x31
+    CENTER_SERVO_CONTROL_ADDR	    = 0x32
     GRABBER_SERVO_CONTROL_ADDR		= 0x33
     
     DEBUG0_STATUS_ADDR			    = 0x34
@@ -180,6 +181,14 @@ class Constants:
     RD_DATA_FRAME_ADDRESS_BASE_BIT  = 0x0
     RD_DATA_FRAME_ADDRESS_WIDTH     = 0x6
 
+    BASE_SERVO_MIN			        = 5
+    BASE_SERVO_MAX		            = 50
+    CENTER_SERVO_MIN	            = 5
+    CENTER_SERVO_MAX	            = 70
+    WRIST_SERVO_MIN		            = 40
+    WRIST_SERVO_MAX		            = 60
+    GRABBER_SERVO_MIN		        = 73
+    GRABBER_SERVO_MAX		        = 82
 
 
     ######################################################################################
