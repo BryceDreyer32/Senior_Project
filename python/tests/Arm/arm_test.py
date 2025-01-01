@@ -29,19 +29,19 @@ class MyWindow(QDialog):
 
     def on_baseSlider_value_changed(self, value):
         print("Base slider value changed to: " + str(value))
-        fpga.fpgaWrite(Constants.Constants.BASE_SERVO_CONTROL_ADDR, value)
+        fpga.fpgaWrite(Constants.Constants.BASE_SERVO_CONTROL_ADDR, self.translateValueToPWM(value))
 
     def on_centerSlider_value_changed(self, value):
         print("Center slider value changed to: " + str(value))
-        fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, value)
+        fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, self.translateValueToPWM(value))
 
     def on_wristSlider_value_changed(self, value):
         print("Wrist slider value changed to: " + str(value))
-        fpga.fpgaWrite(Constants.Constants.WRIST_SERVO_CONTROL_ADDR, value)
+        fpga.fpgaWrite(Constants.Constants.WRIST_SERVO_CONTROL_ADDR, self.translateValueToPWM(value))
 
     def on_grabberSlider_value_changed(self, value):
         print("Grabber slider value changed to: " + str(value))
-        fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, value)
+        fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, self.translateValueToPWM(value))
 
     def on_extend_click(self):
         print("Extend clicked!")
@@ -56,6 +56,9 @@ class MyWindow(QDialog):
         fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, 75)
         fpga.fpgaWrite(Constants.Constants.WRIST_SERVO_CONTROL_ADDR, 80)
         fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, 80)
+
+    def translateValueToPWM(self, value):
+        return (0.0245 * float(value)) + 0.05
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
