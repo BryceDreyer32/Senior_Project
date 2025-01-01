@@ -1,6 +1,7 @@
 import sys, os
-from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication, QDialog, QSlider
+from PyQt5 import uic
+#from PyQt5.uic import loadUi
+from PyQt5.Qt import QApplication, QDialog, QSlider
 sys.path.append(os.path.realpath('python/src/constants'))
 sys.path.append(os.path.realpath('python/src/subsystem/fpga'))
 import Constants
@@ -24,6 +25,7 @@ class MyWindow(QDialog):
         self.grabberSlider.valueChanged.connect(self.on_grabberSlider_value_changed)
         self.extendButton.clicked.connect(self.on_extend_click)
         self.contractButton.clicked.connect(self.on_contract_click)
+
 
     def on_baseSlider_value_changed(self, value):
         print("Base slider value changed to: " + str(value))

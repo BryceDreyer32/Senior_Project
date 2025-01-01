@@ -42,15 +42,13 @@ value = fwd_count | rvs_count
 fpga.fpgaWrite(Constants.Constants.HAMMER_FWD_RVS_ADDR, value)
 
 # Set the number of times to stay at each PWM value
-fpga.fpgaWrite(Constants.Constants.HAMMER_DELAY_TARGET_ADDRESS, 0x1)
+fpga.fpgaWrite(Constants.Constants.HAMMER_DELAY_TARGET_ADDRESS, 0x1C)
 
 # Set the offset to add to each step in the hammer & acceleration profiles
-fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0)
+fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 40)
 
 # Set the cruise power level
 fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 25)
-
-# Runs hot: DELAY = 0x80, OFFSET = 70, CRUISE = 100
 
 # Set angle[7:0]
 angle = 100
@@ -62,15 +60,18 @@ fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, target_val)
 print("ROTATION0_CONTROL_ADDR.data        = " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_CONTROL_ADDR)))
 print("ROTATION0_CURRENT_ANGLE2_ADDR.data = " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR)))
 
+#test_profile = [[5,15,25,40,55,70,85,100,80,75,70,65,60,55,50,45]]
 test_profile = [[5,14,23,31,39,47,54,61,67,73,78,83,88,92,95,98],
                 [5,7,9,11,14,18,25,33,45,60,72,82,90,95,98,100],
                 [5,8,12,22,40,52,58,60,63,68,75,88,95,97,99,100],
-                [5,7,9,11,13,15,18,21,25,30,38,48,60,80,92,100]]
+                [5,7,9,11,13,15,18,21,25,30,38,48,60,80,92,100],
+                [5,7,9,12,17,30,50,80,85,80,60,55,60,90,95,100],
+                [5,8,12,22,50,30,60,40,70,50,80,60,90,70,95,100]]
 
-np_results = np.zeros((4, 16))
+np_results = np.zeros((6, 16))
 
-for run in range(0,3):
-    for test_idx in range(0,4):
+for run in range(0,1):
+    for test_idx in range(0,3):
         print("-------------------------------------------")
         print("STARTING TEST " + str(test_idx + 1))
         print("-------------------------------------------")
@@ -94,7 +95,7 @@ for run in range(0,3):
         # Start the test
         fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
         fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
-        time.sleep(10)
+        time.sleep(1)
 
         # Set brake_n = 0, enable = 0
         print("--- DISABLING ---")
@@ -128,7 +129,15 @@ for run in range(0,3):
         print("\n\n\n")        
         time.sleep(1)
     
-    time.sleep(3)
+    print("Taking a break... restarting in")
+    print("4")
+    time.sleep(1)
+    print("3")
+    time.sleep(1)
+    print("2")
+    time.sleep(1)
+    print("1")
+    time.sleep(1)
 
 print('--- MULTI-RUN SUMMARY ---')
 print(np.transpose(np_results))
