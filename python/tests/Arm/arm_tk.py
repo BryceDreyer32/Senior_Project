@@ -48,7 +48,13 @@ def on_baseSlider_change(event):
 
 def on_centerSlider_change(event):
     print("Center slider value changed to: " + str(event.widget.get()))
-    fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, sliderValueToPWM(event.widget.get(), Constants.Constants.CENTER_SERVO_CONTROL_ADDR))
+    #fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, sliderValueToPWM(event.widget.get(), Constants.Constants.CENTER_SERVO_CONTROL_ADDR))
+
+    value = sliderValueToPWM(event.widget.get(), Constants.Constants.CENTER_SERVO_CONTROL_ADDR)
+    print("Writing value " + str(value) + " to CENTER_SERVO_CONTROL_ADDR")
+    fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, value)
+    print("Read-back of CENTER_SERVO_CONTROL_ADDR = " + str(fpga.fpgaRead(Constants.Constants.CENTER_SERVO_CONTROL_ADDR)))
+
 
 def on_wristSlider_change(event):
     print("Wrist slider value changed to: " + str(event.widget.get()))
