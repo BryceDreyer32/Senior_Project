@@ -147,7 +147,7 @@ always @(negedge reset_n or posedge clock)
         // is updated, and the pwm_done is immediately read: it may not have had 
         // time to reset, and therefore gives a false impression the new ratio
         // has been absorbed when in reality it hasn't.
-        pwm_done_ff         <= pwm_done_ff;
+        pwm_done_ff         <= pwm_done;
         pwm_done_went_high  <= ~pwm_done_ff & pwm_done;
 
         // Indicator that asserts at end of hammer profile 

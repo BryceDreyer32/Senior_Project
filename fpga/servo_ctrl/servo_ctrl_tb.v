@@ -15,12 +15,15 @@ initial begin
     #10 reset_n = 1'b1;
 
     start_pwm_ratio = 8'd20;
-    target_pwm_ratio = 8'd50;
+    target_pwm_ratio = 8'd0;
     pwm_enable = 1'b1;
-    #2500;
+    #20000;
 
-    target_pwm_ratio = 8'd20;
-    #2500;
+    target_pwm_ratio = 8'd50;
+    #600000;
+
+    target_pwm_ratio = 8'd10;
+    #600000;
 
     $finish;
 end
