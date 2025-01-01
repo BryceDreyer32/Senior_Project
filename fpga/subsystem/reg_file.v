@@ -94,6 +94,7 @@ module reg_file (
     input           angle_done2,     // Arrived at target angle
     input           angle_done3,     // Arrived at target angle
 
+    output  [7:0]   servo_control,   // Servo control
     output  [7:0]   servo_position0, // Servo 0 target position
     output  [7:0]   servo_position1, // Servo 1 target position
     output  [7:0]   servo_position2, // Servo 2 target position
@@ -407,6 +408,14 @@ always @(posedge clock) begin
 end
 
 assign cruise_power[7:0] = reg_file[36][7:0];
+
+// --------------- 0x2F	SERVO_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h2F))
+		reg_file[47]     <=  wr_data[7:0];
+end
+
+assign servo_control    = reg_file[47][7:0];
 
 // --------------- 0x30	SERVO0_CONTROL	----------------
 always @(posedge clock) begin

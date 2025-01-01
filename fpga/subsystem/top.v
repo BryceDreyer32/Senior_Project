@@ -25,7 +25,7 @@ module top(
     output  [3:0]   sd_uart,        // The swerve drive UART
 
     // Arm Servos
-    output  wire [3:0]   servo_pwm,      // The arm servo PWM wave
+    output  [3:0]   servo_pwm,      // The arm servo PWM wave
     
     // Status and Config
     input           tang_config,    // A 1-bit pull high or low for general configuration
@@ -36,8 +36,8 @@ module top(
 );
 
     reg             reset_n;                // reset
-    reg   [2:0]     reset_cntr;             
-    reg   [3:0]     clock_div_cntr;     
+    reg   [2:0]     reset_cntr;             // Reset counter
+    reg   [10:0]    clock_div_cntr;         // Clock division counter
 
     wire  [5:0]     address;   	            // Read / write address
     wire            write_en;  	            // Write enable
@@ -95,7 +95,8 @@ module top(
     wire            angle_done0;            // Arrived at target angle
     wire            angle_done1;            // Arrived at target angle
     wire            angle_done2;            // Arrived at target angle
-    wire            angle_done3;            // Arrived at target angle    
+    wire            angle_done3;            // Arrived at target angle 
+    wire  [7:0]     servo_control;          // Servo control   
     wire  [7:0]     servo_position0;        // Servo 0 target position
     wire  [7:0]     servo_position1;        // Servo 1 target position
     wire  [7:0]     servo_position2;        // Servo 2 target position
@@ -128,9 +129,9 @@ end
 ////////////////////////////////////////////////////////////////
 always @(posedge clock or negedge reset_n) begin
     if(~reset_n)
-        clock_div_cntr[3:0]     <= 4'b0;
+        clock_div_cntr[10:0]     <= 11'b0;
     else
-        clock_div_cntr[3:0]     <= clock_div_cntr[3:0] + 4'b1;
+        clock_div_cntr[10:0]     <= clock_div_cntr[10:0] + 11'b1;
 end
 
 ////////////////////////////////////////////////////////////////
@@ -249,6 +250,7 @@ reg_file rf(
     .angle_done2        (angle_done2),      // Start rotation to angle
     .angle_done3        (angle_done3),      // Start rotation to angle
 
+    .servo_control      (servo_control),    // Servo control
     .servo_position0    (servo_position0),  // Servo 0 target position
     .servo_position1    (servo_position1),  // Servo 1 target position
     .servo_position2    (servo_position2),  // Servo 2 target position
@@ -528,40 +530,38 @@ pwm sr_pwm3(
 ////////////////////////////////////////////////////////////////
 // Servos
 ////////////////////////////////////////////////////////////////
-pwm servo_pwm0(
+servo_ctrl base_servo(
     .reset_n                (reset_n),
-    .clock                  (clock),
-    .pwm_enable             (1'b1),
-    .pwm_ratio              (servo_position0[7:0]),
-    .pwm_update             (1'b1),
-    .pwm_done               (),
+    .clock                  (clock_div_cntr[10]),
+    .pwm_enable             (servo_control[0]),
+    .start_pwm_ratio        (8'd5),
+    .target_pwm_ratio       (servo_position0[7:0]),
     .pwm_signal             (servo_pwm[0])
 );
 
-pwm servo_pwm1(
+pwm wrist_servo(
     .reset_n                (reset_n),
-    .clock                  (clock),
-    .pwm_enable             (1'b1),
+    .clock                  (clock_div_cntr[10]),
+    .pwm_enable             (servo_control[1]),
     .pwm_ratio              (servo_position1[7:0]),
     .pwm_update             (1'b1), 
     .pwm_done               (),
     .pwm_signal             (servo_pwm[1])
 );
 
-pwm servo_pwm2(
+servo_ctrl center_servo(
     .reset_n                (reset_n),
-    .clock                  (clock),
-    .pwm_enable             (1'b1),
-    .pwm_ratio              (servo_position2[7:0]),
-    .pwm_update             (1'b1), 
-    .pwm_done               (),
+    .clock                  (clock_div_cntr[10]),
+    .pwm_enable             (servo_control[2]),
+    .start_pwm_ratio        (8'd5),
+    .target_pwm_ratio       (servo_position2[7:0]),
     .pwm_signal             (servo_pwm[2])
 );
 
-pwm servo_pwm3(
+pwm grabber_servo(
     .reset_n                (reset_n),
-    .clock                  (clock),
-    .pwm_enable             (1'b1),
+    .clock                  (clock_div_cntr[10]),
+    .pwm_enable             (servo_control[3]),
     .pwm_ratio              (servo_position3[7:0]),
     .pwm_update             (1'b1), 
     .pwm_done               (),
