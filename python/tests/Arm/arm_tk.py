@@ -1,5 +1,5 @@
 import tkinter as tk
-import sys, os
+import sys, os, time
 sys.path.append(os.path.realpath('python/src/constants'))
 sys.path.append(os.path.realpath('python/src/subsystem/fpga'))
 import Constants
@@ -113,6 +113,47 @@ def on_disable_click():
     fpga.fpgaWrite(Constants.Constants.SERVO_CONTROL_ADDRESS, 0x0)
     print("Servo Control register = " + str(fpga.fpgaRead(Constants.Constants.SERVO_CONTROL_ADDRESS)))
 
+def up_nod_bite_demo_click():
+    print("Go up, nod, and bite demo")
+    print("Enabling all...")
+    fpga.fpgaWrite(Constants.Constants.SERVO_CONTROL_ADDRESS, 0xF)
+
+    print("Going up")
+    fpga.fpgaWrite(Constants.Constants.BASE_SERVO_CONTROL_ADDR, sliderValueToPWM(20, Constants.Constants.BASE_SERVO_CONTROL_ADDR))
+    fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, sliderValueToPWM(20, Constants.Constants.CENTER_SERVO_CONTROL_ADDR))
+
+    time.sleep(1)
+
+    print("Nod")
+    fpga.fpgaWrite(Constants.Constants.WRIST_SERVO_CONTROL_ADDR, sliderValueToPWM(50, Constants.Constants.WRIST_SERVO_CONTROL_ADDR))
+    time.sleep(0.4)
+    fpga.fpgaWrite(Constants.Constants.WRIST_SERVO_CONTROL_ADDR, sliderValueToPWM(100, Constants.Constants.WRIST_SERVO_CONTROL_ADDR))
+    time.sleep(0.4)
+    fpga.fpgaWrite(Constants.Constants.WRIST_SERVO_CONTROL_ADDR, sliderValueToPWM(50, Constants.Constants.WRIST_SERVO_CONTROL_ADDR))
+    time.sleep(0.4)
+    fpga.fpgaWrite(Constants.Constants.WRIST_SERVO_CONTROL_ADDR, sliderValueToPWM(100, Constants.Constants.WRIST_SERVO_CONTROL_ADDR))
+
+    time.sleep(0.5)
+
+    print("Bite")
+    fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, sliderValueToPWM(90, Constants.Constants.GRABBER_SERVO_CONTROL_ADDR))
+    time.sleep(0.4)
+    fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, sliderValueToPWM(0, Constants.Constants.GRABBER_SERVO_CONTROL_ADDR))
+    time.sleep(0.4)
+    fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, sliderValueToPWM(90, Constants.Constants.GRABBER_SERVO_CONTROL_ADDR))
+    time.sleep(0.4)
+    fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, sliderValueToPWM(0, Constants.Constants.GRABBER_SERVO_CONTROL_ADDR))
+    time.sleep(0.4)
+
+    print("Going down")
+    fpga.fpgaWrite(Constants.Constants.BASE_SERVO_CONTROL_ADDR, sliderValueToPWM(0, Constants.Constants.BASE_SERVO_CONTROL_ADDR))
+    fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, sliderValueToPWM(0, Constants.Constants.CENTER_SERVO_CONTROL_ADDR))
+
+    time.sleep(1)
+
+    print("Disabling all...")
+    fpga.fpgaWrite(Constants.Constants.SERVO_CONTROL_ADDRESS, 0x0)
+
 
 # Create the main window
 root = tk.Tk()
@@ -144,6 +185,8 @@ button1 = tk.Button(root, text="Fully Extend", command=on_extend_click)
 button2 = tk.Button(root, text="Fully Contract", command=on_contract_click)
 button3 = tk.Button(root, text="All disable", command=on_disable_click)
 
+button4 = tk.Button(root, text="Nod & Bite Demo", command=up_nod_bite_demo_click)
+
 # Place widgets in the grid
 label1.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 enable1.grid(row=0, column=1, padx=10, pady=5)
@@ -164,6 +207,8 @@ slider4.grid(row=3, column=2, padx=10, pady=5)
 button1.grid(row=4, column=0, padx=10, pady=10, sticky="ew")
 button2.grid(row=4, column=1, padx=10, pady=10, sticky="ew")
 button3.grid(row=4, column=2, padx=10, pady=10, sticky="ew")
+
+button4.grid(row=5, column=1, padx=10, pady=10, sticky="ew")
 
 # Adjust grid weights so that the buttons expand horizontally
 root.grid_rowconfigure(4, weight=1)
