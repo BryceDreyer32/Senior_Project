@@ -37,7 +37,7 @@ module top(
 
     reg             reset_n;                // reset
     reg   [2:0]     reset_cntr;             // Reset counter
-    reg   [10:0]    clock_div_cntr;         // Clock division counter
+    reg   [19:0]    clock_div_cntr;         // Clock division counter
 
     wire  [5:0]     address;   	            // Read / write address
     wire            write_en;  	            // Write enable
@@ -129,9 +129,9 @@ end
 ////////////////////////////////////////////////////////////////
 always @(posedge clock or negedge reset_n) begin
     if(~reset_n)
-        clock_div_cntr[10:0]     <= 11'b0;
+        clock_div_cntr[19:0]     <= 20'b0;
     else
-        clock_div_cntr[10:0]     <= clock_div_cntr[10:0] + 11'b1;
+        clock_div_cntr[19:0]     <= clock_div_cntr[19:0] + 20'b1;
 end
 
 ////////////////////////////////////////////////////////////////
@@ -265,7 +265,7 @@ reg_file rf(
     .angle_chg          (angle_chg[63:0]),      // Change in angle
     .pwm_profile        (pwm_profile[127:0])    // 16 * 8 bit pwm profile 
 );
-
+/*
 ////////////////////////////////////////////////////////////////
 // UART Drive Motor0
 ////////////////////////////////////////////////////////////////
@@ -325,7 +325,7 @@ uart uart_drv_3(
     .tx_start           (1'b1),                 // Signal to indicate that the transmission needs to start
     .uart_tx            (sd_uart[3])            // UART_TX
 );
-
+*/
 
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor0
@@ -373,15 +373,17 @@ assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
                                 sr_pwm_ratio[0][7:0],   // 15:8
                                 3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
 
-pwm sr_pwm0(
+spark_pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock),    // The main clock
+    .clock                  (clock_div_cntr[9]),    // ~131Hz
     .pwm_enable             (sr_pwm_enable[0]),     // PWM enable
-    .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
+    .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255
+    .pwm_direction          (sr_direction[0]),      // Motor direction
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[0])             // The output PWM wave
 );
+
 /*
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor1

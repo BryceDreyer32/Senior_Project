@@ -408,7 +408,7 @@ always @(posedge clock) begin
 end
 
 assign cruise_power[7:0] = reg_file[36][7:0];
-
+/*
 // --------------- 0x2F	SERVO_CONTROL	----------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h2F))
@@ -480,7 +480,7 @@ assign motor_hot_led        = reg_file[56][3];
 assign ps4_connected_led    = reg_file[56][2];
 assign pi_connected_led     = reg_file[56][1];
 assign fault_led            = reg_file[56][0];
-/*
+*/
 // ------------- 0x39	PROFILE	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h25))
@@ -532,5 +532,5 @@ always @(posedge clock) begin
     reg_file[59]    <= angle_chg[7*8-1:6*8];
     reg_file[60]    <= angle_chg[8*8-1:7*8];
 end
-*/
+
 endmodule
