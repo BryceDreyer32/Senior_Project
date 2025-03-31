@@ -421,8 +421,8 @@ always @(*) begin
         end
 
         CRUISE: begin
-            ns = IDLE;
-/*            if(abort_angle)
+//            ns = IDLE;
+            if(abort_angle)
                 ns = DECEL;
             
             else if(run_stall & enable_stall_chk)
@@ -447,7 +447,7 @@ always @(*) begin
                         ns = CRUISE;
             end
             else
-                ns = CRUISE;*/
+                ns = CRUISE;
         end 
 
         DECEL : begin
