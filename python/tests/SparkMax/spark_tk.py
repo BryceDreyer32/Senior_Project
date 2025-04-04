@@ -17,10 +17,16 @@ def on_motorPower_change(event):
     print("Reading back value just written: " + str(val))    
 
 def on_shutdown_click():
-    fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 128)
+    fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 150)
     print("Shutdown clicked")
-    slider1.set(128)
+    slider1.set(150)
 
+def on_estop_click():
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, 0x0)
+
+    fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 0)
+    print("E-stop clicked")
+    slider1.set(150)
 
 test_profile = [[5,14,23,31,39,47,54,61,67,73,78,83,88,92,95,98],
                 [5,7,9,11,14,18,25,33,45,60,72,82,90,95,98,100],
@@ -95,15 +101,17 @@ root.title("PWM Test for SparkMax motor control")
 label1 = tk.Label(root, text="Set motor power")
 
 slider1 = tk.Scale(root, from_=0, to=255, orient="horizontal", length=300)
-slider1.set(128)
+slider1.set(150)
 slider1.bind("<ButtonRelease-1>", on_motorPower_change)
 
 button1 = tk.Button(root, text="Shutdown", command=on_shutdown_click)
+button2 = tk.Button(root, text="E-stop", command=on_estop_click)
 
 # Place widgets in the grid
 label1.grid(row=0, column=0, padx=10, pady=5, sticky="w")
 slider1.grid(row=0, column=2, padx=10, pady=5)
 button1.grid(row=1, column = 1, padx=10, pady=10)
+button2.grid(row=1, column = 2, padx=10, pady=10)
 
 # Adjust grid weights so that the buttons expand horizontally
 root.grid_rowconfigure(4, weight=1)

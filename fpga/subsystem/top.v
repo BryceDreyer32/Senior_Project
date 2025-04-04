@@ -357,7 +357,7 @@ pwm_ctrl pwm_ctrl0(
 
     // PWM Interface
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
-    .pwm_enable             (sr_pwm_enable[0]),     // Enables the PWM output
+    .pwm_enable             (sr_enable[0]),         // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
     .pwm_direction          (sr_direction[0]),      // The direction of the motor
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
@@ -376,7 +376,7 @@ assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
 spark_pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
     .clock                  (clock_div_cntr[9]),    // ~131Hz
-    .pwm_enable             (sr_pwm_enable[0]),     // PWM enable
+    .pwm_enable             (sr_enable[0]),         // PWM enable
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255
     .pwm_direction          (sr_direction[0]),      // Motor direction
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio

@@ -24,7 +24,7 @@ reg  [7:0]  pwm_target;
 reg         pwm_en_sync;
 
 // Calculate the pwm value based upon the incoming value and the the Spark parameters
-// @ 131Hz, period = 7.6ms. Input is 255, so each step correlatest to 7.6m/255 = 29.8us per step
+// @ 131Hz, period = 7.6ms. Input is 255, so each step correlates to 7.6m/255 = 29.8us per step
 // So 1ms = 33.5 count, and 2ms = 67 count, so range is ~32-68 with 50 midpoint and +/-18
 // Therefore with a 256 input range, this needs to be translated to +/-18, and 256/18 = 14
 // which is close to 16. To divide by 16 is same as >> 4 
