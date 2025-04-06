@@ -20,10 +20,27 @@ initial begin
     #20000;
 
     target_pwm_ratio = 8'd50;
-    #600000;
+    #800000;
+
+/*    target_pwm_ratio = 8'd10;
+    #900000;
+
+    target_pwm_ratio = 8'd20;
+    #200000;
+
+    target_pwm_ratio = 8'd80;
+    #1200000;
 
     target_pwm_ratio = 8'd10;
-    #600000;
+    #1200000;
+    */
+
+    // Test where you go down, don't give enough time to reach the target, and then yank back up
+    target_pwm_ratio = 8'd10;
+    #200000;
+
+    target_pwm_ratio = 8'd60;
+    #1200000;
 
     $finish;
 end

@@ -23,7 +23,7 @@ localparam HOLD             = 3'd6;
 
 wire    [7:0]   pwm_ratio;           // The high-time of the PWM signal out of 255.
 wire    [7:0]   linear_profile       [7:0];
-wire    [7:0]   adjusted_pwm_ratio;
+reg     [7:0]   adjusted_pwm_ratio;
 wire            pwm_done;
 reg     [2:0]   curr_step;
 reg     [7:0]   curr_pwm_ratio;
@@ -32,9 +32,6 @@ reg     [2:0]   state;
 reg             accel_flag;
 reg             direction;
 reg             pwm_done_ff, pwm_done_went_high;
-
-// If the tartget pwm ratio = 0, then set the pwm ratio to start pwm ratio
-assign adjusted_pwm_ratio = (target_pwm_ratio == 8'h0) ? start_pwm_ratio : target_pwm_ratio;
 
 // Initialize the acceleration and deceleration profiles
 assign linear_profile[0][7:0]  = 8'h70;
@@ -66,8 +63,13 @@ always @( posedge clock or negedge reset_n ) begin
         case(state)
             IDLE: begin
                 if(pwm_enable) begin
-                    curr_pwm_ratio  <= start_pwm_ratio;
-                    state           <= GO_TO_START;
+                    curr_pwm_ratio      <= start_pwm_ratio;
+                    state               <= GO_TO_START;
+                    // If the tartget pwm ratio = 0, then set the pwm ratio to start pwm ratio
+                    if(target_pwm_ratio == 8'h0)
+                        adjusted_pwm_ratio  <= start_pwm_ratio;
+                    else
+                        adjusted_pwm_ratio  <= target_pwm_ratio;
                 end
             end
 
@@ -136,35 +138,54 @@ always @( posedge clock or negedge reset_n ) begin
 
             CRUISE: begin
                 if(accel_flag) begin
-                    if(profile_delay[7:0] == linear_profile[7]) begin
-                        if(direction == 1'b0) begin
-                            if(curr_pwm_ratio - adjusted_pwm_ratio < 8) begin
-                                state           <= DECELERATE;
-                                profile_delay   <= 8'h0;
-                            end 
+                    if( pwm_done_went_high == 1'b1 ) begin
+                        if(profile_delay[7:0] == linear_profile[7]) begin
+                            if(direction == 1'b0) begin
+                                if(curr_pwm_ratio - adjusted_pwm_ratio < 8) begin
+                                    state           <= DECELERATE;
+                                    profile_delay   <= 8'h0;
+                                    curr_step       <= 3'h6;
+                                end 
+                                else begin
+                                    curr_pwm_ratio  <= curr_pwm_ratio - 8'h1;
+                                    profile_delay   <= 8'h0;
+                                end
+                            end
                             else begin
-                                curr_pwm_ratio  <= curr_pwm_ratio - 8'h1;
-                                profile_delay   <= 8'h0;
+                                if(adjusted_pwm_ratio - curr_pwm_ratio < 8) begin
+                                    state           <= DECELERATE;
+                                    profile_delay   <= 8'h0;
+                                    curr_step       <= 3'h6;
+                                end 
+                                else begin
+                                    curr_pwm_ratio  <= curr_pwm_ratio + 8'h1;
+                                    profile_delay   <= 8'h0;
+                                end
                             end
                         end
                         else begin
-                            if(adjusted_pwm_ratio - curr_pwm_ratio < 8) begin
-                                state           <= DECELERATE;
-                                profile_delay   <= 8'h0;
-                            end 
-                            else begin
-                                curr_pwm_ratio  <= curr_pwm_ratio + 8'h1;
-                                profile_delay   <= 8'h0;
-                            end
+                            profile_delay   <= profile_delay + 8'h1;
                         end
                     end
-                    else begin
-                        profile_delay   <= profile_delay + 8'h1;
-                    end
                 end
+
                 else begin
                     if(curr_pwm_ratio == adjusted_pwm_ratio) begin
                         state           <= HOLD;
+                    end
+                    else begin
+                        if( pwm_done_went_high == 1'b1 ) begin
+                            if(profile_delay[7:0] == linear_profile[7]) begin
+                                if(direction == 1'b0)
+                                    curr_pwm_ratio  <= curr_pwm_ratio - 8'h1;
+                                else 
+                                    curr_pwm_ratio  <= curr_pwm_ratio + 8'h1;
+                                profile_delay   <= 8'h0;
+                            end
+                            else begin
+                                profile_delay       <= profile_delay + 8'h1;
+                            end
+                        end
                     end
                 end
             end
@@ -195,10 +216,16 @@ always @( posedge clock or negedge reset_n ) begin
             end
 
             HOLD: begin
+                profile_delay   <= 8'h0;
                 if(pwm_enable == 1'b0) begin
                     state <= IDLE;
                 end
                 else begin
+                    if(target_pwm_ratio == 8'h0)
+                        adjusted_pwm_ratio  <= start_pwm_ratio;
+                    else
+                        adjusted_pwm_ratio  <= target_pwm_ratio;  
+                                          
                     if(curr_pwm_ratio != adjusted_pwm_ratio) begin
                         state <= CALCULATE_DELTA;
                     end

@@ -110,7 +110,7 @@ module reg_file (
     output  [127:0] pwm_profile         // 16 * 8 bit pwm profile 
 );
 
-reg     [7:0]   reg_file    [80:0];
+reg     [7:0]   reg_file    [56:0];
 
 // Read Data is just a pointer to whatever the address is set to 
 always @(posedge clock) begin
@@ -415,7 +415,7 @@ always @(posedge clock) begin
 		reg_file[47]     <=  wr_data[7:0];
 end
 
-assign servo_control    = reg_file[47][7:0];
+assign servo_control[7:0]    = reg_file[47][7:0];
 
 // --------------- 0x30	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
@@ -423,7 +423,7 @@ always @(posedge clock) begin
 		reg_file[48]     <=  wr_data[7:0];
 end
 
-assign servo_position0    = reg_file[48][7:0];
+assign servo_position0[7:0]    = reg_file[48][7:0];
 
 // --------------- 0x31	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
@@ -431,7 +431,7 @@ always @(posedge clock) begin
 		reg_file[49]     <=  wr_data[7:0];
 end
 
-assign servo_position1    = reg_file[49][7:0];
+assign servo_position1[7:0]    = reg_file[49][7:0];
 
 // --------------- 0x32	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
@@ -439,7 +439,7 @@ always @(posedge clock) begin
 		reg_file[50]     <=  wr_data[7:0];
 end
 
-assign servo_position2    = reg_file[50][7:0];
+assign servo_position2[7:0]    = reg_file[50][7:0];
 
 // --------------- 0x33	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
@@ -447,7 +447,7 @@ always @(posedge clock) begin
 		reg_file[51]     <=  wr_data[7:0];
 end
 
-assign servo_position3    = reg_file[51][7:0];
+assign servo_position3[7:0]    = reg_file[51][7:0];
 
 // ---------------   0x34	DEBUG   ----------------
 always @(posedge clock) begin
