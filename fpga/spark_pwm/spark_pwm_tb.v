@@ -7,7 +7,7 @@ module test();
   reg reset_n = 0;
   reg pwm_enable = 0;
   reg direction = 0;
-  reg [7:0] pwm_ratio = 0;
+  reg [11:0] pwm_ratio = 0;
   reg pwm_update = 0;
   wire pwm_signal;
 
@@ -23,36 +23,36 @@ module test();
 
     $display("Setting ratio to 128");    
     #2 pwm_enable =  1;
-    #4 pwm_ratio[7:0] = 8'd128;
+    #4 pwm_ratio[11:0] = 8'd128;
     #4 pwm_update = 1;
-    #5000;
+    #20000;
 
     $display("Setting ratio to 255");
-    #4 pwm_ratio[7:0] = 8'd255;
-    #5000;
+    #4 pwm_ratio[11:0] = 8'd255;
+    #20000;
 
     $display("Switch direction");
-    #0 pwm_ratio[7:0] = 8'd0;
+    #0 pwm_ratio[11:0] = 8'd0;
     #10 direction = 1'b1;
     
     $display("Setting ratio to 128");    
     #2 pwm_enable =  1;
-    #4 pwm_ratio[7:0] = 8'd128;
+    #4 pwm_ratio[11:0] = 8'd128;
     #4 pwm_update = 1;
-    #5000;
+    #20000;
 
     $display("Setting ratio to 255");
-    #4 pwm_ratio[7:0] = 8'd255;
-    #5000;
+    #4 pwm_ratio[11:0] = 8'd255;
+    #20000;
 
     $display("Setting pwm_update to 0 and updating pwm_ratio to 150");
     #4 pwm_update = 0;    
-    #4 pwm_ratio[7:0] = 8'd150;
-    #5000;
+    #4 pwm_ratio[11:0] = 8'd150;
+    #20000;
 
     $display("Setting pwm_enable to 0");
     #2 pwm_enable =  0;
-    #1000 $finish;
+    #20000 $finish;
 end
 
     spark_pwm dut(

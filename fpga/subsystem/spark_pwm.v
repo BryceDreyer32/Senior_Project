@@ -18,23 +18,19 @@ module spark_pwm
     output reg  pwm_signal  // The output PWM wave
 );
 
-wire [7:0]  high_time;
-reg  [7:0]  pwm_counter;
-reg  [7:0]  pwm_target;
-reg         pwm_en_sync;
+wire [11:0]  high_time;
+reg  [11:0]  pwm_counter;
+reg  [11:0]  pwm_target;
+reg          pwm_en_sync;
 
 // Calculate the pwm value based upon the incoming value and the the Spark parameters
-// @ 131Hz, period = 7.6ms. Input is 255, so each step correlates to 7.6m/255 = 29.8us per step
-// So 1ms = 33.5 count, and 2ms = 67 count, so range is ~32-68 with 50 midpoint and +/-18
-// Therefore with a 256 input range, this needs to be translated to +/-18, and 256/18 = 14
-// which is close to 16. To divide by 16 is same as >> 4 
-assign high_time = pwm_direction ?  (8'd50 + (pwm_ratio>>4)):
-                                    (8'd50 - (pwm_ratio>>4));
+assign high_time = pwm_direction ?  12'd633 + pwm_ratio:
+                                    12'd633 - pwm_ratio;
 
 always @( posedge clock or negedge reset_n ) begin
     if( ~reset_n ) begin
-        pwm_counter <= 8'h0;
-        pwm_target  <= 8'h0;
+        pwm_counter <= 12'h0;
+        pwm_target  <= 12'h0;
         pwm_done    <= 1'b0;
         pwm_signal  <= 1'b0;
         pwm_en_sync <= 1'b0;
@@ -42,10 +38,10 @@ always @( posedge clock or negedge reset_n ) begin
     else begin
         if(pwm_en_sync) begin
             // Increment the counter (let it roll over)
-            pwm_counter <= pwm_counter + 8'h1;
+            pwm_counter <= pwm_counter + 12'h1;
 
             // If pwm_update is asserted and the pwm_counter is 0, then pull in the pwm_ratio
-            if(pwm_counter[7:0] == 8'h0) begin
+            if(pwm_counter[11:0] == 12'h0) begin
                 if(!pwm_enable)
                     pwm_en_sync <= 1'b0;
                 if(pwm_update) begin
@@ -54,7 +50,7 @@ always @( posedge clock or negedge reset_n ) begin
                 end                
             end
             // otherwise, if the count < target, then pwm high (if enabled)
-            else if(pwm_counter[7:0] < pwm_target[7:0]) begin
+            else if(pwm_counter[11:0] < pwm_target[11:0]) begin
                 pwm_signal <= 1'b1;
                 pwm_done   <= 1'b0;
             end

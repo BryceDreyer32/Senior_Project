@@ -371,7 +371,7 @@ assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
 
 spark_pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock_div_cntr[9]),    // ~131Hz
+    .clock                  (clock_div_cntr[5]),    // ~422kHz
     .pwm_enable             (sr_enable[0]),         // PWM enable
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255
     .pwm_direction          (sr_direction[0]),      // Motor direction
