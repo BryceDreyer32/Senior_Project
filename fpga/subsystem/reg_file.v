@@ -60,11 +60,7 @@ module reg_file (
 									 
     // ROTATION MOTORS
     input       [7:0]   startup_fail,   // Error: Motor stalled, unable to startup
-    output              enable_hammer,  // Enables hammer acceleration (vs linear)
     output              enable_stall_chk,   // Enable the stall check
-    output      [3:0]   fwd_count,      // Number of times to apply the forward hammer
-    output      [3:0]   rvs_count,      // Number of times to apply the reverse hammer
-    output      [1:0]   retry_count,    // Number of retry attempts before admitting defeat
     output      [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
     output      [7:0]   delay_target,   // Number of times to remain on each profile step
     output      [7:0]   profile_offset, // An offset that is added to each of the profile steps
@@ -368,19 +364,13 @@ always @(posedge clock) begin
 		reg_file[32]     <=  wr_data[7:0];
 end
 
-assign enable_hammer = reg_file[32][7];
-assign retry_count[1:0] = reg_file[32][6:5];
-assign consec_chg[2:0]  = reg_file[32][4:2];
 assign enable_stall_chk = reg_file[32][1];
 
-// ------------ 0x21	HAMMER_FWD_RVS	------------
+// ------------ 0x21	RESERVED	------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h21))
 		reg_file[33]     <=  wr_data[7:0];
 end
-
-assign fwd_count[3:0] = reg_file[33][7:4];
-assign rvs_count[3:0] = reg_file[33][3:0];
 
 // ------------ 0x22	HAMMER_DELAY_TARGET	------------
 always @(posedge clock) begin

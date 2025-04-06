@@ -65,10 +65,7 @@ module top(
     wire  [7:0]     sr_pwm_ratio    [3:0];
 
     wire  [7:0]     startup_fail;           // Startup failure (motor siezed)
-    wire            enable_hammer;          // Enables hammer acceleration (vs linear)
     wire            enable_stall_chk;       // Enable the stall check
-    wire  [3:0]     fwd_count, rvs_count;   // Number of times to apply the forward, reverse hammer
-    wire  [1:0]     retry_count;            // Number of retry attempts before admitting defeat
     wire  [2:0]     consec_chg;             // Number of consecutive changes we want to see before claiming success
     wire  [7:0]     delay_target;           // Number of times to remain on each profile step
     wire  [7:0]     profile_offset;         // An offset that is added to each of the profile steps
@@ -202,13 +199,9 @@ reg_file rf(
 
     // Rotation Motors outputs
     .startup_fail       (startup_fail[7:0]),// Error: Motor stalled, unable to startup
-    .enable_hammer      (enable_hammer),    // Enables hammer acceleration (vs linear)
     .enable_stall_chk   (enable_stall_chk), // Enable the stall check
     .profile_offset     (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power       (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
-    .fwd_count          (fwd_count[3:0]),   // Number of times to apply the forward hammer
-    .rvs_count          (rvs_count[3:0]),   // Number of times to apply the reverse hammer
-    .retry_count        (retry_count[1:0]), // Number of retry attempts before admitting defeat
     .consec_chg         (consec_chg[2:0]),  // Number of consecutive changes we want to see before claiming success
     .delay_target       (delay_target[7:0]),// Number of times to remain on each profile step
     .brake4             (sr_brake[0]),    	// Brake control
@@ -337,12 +330,8 @@ pwm_ctrl pwm_ctrl0(
     .abort_angle            (abort_angle0),         // Aborts the angle adjustment
     .angle_done             (angle_done0),          // Output sent when angle has been adjusted to target_angle
 
-    // Acceleration hammer interface
-    .enable_hammer          (enable_hammer),        // Enables hammer acceleration (vs linear)
+    // Acceleration interface
     .enable_stall_chk       (enable_stall_chk),     // Enable the stall check
-    .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
-    .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
-    .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
     .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step    
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps

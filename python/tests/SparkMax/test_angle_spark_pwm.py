@@ -56,21 +56,21 @@ fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, 0x0)
 print("--- SETTING UP PARAMETERS ---")
 # Set the hammer-mode for acceleration
 #enable_hammer = 0x1 << 7 # [7]
-enable_hammer    = 0x0 << 7 # [7]
-retry_count      = 0x2 << 5 # [6:5]
-consec_chg       = 0x3 << 3 # [4:2]
-enable_stall_chk = 0x0 << 1 # [1]
-value = enable_hammer | retry_count | consec_chg
-fpga.fpgaWrite(Constants.Constants.ROTATION_GEN_CTRL_ADDR, value)
+#enable_hammer    = 0x0 << 7 # [7]
+#retry_count      = 0x2 << 5 # [6:5]
+#consec_chg       = 0x3 << 3 # [4:2]
+#enable_stall_chk = 0x0 << 1 # [1]
+#value = enable_hammer | retry_count | consec_chg
+fpga.fpgaWrite(Constants.Constants.ROTATION_GEN_CTRL_ADDR, 0)
 
 # Set the forward and reverse steps
-fwd_count = 0xF << 4 # [7:4]
-rvs_count = 0x4      # [3:0]
-value = fwd_count | rvs_count
-fpga.fpgaWrite(Constants.Constants.HAMMER_FWD_RVS_ADDR, value)
+#fwd_count = 0xF << 4 # [7:4]
+#rvs_count = 0x4      # [3:0]
+#value = fwd_count | rvs_count
+#fpga.fpgaWrite(Constants.Constants.HAMMER_FWD_RVS_ADDR, value)
 
 # Set the number of times to stay at each PWM value
-fpga.fpgaWrite(Constants.Constants.HAMMER_DELAY_TARGET_ADDRESS, 0x01)
+fpga.fpgaWrite(Constants.Constants.PROFILE_DELAY_TARGET_ADDRESS, 0x01)
 
 # Set the offset to add to each step in the hammer & acceleration profiles
 fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0)
@@ -97,7 +97,7 @@ print("Writing control_val = " + hex(control_val))
 fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
 
 print("--- RUNNING ---")
-# Start the rotation
+# Start the rotation (by updating the target angle by writing update_angle0)
 fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
 fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
 
@@ -143,29 +143,25 @@ try:
         print("Debug Data = " + hex(rd_data & 0xFFFFFFFF))
 
         # bits [19:16] are state
-        state = (rd_data >> 16) & 0xF
+        state = (rd_data >> 16) & 0x7
         match(state):
             case 0:  print("   State             = IDLE           ")
             case 1:  print("   State             = CALC           ")
             case 2:  print("   State             = ACCEL          ")
-            case 3:  print("   State             = HAMMER_FORWARD ")
-            case 4:  print("   State             = HAMMER_REVERSE ")
-            case 5:  print("   State             = HAMMER_PASS    ")
-            case 6:  print("   State             = HAMMER_FAIL    ")
-            case 7:  print("   State             = CRUISE         ")
-            case 8:  print("   State             = DECEL          ")
-            case 9:  print("   State             = SHUTDOWN       ")
-            case _:  print("   State             = Invalid state! ")
+            case 3:  print("   State             = CRUISE         ")
+            case 4:  print("   State             = DECEL          ")
+            case 5:  print("   State             = SHUTDOWN       ")
+            case _:  print("   State             = Invalid state! " + str(state))
         
         print("   pwm_update        = " + str((rd_data >> 19) & 0x1))
-        print("   chg_cnt[2:0]      = " + str((rd_data >> 20) & 0x7))
-        print("   pwm_done          = " + str((rd_data >> 23) & 0x1))
-        print("   abort_angle       = " + str((rd_data >> 24) & 0x1))
-        print("   angle_update      = " + str((rd_data >> 25) & 0x1))
+#        print("   chg_cnt[2:0]      = " + str((rd_data >> 20) & 0x7))
+#        print("   pwm_done          = " + str((rd_data >> 23) & 0x1))
+#        print("   abort_angle       = " + str((rd_data >> 24) & 0x1))
+#        print("   angle_update      = " + str((rd_data >> 25) & 0x1))
         print("   pwm_direction     = " + str((rd_data >> 26) & 0x1))
-        print("   pwm_done          = " + str((rd_data >> 27) & 0x1))
-        print("   retry_cnt[1:0]    = " + str((rd_data >> 28) & 0x1))
-        print("   run_stall         = " + str((rd_data >> 30) & 0x1))
+#        print("   pwm_done          = " + str((rd_data >> 27) & 0x1))
+#        print("   retry_cnt[1:0]    = " + str((rd_data >> 28) & 0x1))
+#        print("   run_stall         = " + str((rd_data >> 30) & 0x1))
         print("   startup_fail      = " + str((rd_data >> 31) & 0x1))
         print(" -------------------------------------------")
 
