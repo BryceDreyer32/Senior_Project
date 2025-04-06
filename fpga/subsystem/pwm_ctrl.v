@@ -11,6 +11,7 @@ module pwm_ctrl(
     input                   angle_update,       // Signals when an angle update is available
     output                  angle_done,         // Output sent when angle has been adjusted to target_angle
     output  reg     [11:0]  current_angle,      // Angle we are currently at from I2C
+    input                   pwm_enable,         // Enables the PWM output
     input                   abort_angle,        // Aborts rotating to angle
 
     // Acceleration hammer interface    
@@ -29,7 +30,6 @@ module pwm_ctrl(
     
     // PWM Interface    
     input                   pwm_done,           // Updated PWM ratio has been applied (1 cycle long pulse)
-    output                  pwm_enable,         // Enables the PWM output
     output          [7:0]   pwm_ratio,          // The high-time of the PWM signal out of 255.
     output                  pwm_direction,      // The direction of the motor
     output                  pwm_update,         // Request an update to the PWM ratio
@@ -71,6 +71,7 @@ angle_to_pwm a_to_pwm(
     .clock              (clock),	            // The main clock
     .target_angle       (target_angle[11:0]),   // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .current_angle      (current_angle[11:0]),  // The angle read from the motor encoder
+    .pwm_enable         (pwm_enable),           // Enable the PWM
     .pwm_done           (pwm_done),             // Indicator from PWM that the pwm_ratio has been applied
     .angle_update       (angle_update),         // Request to update the angle
     .debug_signals      (debug_signals[15:0]),
@@ -88,7 +89,6 @@ angle_to_pwm a_to_pwm(
     .startup_fail       (startup_fail),         // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
     .pwm_profile        (pwm_profile[127:0]),   // 16 * 8 bit pwm profile 
     .angle_chg          (angle_chg[63:0]),      // Change in angle
-    .pwm_enable         (pwm_enable),   
     .pwm_update         (pwm_update),           // Request an update to the PWM ratio
     .pwm_ratio          (pwm_ratio),            // The high-time of the PWM signal out of 255.
     .pwm_direction      (pwm_direction)         // The direction of the motor

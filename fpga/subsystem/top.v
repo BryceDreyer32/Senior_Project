@@ -37,7 +37,7 @@ module top(
 
     reg             reset_n;                // reset
     reg   [2:0]     reset_cntr;             // Reset counter
-    reg   [10:0]    clock_div_cntr;         // Clock division counter
+    reg   [19:0]    clock_div_cntr;         // Clock division counter
 
     wire  [5:0]     address;   	            // Read / write address
     wire            write_en;  	            // Write enable
@@ -64,8 +64,7 @@ module top(
     wire  [3:0]     sr_pwm_done, sr_pwm_enable, sr_pwm_update, sr_pwm_direction;
     wire  [7:0]     sr_pwm_ratio    [3:0];
 
-    wire            startup_fail0, startup_fail1, startup_fail2, startup_fail3; // Startup failure (motor siezed)
-    wire            startup_fail4, startup_fail5, startup_fail6, startup_fail7;
+    wire  [7:0]     startup_fail;           // Startup failure (motor siezed)
     wire            enable_hammer;          // Enables hammer acceleration (vs linear)
     wire            enable_stall_chk;       // Enable the stall check
     wire  [3:0]     fwd_count, rvs_count;   // Number of times to apply the forward, reverse hammer
@@ -129,9 +128,9 @@ end
 ////////////////////////////////////////////////////////////////
 always @(posedge clock or negedge reset_n) begin
     if(~reset_n)
-        clock_div_cntr[10:0]     <= 11'b0;
+        clock_div_cntr[19:0]     <= 20'b0;
     else
-        clock_div_cntr[10:0]     <= clock_div_cntr[10:0] + 11'b1;
+        clock_div_cntr[19:0]     <= clock_div_cntr[19:0] + 20'b1;
 end
 
 ////////////////////////////////////////////////////////////////
@@ -202,10 +201,7 @@ reg_file rf(
     .pwm3               (pwm3),      	    // PWM control
 
     // Rotation Motors outputs
-    .startup_fail4      (startup_fail4),    // Error: Motor stalled, unable to startup
-    .startup_fail5      (startup_fail5),    // Error: Motor stalled, unable to startup
-    .startup_fail6      (startup_fail6),    // Error: Motor stalled, unable to startup
-    .startup_fail7      (startup_fail7),    // Error: Motor stalled, unable to startup
+    .startup_fail       (startup_fail[7:0]),// Error: Motor stalled, unable to startup
     .enable_hammer      (enable_hammer),    // Enables hammer acceleration (vs linear)
     .enable_stall_chk   (enable_stall_chk), // Enable the stall check
     .profile_offset     (profile_offset[7:0]),  // An offset that is added to each of the profile steps
@@ -265,7 +261,7 @@ reg_file rf(
     .angle_chg          (angle_chg[63:0]),      // Change in angle
     .pwm_profile        (pwm_profile[127:0])    // 16 * 8 bit pwm profile 
 );
-
+/*
 ////////////////////////////////////////////////////////////////
 // UART Drive Motor0
 ////////////////////////////////////////////////////////////////
@@ -325,7 +321,7 @@ uart uart_drv_3(
     .tx_start           (1'b1),                 // Signal to indicate that the transmission needs to start
     .uart_tx            (sd_uart[3])            // UART_TX
 );
-
+*/
 
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor0
@@ -351,13 +347,13 @@ pwm_ctrl pwm_ctrl0(
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step    
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
-    .startup_fail           (startup_fail4),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+    .startup_fail           (startup_fail[4]),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
     .angle_chg              (angle_chg[63:0]),      // Change in angle
     .pwm_profile            (pwm_profile[127:0]),   // 16 * 8 bit pwm profile 
 
     // PWM Interface
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
-    .pwm_enable             (sr_pwm_enable[0]),     // Enables the PWM output
+    .pwm_enable             (sr_enable[0]),         // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
     .pwm_direction          (sr_direction[0]),      // The direction of the motor
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
@@ -373,15 +369,17 @@ assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
                                 sr_pwm_ratio[0][7:0],   // 15:8
                                 3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
 
-pwm sr_pwm0(
+spark_pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
-    .clock                  (clock),    // The main clock
-    .pwm_enable             (sr_pwm_enable[0]),     // PWM enable
-    .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
+    .clock                  (clock_div_cntr[9]),    // ~131Hz
+    .pwm_enable             (sr_enable[0]),         // PWM enable
+    .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255
+    .pwm_direction          (sr_direction[0]),      // Motor direction
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[0])             // The output PWM wave
 );
+
 /*
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor1
@@ -407,7 +405,7 @@ pwm_ctrl pwm_ctrl1(
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
-    .startup_fail           (startup_fail5),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+    .startup_fail           (startup_fail[5]),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     // PWM Interface
     .pwm_done               (sr_pwm_done[1]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -455,7 +453,7 @@ pwm_ctrl pwm_ctrl2(
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
-    .startup_fail           (startup_fail6),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+    .startup_fail           (startup_fail[6]),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[2]),       // Updated PWM ratio has been applied (1 cycle long pulse)
@@ -503,7 +501,7 @@ pwm_ctrl pwm_ctrl3(
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
-    .startup_fail           (startup_fail7),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+    .startup_fail           (startup_fail[7]),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
 
     //PWM Interface
     .pwm_done               (sr_pwm_done[3]),       // Updated PWM ratio has been applied (1 cycle long pulse)

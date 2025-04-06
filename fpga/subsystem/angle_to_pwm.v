@@ -8,6 +8,7 @@ module angle_to_pwm(
     input               clock,              // The main clock
     input       [11:0]  target_angle,       // The angle the wheel needs to move on the 4096 points/rotation scale
     input       [11:0]  current_angle,      // The angle read from the motor encoder
+    input               pwm_enable,         // PWM enable
     input               pwm_done,           // Indicator from PWM that the pwm_ratio has been applied
     input               angle_update,       // Request to update the angle
     input               abort_angle,        // Aborts rotating to angle
@@ -28,7 +29,6 @@ module angle_to_pwm(
 
     output      [15:0]  debug_signals,  
     output reg          angle_done,         // Indicator that the angle has been applied 
-    output reg          pwm_enable,         // PWM enable
     output reg          pwm_update,         // Request an update to the PWM ratio
     output reg  [7:0]   pwm_ratio,          // The high-time of the PWM signal out of 255.
     output reg          pwm_direction       // The direction of the motor
@@ -123,7 +123,6 @@ always @(negedge reset_n or posedge clock)
         curr_step[3:0]      <= 4'b0;
         curr_ang_ff[11:0]   <= 12'b0;
         pwm_ratio[7:0]      <= 8'd0;
-        pwm_enable          <= 1'b1;
         pwm_update          <= 1'b0;
         pwm_done_ff         <= 1'b0;
         pwm_done_went_high  <= 1'b0;
@@ -139,8 +138,10 @@ always @(negedge reset_n or posedge clock)
         run_stall           <= 1'b0;
     end
     else begin
-        ps                  <= ns;
-        pwm_enable          <= 1'b1;
+        if(~pwm_enable | abort_angle)
+            ps <= IDLE;
+        else
+            ps <= ns;
 
         // The pwm_done_went_high ensures that the PWM has had reset this signal
         // and it is now going high. This avoids a race condition where the ratio
@@ -421,8 +422,8 @@ always @(*) begin
         end
 
         CRUISE: begin
-            ns = IDLE;
-/*            if(abort_angle)
+//            ns = IDLE;
+            if(abort_angle)
                 ns = DECEL;
             
             else if(run_stall & enable_stall_chk)
@@ -447,7 +448,7 @@ always @(*) begin
                         ns = CRUISE;
             end
             else
-                ns = CRUISE;*/
+                ns = CRUISE;
         end 
 
         DECEL : begin

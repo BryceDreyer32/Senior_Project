@@ -187,8 +187,8 @@ class Constants:
     CENTER_SERVO_MAX	            = 70
     WRIST_SERVO_MIN		            = 40
     WRIST_SERVO_MAX		            = 60
-    GRABBER_SERVO_MIN		        = 73
-    GRABBER_SERVO_MAX		        = 82
+    GRABBER_SERVO_MIN		        = 97
+    GRABBER_SERVO_MAX		        = 86
 
 
     ######################################################################################

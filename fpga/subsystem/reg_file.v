@@ -59,10 +59,7 @@ module reg_file (
     output          direction7,	     // Motor direction 
 									 
     // ROTATION MOTORS
-    input               startup_fail4,  // Error: Motor stalled, unable to startup
-    input               startup_fail5,  // Error: Motor stalled, unable to startup
-    input               startup_fail6,  // Error: Motor stalled, unable to startup
-    input               startup_fail7,  // Error: Motor stalled, unable to startup
+    input       [7:0]   startup_fail,   // Error: Motor stalled, unable to startup
     output              enable_hammer,  // Enables hammer acceleration (vs linear)
     output              enable_stall_chk,   // Enable the stall check
     output      [3:0]   fwd_count,      // Number of times to apply the forward hammer
@@ -137,7 +134,7 @@ assign pwm0[4:0]    = reg_file[4][4:0];
 
 // ------------- 0x5	DRIVE0_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[5]     <=  {fault0, adc_temp0[6:0]};
+	reg_file[5]     <=  {fault0, startup_fail[0], adc_temp0[5:0]};
 end
 
 // ------------- 0x6	DRIVE1_CONTROL	-------------
@@ -153,7 +150,7 @@ assign pwm1[4:0]    = reg_file[6][4:0];
 
 // ------------- 0x7	DRIVE1_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[7]     <=  {fault1, adc_temp1[6:0]};
+	reg_file[7]     <=  {fault1, startup_fail[1], adc_temp1[5:0]};
 end
 
 // ------------- 0x8	DRIVE2_CONTROL	-------------
@@ -169,7 +166,7 @@ assign pwm2[4:0]    = reg_file[8][4:0];
 
 // ------------- 0x9	DRIVE2_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[9]     <=  {fault2, adc_temp2[6:0]};
+	reg_file[9]     <=  {fault2, startup_fail[2], adc_temp2[5:0]};
 end
 
 // ------------- 0xA	DRIVE3_CONTROL	-------------
@@ -185,7 +182,7 @@ assign pwm3[4:0]    = reg_file[10][4:0];
 
 // ------------- 0xB	DRIVE3_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[11]     <=  {fault3, adc_temp3[6:0]};
+	reg_file[11]     <=  {fault3, startup_fail[3], adc_temp3[5:0]};
 end
 
 // ------------- 0xC	ROTATION0_CONTROL	-------------
@@ -201,7 +198,7 @@ assign target_angle0[11:8]  = reg_file[12][3:0];
 
 // ------------- 0xD	ROTATION0_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[13]     <=  {fault4, startup_fail4, adc_temp4[5:0]};
+	reg_file[13]     <=  {fault4, startup_fail[4], adc_temp4[5:0]};
 end
 
 // ------------- 0xE	ROTATION0_TARG_ANG	-------------
@@ -246,7 +243,7 @@ assign target_angle1[11:8]  = reg_file[17][3:0];
 
 // ------------- 0x12	ROTATION1_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[18]     <=  {fault5, startup_fail5, adc_temp5[5:0]};
+	reg_file[18]     <=  {fault5, startup_fail[5], adc_temp5[5:0]};
 end
 
 // ------------- 0x13	ROTATION1_TARG_ANG	-------------
@@ -290,7 +287,7 @@ assign target_angle2[11:8]  = reg_file[22][3:0];
 
 // ------------- 0x17	ROTATION2_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[23]     <=  {fault6, startup_fail6, adc_temp6[5:0]};
+	reg_file[23]     <=  {fault6, startup_fail[6], adc_temp6[5:0]};
 end
 
 // ------------- 0x18	ROTATION2_TARG_ANG	-------------
@@ -334,7 +331,7 @@ assign target_angle3[11:8]  = reg_file[27][3:0];
 
 // ------------- 0x1C	ROTATION3_STATUS	-------------
 always @(posedge clock) begin
-	reg_file[28]     <=  {fault7, startup_fail7, adc_temp7[5:0]};
+	reg_file[28]     <=  {fault7, startup_fail[7], adc_temp7[5:0]};
 end
 
 // ------------- 0x1D	ROTATION3_TARG_ANG	-------------
@@ -408,7 +405,7 @@ always @(posedge clock) begin
 end
 
 assign cruise_power[7:0] = reg_file[36][7:0];
-
+/*
 // --------------- 0x2F	SERVO_CONTROL	----------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h2F))
@@ -480,7 +477,7 @@ assign motor_hot_led        = reg_file[56][3];
 assign ps4_connected_led    = reg_file[56][2];
 assign pi_connected_led     = reg_file[56][1];
 assign fault_led            = reg_file[56][0];
-/*
+*/
 // ------------- 0x39	PROFILE	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h25))
@@ -532,5 +529,5 @@ always @(posedge clock) begin
     reg_file[59]    <= angle_chg[7*8-1:6*8];
     reg_file[60]    <= angle_chg[8*8-1:7*8];
 end
-*/
+
 endmodule
