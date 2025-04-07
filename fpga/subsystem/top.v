@@ -66,7 +66,6 @@ module top(
 
     wire  [7:0]     startup_fail;           // Startup failure (motor siezed)
     wire            enable_stall_chk;       // Enable the stall check
-    wire  [2:0]     consec_chg;             // Number of consecutive changes we want to see before claiming success
     wire  [7:0]     delay_target;           // Number of times to remain on each profile step
     wire  [7:0]     profile_offset;         // An offset that is added to each of the profile steps
     wire  [7:0]     cruise_power;           // The amount of power to apply during the cruise phase
@@ -202,7 +201,6 @@ reg_file rf(
     .enable_stall_chk   (enable_stall_chk), // Enable the stall check
     .profile_offset     (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power       (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
-    .consec_chg         (consec_chg[2:0]),  // Number of consecutive changes we want to see before claiming success
     .delay_target       (delay_target[7:0]),// Number of times to remain on each profile step
     .brake4             (sr_brake[0]),    	// Brake control
     .enable4            (sr_enable[0]),   	// Motor enable
@@ -332,12 +330,10 @@ pwm_ctrl pwm_ctrl0(
 
     // Acceleration interface
     .enable_stall_chk       (enable_stall_chk),     // Enable the stall check
-    .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step    
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .startup_fail           (startup_fail[4]),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
-    .angle_chg              (angle_chg[63:0]),      // Change in angle
     .pwm_profile            (pwm_profile[127:0]),   // 16 * 8 bit pwm profile 
 
     // PWM Interface
@@ -356,7 +352,7 @@ pwm_ctrl pwm_ctrl0(
 
 assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
                                 sr_pwm_ratio[0][7:0],   // 15:8
-                                3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
+                                3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_enable[0],  sr_pwm_update[0], angle_done0};
 
 spark_pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
@@ -390,7 +386,6 @@ pwm_ctrl pwm_ctrl1(
     .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
-    .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
@@ -438,7 +433,6 @@ pwm_ctrl pwm_ctrl2(
     .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
-    .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
@@ -486,7 +480,6 @@ pwm_ctrl pwm_ctrl3(
     .fwd_count              (fwd_count[3:0]),       // Number of times to apply the forward hammer
     .rvs_count              (rvs_count[3:0]),       // Number of times to apply the reverse hammer
     .retry_count            (retry_count[1:0]),     // Number of retry attempts before admitting defeat
-    .consec_chg             (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step   
     .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase

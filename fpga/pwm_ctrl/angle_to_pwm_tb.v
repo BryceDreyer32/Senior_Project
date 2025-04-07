@@ -44,7 +44,7 @@ initial begin
     current_angle = 12'd10;
     #10 angle_update = 1'b1;
     #10 angle_update = 1'b0;
-    while((timeout >= 0) & (current_angle != target_angle) & (angle_to_pwm.ps != 4'd6)) begin
+    while((timeout >= 0) & (current_angle != target_angle) & (angle_to_pwm.state != 4'd6)) begin
         #2000 current_angle[11:0] = current_angle[11:0] + 12'b1;
         timeout = timeout - 1;
     end
@@ -153,32 +153,29 @@ angle_to_pwm angle_to_pwm(
     .clock          (clock),	        // The main clock
     .target_angle   (target_angle),     // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .current_angle  (current_angle),    // The angle read from the motor encoder
+    .pwm_enable     (1'b1),             // PWM enable
+    .pwm_done       (pwm_done),
+    .angle_update   (angle_update),     // Request to update the angle
     .abort_angle    (abort_angle),      // Aborts rotating to angle
-    .enable_hammer  (1'b0),             // Enables hammer acceleration (vs linear)
-    .fwd_count      (4'hF),             // Number of times to apply the forward hammer
-    .rvs_count      (4'h4),             // Number of times to apply the reverse hammer
-    .retry_count    (2'h2),             // Number of retry attempts before admitting defeat
-    .consec_chg     (3'h2),             // Number of consecutive changes we want to see before claiming success
+    .enable_stall_chk(1'b0),            // Enable the stall check
     .delay_target   (8'h2),             // Number of times to remain on each profile step
     .profile_offset (8'h5),             // An offset that is added to each of the profile steps
     .cruise_power   (8'h60),            // The amount of power to apply during the cruise phase
     .angle_chg      (),                 // Change in angle
     .startup_fail   (),                 // Error: Motor stalled, unable to startup
     .pwm_profile    (pwm_profile),      // 16 * 8 bit pwm profile 
-    .pwm_done       (pwm_done),         // Indicator from PWM that the pwm_ratio has been applied
-    .angle_update   (angle_update),     // Request to update the angle
     .angle_done     (angle_done),       // Indicator that the angle has been applied 
-    .pwm_enable     (pwm_enable),
     .pwm_update     (pwm_update),       // Request an update to the PWM ratio
     .pwm_ratio      (pwm_ratio),        // The high-time of the PWM signal out of 255.
     .pwm_direction  (pwm_direction)     // The direction of the motor
     );
 
-pwm pwm(
+spark_pwm spark_pwm(
     .reset_n        (reset_n),
     .clock          (clock),
-    .pwm_enable     (pwm_enable),
+    .pwm_enable     (1'b1),
     .pwm_ratio      (pwm_ratio),
+    .pwm_direction  (pwm_direction),
     .pwm_update     (pwm_update), 
     .pwm_done       (pwm_done),
     .pwm_signal     (pwm_signal)

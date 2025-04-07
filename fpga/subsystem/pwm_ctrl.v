@@ -16,12 +16,10 @@ module pwm_ctrl(
 
     // Acceleration hammer interface    
     input                   enable_stall_chk,   // Enable the stall check
-    input           [2:0]   consec_chg,         // Number of consecutive changes we want to see before claiming success
     input           [7:0]   delay_target,       // Number of times to remain on each profile step
     input           [7:0]   profile_offset,     // An offset that is added to each of the profile steps
     input           [7:0]   cruise_power,       // The amount of power to apply during the cruise phase
     output                  startup_fail,       // Error: Motor stalled, unable to startup
-    output          [63:0]  angle_chg,          // Change in angle
     input           [127:0] pwm_profile,        // 16 * 8 bit pwm profile 
     
     // PWM Interface    
@@ -74,13 +72,11 @@ angle_to_pwm a_to_pwm(
     .angle_done         (angle_done),           // Indicator that the angle has been applied 
     .abort_angle        (abort_angle),          // Aborts rotating to angle
     .enable_stall_chk   (enable_stall_chk),     // Enable the stall check
-    .consec_chg         (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target       (delay_target[7:0]),    // Number of times to remain on each profile step
     .profile_offset     (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power       (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
     .startup_fail       (startup_fail),         // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
     .pwm_profile        (pwm_profile[127:0]),   // 16 * 8 bit pwm profile 
-    .angle_chg          (angle_chg[63:0]),      // Change in angle
     .pwm_update         (pwm_update),           // Request an update to the PWM ratio
     .pwm_ratio          (pwm_ratio),            // The high-time of the PWM signal out of 255.
     .pwm_direction      (pwm_direction)         // The direction of the motor

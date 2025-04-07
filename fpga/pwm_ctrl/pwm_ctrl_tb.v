@@ -73,11 +73,21 @@ pwm_ctrl dut(
     .target_angle   (target_angle),     // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
     .angle_update   (angle_update),     // Signals when an angle update is available
     .angle_done     (angle_done),       // Output sent when angle has been adjusted to target_angle
+    .current_angle  (),
+    .abort_angle    (1'b0),    
+    .enable_stall_chk(1'b0),
+    .delay_target   (8'h02),
+    .profile_offset (8'h0),
+    .cruise_power   (8'hAA),
+    .startup_fail   (),
+    .angle_chg      (),
+    .pwm_profile    (),
 
     //PWM Interface
     .pwm_done       (pwm_done),          // Updated PWM ratio has been applied (1 cycle long pulse)
-    .pwm_enable     (pwm_enable),        // Enables the PWM output
+    .pwm_enable     (1'b1),              // Enables the PWM output
     .pwm_ratio      (pwm_ratio),         // The high-time of the PWM signal out of 255.
+    .pwm_direction  (),
     .pwm_update     (pwm_update),        // Request an update to the PWM ratio
 
     //I2C Interface

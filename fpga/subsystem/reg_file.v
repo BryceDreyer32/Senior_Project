@@ -61,7 +61,6 @@ module reg_file (
     // ROTATION MOTORS
     input       [7:0]   startup_fail,   // Error: Motor stalled, unable to startup
     output              enable_stall_chk,   // Enable the stall check
-    output      [2:0]   consec_chg,     // Number of consecutive changes we want to see before claiming success
     output      [7:0]   delay_target,   // Number of times to remain on each profile step
     output      [7:0]   profile_offset, // An offset that is added to each of the profile steps
     output      [7:0]   cruise_power,   // The amount of power to apply during the cruise phase
@@ -197,7 +196,7 @@ always @(posedge clock) begin
 	reg_file[13]     <=  {fault4, startup_fail[4], adc_temp4[5:0]};
 end
 
-// ------------- 0xE	ROTATION0_TARG_ANG	-------------
+// ------------- 0xE	ROTATION0_TARGET_ANGLE	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'hE))
 		reg_file[14]     <=  wr_data[7:0];
@@ -205,12 +204,12 @@ end
 
 assign target_angle0[7:0] = reg_file[14][7:0];
 
-// ------------- 0xF	ROTATION0_CURR_ANG	-------------
+// ------------- 0xF	ROTATION0_CURRENT_ANGLE	-------------
 always @(posedge clock) begin
 	reg_file[15]     <=  current_angle0[7:0];
 end
 
-// ------------- 0x10	ROTATION0_CURR_ANG2	-------------
+// ------------- 0x10	ROTATION0_CURRENT_ANGLE2	-------------
 always @(posedge clock) begin
     reg_file[16]     <=  {angle_done0, 3'h0, current_angle0[11:8]};
     
@@ -510,14 +509,14 @@ assign pwm_profile[127:0] =  {reg_file[52], reg_file[51], reg_file[50], reg_file
                               reg_file[40], reg_file[39], reg_file[38], reg_file[37]};
 
 always @(posedge clock) begin
-    reg_file[53]    <= angle_chg[1*8-1:0*8];
-    reg_file[54]    <= angle_chg[2*8-1:1*8];
-    reg_file[55]    <= angle_chg[3*8-1:2*8];
-    reg_file[56]    <= angle_chg[4*8-1:3*8];
-    reg_file[57]    <= angle_chg[5*8-1:4*8];
-    reg_file[58]    <= angle_chg[6*8-1:5*8];
-    reg_file[59]    <= angle_chg[7*8-1:6*8];
-    reg_file[60]    <= angle_chg[8*8-1:7*8];
+    reg_file[53]    <= 0;//angle_chg[1*8-1:0*8];
+    reg_file[54]    <= 0;//angle_chg[2*8-1:1*8];
+    reg_file[55]    <= 0;//angle_chg[3*8-1:2*8];
+    reg_file[56]    <= 0;//angle_chg[4*8-1:3*8];
+    reg_file[57]    <= 0;//angle_chg[5*8-1:4*8];
+    reg_file[58]    <= 0;//angle_chg[6*8-1:5*8];
+    reg_file[59]    <= 0;//angle_chg[7*8-1:6*8];
+    reg_file[60]    <= 0;//angle_chg[8*8-1:7*8];
 end
 
 endmodule

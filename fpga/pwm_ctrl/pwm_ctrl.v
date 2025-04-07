@@ -14,12 +14,7 @@ module pwm_ctrl(
     input                   abort_angle,        // Aborts rotating to angle
 
     // Acceleration hammer interface    
-    input                   enable_hammer,      // Enables hammer acceleration (vs linear)
     input                   enable_stall_chk,   // Enable the stall check
-    input           [3:0]   fwd_count,          // Number of times to apply the forward hammer
-    input           [3:0]   rvs_count,          // Number of times to apply the reverse hammer
-    input           [1:0]   retry_count,        // Number of retry attempts before admitting defeat
-    input           [2:0]   consec_chg,         // Number of consecutive changes we want to see before claiming success
     input           [7:0]   delay_target,       // Number of times to remain on each profile step
     input           [7:0]   profile_offset,     // An offset that is added to each of the profile steps
     input           [7:0]   cruise_power,       // The amount of power to apply during the cruise phase
@@ -29,7 +24,7 @@ module pwm_ctrl(
     
     // PWM Interface    
     input                   pwm_done,           // Updated PWM ratio has been applied (1 cycle long pulse)
-    output                  pwm_enable,         // Enables the PWM output
+    input                   pwm_enable,         // Enables the PWM output
     output          [7:0]   pwm_ratio,          // The high-time of the PWM signal out of 255.
     output                  pwm_direction,      // The direction of the motor
     output                  pwm_update,         // Request an update to the PWM ratio
@@ -76,12 +71,7 @@ angle_to_pwm a_to_pwm(
     .debug_signals      (debug_signals[15:0]),
     .angle_done         (angle_done),           // Indicator that the angle has been applied 
     .abort_angle        (abort_angle),          // Aborts rotating to angle
-    .enable_hammer      (enable_hammer),        // Enables hammer acceleration (vs linear)
     .enable_stall_chk   (enable_stall_chk),     // Enable the stall check
-    .fwd_count          (fwd_count[3:0]),       // Number of times to apply the forward hammer
-    .rvs_count          (rvs_count[3:0]),       // Number of times to apply the reverse hammer
-    .retry_count        (retry_count[1:0]),     // Number of retry attempts before admitting defeat
-    .consec_chg         (consec_chg[2:0]),      // Number of consecutive changes we want to see before claiming success
     .delay_target       (delay_target[7:0]),    // Number of times to remain on each profile step
     .profile_offset     (profile_offset[7:0]),  // An offset that is added to each of the profile steps
     .cruise_power       (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
