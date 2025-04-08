@@ -70,10 +70,10 @@ fpga.fpgaWrite(Constants.Constants.ROTATION_GEN_CTRL_ADDR, 0)
 #fpga.fpgaWrite(Constants.Constants.HAMMER_FWD_RVS_ADDR, value)
 
 # Set the number of times to stay at each PWM value
-fpga.fpgaWrite(Constants.Constants.PROFILE_DELAY_TARGET_ADDRESS, 0x11)
+fpga.fpgaWrite(Constants.Constants.PROFILE_DELAY_TARGET_ADDR, 0x11)
 
-# Set the offset to add to each step in the hammer & acceleration profiles
-fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0)
+# No offset on profile values
+fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0x0)
 
 # Set the cruise power level
 fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 50)
@@ -152,19 +152,12 @@ try:
             case 5:  print("   State             = SHUTDOWN       ")
             case _:  print("   State             = Invalid state! " + str(state))
         
-        print("   pwm_update        = " + str((rd_data >> 19) & 0x1))
-        print("   Went CALC state   = " + str((rd_data >> 20) & 0x1))
-        print("   Went ACCEL state  = " + str((rd_data >> 21) & 0x1))
-        print("   Went CRUISE state = " + str((rd_data >> 22) & 0x1))
-#        print("   chg_cnt[2:0]      = " + str((rd_data >> 20) & 0x7))
-#        print("   pwm_done          = " + str((rd_data >> 23) & 0x1))
-#        print("   abort_angle       = " + str((rd_data >> 24) & 0x1))
-#        print("   angle_update      = " + str((rd_data >> 25) & 0x1))
-        print("   pwm_direction     = " + str((rd_data >> 26) & 0x1))
-#        print("   pwm_done          = " + str((rd_data >> 27) & 0x1))
-#        print("   retry_cnt[1:0]    = " + str((rd_data >> 28) & 0x1))
+        print("   pwm_update        = " + str((rd_data >> (16+5)) & 0x1))
+        print("   Went CALC state   = " + str((rd_data >> (16+6)) & 0x1))
+        print("   Went ACCEL state  = " + str((rd_data >> (16+7)) & 0x1))
+        print("   Went CRUISE state = " + str((rd_data >> (16+8)) & 0x1))
+        print("   pwm_direction     = " + str((rd_data >> 27) & 0x1))
         print("   pwm_enable        = " + str((rd_data >> 29) & 0x1))
-#        print("   run_stall         = " + str((rd_data >> 30) & 0x1))
         print("   startup_fail      = " + str((rd_data >> 31) & 0x1))
         print(" -------------------------------------------")
 

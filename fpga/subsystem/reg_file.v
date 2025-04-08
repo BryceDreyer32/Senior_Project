@@ -495,5 +495,12 @@ assign pwm_profile[127:0] =  {reg_file[6'h3C], reg_file[6'h3B], reg_file[6'h3A],
                               reg_file[6'h34], reg_file[6'h33], reg_file[6'h32], reg_file[6'h31],
                               reg_file[6'h30], reg_file[6'h2F], reg_file[6'h2E], reg_file[6'h2D]};
 
+// ------------- 0x3D Delay Target	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h3D))
+		reg_file[6'h3D]     <=  wr_data[7:0];
+end
+
+assign delay_target   = reg_file[6'h3D][7:0];
 
 endmodule

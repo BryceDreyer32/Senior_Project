@@ -134,6 +134,7 @@ class Constants:
     ROTATION_GEN_CTRL_ADDR          = 0x20
     PROFILE_OFFSET_ADDR             = 0x21
     CRUISE_POWER_ADDR               = 0x22
+    PROFILE_DELAY_TARGET_ADDR       = 0x3D
 
     SERVO_CONTROL_ADDRESS           = 0x23
     BASE_SERVO_CONTROL_ADDR			= 0x24
