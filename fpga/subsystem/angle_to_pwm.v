@@ -80,7 +80,7 @@ assign linear_profile[14][7:0] = pwm_profile[15*8-1:14*8] + profile_offset[7:0];
 assign linear_profile[15][7:0] = pwm_profile[16*8-1:15*8] + profile_offset[7:0];
 
 
-always @(negedge reset_n or posedge clock)
+always @(negedge reset_n or posedge clock) begin
     if(~reset_n) begin
         state               <= IDLE;
         curr_step[3:0]      <= 4'b0;
@@ -112,146 +112,152 @@ always @(negedge reset_n or posedge clock)
         pwm_done_ff         <= pwm_done;
         pwm_done_went_high  <= ~pwm_done_ff & pwm_done;
 
-        if(state == IDLE) begin
-            // If we are in IDLE force the ratio to 0
-            angle_done      <= 1'b0;
-            curr_step[3:0]  <= 4'b0;
-            pwm_ratio[7:0]  <= 8'd0;
-            pwm_direction   <= dir_shortest;
-            pwm_update      <= 1'b0;
-            enable_calc     <= 1'b0;
-            
-            // State transitions
-            if(angle_update)
-                state <= CALC;
-        end
-
-        else if(state == CALC) begin
-            curr_step[3:0]  <= 4'b0;
-            pwm_ratio[7:0]  <= 8'd0;
-            pwm_direction   <= dir_shortest;
-            enable_calc     <= 1'b1;
-            startup_fail    <= 1'b0;
-            run_stall       <= 1'b0;
-            
-            wentCALC        <= 1'b1;
-
-            // Wait for the calc_updated to assert before doing the calculation
-            if(calc_updated) begin
-                if(delta_angle[11:0] > TARGET_TOLERANCE) begin
-                    state   <=  ACCEL;
+        case(state)
+            IDLE: begin
+                // If we are in IDLE force the ratio to 0
+                angle_done      <= 1'b0;
+                curr_step[3:0]  <= 4'b0;
+                pwm_ratio[7:0]  <= 8'd0;
+                pwm_direction   <= dir_shortest;
+                pwm_update      <= 1'b0;
+                enable_calc     <= 1'b0;
                 
-                // Calculate wether the angle we are going to process is small, medium, or large
-                if(delta_angle[11:0] < 12'd30)
-                    num_steps[3:0] <= SMALL_DELTA; 
-
-                else if(delta_angle[11:0] < 12'd50)
-                    num_steps[3:0] <= MED_DELTA; 
-
-                else 
-                    num_steps[3:0] <= BIG_DELTA; 
-
-                // Send the first notification to PWM of an update
-                pwm_update <= 1'b1;                
+                // State transitions
+                if(angle_update)
+                    state <= CALC;
             end
-        end
 
-        else if(state == ACCEL) begin
-            wentACCEL   <= 1'b1;
+            CALC: begin
+                curr_step[3:0]  <= 4'b0;
+                pwm_ratio[7:0]  <= 8'd0;
+                pwm_direction   <= dir_shortest;
+                enable_calc     <= 1'b1;
+                startup_fail    <= 1'b0;
+                run_stall       <= 1'b0;
+                
+                wentCALC        <= 1'b1;
 
-            pwm_ratio[7:0] <= linear_profile[curr_step[3:0]];
-
-            // Check if the PWM ratio has been absorbed
-            if( pwm_done_went_high == 1'b1 ) begin
-                // If so, then we can proceed
-                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
-
-                // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[23:0] == profile_delay_target[23:0]) begin                    
-                    if(curr_step[3:0] == 4'hF)
-                        state <= CRUISE;
-                    else
-                        curr_step[3:0]  <= curr_step[3:0] + 4'b1;
-
-                    profile_delay[23:0] <= 24'b0;
-                    curr_ang_ff[11:0]   <= current_angle[11:0];
-                end
-            end
-        end
-
-        else if(state == CRUISE) begin
-            wentCRUISE <= 1'b1;
-            
-            // Continue to run at max speed
-            pwm_ratio[7:0]  <= cruise_power[7:0];
-
-            // Check for stalls
-            if( pwm_done_went_high == 1'b1 ) begin
-                // If so, then we can proceed
-                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
-
-                // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
-                    profile_delay[23:0] <= 24'b0;
-
-                    // If the angle hasn't changed by at least 5, then flag a stall
-                    if(curr_ang_ff[11:0] > current_angle[11:0]) begin
-                        if((curr_ang_ff[11:0] - current_angle[11:0]) < 12'd3)
-                            run_stall   <= 1'b1;
-                    end
-                    else begin
-                        if((current_angle[11:0] - curr_ang_ff[11:0]) < 12'd3)
-                            run_stall   <= 1'b1;
-                    end
+                // Wait for the calc_updated to assert before doing the calculation
+                if(calc_updated) begin
+                    if(delta_angle[11:0] > TARGET_TOLERANCE)
+                        state   <=  ACCEL;
                     
-                    curr_ang_ff[11:0]   <= current_angle[11:0];
+                    // Calculate wether the angle we are going to process is small, medium, or large
+                    if(delta_angle[11:0] < 12'd30)
+                        num_steps[3:0] <= SMALL_DELTA; 
+
+                    else if(delta_angle[11:0] < 12'd50)
+                        num_steps[3:0] <= MED_DELTA; 
+
+                    else 
+                        num_steps[3:0] <= BIG_DELTA; 
+
+                    // Send the first notification to PWM of an update
+                    pwm_update <= 1'b1;                
                 end
             end
 
-            // State transitions
-            if(run_stall & enable_stall_chk)
-                state <=  IDLE;
+            ACCEL: begin
+                wentACCEL   <= 1'b1;
 
-            else if(calc_updated) begin
-                // Depending on how large of a delta_angle, we will start decelerating at different points
-                if(num_steps[3:0] == SMALL_DELTA)
-                    if(delta_angle[11:0] < 12'd5)
-                        state <=  DECEL ;
-                else if(num_steps[3:0] == MED_DELTA)
-                    if(delta_angle[11:0] < 12'd8)
-                        state <=  DECEL ;
-                else //(num_steps[7:0] == BIG_DELTA)
-                    if(delta_angle[11:0] < 12'd10)
-                        state <=  DECEL ;
-            end
-        end
+                pwm_ratio[7:0] <= linear_profile[curr_step[3:0]];
 
-        else if(state == DECEL ) begin
-            pwm_ratio[7:0] <= linear_profile[curr_step[3:0]];
+                // Check if the PWM ratio has been absorbed
+                if( pwm_done_went_high == 1'b1 ) begin
+                    // If so, then we can proceed
+                    profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
-            // Check if the PWM ratio has been absorbed
-            if( pwm_done_went_high == 1'b1 ) begin
-                // If so, then we can proceed
-                profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
+                    // If we've waited long enough, then go to the next acceleration step
+                    if(profile_delay[23:0] == profile_delay_target[23:0]) begin                    
+                        if(curr_step[3:0] == 4'hF)
+                            state <= CRUISE;
+                        else
+                            curr_step[3:0]  <= curr_step[3:0] + 4'b1;
 
-                // If we've waited long enough, then go to the next acceleration step
-                if(profile_delay[23:0] == profile_delay_target[23:0]) begin
-                    curr_step[3:0] <= curr_step[3:0] - 4'b1;
-                    profile_delay[23:0] <= 24'b0;
+                        profile_delay[23:0] <= 24'b0;
+                        curr_ang_ff[11:0]   <= current_angle[11:0];
+                    end
                 end
             end
 
-            if(delta_angle[11:0] < TARGET_TOLERANCE)
-                state <= SHUTDOWN;
-        end
+            CRUISE: begin
+                wentCRUISE <= 1'b1;
+                
+                // Continue to run at max speed
+                pwm_ratio[7:0]  <= cruise_power[7:0];
 
-        else if(state == SHUTDOWN) begin
-            pwm_ratio[7:0]  <= 8'b0;
-            angle_done      <= 1'b1;
+                // Check for stalls
+                if( pwm_done_went_high == 1'b1 ) begin
+                    // If so, then we can proceed
+                    profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
-            if(pwm_done_went_high == 1'b1)
+                    // If we've waited long enough, then go to the next acceleration step
+                    if(profile_delay[23:0] == profile_delay_target[23:0]) begin
+                        profile_delay[23:0] <= 24'b0;
+
+                        // If the angle hasn't changed by at least 5, then flag a stall
+                        if(curr_ang_ff[11:0] > current_angle[11:0]) begin
+                            if((curr_ang_ff[11:0] - current_angle[11:0]) < 12'd3)
+                                run_stall   <= 1'b1;
+                        end
+                        else begin
+                            if((current_angle[11:0] - curr_ang_ff[11:0]) < 12'd3)
+                                run_stall   <= 1'b1;
+                        end
+                        
+                        curr_ang_ff[11:0]   <= current_angle[11:0];
+                    end
+                end
+
+                // State transitions
+                if(run_stall & enable_stall_chk)
+                    state <=  IDLE;
+
+                else if(calc_updated) begin
+                    // Depending on how large of a delta_angle, we will start decelerating at different points
+                    if(num_steps[3:0] == SMALL_DELTA)
+                        if(delta_angle[11:0] < 12'd5)
+                            state <=  DECEL ;
+                    else if(num_steps[3:0] == MED_DELTA)
+                        if(delta_angle[11:0] < 12'd8)
+                            state <=  DECEL ;
+                    else //(num_steps[7:0] == BIG_DELTA)
+                        if(delta_angle[11:0] < 12'd10)
+                            state <=  DECEL ;
+                end
+            end
+
+            DECEL: begin
+                pwm_ratio[7:0] <= linear_profile[curr_step[3:0]];
+
+                // Check if the PWM ratio has been absorbed
+                if( pwm_done_went_high == 1'b1 ) begin
+                    // If so, then we can proceed
+                    profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
+
+                    // If we've waited long enough, then go to the next acceleration step
+                    if(profile_delay[23:0] == profile_delay_target[23:0]) begin
+                        curr_step[3:0] <= curr_step[3:0] - 4'b1;
+                        profile_delay[23:0] <= 24'b0;
+                    end
+                end
+
+                if(delta_angle[11:0] < TARGET_TOLERANCE)
+                    state <= SHUTDOWN;
+            end
+
+            SHUTDOWN: begin
+                pwm_ratio[7:0]  <= 8'b0;
+                angle_done      <= 1'b1;
+
+                if(pwm_done_went_high == 1'b1)
+                    state <= IDLE;
+            end
+            
+            default: begin
                 state <= IDLE;
-        end
+            end
+        endcase
     end
 end
 

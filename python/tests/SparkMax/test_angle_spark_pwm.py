@@ -76,7 +76,7 @@ fpga.fpgaWrite(Constants.Constants.PROFILE_DELAY_TARGET_ADDR, 0x11)
 fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0x0)
 
 # Set the cruise power level
-fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 50)
+fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 100)
 
 # Runs hot: DELAY = 0x80, OFFSET = 70, CRUISE = 100
 
