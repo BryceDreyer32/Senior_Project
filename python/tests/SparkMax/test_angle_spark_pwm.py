@@ -70,13 +70,13 @@ fpga.fpgaWrite(Constants.Constants.ROTATION_GEN_CTRL_ADDR, 0)
 #fpga.fpgaWrite(Constants.Constants.HAMMER_FWD_RVS_ADDR, value)
 
 # Set the number of times to stay at each PWM value
-fpga.fpgaWrite(Constants.Constants.PROFILE_DELAY_TARGET_ADDRESS, 0x01)
+fpga.fpgaWrite(Constants.Constants.PROFILE_DELAY_TARGET_ADDRESS, 0x11)
 
 # Set the offset to add to each step in the hammer & acceleration profiles
 fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0)
 
 # Set the cruise power level
-fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 25)
+fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 50)
 
 # Runs hot: DELAY = 0x80, OFFSET = 70, CRUISE = 100
 
@@ -85,9 +85,6 @@ angle = 100
 target_val = (angle & 0xFF)
 print("Writing target_val = " + hex(target_val))
 fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, target_val)
-
-# Confirm the data
-print("ROTATION0_CONTROL_ADDR.data        = " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_CONTROL_ADDR)))
 print("ROTATION0_CURRENT_ANGLE2_ADDR.data = " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR)))
 
 print("--- ENABLING ---")
@@ -95,6 +92,7 @@ print("--- ENABLING ---")
 control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
 print("Writing control_val = " + hex(control_val))
 fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
+print("ROTATION0_CONTROL_ADDR.data        = " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_CONTROL_ADDR)))
 
 print("--- RUNNING ---")
 # Start the rotation (by updating the target angle by writing update_angle0)
@@ -123,16 +121,17 @@ try:
             # Brake, disable
             fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, angle & 0xFF)
             control_val = ((0<<7) | (0<<6) | (0<<5) | ((angle & 0xF00) >> 8))
+            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
 
             time.sleep(1)
 
             # UnBrake, enable
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
             control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
             fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
 
             # Write update angle
             fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
+#            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
 
 
         rd_data = 0
@@ -154,6 +153,9 @@ try:
             case _:  print("   State             = Invalid state! " + str(state))
         
         print("   pwm_update        = " + str((rd_data >> 19) & 0x1))
+        print("   Went CALC state   = " + str((rd_data >> 20) & 0x1))
+        print("   Went ACCEL state  = " + str((rd_data >> 21) & 0x1))
+        print("   Went CRUISE state = " + str((rd_data >> 22) & 0x1))
 #        print("   chg_cnt[2:0]      = " + str((rd_data >> 20) & 0x7))
 #        print("   pwm_done          = " + str((rd_data >> 23) & 0x1))
 #        print("   abort_angle       = " + str((rd_data >> 24) & 0x1))
@@ -161,32 +163,14 @@ try:
         print("   pwm_direction     = " + str((rd_data >> 26) & 0x1))
 #        print("   pwm_done          = " + str((rd_data >> 27) & 0x1))
 #        print("   retry_cnt[1:0]    = " + str((rd_data >> 28) & 0x1))
+        print("   pwm_enable        = " + str((rd_data >> 29) & 0x1))
 #        print("   run_stall         = " + str((rd_data >> 30) & 0x1))
         print("   startup_fail      = " + str((rd_data >> 31) & 0x1))
         print(" -------------------------------------------")
 
-        # If we're in the HAMMER_FAIL state, wait a bit and then try again
-        if(state == 6):
-            # Brake, disable
-            control_val = ((0<<7) | (0<<6) | (0<<5) | ((angle & 0xF00) >> 8))
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
-
-            print('HAMMER_FAIL. Retrying...')
-            time.sleep(2)
-
-            # UnBrake, enable
-            control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
-
-            # Write update angle
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
-
         time.sleep(1)
 
-#assign debug_signals = {startup_fail, run_stall, retry_cnt[1:0], pwm_direction, angle_update, abort_angle, pwm_done,
-#                        chg_cnt[2:0], pwm_update, ps[3:0]};
+
 
 except KeyboardInterrupt:
     pass
