@@ -13,21 +13,21 @@ module reg_file (
 								     
     // DRIVE MOTORS
     input           fault0,    	     // Fault signal from motor
-    input   [6:0]   adc_temp0, 	     // Adc temperature from motor
+    input   [5:0]   adc_temp0, 	     // Adc temperature from motor
     input           fault1,    	     // Fault signal from motor
-    input   [6:0]   adc_temp1, 	     // Adc temperature from motor
+    input   [5:0]   adc_temp1, 	     // Adc temperature from motor
     input           fault2,    	     // Fault signal from motor
-    input   [6:0]   adc_temp2, 	     // Adc temperature from motor
+    input   [5:0]   adc_temp2, 	     // Adc temperature from motor
     input           fault3,    	     // Fault signal from motor
-    input   [6:0]   adc_temp3, 	     // Adc temperature from motor
+    input   [5:0]   adc_temp3, 	     // Adc temperature from motor
     input           fault4,    	     // Fault signal from motor
-    input   [6:0]   adc_temp4, 	     // Adc temperature from motor
+    input   [5:0]   adc_temp4, 	     // Adc temperature from motor
     input           fault5,    	     // Fault signal from motor
-    input   [6:0]   adc_temp5, 	     // Adc temperature from motor
+    input   [5:0]   adc_temp5, 	     // Adc temperature from motor
     input           fault6,    	     // Fault signal from motor
-    input   [6:0]   adc_temp6, 	     // Adc temperature from motor
+    input   [5:0]   adc_temp6, 	     // Adc temperature from motor
     input           fault7,    	     // Fault signal from motor
-    input   [6:0]   adc_temp7, 	     // Adc temperature from motor
+    input   [5:0]   adc_temp7, 	     // Adc temperature from motor
 								     
     output          brake0,    	     // Brake control
     output          enable0,   	     // Motor enable

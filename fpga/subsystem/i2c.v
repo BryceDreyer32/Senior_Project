@@ -50,19 +50,19 @@ always @(posedge clock or negedge reset_n) begin
     else begin
         substate[1:0]   <= substate[1:0] + 2'h1;
         if(ps == DEV_WR)
-            wr_bit        <= WRITE_DEVICE[8'd7 - bit_counter];
+            wr_bit        <= WRITE_DEVICE[3'd7 - bit_counter];
         else if(ps == READ_ADDR)
-            wr_bit        <= READ_RAW_ANGLE[8'd7 - bit_counter];
+            wr_bit        <= READ_RAW_ANGLE[3'd7 - bit_counter];
         else if(ps == DEV_RD)
-            wr_bit        <= READ_DEVICE[8'd7 - bit_counter];
+            wr_bit        <= READ_DEVICE[3'd7 - bit_counter];
         else
             wr_bit    <= 1'bx;
 
         if((ps == DATA0) & PHASE3)
-            read_data1[8'd7 - bit_counter] <= sda;
+            read_data1[3'd7 - bit_counter] <= sda;
         
         else if((ps == DATA1) & PHASE3)
-            read_data0[8'd7 - bit_counter] <= sda;
+            read_data0[3'd7 - bit_counter] <= sda;
             
         rd_done <= (ps == STOP);
     end

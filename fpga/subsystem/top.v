@@ -105,8 +105,6 @@ module top(
     wire  [63:0]    angle_chg;              // Change in angle
  
 
-    wire  [7:0]     BAUD_DIVISION = 8'd116;   // Select baud 115200
-
 ////////////////////////////////////////////////////////////////
 // Reset Controller
 ////////////////////////////////////////////////////////////////
@@ -160,23 +158,23 @@ reg_file rf(
 				     
     // Drive Motors	inputs: Don't have UART sending back data currently, so strapping for now	     
     .fault0             (1'b0),    	        // Fault signal from motor
-    .adc_temp0          (7'b0), 	        // Adc temperature from motor
+    .adc_temp0          (6'b0), 	        // Adc temperature from motor
     .fault1             (1'b0),    	        // Fault signal from motor
-    .adc_temp1          (7'b0), 	        // Adc temperature from motor
+    .adc_temp1          (6'b0), 	        // Adc temperature from motor
     .fault2             (1'b0),    	        // Fault signal from motor
-    .adc_temp2          (7'b0), 	        // Adc temperature from motor
+    .adc_temp2          (6'b0), 	        // Adc temperature from motor
     .fault3             (1'b0),    	        // Fault signal from motor
-    .adc_temp3          (7'b0), 	        // Adc temperature from motor
+    .adc_temp3          (6'b0), 	        // Adc temperature from motor
 
     // Rotation Motors inputs: Don't have a way to Analog to Digital convert temperature     
     .fault4             (sr_fault[0]),    	// Fault signal from motor
-    .adc_temp4          (7'b0), 	        // Adc temperature from motor
+    .adc_temp4          (6'b0), 	        // Adc temperature from motor
     .fault5             (sr_fault[1]), 	    // Fault signal from motor
-    .adc_temp5          (7'b0), 	        // Adc temperature from motor
+    .adc_temp5          (6'b0), 	        // Adc temperature from motor
     .fault6             (sr_fault[2]), 	    // Fault signal from motor
-    .adc_temp6          (7'b0), 	        // Adc temperature from motor
+    .adc_temp6          (6'b0), 	        // Adc temperature from motor
     .fault7             (sr_fault[3]), 	    // Fault signal from motor
-    .adc_temp7          (7'b0), 	        // Adc temperature from motor
+    .adc_temp7          (6'b0), 	        // Adc temperature from motor
 
     // Drive Motors	outputs	     
 	.brake0             (brake0),    	    // Brake control
