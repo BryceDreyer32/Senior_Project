@@ -31,7 +31,8 @@ fpga.fpgaWrite(Constants.Constants.LED_CONTROL_ADDR, (0x1 << 5) | (0x1 << 6))
 #    fpga.fpgaWrite(Constants.Constants.LED_TEST_ADDR, (0x0 << 5) | (0x0 << 6))
 #    time.sleep(1)
 
-test_profile = [[5,14,23,31,39,47,54,61,67,73,78,83,88,92,95,98],
+#test_profile = [[5,14,23,31,39,47,54,61,67,73,78,83,88,92,95,98],
+test_profile = [[5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80],
                 [5,7,9,11,14,18,25,33,45,60,72,82,90,95,98,100],
                 [5,8,12,22,40,52,58,60,63,68,75,88,95,97,99,100],
                 [5,7,9,11,13,15,18,21,25,30,38,48,60,80,92,100],
@@ -76,7 +77,7 @@ fpga.fpgaWrite(Constants.Constants.PROFILE_DELAY_TARGET_ADDR, 0x11)
 fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0x0)
 
 # Set the cruise power level
-fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 100)
+fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 30)
 
 # Runs hot: DELAY = 0x80, OFFSET = 70, CRUISE = 100
 
@@ -106,8 +107,11 @@ try:
         target = target | fpga.fpgaRead(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR)
         print("Target angle  = " + str(target & 0xFFF))
 
+        # Write bit 6 to get a snapshot into the register
+        fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x40)
+
         current = fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE_ADDR)
-        current = current | fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR) << 8
+        current = current | (fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR) << 8)
         print("Current angle = " + str(current & 0xFFF))
 
         # If we hit the target, then flip the target

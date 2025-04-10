@@ -104,6 +104,7 @@ module reg_file (
 
 // 63:0 is the maximum addressable space with 6-bit address
 reg     [7:0]   reg_file    [63:0];
+reg     [11:0]  angle_snap0, angle_snap1, angle_snap2, angle_snap3;
 
 // Read Data is just a pointer to whatever the address is set to 
 always @(posedge clock) begin
@@ -207,12 +208,12 @@ assign target_angle0[7:0] = reg_file[6'hE][7:0];
 
 // ------------- 0xF	ROTATION0_CURRENT_ANGLE	-------------
 always @(posedge clock) begin
-	reg_file[6'hF]     <=  current_angle0[7:0];
+	reg_file[6'hF]     <=  angle_snap0[7:0];
 end
 
 // ------------- 0x10	ROTATION0_CURRENT_ANGLE2	-------------
 always @(posedge clock) begin
-    reg_file[6'h10]     <=  {angle_done0, 3'h0, current_angle0[11:8]};
+    reg_file[6'h10]     <=  {angle_done0, 3'h0, angle_snap0[11:8]};
     
     if(write_en & (address == 6'h10) & wr_data[4])
         abort_angle0 <= 1'b1;
@@ -223,7 +224,13 @@ always @(posedge clock) begin
         update_angle0 <= 1'b1;
     else
         update_angle0 <= 1'b0;
-        
+
+    // Grab a snapshot of the angle when bit 6 is written - this ensures
+    // that when we do the reading back that we don't read the 1st 8 bits
+    // and then the value changes before we read the upper 4 bits
+    if(write_en & (address == 6'h10) & wr_data[6])
+        angle_snap0[11:0] <= current_angle0[11:0];
+   
 end
 
 // ------------- 0x11	ROTATION1_CONTROL	-------------
@@ -252,12 +259,12 @@ assign target_angle1[7:0] = reg_file[6'h13][7:0];
 
 // ------------- 0x14	ROTATION1_CURR_ANG	-------------
 always @(posedge clock) begin
-	reg_file[6'h14]     <=  current_angle1[7:0];
+	reg_file[6'h14]     <=  angle_snap1[7:0];
 end
 
 // ------------- 0x15	ROTATION1_CURR_ANG2	-------------
 always @(posedge clock) begin
-	reg_file[6'h15]     <=  {angle_done1, 3'h0, current_angle1[11:8]};
+	reg_file[6'h15]     <=  {angle_done1, 3'h0, angle_snap1[11:8]};
 
     if(write_en & (address == 6'h15) & wr_data[4])
         abort_angle1 <= 1'b1;
@@ -268,6 +275,12 @@ always @(posedge clock) begin
         update_angle1 <= 1'b1;
     else
         update_angle1 <= 1'b0;
+
+    // Grab a snapshot of the angle when bit 6 is written - this ensures
+    // that when we do the reading back that we don't read the 1st 8 bits
+    // and then the value changes before we read the upper 4 bits
+    if(write_en & (address == 6'h15) & wr_data[6])
+        angle_snap1[11:0] <= current_angle1[11:0];
 end
 
 // ------------- 0x16	ROTATION2_CONTROL	-------------
@@ -296,12 +309,12 @@ assign target_angle2[7:0] = reg_file[6'h18][7:0];
 
 // ------------- 0x19	ROTATION2_CURR_ANG	-------------
 always @(posedge clock) begin
-	reg_file[6'h19]     <=  current_angle2[7:0];
+	reg_file[6'h19]     <=  angle_snap2[7:0];
 end
 
 // ------------- 0x1A	ROTATION2_CURR_ANG2	-------------
 always @(posedge clock) begin
-	reg_file[6'h1A]     <=  {angle_done2, 3'h0, current_angle2[11:8]};
+	reg_file[6'h1A]     <=  {angle_done2, 3'h0, angle_snap2[11:8]};
 
     if(write_en & (address == 6'h1A) & wr_data[4])
         abort_angle2 <= 1'b1;
@@ -312,6 +325,13 @@ always @(posedge clock) begin
         update_angle2 <= 1'b1;
     else
         update_angle2 <= 1'b0;
+
+    // Grab a snapshot of the angle when bit 6 is written - this ensures
+    // that when we do the reading back that we don't read the 1st 8 bits
+    // and then the value changes before we read the upper 4 bits
+    if(write_en & (address == 6'h1A) & wr_data[6])
+        angle_snap2[11:0] <= current_angle2[11:0];
+
 end
 
 // ------------- 0x1B	ROTATION3_CONTROL	-------------
@@ -340,12 +360,12 @@ assign target_angle3[7:0] = reg_file[6'h1D][7:0];
 
 // ------------- 0x1E	ROTATION3_CURR_ANG	-------------
 always @(posedge clock) begin
-	reg_file[6'h1E]     <=  current_angle3[7:0];
+	reg_file[6'h1E]     <=  angle_snap3[7:0];
 end
 
 // ------------- 0x1F	ROTATION3_CURR_ANG2	-------------
 always @(posedge clock) begin
-	reg_file[6'h1F]     <=  {angle_done3, 3'h0, current_angle3[11:8]};
+	reg_file[6'h1F]     <=  {angle_done3, 3'h0, angle_snap3[11:8]};
 
     if(write_en & (address == 6'h1F) & wr_data[4])
         abort_angle3 <= 1'b1;
@@ -356,6 +376,12 @@ always @(posedge clock) begin
         update_angle3 <= 1'b1;
     else
         update_angle3 <= 1'b0;
+
+    // Grab a snapshot of the angle when bit 6 is written - this ensures
+    // that when we do the reading back that we don't read the 1st 8 bits
+    // and then the value changes before we read the upper 4 bits
+    if(write_en & (address == 6'h1F) & wr_data[6])
+        angle_snap3[11:0] <= current_angle3[11:0];
 end
 
 // ------------ 0x20	ROTATION_GEN_CTRL	------------
