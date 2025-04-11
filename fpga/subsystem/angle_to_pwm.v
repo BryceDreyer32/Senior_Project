@@ -216,13 +216,13 @@ always @(negedge reset_n or posedge clock) begin
                 else if(calc_updated) begin
                     // Depending on how large of a delta_angle, we will start decelerating at different points
                     if(num_steps[3:0] == SMALL_DELTA)
-                        if(delta_angle[11:0] < 12'd5)
+                        if(delta_angle[11:0] < 12'd50)
                             state <=  DECEL ;
                     else if(num_steps[3:0] == MED_DELTA)
-                        if(delta_angle[11:0] < 12'd8)
+                        if(delta_angle[11:0] < 12'd80)
                             state <=  DECEL ;
                     else //(num_steps[7:0] == BIG_DELTA)
-                        if(delta_angle[11:0] < 12'd10)
+                        if(delta_angle[11:0] < 12'd100)
                             state <=  DECEL ;
                 end
             end

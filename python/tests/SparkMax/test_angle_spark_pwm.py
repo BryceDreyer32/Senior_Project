@@ -32,7 +32,7 @@ fpga.fpgaWrite(Constants.Constants.LED_CONTROL_ADDR, (0x1 << 5) | (0x1 << 6))
 #    time.sleep(1)
 
 #test_profile = [[5,14,23,31,39,47,54,61,67,73,78,83,88,92,95,98],
-test_profile = [[5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80],
+test_profile = [[0,3,6,9,12,15,18,21,24,27,30,33,36,39,42,45],
                 [5,7,9,11,14,18,25,33,45,60,72,82,90,95,98,100],
                 [5,8,12,22,40,52,58,60,63,68,75,88,95,97,99,100],
                 [5,7,9,11,13,15,18,21,25,30,38,48,60,80,92,100],
@@ -100,6 +100,7 @@ print("--- RUNNING ---")
 fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
 fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
 
+
 try:
     while True:
 
@@ -127,7 +128,7 @@ try:
             control_val = ((0<<7) | (0<<6) | (0<<5) | ((angle & 0xF00) >> 8))
             fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
 
-            time.sleep(1)
+            time.sleep(3)
 
             # UnBrake, enable
             control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
@@ -156,16 +157,16 @@ try:
             case 5:  print("   State             = SHUTDOWN       ")
             case _:  print("   State             = Invalid state! " + str(state))
         
-        print("   pwm_update        = " + str((rd_data >> (16+5)) & 0x1))
-        print("   Went CALC state   = " + str((rd_data >> (16+6)) & 0x1))
-        print("   Went ACCEL state  = " + str((rd_data >> (16+7)) & 0x1))
-        print("   Went CRUISE state = " + str((rd_data >> (16+8)) & 0x1))
+        print("   pwm_update        = " + str((rd_data >> (16+4)) & 0x1))
+        print("   Went CALC state   = " + str((rd_data >> (16+5)) & 0x1))
+        print("   Went ACCEL state  = " + str((rd_data >> (16+6)) & 0x1))
+        print("   Went CRUISE state = " + str((rd_data >> (16+7)) & 0x1))
         print("   pwm_direction     = " + str((rd_data >> 27) & 0x1))
         print("   pwm_enable        = " + str((rd_data >> 29) & 0x1))
         print("   startup_fail      = " + str((rd_data >> 31) & 0x1))
         print(" -------------------------------------------")
 
-        time.sleep(1)
+#        time.sleep(1)
 
 
 

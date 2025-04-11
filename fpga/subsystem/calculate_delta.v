@@ -44,10 +44,10 @@ always @(posedge clock or negedge reset_n) begin
 
         // Perform the calculations for various possible scenarios
         if(ps == CALC_DELTA) begin
-            calc1           <= current_angle - target_angle;
-            calc2           <= target_angle - current_angle;
-            calc3           <= (4096 - target_angle) + current_angle;
-            calc4           <= (4096 - current_angle) + target_angle;
+            calc1[12:0] <= current_angle - target_angle;
+            calc2[12:0] <= target_angle - current_angle;
+            calc3[12:0] <= (4096 - target_angle) + current_angle;
+            calc4[12:0] <= (4096 - current_angle) + target_angle;
         end
         else if(ps == CALC_MIN) begin
             // Determine the fastest path to the target (and assign to delta_angle), and which direction to rotate
