@@ -135,6 +135,7 @@ class Constants:
     PROFILE_OFFSET_ADDR             = 0x21
     CRUISE_POWER_ADDR               = 0x22
     PROFILE_DELAY_TARGET_ADDR       = 0x3D
+    PWM_DEBUG_VALUE_ADDR            = 0x3E
 
     SERVO_CONTROL_ADDRESS           = 0x23
     BASE_SERVO_CONTROL_ADDR			= 0x24

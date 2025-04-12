@@ -98,8 +98,9 @@ print("ROTATION0_CONTROL_ADDR.data        = " + hex(fpga.fpgaRead(Constants.Cons
 print("--- RUNNING ---")
 # Start the rotation (by updating the target angle by writing update_angle0)
 fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
-fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
+#fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
 
+time.sleep(5)
 
 try:
     while True:
@@ -116,26 +117,26 @@ try:
         print("Current angle = " + str(current & 0xFFF))
 
         # If we hit the target, then flip the target
-        if(abs((angle & 0xFFF) - (current & 0xFFF)) < 10 ):
-            print("--- Found angle, flipping target ---")
-            if(angle == 100):
-                angle = 800
-            else:
-                angle = 100
-
-            # Brake, disable
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, angle & 0xFF)
-            control_val = ((0<<7) | (0<<6) | (0<<5) | ((angle & 0xF00) >> 8))
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
-
-            time.sleep(3)
-
-            # UnBrake, enable
-            control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
-
-            # Write update angle
-            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
+#        if(abs((angle & 0xFFF) - (current & 0xFFF)) < 20 ):
+#            print("--- Found angle, flipping target ---")
+#            if(angle == 100):
+#                angle = 800
+#            else:
+#                angle = 100
+#
+#            # Brake, disable
+#            fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, angle & 0xFF)
+#            control_val = ((0<<7) | (0<<6) | (0<<5) | ((angle & 0xF00) >> 8))
+#            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
+#
+#            time.sleep(3)
+#
+#            # UnBrake, enable
+#            control_val = ((1<<7) | (1<<6) | (0<<5) | ((angle & 0xF00) >> 8))
+#            fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, control_val)
+#
+#            # Write update angle
+#            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
 #            fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x0)
 
 
@@ -149,12 +150,24 @@ try:
         # bits [19:16] are state
         state = (rd_data >> 16) & 0x7
         match(state):
-            case 0:  print("   State             = IDLE           ")
+#            case 0:  print("   State             = IDLE           ")
             case 1:  print("   State             = CALC           ")
             case 2:  print("   State             = ACCEL          ")
             case 3:  print("   State             = CRUISE         ")
             case 4:  print("   State             = DECEL          ")
-            case 5:  print("   State             = SHUTDOWN       ")
+            case 0 | 5:  
+                print("   State             = IDLE/SHUTDOWN       ")
+                print("--- Found angle, flipping target ---")
+                if(angle == 100):
+                    angle = 800
+                else:
+                    angle = 100
+
+                time.sleep(3)
+
+                # Write update angle
+                fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
+
             case _:  print("   State             = Invalid state! " + str(state))
         
         print("   pwm_update        = " + str((rd_data >> (16+4)) & 0x1))
@@ -163,10 +176,10 @@ try:
         print("   Went CRUISE state = " + str((rd_data >> (16+7)) & 0x1))
         print("   pwm_direction     = " + str((rd_data >> 27) & 0x1))
         print("   pwm_enable        = " + str((rd_data >> 29) & 0x1))
-        print("   startup_fail      = " + str((rd_data >> 31) & 0x1))
+        print("   stall_detected    = " + str((rd_data >> 30) & 0x1))
         print(" -------------------------------------------")
 
-#        time.sleep(1)
+        time.sleep(0.05)
 
 
 

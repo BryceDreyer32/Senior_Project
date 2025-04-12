@@ -57,7 +57,9 @@ module reg_file (
     output          brake7,    	     // Brake control
     output          enable7,   	     // Motor enable
     output          direction7,	     // Motor direction 
-									 
+
+    output [7:0]    pwm_debug_value,
+
     // ROTATION MOTORS
     input       [7:0]   startup_fail,   // Error: Motor stalled, unable to startup
     output              enable_stall_chk,   // Enable the stall check
@@ -528,5 +530,14 @@ always @(posedge clock) begin
 end
 
 assign delay_target   = reg_file[6'h3D][7:0];
+
+
+// ------------- 0x3E Delay Target	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h3E))
+		reg_file[6'h3E]     <=  wr_data[7:0];
+end
+
+assign pwm_debug_value   = reg_file[6'h3E][7:0];
 
 endmodule

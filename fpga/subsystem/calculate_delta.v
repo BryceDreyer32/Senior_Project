@@ -13,12 +13,13 @@ module calculate_delta (
     output  reg         calc_updated    // Pulse indicating that the calculation has been updated
 );
 
-localparam IDLE         = 3'd0;
-localparam CALC_DELTA   = 3'd1;
-localparam CALC_MIN     = 3'd2;
-localparam REPORT       = 3'd3;
+localparam IDLE         = 4'd0;
+localparam CALC_DELTA   = 4'd1;
+localparam CALC_MIN     = 4'd2;
+localparam REPORT       = 4'd3;
+localparam UPDATED      = 4'd4;
 
-reg   [2:0]     ps, ns;
+reg   [3:0]     ps, ns;
 reg   [1:0]     calc_cnt;
 reg  [12:0]     calc1, calc2, calc3, calc4;
 reg  [11:0]     delta_angle_int;
@@ -85,9 +86,10 @@ always @(posedge clock or negedge reset_n) begin
         else if(ps == REPORT) begin
             delta_angle[11:0]   <= delta_angle_int[11:0];
             dir_shortest        <= dir_shortest_int;
+        end
+        else if(ps == UPDATED) begin
             calc_updated        <= 1'b1;
         end
-
     end
 end
 
@@ -112,6 +114,10 @@ always @(*) begin
         end
 
         REPORT: begin
+            ns = UPDATED;
+        end
+
+        UPDATED: begin
             ns = IDLE;
         end
 

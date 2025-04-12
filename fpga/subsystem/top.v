@@ -103,7 +103,7 @@ module top(
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
     wire  [127:0]   pwm_profile;            // 16 * 8 bit pwm profile
     wire  [63:0]    angle_chg;              // Change in angle
- 
+    wire  [7:0]     pwm_debug_value;
 
 ////////////////////////////////////////////////////////////////
 // Reset Controller
@@ -248,6 +248,7 @@ reg_file rf(
     .fault_led          (fault_led),            // Fault led
     .motor_hot_led      (motor_hot_led),        // Hot motor led
     .angle_chg          (angle_chg[63:0]),      // Change in angle
+    .pwm_debug_value    (pwm_debug_value[7:0]),
     .pwm_profile        (pwm_profile[127:0])    // 16 * 8 bit pwm profile 
 );
 /*

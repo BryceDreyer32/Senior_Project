@@ -40,7 +40,7 @@ localparam SMALL_DELTA  = 4'd8;
 localparam MED_DELTA    = 4'd10;
 localparam BIG_DELTA    = 4'd14;
 
-localparam TARGET_TOLERANCE     = 12'd5; 
+localparam TARGET_TOLERANCE     = 12'd32; 
 
 reg   [2:0] state;
 wire  [7:0] linear_profile               [15:0];
@@ -169,7 +169,7 @@ always @(negedge reset_n or posedge clock) begin
 
                     // If we've waited long enough, then go to the next acceleration step
                     if(profile_delay[23:0] == profile_delay_target[23:0]) begin                    
-                        if(curr_step[3:0] == 4'hF)
+                        if(curr_step[3:0] == num_steps[3:0])
                             state <= CRUISE;
                         else
                             curr_step[3:0]  <= curr_step[3:0] + 4'b1;
@@ -182,7 +182,9 @@ always @(negedge reset_n or posedge clock) begin
 
             CRUISE: begin
                 wentCRUISE <= 1'b1;
-                
+                // Set the current step to match the delta angle size (and hence num_steps)
+                curr_step[3:0] <= num_steps[3:0];
+
                 // Continue to run at max speed
                 pwm_ratio[7:0]  <= cruise_power[7:0];
 
@@ -191,7 +193,7 @@ always @(negedge reset_n or posedge clock) begin
                     // If so, then we can proceed
                     profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
-                    // If we've waited long enough, then go to the next acceleration step
+                    // Below check is looking to ensure that movement is occuring, if not a stall may be flagged
                     if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                         profile_delay[23:0] <= 24'b0;
 
@@ -209,23 +211,27 @@ always @(negedge reset_n or posedge clock) begin
                     end
                 end
 
-                // State transitions
+                // If stall check is enabled, and a stall was detected, then go back to IDLE state
+                // to protect the motor and the controller
                 if(run_stall & enable_stall_chk)
                     state <=  IDLE;
 
-                else if(calc_updated) begin
+                if(delta_angle[11:0] < 12'd50) begin
+                    state <=  DECEL;
+                end
+/*                else if(calc_updated) begin
                     // Depending on how large of a delta_angle, we will start decelerating at different points
                     if(num_steps[3:0] == SMALL_DELTA)
                         if(delta_angle[11:0] < 12'd50)
-                            state <=  DECEL ;
+                            state <=  DECEL;
                     else if(num_steps[3:0] == MED_DELTA)
                         if(delta_angle[11:0] < 12'd80)
-                            state <=  DECEL ;
+                            state <=  DECEL;
                     else //(num_steps[7:0] == BIG_DELTA)
                         if(delta_angle[11:0] < 12'd100)
-                            state <=  DECEL ;
+                            state <=  DECEL;
                 end
-            end
+*/            end
 
             DECEL: begin
                 pwm_ratio[7:0] <= linear_profile[curr_step[3:0]];
@@ -236,13 +242,19 @@ always @(negedge reset_n or posedge clock) begin
                     profile_delay[23:0] <= profile_delay[23:0] + 24'h1;
 
                     // If we've waited long enough, then go to the next acceleration step
+                    // Note that the below is going to stop the motor "wherever" - hopefully 
+                    // close to the target, but not necessarily exactly at it
                     if(profile_delay[23:0] == profile_delay_target[23:0]) begin
                         curr_step[3:0] <= curr_step[3:0] - 4'b1;
+                        if(curr_step[3:0] == 4'b0)
+                            state <= SHUTDOWN;
                         profile_delay[23:0] <= 24'b0;
                     end
                 end
 
-                if(delta_angle[11:0] < TARGET_TOLERANCE)
+                // The below is a short-circuit path to stop the motor - if we're within tolerance/2
+                // then we are just going to cut power entirely
+                if(delta_angle[11:0] < (TARGET_TOLERANCE<<1))
                     state <= SHUTDOWN;
             end
 
