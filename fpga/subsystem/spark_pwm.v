@@ -24,8 +24,8 @@ reg  [11:0]  pwm_target;
 reg          pwm_en_sync;
 
 // Calculate the pwm value based upon the incoming value and the the Spark parameters
-assign high_time = pwm_direction ?  12'd635 - {4'b0, pwm_ratio[7:0]}:
-                                    12'd635 + {4'b0, pwm_ratio[7:0]};
+assign high_time = pwm_direction ?  12'd635 + {4'b0, pwm_ratio[7:0]}:
+                                    12'd635 - {4'b0, pwm_ratio[7:0]};
 
 always @( posedge clock or negedge reset_n ) begin
     if( ~reset_n ) begin

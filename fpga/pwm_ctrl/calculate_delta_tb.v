@@ -25,7 +25,7 @@ initial begin
     $display("------------------------------------------------");
     $display("--- Starting Simple Clockwise calculation    ---");
     $display("------------------------------------------------"); 
-    target_angle    = 200;
+    target_angle    = 1024;
     current_angle   = 100;
 
     #5 enable_calc  = 1;
@@ -38,7 +38,7 @@ initial begin
     $display("--- Starting Simple CCW calculation          ---");
     $display("------------------------------------------------"); 
     target_angle    = 100;
-    current_angle   = 200;
+    current_angle   = 1024;
 
     #5 enable_calc  = 1;
 
@@ -49,8 +49,8 @@ initial begin
     $display("------------------------------------------------");
     $display("--- CCW through origin calculation           ---");
     $display("------------------------------------------------"); 
-    target_angle    = 4080;
-    current_angle   = 200;
+    target_angle    = 200;
+    current_angle   = 3600;
 
     #5 enable_calc  = 1;
 
@@ -61,8 +61,8 @@ initial begin
     $display("------------------------------------------------");
     $display("--- Clockwise through origin calculation     ---");
     $display("------------------------------------------------"); 
-    target_angle    = 100;
-    current_angle   = 4080;
+    target_angle    = 3600;
+    current_angle   = 200;
 
     #5 enable_calc  = 1;
 

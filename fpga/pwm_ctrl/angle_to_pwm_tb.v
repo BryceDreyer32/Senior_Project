@@ -161,8 +161,8 @@ angle_to_pwm angle_to_pwm(
     .delay_target   (8'h2),             // Number of times to remain on each profile step
     .profile_offset (8'h5),             // An offset that is added to each of the profile steps
     .cruise_power   (8'h60),            // The amount of power to apply during the cruise phase
-    .angle_chg      (),                 // Change in angle
-    .startup_fail   (),                 // Error: Motor stalled, unable to startup
+//    .angle_chg      (),                 // Change in angle
+//    .startup_fail   (),                 // Error: Motor stalled, unable to startup
     .pwm_profile    (pwm_profile),      // 16 * 8 bit pwm profile 
     .angle_done     (angle_done),       // Indicator that the angle has been applied 
     .pwm_update     (pwm_update),       // Request an update to the PWM ratio

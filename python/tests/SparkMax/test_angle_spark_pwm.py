@@ -141,11 +141,11 @@ try:
 
 
         rd_data = 0
-        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG0_STATUS_ADDR) << 0)
-        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG1_STATUS_ADDR) << 8)
+#        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG0_STATUS_ADDR) << 0)
+#        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG1_STATUS_ADDR) << 8)
         rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG2_STATUS_ADDR) << 16)
-        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG3_STATUS_ADDR) << 24)
-        print("Debug Data = " + hex(rd_data & 0xFFFFFFFF))
+#        rd_data = rd_data | (fpga.fpgaRead(Constants.Constants.DEBUG3_STATUS_ADDR) << 24)
+#        print("Debug Data = " + hex(rd_data & 0xFFFFFFFF))
 
         # bits [19:16] are state
         state = (rd_data >> 16) & 0x7
@@ -158,6 +158,11 @@ try:
             case 0 | 5:  
                 print("   State             = IDLE/SHUTDOWN       ")
                 print("--- Found angle, flipping target ---")
+
+                current = fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE_ADDR)
+                current = current | (fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR) << 8)
+                print("Current angle = " + str(current & 0xFFF))
+
                 if(angle == 100):
                     angle = 800
                 else:
@@ -165,19 +170,23 @@ try:
 
                 time.sleep(3)
 
+                target_val = (angle & 0xFF)
+                print("Writing target_val = " + hex(target_val))
+                fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, target_val)
+
                 # Write update angle
                 fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
 
             case _:  print("   State             = Invalid state! " + str(state))
         
-        print("   pwm_update        = " + str((rd_data >> (16+4)) & 0x1))
-        print("   Went CALC state   = " + str((rd_data >> (16+5)) & 0x1))
-        print("   Went ACCEL state  = " + str((rd_data >> (16+6)) & 0x1))
-        print("   Went CRUISE state = " + str((rd_data >> (16+7)) & 0x1))
-        print("   pwm_direction     = " + str((rd_data >> 27) & 0x1))
-        print("   pwm_enable        = " + str((rd_data >> 29) & 0x1))
-        print("   stall_detected    = " + str((rd_data >> 30) & 0x1))
-        print(" -------------------------------------------")
+#        print("   pwm_update        = " + str((rd_data >> (16+4)) & 0x1))
+#        print("   Went CALC state   = " + str((rd_data >> (16+5)) & 0x1))
+#        print("   Went ACCEL state  = " + str((rd_data >> (16+6)) & 0x1))
+#        print("   Went CRUISE state = " + str((rd_data >> (16+7)) & 0x1))
+#        print("   pwm_direction     = " + str((rd_data >> 27) & 0x1))
+#        print("   pwm_enable        = " + str((rd_data >> 29) & 0x1))
+#        print("   stall_detected    = " + str((rd_data >> 30) & 0x1))
+#        print(" -------------------------------------------")
 
         time.sleep(0.05)
 

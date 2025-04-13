@@ -31,9 +31,9 @@ module angle_to_pwm(
 // States
 localparam IDLE         = 3'd0;
 localparam CALC         = 3'd1;
-localparam ACCEL        = 3'd2;
+//localparam ACCEL        = 3'd2;
 localparam CRUISE       = 3'd3;
-localparam DECEL        = 3'd4; 
+//localparam DECEL        = 3'd4; 
 localparam SHUTDOWN     = 3'd5; 
 
 localparam SMALL_DELTA  = 4'd8;
@@ -118,7 +118,7 @@ always @(negedge reset_n or posedge clock) begin
                 angle_done      <= 1'b0;
                 curr_step[3:0]  <= 4'b0;
                 pwm_ratio[7:0]  <= 8'd0;
-                pwm_direction   <= dir_shortest;
+                pwm_direction   <= 1'b0;
                 pwm_update      <= 1'b0;
                 enable_calc     <= 1'b0;
                 
@@ -130,7 +130,6 @@ always @(negedge reset_n or posedge clock) begin
             CALC: begin
                 curr_step[3:0]  <= 4'b0;
                 pwm_ratio[7:0]  <= 8'd0;
-                pwm_direction   <= dir_shortest;
                 enable_calc     <= 1'b1;
                 startup_fail    <= 1'b0;
                 run_stall       <= 1'b0;
@@ -139,8 +138,9 @@ always @(negedge reset_n or posedge clock) begin
 
                 // Wait for the calc_updated to assert before doing the calculation
                 if(calc_updated) begin
+                    pwm_direction   <= dir_shortest;
                     if(delta_angle[11:0] > TARGET_TOLERANCE)
-                        state   <=  ACCEL;
+                        state   <=  CRUISE;
                     
                     // Calculate wether the angle we are going to process is small, medium, or large
                     if(delta_angle[11:0] < 12'd30)
@@ -157,7 +157,7 @@ always @(negedge reset_n or posedge clock) begin
                 end
             end
 
-            ACCEL: begin
+/*            ACCEL: begin
                 wentACCEL   <= 1'b1;
 
                 pwm_ratio[7:0] <= linear_profile[curr_step[3:0]];
@@ -179,7 +179,7 @@ always @(negedge reset_n or posedge clock) begin
                     end
                 end
             end
-
+*/
             CRUISE: begin
                 wentCRUISE <= 1'b1;
                 // Set the current step to match the delta angle size (and hence num_steps)
@@ -216,8 +216,8 @@ always @(negedge reset_n or posedge clock) begin
                 if(run_stall & enable_stall_chk)
                     state <=  IDLE;
 
-                if(delta_angle[11:0] < 12'd50) begin
-                    state <=  DECEL;
+                if(delta_angle[11:0] < 12'd20) begin
+                    state <=  SHUTDOWN;
                 end
 /*                else if(calc_updated) begin
                     // Depending on how large of a delta_angle, we will start decelerating at different points
@@ -233,7 +233,7 @@ always @(negedge reset_n or posedge clock) begin
                 end
 */            end
 
-            DECEL: begin
+/*            DECEL: begin
                 pwm_ratio[7:0] <= linear_profile[curr_step[3:0]];
 
                 // Check if the PWM ratio has been absorbed
@@ -257,7 +257,7 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle[11:0] < (TARGET_TOLERANCE<<1))
                     state <= SHUTDOWN;
             end
-
+*/
             SHUTDOWN: begin
                 pwm_ratio[7:0]  <= 8'b0;
                 angle_done      <= 1'b1;

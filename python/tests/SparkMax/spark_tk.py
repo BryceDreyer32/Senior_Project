@@ -6,16 +6,17 @@ sys.path.append(os.path.realpath('python/src/subsystem/fpga'))
 import Constants
 import FpgaCommunication
 
-STOP_VALUE = 150
+STOP_VALUE = 0
 
 # FPGA instance
 fpga = FpgaCommunication.FpgaCommunication(Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
 
 def on_motorPower_change(event):
     print("Power slider value changed to: " + str(event.widget.get()))
-    fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, event.widget.get())
+    #fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, event.widget.get())
+    fpga.fpgaWrite(Constants.Constants.PWM_DEBUG_VALUE_ADDR, event.widget.get())    
 
-    val = fpga.fpgaRead(Constants.Constants.CRUISE_POWER_ADDR)
+    val = fpga.fpgaRead(Constants.Constants.PWM_DEBUG_VALUE_ADDR)
     print("Reading back value just written: " + str(val))    
 
 def on_shutdown_click():
@@ -25,7 +26,7 @@ def on_shutdown_click():
 def on_re_enable_click():
     print("Re-enable clicked")
     setup()
-    fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, STOP_VALUE)
+    fpga.fpgaWrite(Constants.Constants.PWM_DEBUG_VALUE_ADDR, STOP_VALUE)
     slider1.set(STOP_VALUE)
 
 
@@ -50,16 +51,16 @@ def setup():
     fwd_count = 0xF << 4 # [7:4]
     rvs_count = 0x4      # [3:0]
     value = fwd_count | rvs_count
-    fpga.fpgaWrite(Constants.Constants.HAMMER_FWD_RVS_ADDR, value)
+#    fpga.fpgaWrite(Constants.Constants.HAMMER_FWD_RVS_ADDR, value)
 
     # Set the number of times to stay at each PWM value
-    fpga.fpgaWrite(Constants.Constants.HAMMER_DELAY_TARGET_ADDRESS, 0x01)
+#    fpga.fpgaWrite(Constants.Constants.HAMMER_DELAY_TARGET_ADDRESS, 0x01)
 
     # Set the offset to add to each step in the hammer & acceleration profiles
     fpga.fpgaWrite(Constants.Constants.PROFILE_OFFSET_ADDR, 0)
 
     # Set the cruise power level
-    fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, STOP_VALUE)
+    fpga.fpgaWrite(Constants.Constants.PWM_DEBUG_VALUE_ADDR, STOP_VALUE)
 
     # Need angle set, otherwise nothing runs!
     # Set angle[7:0]
