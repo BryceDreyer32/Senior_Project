@@ -61,47 +61,46 @@ module reg_file (
     output [7:0]    pwm_debug_value,
 
     // ROTATION MOTORS
-    input       [7:0]   startup_fail,   // Error: Motor stalled, unable to startup
+    input       [7:0]   startup_fail,       // Error: Motor stalled, unable to startup
     output              enable_stall_chk,   // Enable the stall check
-    output      [7:0]   delay_target,   // Number of times to remain on each profile step
-    output      [7:0]   profile_offset, // An offset that is added to each of the profile steps
-    output      [7:0]   cruise_power,   // The amount of power to apply during the cruise phase
 
-    output  [11:0]  target_angle0,   // Rotation target angle
-    input   [11:0]  current_angle0,  // The current angle
-    output  [11:0]  target_angle1,   // Rotation target angle
-    input   [11:0]  current_angle1,  // The current angle
-    output  [11:0]  target_angle2,   // Rotation target angle
-    input   [11:0]  current_angle2,  // The current angle
-    output  [11:0]  target_angle3,   // Rotation target angle
-    input   [11:0]  current_angle3,  // The current angle
-    output  reg     update_angle0,   // Start rotation to angle
-    output  reg     update_angle1,   // Start rotation to angle
-    output  reg     update_angle2,   // Start rotation to angle
-    output  reg     update_angle3,   // Start rotation to angle
-    output  reg     abort_angle0,    // Aborts rotating to angle
-    output  reg     abort_angle1,    // Aborts rotating to angle
-    output  reg     abort_angle2,    // Aborts rotating to angle
-    output  reg     abort_angle3,    // Aborts rotating to angle
-    input           angle_done0,     // Arrived at target angle
-    input           angle_done1,     // Arrived at target angle
-    input           angle_done2,     // Arrived at target angle
-    input           angle_done3,     // Arrived at target angle
+    output  reg [7:0]   kp,                 // Proportional Constant: fixed point 4.4
+    output  reg [3:0]   ki,                 // Integral Constant: fixed point 0.4
+    output  reg [3:0]   kd,                 // Derivative Constant: fixed point 0.4
 
-    output  [7:0]   servo_control,   // Servo control
-    output  [7:0]   servo_position0, // Servo 0 target position
-    output  [7:0]   servo_position1, // Servo 1 target position
-    output  [7:0]   servo_position2, // Servo 2 target position
-    output  [7:0]   servo_position3, // Servo 3 target position
+    output      [11:0]  target_angle0,      // Rotation target angle
+    input       [11:0]  current_angle0,     // The current angle
+    output      [11:0]  target_angle1,      // Rotation target angle
+    input       [11:0]  current_angle1,     // The current angle
+    output      [11:0]  target_angle2,      // Rotation target angle
+    input       [11:0]  current_angle2,     // The current angle
+    output      [11:0]  target_angle3,      // Rotation target angle
+    input       [11:0]  current_angle3,     // The current angle
+    output  reg         update_angle0,      // Start rotation to angle
+    output  reg         update_angle1,      // Start rotation to angle
+    output  reg         update_angle2,      // Start rotation to angle
+    output  reg         update_angle3,      // Start rotation to angle
+    output  reg         abort_angle0,       // Aborts rotating to angle
+    output  reg         abort_angle1,       // Aborts rotating to angle
+    output  reg         abort_angle2,       // Aborts rotating to angle
+    output  reg         abort_angle3,       // Aborts rotating to angle
+    input               angle_done0,        // Arrived at target angle
+    input               angle_done1,        // Arrived at target angle
+    input               angle_done2,        // Arrived at target angle
+    input               angle_done3,        // Arrived at target angle
 
-    input   [31:0]  debug_signals,      // Debug signals
-    output          led_test_enable,    // Enable the led testing
-    output          motor_hot_led,      // Hot motor led
-    output          pi_connected_led,   // Orange Pi connected
-    output          ps4_connected_led,  // PS4 connected
-    output          fault_led,          // Fault led
-    input   [63:0]  angle_chg,          // Change in angle
-    output  [127:0] pwm_profile         // 16 * 8 bit pwm profile 
+    output      [7:0]   servo_control,      // Servo control
+    output      [7:0]   servo_position0,    // Servo 0 target position
+    output      [7:0]   servo_position1,    // Servo 1 target position
+    output      [7:0]   servo_position2,    // Servo 2 target position
+    output      [7:0]   servo_position3,    // Servo 3 target position
+
+    input       [31:0]  debug_signals,      // Debug signals
+    output              led_test_enable,    // Enable the led testing
+    output              motor_hot_led,      // Hot motor led
+    output              pi_connected_led,   // Orange Pi connected
+    output              ps4_connected_led,  // PS4 connected
+    output              fault_led           // Fault led
 );
 
 // 63:0 is the maximum addressable space with 6-bit address
@@ -186,43 +185,38 @@ end
 
 // ------------- 0xC	ROTATION0_CONTROL	-------------
 always @(posedge clock) begin
-	if(write_en & ((address == 6'hC) | (address == 6'h2) | (address == 6'h1)))
-		reg_file[6'hC]     <=  wr_data[7:0];
+	if(write_en & (address == 6'hC))
+		reg_file[6'hC]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
-assign brake4               = reg_file[6'hC][7];
+assign angle_update0        = reg_file[6'hC][7];
 assign enable4              = reg_file[6'hC][6];
-assign direction4           = reg_file[6'hC][5];
+assign enable_stall_chk0    = reg_file[6'hC][5];
 assign target_angle0[11:8]  = reg_file[6'hC][3:0];
 
-// ------------- 0xD	ROTATION0_STATUS	-------------
+// ------------- 0xD	ROTATION0_TARGET_ANGLE	-------------
 always @(posedge clock) begin
-	reg_file[6'hD]     <=  {fault4, startup_fail[4], adc_temp4[5:0]};
+	if(write_en & (address == 6'hD))
+		reg_file[6'hD]     <=  wr_data[7:0];
 end
 
-// ------------- 0xE	ROTATION0_TARGET_ANGLE	-------------
+assign target_angle0[7:0] = reg_file[6'hD][7:0];
+
+// ------------- 0xE	ROTATION0_CURRENT_ANGLE	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'hE))
-		reg_file[6'hE]     <=  wr_data[7:0];
+	reg_file[6'hE]     <=  angle_snap0[7:0];
 end
 
-assign target_angle0[7:0] = reg_file[6'hE][7:0];
-
-// ------------- 0xF	ROTATION0_CURRENT_ANGLE	-------------
+// ------------- 0xF	ROTATION0_CURRENT_ANGLE2	-------------
 always @(posedge clock) begin
-	reg_file[6'hF]     <=  angle_snap0[7:0];
-end
-
-// ------------- 0x10	ROTATION0_CURRENT_ANGLE2	-------------
-always @(posedge clock) begin
-    reg_file[6'h10]     <=  {angle_done0, 3'h0, angle_snap0[11:8]};
+    reg_file[6'hF]     <=  {angle_done0, 3'h0, angle_snap0[11:8]};
     
-    if(write_en & (address == 6'h10) & wr_data[4])
+    if(write_en & (address == 6'hF) & wr_data[4])
         abort_angle0 <= 1'b1;
     else
         abort_angle0 <= 1'b0;
     
-    if(write_en & (address == 6'h10) & wr_data[5])
+    if(write_en & (address == 6'hF) & wr_data[5])
         update_angle0 <= 1'b1;
     else
         update_angle0 <= 1'b0;
@@ -230,26 +224,27 @@ always @(posedge clock) begin
     // Grab a snapshot of the angle when bit 6 is written - this ensures
     // that when we do the reading back that we don't read the 1st 8 bits
     // and then the value changes before we read the upper 4 bits
-    if(write_en & (address == 6'h10) & wr_data[6])
+    //if(write_en & (address == 6'F) & wr_data[6])                          !!! FIXME !!!
         angle_snap0[11:0] <= current_angle0[11:0];
    
+end 
+
+// ------------- 0x10	Kp	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h10))
+		reg_file[6'h10]     <=  wr_data[7:0];
 end
 
-// ------------- 0x11	ROTATION1_CONTROL	-------------
+assign kp[7:0]              = reg_file[6'h10][7:0];
+
+// ------------- 0x11	Ki and Kd	-------------
 always @(posedge clock) begin
-	if(write_en & ((address == 6'h11) | (address == 6'h2) | (address == 6'h1)))
+	if(write_en & (address == 6'h11))
 		reg_file[6'h11]     <=  wr_data[7:0];
 end
 
-assign brake5               = reg_file[6'h11][7];
-assign enable5              = reg_file[6'h11][6];
-assign direction5           = reg_file[6'h11][5];
-assign target_angle1[11:8]  = reg_file[6'h11][3:0];
-
-// ------------- 0x12	ROTATION1_STATUS	-------------
-always @(posedge clock) begin
-	reg_file[6'h12]     <=  {fault5, startup_fail[5], adc_temp5[5:0]};
-end
+assign ki[3:0]              = reg_file[6'h11][7:4];
+assign kd[3:0]              = reg_file[6'h11][3:0];
 
 // ------------- 0x13	ROTATION1_TARG_ANG	-------------
 always @(posedge clock) begin

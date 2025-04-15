@@ -16,7 +16,7 @@ module test();
     wire            pwm_signal;
     wire     [15:0] debug_signals;  // Debug signals
     reg             done;
-    reg      [7:0]   kp = 8'h12;                // Proportional Constant: fixed point 4.4
+    reg      [7:0]   kp = 8'h8;                // Proportional Constant: fixed point 4.4
     reg      [3:0]   ki = 4'h0;                 // Integral Constant: fixed point 0.4
     reg      [3:0]   kd = 4'h0;                 // Derivative Constant: fixed point 0.4
     wire     [63:0] profile = {8'h02, 8'h03, 8'h04, 8'h05, 8'h06, 8'h07, 8'h08, 8'h09};
@@ -44,6 +44,7 @@ initial begin
     target_angle = 12'd100;
     current_angle = 12'd10;
     @(posedge clock) pwm_enable = 1'b1;
+    #1000;
     @(posedge clock) angle_update = 1'b1;
     @(posedge clock) angle_update = 1'b0;
     while((timeout >= 0) & (current_angle != target_angle)) begin

@@ -15,7 +15,7 @@ module pid(
     input       [63:0]  profile,            // Trapezoidal profile in fixed point 4.4 notation
 
     input               enable_stall_chk,   // Enable the stall check
-    output reg          startup_fail,       // Error: Motor stalled, unable to startup
+    output reg          stalled,            // Error: Motor stalled, unable to startup
     input       [7:0]   kp,                 // Proportional Constant: fixed point 4.4
     input       [3:0]   ki,                 // Integral Constant: fixed point 0.4
     input       [3:0]   kd,                 // Derivative Constant: fixed point 0.4
@@ -44,7 +44,7 @@ wire    [15:0]      target_12p4, current_12p4;      // Fixed point 12.4 format
 wire    [11:0]      delta_angle;                    // The angle difference between the target and current angle
 wire                calc_updated;                   // Delta angle has been updated
 reg                 rd_done, i2c_rd_done_ff;        // Read done
-reg     [11:0]      ratio_int;
+wire    [11:0]      ratio_int;
 wire    [7:0]       debug_ratio; 
 wire    [7:0]       profile_coeff   [7:0];          // Acceleration profile coefficents
 
@@ -67,7 +67,6 @@ always @(negedge reset_n or posedge clock) begin
     if(~reset_n) begin
         angle_done          <= 1'b0; 
         pwm_update          <= 1'b0; 
-        ratio_int           <= 12'b0;  
         startup_fail        <= 1'b0; 
         debug_signals       <= 16'hDEAD;
         elapsed_time        <= 16'b1;
@@ -92,11 +91,17 @@ always @(negedge reset_n or posedge clock) begin
 
             ACCEL: begin
                 if(rd_done) begin
-                    if(curr_step < 3'b111) begin
-                        pwm_ratio <= (ratio_int / profile_coeff[curr_step]) >> 4;
-                        curr_step <= curr_step + 3'b1;    
+                    if(curr_step <= 3'b111) begin
+                        case(curr_step)
+                            3'b000, 3'b001, 3'b010: pwm_ratio   <= ratio_int >> 8;
+                            3'b011, 3'b100: pwm_ratio           <= ratio_int >> 7;
+                            3'b101, 3'b110: pwm_ratio           <= ratio_int >> 6;
+                            default:        pwm_ratio           <= ratio_int >> 5;   
+                        endcase
                     end
 
+                    if(curr_step < 3'b111) 
+                        curr_step <= curr_step + 3'b1;    
                     else
                         state <= CRUISE;
                 end
@@ -125,7 +130,6 @@ always @(negedge reset_n or posedge clock) begin
         if (rd_done) begin
             elapsed_time            <= elapsed_time + 16'b1;
             last_delta_12p4         <= delta_12p4;
-            ratio_int               <= (proportional_error + integral_error + derivative_error) >> 4;
         end 
     end
 end
@@ -133,6 +137,7 @@ end
 assign proportional_error       = kp * delta_12p4;
 assign integral_error           = ki * (delta_12p4 >> 8) * (elapsed_time >> 8);
 assign derivative_error         = kd * (delta_12p4 - last_delta_12p4) / elapsed_time;
+assign ratio_int                = (proportional_error + integral_error + derivative_error) >> 4;
 
 calculate_delta calc (
     .reset_n        (reset_n),      

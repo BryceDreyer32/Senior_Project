@@ -101,7 +101,6 @@ module top(
     wire  [15:0]    pwm_ctrl0_debug;        
     wire            led_test_enable;        // Enable the led testing
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
-    wire  [127:0]   pwm_profile;            // 16 * 8 bit pwm profile
     wire  [63:0]    angle_chg;              // Change in angle
     wire  [7:0]     pwm_debug_value;
 
@@ -197,9 +196,6 @@ reg_file rf(
     // Rotation Motors outputs
     .startup_fail       (startup_fail[7:0]),// Error: Motor stalled, unable to startup
     .enable_stall_chk   (enable_stall_chk), // Enable the stall check
-    .profile_offset     (profile_offset[7:0]),  // An offset that is added to each of the profile steps
-    .cruise_power       (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
-    .delay_target       (delay_target[7:0]),// Number of times to remain on each profile step
     .brake4             (sr_brake[0]),    	// Brake control
     .enable4            (sr_enable[0]),   	// Motor enable
     .direction4         (),//sr_direction[0]),	// Motor direction
@@ -247,9 +243,7 @@ reg_file rf(
     .ps4_connected_led  (ps4_connected_led),    // PS4 connected
     .fault_led          (fault_led),            // Fault led
     .motor_hot_led      (motor_hot_led),        // Hot motor led
-    .angle_chg          (angle_chg[63:0]),      // Change in angle
-    .pwm_debug_value    (pwm_debug_value[7:0]),
-    .pwm_profile        (pwm_profile[127:0])    // 16 * 8 bit pwm profile 
+    .pwm_debug_value    (pwm_debug_value[7:0])
 );
 /*
 ////////////////////////////////////////////////////////////////
@@ -322,18 +316,19 @@ pwm_ctrl pwm_ctrl0(
 
     // FPGA Subsystem Interface
     .target_angle           (target_angle0[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    .angle_update           (update_angle0),        // Signals when an angle update is available
+    .angle_update           (angle_update[0]),      // Signals when an angle update is available
     .current_angle          (current_angle0[11:0]), // Angle we are currently at from I2C
-    .abort_angle            (abort_angle0),         // Aborts the angle adjustment
-    .angle_done             (angle_done0),          // Output sent when angle has been adjusted to target_angle
+    .abort_angle            (abort_angle[0]),       // Aborts the angle adjustment
+    .angle_done             (angle_done[0]),        // Output sent when angle has been adjusted to target_angle
 
     // Acceleration interface
     .enable_stall_chk       (enable_stall_chk),     // Enable the stall check
-    .delay_target           (delay_target[7:0]),    // Number of times to remain on each profile step    
-    .profile_offset         (profile_offset[7:0]),  // An offset that is added to each of the profile steps
-    .cruise_power           (cruise_power[7:0]),    // The amount of power to apply during the cruise phase
-    .startup_fail           (startup_fail[4]),        // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
-    .pwm_profile            (pwm_profile[127:0]),   // 16 * 8 bit pwm profile 
+    .stalled                (startup_fail[4]),      // Error: Motor stalled, unable to startup   .debug_signals  (debug_signals[7:0]),
+
+    // PID coefficients
+    .kp                     (kp[7:0]),              // Proportional Constant: fixed point 4.4
+    .ki                     (ki[3:0]),              // Integral Constant: fixed point 0.4
+    .kd                     (kd[3:0]),              // Derivative Constant: fixed point 0.4
 
     // PWM Interface
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
