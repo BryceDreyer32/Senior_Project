@@ -189,9 +189,8 @@ always @(posedge clock) begin
 		reg_file[6'hC]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
-assign angle_update0        = reg_file[6'hC][7];
 assign enable4              = reg_file[6'hC][6];
-assign enable_stall_chk0    = reg_file[6'hC][5];
+assign enable_stall_chk     = reg_file[6'hC][5];
 assign target_angle0[11:8]  = reg_file[6'hC][3:0];
 
 // ------------- 0xD	ROTATION0_TARGET_ANGLE	-------------
@@ -224,7 +223,7 @@ always @(posedge clock) begin
     // Grab a snapshot of the angle when bit 6 is written - this ensures
     // that when we do the reading back that we don't read the 1st 8 bits
     // and then the value changes before we read the upper 4 bits
-    //if(write_en & (address == 6'F) & wr_data[6])                          !!! FIXME !!!
+    if(write_en & (address == 6'hF) & wr_data[6]) 
         angle_snap0[11:0] <= current_angle0[11:0];
    
 end 
@@ -387,7 +386,7 @@ always @(posedge clock) begin
 		reg_file[6'h20]     <=  wr_data[7:0];
 end
 
-assign enable_stall_chk = reg_file[6'h20][1];
+//assign enable_stall_chk = reg_file[6'h20][1];
 
 // ------------ 0x21	PROFILE_OFFSET	------------
 always @(posedge clock) begin
@@ -395,15 +394,11 @@ always @(posedge clock) begin
 		reg_file[6'h21]     <=  wr_data[7:0];
 end
 
-assign profile_offset[7:0] = reg_file[6'h21][7:0];
-
 // ------------ 0x22	CRUISE_POWER	------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h22))
 		reg_file[6'h22]     <=  wr_data[7:0];
 end
-
-assign cruise_power[7:0] = reg_file[6'h22][7:0];
 
 // --------------- 0x23	SERVO_CONTROL	----------------
 always @(posedge clock) begin
@@ -512,19 +507,17 @@ always @(posedge clock) begin
     if(write_en & (address == 6'h3C))
 		reg_file[6'h3C]     <=  wr_data[7:0];
 end
-
+/*
 assign pwm_profile[127:0] =  {reg_file[6'h3C], reg_file[6'h3B], reg_file[6'h3A], reg_file[6'h39],
                               reg_file[6'h38], reg_file[6'h37], reg_file[6'h36], reg_file[6'h35],
                               reg_file[6'h34], reg_file[6'h33], reg_file[6'h32], reg_file[6'h31],
                               reg_file[6'h30], reg_file[6'h2F], reg_file[6'h2E], reg_file[6'h2D]};
-
+*/
 // ------------- 0x3D Delay Target	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h3D))
 		reg_file[6'h3D]     <=  wr_data[7:0];
 end
-
-assign delay_target   = reg_file[6'h3D][7:0];
 
 
 // ------------- 0x3E Delay Target	-------------

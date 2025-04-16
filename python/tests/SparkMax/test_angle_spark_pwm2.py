@@ -29,8 +29,9 @@ def setup():
     enable_stall_chk = 0x0 << 1 # [1]
     fpga.fpgaWrite(Constants.Constants.ROTATION_GEN_CTRL_ADDR, enable_stall_chk)
 
-    # Set the cruise power level
-    fpga.fpgaWrite(Constants.Constants.CRUISE_POWER_ADDR, 30)
+    # Set PID coefficients
+    fpga.fpgaWrite(Constants.Constants.KP_COEFFICIENT_ADDR, 0x08)
+    fpga.fpgaWrite(Constants.Constants.KI_KD_COEFFICIENTS_ADDR, 0x00)
 
 
 def setAngle(angle):
@@ -46,7 +47,8 @@ def setAngle(angle):
 def setUpdateAngle():
     print("--- SETTING UPDATE ANGLE ---")
     # Start the rotation (by updating the target angle by writing update_angle0)
-    fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x20)
+    # Just have to write a 1 to bit 5 - the conversion to a pulse is handled in hardware
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2, 1<<5)
 
 def readCurrentAngle():
     # Write bit 6 to get a snapshot into the register
@@ -62,11 +64,16 @@ def readTargetAngle():
     print("Target angle  = " + str(target & 0xFFF))
 
 def getCurrentState():
-    return fpga.fpgaRead(Constants.Constants.DEBUG2_STATUS_ADDR) & 0x7
+    return fpga.fpgaRead(Constants.Constants.DEBUG2_STATUS_ADDR) & 0x3
 
 def getPwmDirection():
-    rd_data = (fpga.fpgaRead(Constants.Constants.DEBUG3_STATUS_ADDR) & 0x4)
-    print("PWM direction = " + str(rd_data))
+    rd_data = fpga.fpgaRead(Constants.Constants.DEBUG2_STATUS_ADDR) >> 2
+    print("PWM direction = " + str(rd_data & 0x1))
+
+def getCurrStep():
+    rd_data = fpga.fpgaRead(Constants.Constants.DEBUG2_STATUS_ADDR) >> 3
+    print("curr_step = " + str(rd_data & 0x7))
+
 
 try:
     # Initial setup and startup
@@ -76,43 +83,52 @@ try:
     readCurrentAngle()
     setUpdateAngle()
 
+    accelerated = False
+
     while True:        
+        print("-----------------")
+#        readTargetAngle()
         readCurrentAngle()
         getPwmDirection()
+        getCurrStep()
         state = getCurrentState() 
         match(state):
-#            case 1:  print("   State             = CALC           ")
-#            case 3:  print("   State             = CRUISE         ")
-#            case 4:  print("   State             = DECEL          ")
-            case 0 | 5:  
-                print("   State = IDLE/SHUTDOWN       ")
+            case 1:  
+                print("State = ACCEL")
+                accelerated = True    
+            case 2:  print("State = CRUISE")
+            case 3:  print("State = DECEL")
+            case 0:  
+                print("State = IDLE")
 #                print("--- Found angle, flipping target ---")
 
 #                fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, 0x0)
-                readCurrentAngle()
+                if(accelerated):
+                    readCurrentAngle()
 
-                if(targetAngle == 200):
-                    targetAngle = 3600
-                else:
-                    targetAngle = 200
+                    if(targetAngle == 200):
+                        targetAngle = 3600
+                    else:
+                        targetAngle = 200
 
-                readCurrentAngle()
-                time.sleep(0.01)
-                readCurrentAngle()
-                time.sleep(0.01)
-                readCurrentAngle()
-                time.sleep(0.01)
-                readCurrentAngle()
-                time.sleep(0.01)
-                readCurrentAngle()
-                time.sleep(0.01)
-                readCurrentAngle()
+                    readCurrentAngle()
+                    time.sleep(0.01)
+                    readCurrentAngle()
+                    time.sleep(0.01)
+                    readCurrentAngle()
+                    time.sleep(0.01)
+                    readCurrentAngle()
+                    time.sleep(0.01)
+                    readCurrentAngle()
+                    time.sleep(0.01)
+                    readCurrentAngle()
 
-                time.sleep(2)
+                    time.sleep(2)
 
-                setAngle(targetAngle)
-                readCurrentAngle()
-                setUpdateAngle()
+                    setAngle(targetAngle)
+                    readCurrentAngle()
+                    setUpdateAngle()
+                    accelerated = False
 
 
 #            case _:  print("   State             = Invalid state! " + str(state))
@@ -126,7 +142,7 @@ try:
 #        print("   stall_detected    = " + str((rd_data >> 30) & 0x1))
 #        print(" -------------------------------------------")
 
-        time.sleep(0.001)
+        time.sleep(0.1)
 
 
 

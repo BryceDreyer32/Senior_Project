@@ -103,6 +103,8 @@ module top(
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
     wire  [63:0]    angle_chg;              // Change in angle
     wire  [7:0]     pwm_debug_value;
+    wire  [7:0]     kp;
+    wire  [3:0]     ki, kd;
 
 ////////////////////////////////////////////////////////////////
 // Reset Controller
@@ -217,6 +219,9 @@ reg_file rf(
     .current_angle2     (current_angle2),   // The current angle
     .target_angle3      (target_angle3),    // Rotation target angle
     .current_angle3     (current_angle3),   // The current angle
+    .kp                 (kp),               // Proportional Constant: fixed point 4.4
+    .ki                 (ki),               // Integral Constant: fixed point 0.4
+    .kd                 (kd),               // Derivative Constant: fixed point 0.4
 
     .abort_angle0       (abort_angle0),     // Aborts rotating to angle
     .abort_angle1       (abort_angle1),     // Aborts rotating to angle
@@ -316,10 +321,10 @@ pwm_ctrl pwm_ctrl0(
 
     // FPGA Subsystem Interface
     .target_angle           (target_angle0[11:0]),  // The angle the wheel needs to move to in degrees. This number is multiplied by 2 internally
-    .angle_update           (angle_update[0]),      // Signals when an angle update is available
+    .angle_update           (update_angle0),        // Signals when an angle update is available
     .current_angle          (current_angle0[11:0]), // Angle we are currently at from I2C
-    .abort_angle            (abort_angle[0]),       // Aborts the angle adjustment
-    .angle_done             (angle_done[0]),        // Output sent when angle has been adjusted to target_angle
+    .abort_angle            (abort_angle0),         // Aborts the angle adjustment
+    .angle_done             (angle_done0),          // Output sent when angle has been adjusted to target_angle
 
     // Acceleration interface
     .enable_stall_chk       (enable_stall_chk),     // Enable the stall check

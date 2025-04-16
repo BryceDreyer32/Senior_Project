@@ -19,7 +19,7 @@ module pid(
     input       [3:0]   ki,                 // Integral Constant: fixed point 0.4
     input       [3:0]   kd,                 // Derivative Constant: fixed point 0.4
 
-    output reg  [15:0]  debug_signals,  
+    output      [15:0]  debug_signals,  
     output reg          angle_done,         // Indicator that the angle has been applied 
     output reg          pwm_update,         // Request an update to the PWM ratio
     output reg  [7:0]   pwm_ratio,          // The high-time of the PWM signal out of 255.
@@ -51,15 +51,15 @@ assign current_12p4 = current_angle << 4;
 assign delta_12p4   = delta_angle   << 4;
 
 assign debug_ratio = ratio_int >> 4;
+assign debug_signals[15:0] = {10'b0, curr_step[2:0], pwm_direction, state[1:0]};
 
 always @(negedge reset_n or posedge clock) begin
     if(~reset_n) begin
         angle_done          <= 1'b0; 
         pwm_update          <= 1'b0; 
-        startup_fail        <= 1'b0; 
-        debug_signals       <= 16'hDEAD;
+        stalled             <= 1'b0; 
         elapsed_time        <= 16'b1;
-        last_delta_12p4     <= 12'b0;
+        last_delta_12p4     <= 16'b0;
         rd_done             <= 1'b0;
         i2c_rd_done_ff      <= 1'b0;
         state               <= IDLE;
@@ -75,10 +75,15 @@ always @(negedge reset_n or posedge clock) begin
                     state       <= ACCEL;
                     angle_done  <= 1'b0;
                 end
-
+                pwm_update  <= 1'b0; 
+                curr_step   <= 3'b0;
             end
 
             ACCEL: begin
+                if(~pwm_enable)
+                    state <= IDLE;
+
+                pwm_update  <= 1'b1; 
                 if(rd_done) begin
                     if(curr_step <= 3'b111) begin
                         case(curr_step)
@@ -97,6 +102,9 @@ always @(negedge reset_n or posedge clock) begin
             end 
 
             CRUISE: begin
+                if(~pwm_enable)
+                    state <= IDLE;
+
                 if(delta_angle < 12'd50)
                     state <= DECEL;
                 
@@ -104,6 +112,9 @@ always @(negedge reset_n or posedge clock) begin
             end 
 
             DECEL: begin
+                if(~pwm_enable)
+                    state <= IDLE;
+
                 if(delta_angle < 12'd10) begin
                     state       <= IDLE;
                     angle_done  <= 1'b1;
