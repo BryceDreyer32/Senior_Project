@@ -30,7 +30,7 @@ def setup():
     fpga.fpgaWrite(Constants.Constants.ROTATION_GEN_CTRL_ADDR, enable_stall_chk)
 
     # Set PID coefficients
-    fpga.fpgaWrite(Constants.Constants.KP_COEFFICIENT_ADDR, 0x08)
+    fpga.fpgaWrite(Constants.Constants.KP_COEFFICIENT_ADDR, 0x02)
     fpga.fpgaWrite(Constants.Constants.KI_KD_COEFFICIENTS_ADDR, 0x00)
 
 
@@ -48,7 +48,7 @@ def setUpdateAngle():
     print("--- SETTING UPDATE ANGLE ---")
     # Start the rotation (by updating the target angle by writing update_angle0)
     # Just have to write a 1 to bit 5 - the conversion to a pulse is handled in hardware
-    fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2, 1<<5)
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 1<<5)
 
 def readCurrentAngle():
     # Write bit 6 to get a snapshot into the register
@@ -77,7 +77,7 @@ def getCurrStep():
 
 try:
     # Initial setup and startup
-    targetAngle = 200
+    targetAngle = 500
     setup()
     setAngle(targetAngle)
     readCurrentAngle()
@@ -112,18 +112,18 @@ try:
                         targetAngle = 200
 
                     readCurrentAngle()
-                    time.sleep(0.01)
+                    time.sleep(0.2)
                     readCurrentAngle()
-                    time.sleep(0.01)
+                    time.sleep(0.2)
                     readCurrentAngle()
-                    time.sleep(0.01)
+                    time.sleep(0.2)
                     readCurrentAngle()
-                    time.sleep(0.01)
+                    time.sleep(0.2)
                     readCurrentAngle()
-                    time.sleep(0.01)
+                    time.sleep(0.2)
                     readCurrentAngle()
 
-                    time.sleep(2)
+                    time.sleep(3)
 
                     setAngle(targetAngle)
                     readCurrentAngle()
@@ -142,7 +142,7 @@ try:
 #        print("   stall_detected    = " + str((rd_data >> 30) & 0x1))
 #        print(" -------------------------------------------")
 
-        time.sleep(0.1)
+        time.sleep(0.01)
 
 
 

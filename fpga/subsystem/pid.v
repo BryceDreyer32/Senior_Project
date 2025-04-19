@@ -118,7 +118,11 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle < 12'd10) begin
                     state       <= IDLE;
                     angle_done  <= 1'b1;
+                    pwm_ratio <= ratio_int >> 6;
                 end
+
+                else 
+                    pwm_ratio <= ratio_int >> 5;
             end 
 
             default: 

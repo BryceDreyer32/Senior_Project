@@ -64,9 +64,9 @@ module reg_file (
     input       [7:0]   startup_fail,       // Error: Motor stalled, unable to startup
     output              enable_stall_chk,   // Enable the stall check
 
-    output  reg [7:0]   kp,                 // Proportional Constant: fixed point 4.4
-    output  reg [3:0]   ki,                 // Integral Constant: fixed point 0.4
-    output  reg [3:0]   kd,                 // Derivative Constant: fixed point 0.4
+    output      [7:0]   kp,                 // Proportional Constant: fixed point 4.4
+    output      [3:0]   ki,                 // Integral Constant: fixed point 0.4
+    output      [3:0]   kd,                 // Derivative Constant: fixed point 0.4
 
     output      [11:0]  target_angle0,      // Rotation target angle
     input       [11:0]  current_angle0,     // The current angle
