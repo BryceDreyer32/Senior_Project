@@ -32,7 +32,7 @@ localparam          CRUISE  = 2'b10;
 localparam          DECEL   = 2'b11; 
 
 reg     [1:0]       state;
-reg     [2:0]       curr_step;
+reg     [5:0]       curr_step;
 wire    [63:0]      proportional_error;             // The proportional instantenous error
 wire    [31:0]      integral_error;                 // The cumulative error
 wire    [31:0]      derivative_error;               // The derivative error
@@ -51,7 +51,7 @@ assign current_12p4 = current_angle << 4;
 assign delta_12p4   = delta_angle   << 4;
 
 assign debug_ratio = ratio_int >> 4;
-assign debug_signals[15:0] = {10'b0, curr_step[2:0], pwm_direction, state[1:0]};
+assign debug_signals[15:0] = {7'b0, curr_step[5:0], pwm_direction, state[1:0]};
 
 always @(negedge reset_n or posedge clock) begin
     if(~reset_n) begin
@@ -63,7 +63,7 @@ always @(negedge reset_n or posedge clock) begin
         rd_done             <= 1'b0;
         i2c_rd_done_ff      <= 1'b0;
         state               <= IDLE;
-        curr_step           <= 3'b0;
+        curr_step           <= 6'b0;
     end
     else begin
         i2c_rd_done_ff  <= i2c_rd_done;
@@ -76,7 +76,7 @@ always @(negedge reset_n or posedge clock) begin
                     angle_done  <= 1'b0;
                 end
                 pwm_update  <= 1'b0; 
-                curr_step   <= 3'b0;
+                curr_step   <= 6'b0;
             end
 
             ACCEL: begin
@@ -85,7 +85,7 @@ always @(negedge reset_n or posedge clock) begin
 
                 pwm_update  <= 1'b1; 
                 if(rd_done) begin
-                    if(curr_step <= 3'b111) begin
+                    if(curr_step[5:3] <= 3'b111) begin
                         case(curr_step)
                             3'b000, 3'b001, 3'b010: pwm_ratio   <= ratio_int >> 8;
                             3'b011, 3'b100: pwm_ratio           <= ratio_int >> 7;
@@ -94,8 +94,8 @@ always @(negedge reset_n or posedge clock) begin
                         endcase
                     end
 
-                    if(curr_step < 3'b111) 
-                        curr_step <= curr_step + 3'b1;    
+                    if(curr_step[5:0] < 6'b111111) 
+                        curr_step <= curr_step + 6'b1;    
                     else
                         state <= CRUISE;
                 end
@@ -108,7 +108,7 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle < 12'd50)
                     state <= DECEL;
                 
-                pwm_ratio <= ratio_int >> 4;
+                pwm_ratio <= ratio_int >> 5;
             end 
 
             DECEL: begin
