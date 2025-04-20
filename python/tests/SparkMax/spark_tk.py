@@ -127,6 +127,14 @@ def on_start_click():
             file.write(str(item) + '\n')
     file.close()
 
+def readResultFile():
+    global data
+    with open("10.txt", "r") as file:
+        for line in file:
+            array = line.split(',')
+            data.append(array)
+    file.close()
+
 def on_plot():
     elms = 0
     num = 0
@@ -134,8 +142,12 @@ def on_plot():
         if(len(array) > elms):
             elms = len(array)
         num += 1
-    npdata = np.zeros((elms, num))
-    npdata = np.array(data, dtype=np.int16)
+    npdata = np.zeros((num, elms))
+    for x in range(0,num):
+        elms = len(data[x])
+        for y in range(0,elms):
+            if(data[x][y] != "\n"):
+                npdata[x, y] = int(data[x][y])
     # Create a line plot
     plt.plot(npdata.T)
     plt.title('Rotation angle vs Time')
@@ -157,7 +169,7 @@ def setup():
 
 # Run the setup
 setup()
-
+readResultFile()
 
 # Create the main window
 root = tk.Tk()
