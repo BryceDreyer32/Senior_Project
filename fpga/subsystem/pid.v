@@ -44,7 +44,9 @@ wire                calc_updated;                   // Delta angle has been upda
 reg                 rd_done, i2c_rd_done_ff;        // Read done
 wire    [15:0]      ratio_int;
 
-assign delta_12p8   = delta_angle   << 8;
+// To convert from regular binary to FP 12.8 format, we shift to the left 8 times
+// because the lower 8 bits are storing the decimal portion
+assign delta_12p8   = delta_angle << 8;
 assign debug_signals[15:0] = {7'b0, curr_step[5:0], pwm_direction, state[1:0]};
 
 always @(negedge reset_n or posedge clock) begin
@@ -83,10 +85,10 @@ always @(negedge reset_n or posedge clock) begin
                 if(rd_done) begin
                     if(curr_step[5:3] <= 3'b111) begin
                         case(curr_step)
-                            3'b000, 3'b001, 3'b010: pwm_ratio   <= ratio_int >> 8;
-                            3'b011, 3'b100: pwm_ratio           <= ratio_int >> 7;
-                            3'b101, 3'b110: pwm_ratio           <= ratio_int >> 6;
-                            default:        pwm_ratio           <= ratio_int >> 5;   
+                            3'b000, 3'b001, 3'b010: pwm_ratio   <= ratio_int >> 12;
+                            3'b011, 3'b100: pwm_ratio           <= ratio_int >> 11;
+                            3'b101, 3'b110: pwm_ratio           <= ratio_int >> 10;
+                            default:        pwm_ratio           <= ratio_int >> 9;   
                         endcase
                     end
 
@@ -104,7 +106,7 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle < 12'd50)
                     state <= DECEL;
                 
-                pwm_ratio <= ratio_int >> 5;
+                pwm_ratio <= ratio_int >> 9;
             end 
 
             DECEL: begin
@@ -114,11 +116,11 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle < 12'd10) begin
                     state       <= IDLE;
                     angle_done  <= 1'b1;
-                    pwm_ratio   <= ratio_int >> 10;
+                    pwm_ratio   <= ratio_int >> 14;
                 end
 
                 else 
-                    pwm_ratio <= ratio_int >> 5;
+                    pwm_ratio <= ratio_int >> 9;
             end 
 
             default: 
@@ -135,8 +137,8 @@ always @(negedge reset_n or posedge clock) begin
 end
 
 assign proportional_error       = kp * delta_12p8;
-assign integral_error           = ki * ((delta_12p8 >> 12) & 12'hFFF) * ((elapsed_time >> 12) & 12'hFFF);
-assign derivative_error         = kd * (delta_12p8 - last_delta_12p8) / elapsed_time;
+assign integral_error           = '0;//ki * ((delta_12p8 >> 12) & 12'hFFF) * ((elapsed_time >> 12) & 12'hFFF);
+assign derivative_error         = '0;//kd * (delta_12p8 - last_delta_12p8) / elapsed_time;
 assign ratio_int                = ((proportional_error + integral_error + derivative_error) >> 8) & 16'hFFF;
 
 calculate_delta calc (

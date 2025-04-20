@@ -68,6 +68,11 @@ module reg_file (
     output      [3:0]   ki,                 // Integral Constant: fixed point 0.4
     output      [3:0]   kd,                 // Derivative Constant: fixed point 0.4
 
+    output              rot_pwm_ovrd,       // Rotation motor override enable
+    output              pwm_dir_ovrd,       // Rotation motor override direction
+    output      [5:0]   pwm_ratio_ovrd,     // Rotation motor override value
+
+
     output      [11:0]  target_angle0,      // Rotation target angle
     input       [11:0]  current_angle0,     // The current angle
     output      [11:0]  target_angle1,      // Rotation target angle
@@ -244,6 +249,16 @@ end
 
 assign ki[3:0]              = reg_file[6'h11][7:4];
 assign kd[3:0]              = reg_file[6'h11][3:0];
+
+// ------------- 0x12	ROTATION_PWM_TEST	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h12))
+		reg_file[6'h12]     <=  wr_data[7:0];
+end
+
+assign rot_pwm_ovrd         = reg_file[6'h12][7];
+assign pwm_dir_ovrd         = reg_file[6'h12][6];
+assign pwm_ratio_ovrd[5:0]  = reg_file[6'h12][5:0];
 
 // ------------- 0x13	ROTATION1_TARG_ANG	-------------
 always @(posedge clock) begin
