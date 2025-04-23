@@ -12,7 +12,7 @@ powerValue = 0
 dir = 0
 array = []
 data = []
-numRotations = 2
+numRotations = 5
 CLOCKWISE = 0
 COUNTERCLOCKWISE = 1
 
@@ -123,8 +123,10 @@ def on_start_click():
     # Write data to a file
     print("Writing to file")
     with open("logfile.txt", "w") as file:
-        for item in array:
-            file.write(str(item) + '\n')
+        for array in data:
+            for item in array:
+                file.write(str(item) + ',')
+            file.write('\n')
     file.close()
 
 def readResultFile():
@@ -135,7 +137,28 @@ def readResultFile():
             data.append(array)
     file.close()
 
+def fit_line_fixed_intercept(x, y, intercept):
+  """
+  Fits a line to the data (x, y) with a fixed intercept.
+
+  Args:
+    x: Array of x-values.
+    y: Array of y-values.
+    intercept: The fixed y-intercept value.
+
+  Returns:
+    The slope of the fitted line.
+  """
+  # Adjust y values by subtracting the intercept
+  y_adjusted = y - intercept
+  
+  # Calculate the slope using linear regression without an intercept
+  slope = np.sum(x * y_adjusted) / np.sum(x**2)
+  
+  return slope
+
 def on_plot():
+    TIMESTEP = 0.01
     elms = 0
     num = 0
     for array in data:
@@ -143,19 +166,94 @@ def on_plot():
             elms = len(array)
         num += 1
     npdata = np.zeros((num, elms))
+    time = np.zeros(elms)
     for x in range(0,num):
         elms = len(data[x])
         for y in range(0,elms):
             if(data[x][y] != "\n"):
                 npdata[x, y] = int(data[x][y])
+                time[y] = y * TIMESTEP
+    
     # Create a line plot
-    plt.plot(npdata.T)
+    plt.subplot(2, 2, 1)
+    plt.plot(time, npdata.T)
     plt.title('Rotation angle vs Time')
     plt.xlabel('Time')
     plt.ylabel('Angle')
     plt.grid(True)
-    plt.show()
 
+    # Average plot, with fit line
+    average = np.average(npdata, axis=0)
+    plt.subplot(2, 2, 2)
+
+#    coef = np.polyfit(time, average.T, 1)
+#    poly1d_fn = np.poly1d(coef)
+#    slope = fit_line_fixed_intercept(time, average.T, 4095)
+    slope = -4095 / (elms * TIMESTEP)
+    poly1d_fn = np.poly1d([slope, 4095])
+    plt.plot(time, average.T, time, poly1d_fn(time))
+    plt.title('Average Rotation angle vs Time')
+    plt.xlabel('Time')
+    plt.ylabel('Angle')
+    plt.grid(True)
+
+    # Calculate the offsets at 8 intervals
+    boostOffset = []
+    arrayIdx = 0
+    prevNum = 0
+    for idx in range(0, 8):
+        upperVal = 4096 - (idx*512)
+        lowerVal = 4096 - ((idx+1)*512)
+        sum = 0
+        num = 0
+        while True:
+            if(arrayIdx >= elms):
+                break
+            ave = float(average[arrayIdx])
+            if((ave <= upperVal) & (ave > lowerVal)):
+                sum += ave
+                num += 1
+                arrayIdx += 1
+            else:
+                break
+        t = (((num/2)+prevNum)*TIMESTEP)
+        #print('t = ' + str(t))
+        ideal = t * slope + 4095
+        prevNum += num
+#        offset = int((sum/num) - ideal)
+#        boostOffset.append(offset)
+#        print("Adding boost offset " + str(offset))
+
+    derivative = np.gradient(average)
+    plt.subplot(2,2,3)
+    plt.plot(average, derivative)
+    plt.title('Derivative of Average Rotation angle vs Angle')
+    plt.xlabel('Average Angle')
+    plt.ylabel('Change in Angle')
+    plt.grid(True)   
+
+    min = np.min(derivative)
+    derivative -= min
+#    max = np.max(derivative)
+#    derivative /= max
+    plt.subplot(2,2,4)
+    plt.plot(average, derivative)
+    plt.title('Derivative of Average Rotation angle vs Angle')
+    plt.xlabel('Average Angle')
+    plt.ylabel('Change in Angle')
+    plt.grid(True)   
+
+    # elms = 40, to go from 4095 -> 0
+    # each sample is 4095/40 = 103 angle counts
+    # so to get every 512th, you would take the 512/103 = 5th sample
+    stride = int(512/(4096/elms))
+    ang = 0
+    for sample in range(0, elms, stride):
+        DIV = 8
+        print("Boost offset for angle " + str(ang*512) + " should be " + str(int(derivative[sample]/DIV)))
+        ang += 1
+
+    plt.show()
 
 def on_force_stop():
     print("Force stop clicked")
@@ -167,9 +265,16 @@ def setup():
     # Set the cruise power level
     fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, STOP_VALUE)
 
+    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND1_ADDR, 750>>4)
+    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND1_ADDR, 800>>4)
+    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND2_ADDR, 2800>>4)
+    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND2_ADDR, 2900>>4)
+    fpga.fpgaWrite(Constants.Constants.BOOST_ADDR, 15)   
+
+
 # Run the setup
 setup()
-readResultFile()
+#readResultFile()
 
 # Create the main window
 root = tk.Tk()

@@ -33,9 +33,9 @@ localparam          DECEL   = 2'b11;
 
 reg     [1:0]       state;
 reg     [5:0]       curr_step;
-wire    [27:0]      proportional_error;             // The proportional instantenous error
-wire    [27:0]      integral_error;                 // The cumulative error
-wire    [27:0]      derivative_error;               // The derivative error
+wire    [31:0]      proportional_error;             // The proportional instantenous error
+wire    [31:0]      integral_error;                 // The cumulative error
+wire    [31:0]      derivative_error;               // The derivative error
 reg     [15:0]      elapsed_time;                   // The elapsed time since the last update
 wire    [19:0]      delta_12p8;                     // Delta in Fixed point 12.4 format
 reg     [19:0]      last_delta_12p8;                // The last error from the PID controller
@@ -85,10 +85,10 @@ always @(negedge reset_n or posedge clock) begin
                 if(rd_done) begin
                     if(curr_step[5:3] <= 3'b111) begin
                         case(curr_step)
-                            3'b000, 3'b001, 3'b010: pwm_ratio   <= ratio_int >> 12;
-                            3'b011, 3'b100: pwm_ratio           <= ratio_int >> 11;
-                            3'b101, 3'b110: pwm_ratio           <= ratio_int >> 10;
-                            default:        pwm_ratio           <= ratio_int >> 9;   
+                            3'b000, 3'b001, 3'b010: pwm_ratio   <= ratio_int >> 8;
+                            3'b011, 3'b100: pwm_ratio           <= ratio_int >> 7;
+                            3'b101, 3'b110: pwm_ratio           <= ratio_int >> 6;
+                            default:        pwm_ratio           <= ratio_int >> 5;   
                         endcase
                     end
 
@@ -106,7 +106,7 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle < 12'd50)
                     state <= DECEL;
                 
-                pwm_ratio <= ratio_int >> 9;
+                pwm_ratio <= ratio_int >> 5;
             end 
 
             DECEL: begin
@@ -116,11 +116,11 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle < 12'd10) begin
                     state       <= IDLE;
                     angle_done  <= 1'b1;
-                    pwm_ratio   <= ratio_int >> 14;
+                    pwm_ratio   <= ratio_int >> 8;
                 end
 
                 else 
-                    pwm_ratio <= ratio_int >> 9;
+                    pwm_ratio <= ratio_int >> 5;
             end 
 
             default: 
@@ -136,10 +136,11 @@ always @(negedge reset_n or posedge clock) begin
     end
 end
 
-assign proportional_error       = kp * delta_12p8;
+assign proportional_error       = (kp << 4) * delta_12p8;
 assign integral_error           = '0;//ki * ((delta_12p8 >> 12) & 12'hFFF) * ((elapsed_time >> 12) & 12'hFFF);
 assign derivative_error         = '0;//kd * (delta_12p8 - last_delta_12p8) / elapsed_time;
-assign ratio_int                = ((proportional_error + integral_error + derivative_error) >> 8) & 16'hFFF;
+assign ratio_int                = ((proportional_error + integral_error + derivative_error) >> 16);// & 16'hFFF;
+
 
 calculate_delta calc (
     .reset_n        (reset_n),      

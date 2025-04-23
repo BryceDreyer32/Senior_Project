@@ -119,6 +119,12 @@ class Constants:
     KI_KD_COEFFICIENTS_ADDR		    = 0x11
     ROTATION_PWM_TEST_ADDR          = 0x12
 
+    LOWER_BOUND1_ADDR               = 0x15
+    LOWER_BOUND2_ADDR               = 0x16
+    UPPER_BOUND1_ADDR               = 0x17
+    UPPER_BOUND2_ADDR               = 0x18
+    BOOST_ADDR                      = 0x19
+
     ROTATION1_STATUS_ADDR		    = 0x12
     ROTATION1_ROTATION_ADDR		    = 0x13
     ROTATION1_CURRENT_ANGLE_ADDR    = 0x14

@@ -72,6 +72,11 @@ module reg_file (
     output              pwm_dir_ovrd,       // Rotation motor override direction
     output      [5:0]   pwm_ratio_ovrd,     // Rotation motor override value
 
+    output [7:0] lowerbound1,
+    output [7:0] lowerbound2,
+    output [7:0] upperbound1,
+    output [7:0] upperbound2,
+    output [7:0] boost,
 
     output      [11:0]  target_angle0,      // Rotation target angle
     input       [11:0]  current_angle0,     // The current angle
@@ -273,6 +278,26 @@ always @(posedge clock) begin
 	reg_file[6'h14]     <=  angle_snap1[7:0];
 end
 
+always @(posedge clock) begin
+	if(write_en & (address == 6'h15))
+		reg_file[6'h15]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h16))
+		reg_file[6'h16]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h17))
+		reg_file[6'h17]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h18))
+		reg_file[6'h18]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h19))
+		reg_file[6'h19]     <=  wr_data[7:0];
+end
+
+assign lowerbound1[7:0] = reg_file[6'h15][7:0];
+assign lowerbound2[7:0] = reg_file[6'h16][7:0];
+assign upperbound1[7:0] = reg_file[6'h17][7:0];
+assign upperbound2[7:0] = reg_file[6'h18][7:0];
+assign boost[7:0]       = reg_file[6'h19][7:0];
+
+/*
 // ------------- 0x15	ROTATION1_CURR_ANG2	-------------
 always @(posedge clock) begin
 	reg_file[6'h15]     <=  {angle_done1, 3'h0, angle_snap1[11:8]};
@@ -344,7 +369,7 @@ always @(posedge clock) begin
         angle_snap2[11:0] <= current_angle2[11:0];
 
 end
-
+*/
 // ------------- 0x1B	ROTATION3_CONTROL	-------------
 always @(posedge clock) begin
 	if(write_en & ((address == 6'h1B) | (address == 6'h2) | (address == 6'h1)))
