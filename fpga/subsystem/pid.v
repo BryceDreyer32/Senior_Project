@@ -103,7 +103,7 @@ always @(negedge reset_n or posedge clock) begin
                 if(~pwm_enable)
                     state <= IDLE;
 
-                if(delta_angle < 12'd50)
+                if(delta_angle < 12'd40)
                     state <= DECEL;
                 
                 pwm_ratio <= ratio_int >> 5;
@@ -113,14 +113,20 @@ always @(negedge reset_n or posedge clock) begin
                 if(~pwm_enable)
                     state <= IDLE;
 
-                if(delta_angle < 12'd10) begin
+                if(delta_angle > 12'd30)
+                    pwm_ratio   <= ratio_int >> 6;
+
+                else if(delta_angle > 12'd20)
+                    pwm_ratio   <= ratio_int >> 7;
+
+                else if(delta_angle > 12'd10) begin
                     state       <= IDLE;
                     angle_done  <= 1'b1;
                     pwm_ratio   <= ratio_int >> 8;
                 end
 
                 else 
-                    pwm_ratio <= ratio_int >> 5;
+                    pwm_ratio <= ratio_int >> 6;
             end 
 
             default: 
@@ -138,8 +144,9 @@ end
 
 assign proportional_error       = (kp << 4) * delta_12p8;
 assign integral_error           = '0;//ki * ((delta_12p8 >> 12) & 12'hFFF) * ((elapsed_time >> 12) & 12'hFFF);
-assign derivative_error         = '0;//kd * (delta_12p8 - last_delta_12p8) / elapsed_time;
-assign ratio_int                = ((proportional_error + integral_error + derivative_error) >> 16);// & 16'hFFF;
+assign derivative_error         =  kd * (last_delta_12p8 - delta_12p8); // / elapsed_time;
+assign ratio_int                = derivative_error[31] ?    ((proportional_error + integral_error + (~derivative_error[30:0])) >> 16): 
+                                                            ((proportional_error + integral_error - derivative_error) >> 16);
 
 
 calculate_delta calc (
