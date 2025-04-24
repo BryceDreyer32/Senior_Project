@@ -64,8 +64,12 @@ uint8_t PS4ctrl::GetButtons( ) {
 
 void PS4ctrl::GetAllData( uint8_t* buffer ) {
     // Put the stick data in [4:1], overwrite [0] with the all-data header, and then add the buttons into [5]
-    GetStickLocations( buffer );
+    //GetStickLocations( buffer );
     buffer[0] = uint8_t(PS4_ALL_DATA_FRAME);
+    buffer[1] = PS4.LStickX();
+    buffer[2] = PS4.LStickY();
+    buffer[3] = PS4.RStickX();
+    buffer[4] = PS4.RStickY();
     buffer[5] = GetButtons();
     buffer[6] = 0;
     buffer[7] = 0;
