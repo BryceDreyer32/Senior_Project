@@ -162,9 +162,7 @@ pid pid(
     .i2c_rd_done    (i2c_rd_done),
     .angle_update   (angle_update),     // Request to update the angle
     .abort_angle    (abort_angle),      // Aborts rotating to angle
-    .profile        (profile),
     .enable_stall_chk(1'b0),            // Enable the stall check
-    .startup_fail   (),                 // Error: Motor stalled, unable to startup
     .kp             (kp),               // Proportional Constant: fixed point 4.4
     .ki             (ki),               // Integral Constant: fixed point 0.4
     .kd             (kd),               // Derivative Constant: fixed point 0.4

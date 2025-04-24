@@ -33,9 +33,9 @@ localparam          DECEL   = 2'b11;
 
 reg     [1:0]       state;
 reg     [5:0]       curr_step;
-wire    [27:0]      proportional_error;             // The proportional instantenous error
-wire    [27:0]      integral_error;                 // The cumulative error
-wire    [27:0]      derivative_error;               // The derivative error
+wire    [31:0]      proportional_error;             // The proportional instantenous error
+wire    [31:0]      integral_error;                 // The cumulative error
+wire    [31:0]      derivative_error;               // The derivative error
 reg     [15:0]      elapsed_time;                   // The elapsed time since the last update
 wire    [19:0]      delta_12p8;                     // Delta in Fixed point 12.4 format
 reg     [19:0]      last_delta_12p8;                // The last error from the PID controller
@@ -44,7 +44,9 @@ wire                calc_updated;                   // Delta angle has been upda
 reg                 rd_done, i2c_rd_done_ff;        // Read done
 wire    [15:0]      ratio_int;
 
-assign delta_12p8   = delta_angle   << 8;
+// To convert from regular binary to FP 12.8 format, we shift to the left 8 times
+// because the lower 8 bits are storing the decimal portion
+assign delta_12p8   = delta_angle << 8;
 assign debug_signals[15:0] = {7'b0, curr_step[5:0], pwm_direction, state[1:0]};
 
 always @(negedge reset_n or posedge clock) begin
@@ -114,7 +116,7 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle < 12'd10) begin
                     state       <= IDLE;
                     angle_done  <= 1'b1;
-                    pwm_ratio   <= ratio_int >> 10;
+                    pwm_ratio   <= ratio_int >> 8;
                 end
 
                 else 
@@ -134,10 +136,11 @@ always @(negedge reset_n or posedge clock) begin
     end
 end
 
-assign proportional_error       = kp * delta_12p8;
-assign integral_error           = ki * ((delta_12p8 >> 12) & 12'hFFF) * ((elapsed_time >> 12) & 12'hFFF);
-assign derivative_error         = kd * (delta_12p8 - last_delta_12p8) / elapsed_time;
-assign ratio_int                = ((proportional_error + integral_error + derivative_error) >> 8) & 16'hFFF;
+assign proportional_error       = (kp << 4) * delta_12p8;
+assign integral_error           = '0;//ki * ((delta_12p8 >> 12) & 12'hFFF) * ((elapsed_time >> 12) & 12'hFFF);
+assign derivative_error         = '0;//kd * (delta_12p8 - last_delta_12p8) / elapsed_time;
+assign ratio_int                = ((proportional_error + integral_error + derivative_error) >> 16);// & 16'hFFF;
+
 
 calculate_delta calc (
     .reset_n        (reset_n),      

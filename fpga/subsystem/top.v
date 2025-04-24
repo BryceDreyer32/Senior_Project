@@ -105,7 +105,15 @@ module top(
     wire  [7:0]     pwm_debug_value;
     wire  [7:0]     kp;
     wire  [3:0]     ki, kd;
+    wire            rot_pwm_ovrd;       // Rotation motor override enable
+    wire            pwm_dir_ovrd;       // Rotation motor override direction
+    wire  [5:0]     pwm_ratio_ovrd;     // Rotation motor override value
 
+    wire [7:0] lowerbound1;
+    wire [7:0] lowerbound2;
+    wire [7:0] upperbound1;
+    wire [7:0] upperbound2;
+    wire [7:0] boost;
 ////////////////////////////////////////////////////////////////
 // Reset Controller
 ////////////////////////////////////////////////////////////////
@@ -210,7 +218,13 @@ reg_file rf(
     .brake7             (sr_brake[3]),    	// Brake control
     .enable7            (sr_enable[3]),   	// Motor enable
     .direction7         (),//sr_direction[3]),	// Motor direction  
-					 
+
+    .lowerbound1        (lowerbound1[7:0]),
+    .lowerbound2        (lowerbound2[7:0]),
+    .upperbound1        (upperbound1[7:0]),
+    .upperbound2        (upperbound2[7:0]),
+    .boost              (boost[7:0]),
+
     .target_angle0      (target_angle0),    // Rotation target angle
     .current_angle0     (current_angle0),   // The current angle
     .target_angle1      (target_angle1),    // Rotation target angle
@@ -222,6 +236,9 @@ reg_file rf(
     .kp                 (kp),               // Proportional Constant: fixed point 4.4
     .ki                 (ki),               // Integral Constant: fixed point 0.4
     .kd                 (kd),               // Derivative Constant: fixed point 0.4
+    .rot_pwm_ovrd       (rot_pwm_ovrd),     // Rotation motor override enable
+    .pwm_dir_ovrd       (pwm_dir_ovrd),     // Rotation motor override direction
+    .pwm_ratio_ovrd     (pwm_ratio_ovrd),   // Rotation motor override value
 
     .abort_angle0       (abort_angle0),     // Aborts rotating to angle
     .abort_angle1       (abort_angle1),     // Aborts rotating to angle
@@ -349,17 +366,28 @@ pwm_ctrl pwm_ctrl0(
     .sda                    (sda[0])                // The I2C bi-directional data
 );
 
+wire [7:0] offset;
+assign offset = (current_angle0[11:0] < {upperbound1, 4'b0}) & (current_angle0[11:0] > {lowerbound1, 4'b0}) |
+                (current_angle0[11:0] < {upperbound2, 4'b0}) & (current_angle0[11:0] > {lowerbound2, 4'b0}) ?
+                boost[7:0] : 8'h0;
+
 assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
                                 sr_pwm_ratio[0][7:0],   // 15:8
                                 3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_enable[0],  sr_pwm_update[0], angle_done0};
 
+// Register override to control angle motors
+wire [7:0]  pwm_value0;
+wire        pwm_dir0;
+assign pwm_value0 = rot_pwm_ovrd ? {pwm_ratio_ovrd[5:0], 2'b0} - offset: sr_pwm_ratio[0];
+assign pwm_dir0   = rot_pwm_ovrd ? pwm_dir_ovrd                 : sr_direction[0];
+
 spark_pwm sr_pwm0(
     .reset_n                (reset_n),              // Active low reset
     .clock                  (clock_div_cntr[5]),    // ~422kHz
-    .pwm_enable             (sr_enable[0]),         // PWM enable
-    .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255
-    .pwm_direction          (sr_direction[0]),      // Motor direction
-    .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
+    .pwm_enable             (sr_enable[0] | rot_pwm_ovrd),         // PWM enable
+    .pwm_ratio              (pwm_value0),           // The high-time of the PWM signal out of 255
+    .pwm_direction          (pwm_dir0),             // Motor direction
+    .pwm_update             (sr_pwm_update[0] | rot_pwm_ovrd),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[0])             // The output PWM wave
 );

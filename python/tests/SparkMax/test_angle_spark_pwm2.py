@@ -30,7 +30,7 @@ def setup():
     fpga.fpgaWrite(Constants.Constants.ROTATION_GEN_CTRL_ADDR, enable_stall_chk)
 
     # Set PID coefficients
-    fpga.fpgaWrite(Constants.Constants.KP_COEFFICIENT_ADDR, 0x02)
+    fpga.fpgaWrite(Constants.Constants.KP_COEFFICIENT_ADDR, 0x20)
     fpga.fpgaWrite(Constants.Constants.KI_KD_COEFFICIENTS_ADDR, 0x00)
 
 
