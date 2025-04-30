@@ -1,0 +1,21 @@
+<RCC>
+  <qresource prefix="Pictures">
+    <file>Logo_WithText.png</file>
+    <file>PS.png</file>
+    <file>Background.png</file>
+    <file>SPi.png</file>
+    <file>Onyx.png</file>
+    <file>Onyx.png</file>
+    <file>bluetooth.png</file>
+    <file>DarkGoldButton.png</file>
+    <file>EspressifLogo.png</file>
+    <file>GoldButton.png</file>
+    <file>DarkOrangePi.jpg</file>
+    <file>DarkPS4.png</file>
+    <file>DarkSipeedLogo.png</file>
+    <file>OrangePi.png</file>
+    <file>SipeedLogo.png</file>
+    <file>Dark_button.png</file>
+    <file>Yellow_button.png</file>
+  </qresource>
+</RCC>

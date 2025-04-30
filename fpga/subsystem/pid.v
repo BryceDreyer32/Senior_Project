@@ -87,10 +87,10 @@ always @(negedge reset_n or posedge clock) begin
                 if(rd_done) begin
                     if(curr_step[5:3] <= 3'b111) begin
                         case(curr_step)
-                            3'b000, 3'b001, 3'b010: pwm_ratio   <= ratio_int >> 8;
-                            3'b011, 3'b100: pwm_ratio           <= ratio_int >> 7;
-                            3'b101, 3'b110: pwm_ratio           <= ratio_int >> 6;
-                            default:        pwm_ratio           <= ratio_int >> 5;   
+                            3'b000, 3'b001, 3'b010: pwm_ratio   <= (ratio_int >> 8) & 8'hFF;
+                            3'b011, 3'b100: pwm_ratio           <= (ratio_int >> 7) & 8'hFF;
+                            3'b101, 3'b110: pwm_ratio           <= (ratio_int >> 6) & 8'hFF;
+                            default:        pwm_ratio           <= (ratio_int >> 5) & 8'hFF;   
                         endcase
                     end
 
@@ -108,7 +108,7 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle < 12'd50)
                     state <= DECEL;
                 
-                pwm_ratio <= ratio_int >> 5;
+                pwm_ratio <= (ratio_int >> 5) & 8'hFF;
             end 
 
             DECEL: begin
@@ -118,11 +118,11 @@ always @(negedge reset_n or posedge clock) begin
                 if(delta_angle < 12'd10) begin
                     state       <= IDLE;
                     angle_done  <= 1'b1;
-                    pwm_ratio <= ratio_int >> 6;
+                    pwm_ratio <= (ratio_int >> 6) & 8'hFF;
                 end
 
                 else 
-                    pwm_ratio <= ratio_int >> 5;
+                    pwm_ratio <= (ratio_int >> 5) & 8'hFF;
             end 
 
             default: 
