@@ -13,7 +13,7 @@ SPIctrl::SPIctrl() {
     // SPI connection
     slave.setDataMode(SPI_MODE0);   // default: SPI_MODE0
     slave.setQueueSize(QUEUE_SIZE); // default: 1, requres 2 in this example
-    slave.begin();  // default: HSPI (please refer README for pin assignments)
+    slave.begin(VSPI);  // default: HSPI (please refer README for pin assignments)
     Print( "Initialize SPI tx/rx buffers", true );
     initializeBuffers(tx_buf, rx_buf, TX_BUFFER_SIZE, RX_BUFFER_SIZE);
     //initializeRxBuffers(rx_buf, RX_BUFFER_SIZE);

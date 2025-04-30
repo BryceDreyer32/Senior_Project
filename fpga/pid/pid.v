@@ -12,7 +12,6 @@ module pid(
     input               i2c_rd_done,        // Read done from I2C 
     input               angle_update,       // Request to update the angle
     input               abort_angle,        // Aborts rotating to angle
-    input       [63:0]  profile,            // Trapezoidal profile in fixed point 4.4 notation
 
     input               enable_stall_chk,   // Enable the stall check
     output reg          stalled,            // Error: Motor stalled, unable to startup
@@ -20,7 +19,7 @@ module pid(
     input       [3:0]   ki,                 // Integral Constant: fixed point 0.4
     input       [3:0]   kd,                 // Derivative Constant: fixed point 0.4
 
-    output reg  [15:0]  debug_signals,  
+    output      [15:0]  debug_signals,  
     output reg          angle_done,         // Indicator that the angle has been applied 
     output reg          pwm_update,         // Request an update to the PWM ratio
     output reg  [7:0]   pwm_ratio,          // The high-time of the PWM signal out of 255.
@@ -33,48 +32,35 @@ localparam          CRUISE  = 2'b10;
 localparam          DECEL   = 2'b11; 
 
 reg     [1:0]       state;
-reg     [2:0]       curr_step;
-wire    [63:0]      proportional_error;             // The proportional instantenous error
+reg     [5:0]       curr_step;
+wire    [31:0]      proportional_error;             // The proportional instantenous error
 wire    [31:0]      integral_error;                 // The cumulative error
 wire    [31:0]      derivative_error;               // The derivative error
 reg     [15:0]      elapsed_time;                   // The elapsed time since the last update
-wire    [15:0]      delta_12p4;
-reg     [15:0]      last_delta_12p4;                // The last error from the PID controller
-wire    [15:0]      target_12p4, current_12p4;      // Fixed point 12.4 format
+wire    [19:0]      delta_12p8;                     // Delta in Fixed point 12.4 format
+reg     [19:0]      last_delta_12p8;                // The last error from the PID controller
 wire    [11:0]      delta_angle;                    // The angle difference between the target and current angle
 wire                calc_updated;                   // Delta angle has been updated
 reg                 rd_done, i2c_rd_done_ff;        // Read done
-wire    [11:0]      ratio_int;
-wire    [7:0]       debug_ratio; 
-wire    [7:0]       profile_coeff   [7:0];          // Acceleration profile coefficents
+wire    [15:0]      ratio_int;
 
-assign profile_coeff[0][7:0] = profile[1*8-1:0*8];
-assign profile_coeff[1][7:0] = profile[2*8-1:1*8];
-assign profile_coeff[2][7:0] = profile[3*8-1:2*8];
-assign profile_coeff[3][7:0] = profile[4*8-1:3*8];
-assign profile_coeff[4][7:0] = profile[5*8-1:4*8];
-assign profile_coeff[5][7:0] = profile[6*8-1:5*8];
-assign profile_coeff[6][7:0] = profile[7*8-1:6*8];
-assign profile_coeff[7][7:0] = profile[8*8-1:7*8];
-
-assign target_12p4  = target_angle  << 4;
-assign current_12p4 = current_angle << 4;
-assign delta_12p4   = delta_angle   << 4;
-
-assign debug_ratio = ratio_int >> 4;
+// To convert from regular binary to FP 12.8 format, we shift to the left 8 times
+// because the lower 8 bits are storing the decimal portion
+assign delta_12p8   = delta_angle << 8;
+assign debug_signals[15:0] = {7'b0, curr_step[5:0], pwm_direction, state[1:0]};
 
 always @(negedge reset_n or posedge clock) begin
     if(~reset_n) begin
         angle_done          <= 1'b0; 
         pwm_update          <= 1'b0; 
-        startup_fail        <= 1'b0; 
-        debug_signals       <= 16'hDEAD;
+        stalled             <= 1'b0; 
         elapsed_time        <= 16'b1;
-        last_delta_12p4     <= 12'b0;
+        last_delta_12p8     <= 20'b0;
         rd_done             <= 1'b0;
         i2c_rd_done_ff      <= 1'b0;
         state               <= IDLE;
-        curr_step           <= 3'b0;
+        curr_step           <= 6'b0;
+        pwm_ratio           <= 8'b0;
     end
     else begin
         i2c_rd_done_ff  <= i2c_rd_done;
@@ -86,12 +72,18 @@ always @(negedge reset_n or posedge clock) begin
                     state       <= ACCEL;
                     angle_done  <= 1'b0;
                 end
-
+                pwm_update  <= 1'b0; 
+                curr_step   <= 6'b0;
+                pwm_ratio   <= 8'b0;
             end
 
             ACCEL: begin
+                if(~pwm_enable)
+                    state <= IDLE;
+
+                pwm_update  <= 1'b1; 
                 if(rd_done) begin
-                    if(curr_step <= 3'b111) begin
+                    if(curr_step[5:3] <= 3'b111) begin
                         case(curr_step)
                             3'b000, 3'b001, 3'b010: pwm_ratio   <= ratio_int >> 8;
                             3'b011, 3'b100: pwm_ratio           <= ratio_int >> 7;
@@ -100,25 +92,35 @@ always @(negedge reset_n or posedge clock) begin
                         endcase
                     end
 
-                    if(curr_step < 3'b111) 
-                        curr_step <= curr_step + 3'b1;    
+                    if(curr_step[5:0] < 6'b111111) 
+                        curr_step <= curr_step + 6'b1;    
                     else
                         state <= CRUISE;
                 end
             end 
 
             CRUISE: begin
+                if(~pwm_enable)
+                    state <= IDLE;
+
                 if(delta_angle < 12'd50)
                     state <= DECEL;
                 
-                pwm_ratio <= ratio_int >> 4;
+                pwm_ratio <= ratio_int >> 5;
             end 
 
             DECEL: begin
+                if(~pwm_enable)
+                    state <= IDLE;
+
                 if(delta_angle < 12'd10) begin
                     state       <= IDLE;
                     angle_done  <= 1'b1;
+                    pwm_ratio   <= ratio_int >> 8;
                 end
+
+                else 
+                    pwm_ratio <= ratio_int >> 5;
             end 
 
             default: 
@@ -129,15 +131,16 @@ always @(negedge reset_n or posedge clock) begin
 
         if (rd_done) begin
             elapsed_time            <= elapsed_time + 16'b1;
-            last_delta_12p4         <= delta_12p4;
+            last_delta_12p8         <= delta_12p8;
         end 
     end
 end
 
-assign proportional_error       = kp * delta_12p4;
-assign integral_error           = ki * (delta_12p4 >> 8) * (elapsed_time >> 8);
-assign derivative_error         = kd * (delta_12p4 - last_delta_12p4) / elapsed_time;
-assign ratio_int                = (proportional_error + integral_error + derivative_error) >> 4;
+assign proportional_error       = (kp << 4) * delta_12p8;
+assign integral_error           = '0;//ki * ((delta_12p8 >> 12) & 12'hFFF) * ((elapsed_time >> 12) & 12'hFFF);
+assign derivative_error         = '0;//kd * (delta_12p8 - last_delta_12p8) / elapsed_time;
+assign ratio_int                = ((proportional_error + integral_error + derivative_error) >> 16);// & 16'hFFF;
+
 
 calculate_delta calc (
     .reset_n        (reset_n),      
