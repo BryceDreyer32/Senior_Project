@@ -1,28 +1,35 @@
 # Copyright 2024
 # Bryce's Senior Project
 # Description: This is the main entry point of the Robot code
-import time
+import time, sys
+from PyQt5 import QtWidgets, uic
 from multiprocessing import Process
-from drive.Drive import Drive 
+from drive.Drive import Drive
+from gui.Gui import Gui 
 
 class MainLoop:
     # Defining main (setup) function 
     def __init__( self ):
         # Create an instance of each of the classes that we will assign to a process
-        self.drive = Drive()
-        self.drive.loop()
+#        self.drive = Drive()
+#        self.drive.loop()
+#
+#        # Create a new process for each of the instances, and assign the loop of
+#        # each to the process
+#        drvProcess = Process( target = self.drive.loop )
+#        armProcess = Process( )
+#        visionProcess = Process( )
+#
+#        # Start each process
+#        drvProcess.start( )
 
-        # Create a new process for each of the instances, and assign the loop of
-        # each to the process
-        drvProcess = Process( target = self.drive.loop )
-        armProcess = Process( )
-        visionProcess = Process( )
-
-        # Start each process
-        drvProcess.start( )
+        app = QtWidgets.QApplication(sys.argv)
+        main = Gui()
+        main.show()
+        sys.exit(app.exec_())
 
         # Call the main loop
-        self.loop()
+#        self.loop()
 
     def cleanup( self ):
         # Clear all the run flags in the processes
