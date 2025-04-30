@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1918</width>
-    <height>1080</height>
+    <height>1020</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,7 +33,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Onyx.qrc">:/Pictures/Background.png</pixmap>
+    <pixmap>Pictures/Background.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -43,9 +43,9 @@
    <property name="geometry">
     <rect>
      <x>1160</x>
-     <y>70</y>
+     <y>20</y>
      <width>741</width>
-     <height>991</height>
+     <height>960</height>
     </rect>
    </property>
    <property name="font">
@@ -68,7 +68,7 @@
       <x>280</x>
       <y>40</y>
       <width>441</width>
-      <height>471</height>
+      <height>421</height>
      </rect>
     </property>
     <property name="font">
@@ -113,9 +113,9 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 
     <widget class="QSlider" name="horizontalSlider">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>170</y>
-       <width>271</width>
+       <x>150</x>
+       <y>150</y>
+       <width>261</width>
        <height>41</height>
       </rect>
      </property>
@@ -133,9 +133,9 @@ color: rgb(0, 0, 0);</string>
     <widget class="QLabel" name="Angle_Label_5">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>180</y>
-       <width>101</width>
+       <x>19</x>
+       <y>160</y>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
@@ -161,8 +161,8 @@ color: rgb(0, 0, 0);</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>290</y>
-       <width>101</width>
+       <y>230</y>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
@@ -187,9 +187,9 @@ color: rgb(0, 0, 0);</string>
     <widget class="QLabel" name="Angle_Label_7">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>410</y>
-       <width>101</width>
+       <x>60</x>
+       <y>300</y>
+       <width>91</width>
        <height>21</height>
       </rect>
      </property>
@@ -214,9 +214,9 @@ color: rgb(0, 0, 0);</string>
     <widget class="QSlider" name="horizontalSlider_2">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>280</y>
-       <width>271</width>
+       <x>150</x>
+       <y>220</y>
+       <width>261</width>
        <height>41</height>
       </rect>
      </property>
@@ -234,9 +234,9 @@ color: rgb(0, 0, 0);</string>
     <widget class="QSlider" name="horizontalSlider_3">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>400</y>
-       <width>271</width>
+       <x>150</x>
+       <y>290</y>
+       <width>261</width>
        <height>41</height>
       </rect>
      </property>
@@ -276,6 +276,53 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 
       <string>Go To Home</string>
      </property>
     </widget>
+    <widget class="QLabel" name="Angle_Label_8">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>370</y>
+       <width>101</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Georgia</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255)</string>
+     </property>
+     <property name="text">
+      <string>Clamp</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider_4">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>360</y>
+       <width>261</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 3, 255), stop:0.16 rgba(136, 106, 22, 255), stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(176, 156, 63, 255), stop:0.345 rgba(175, 163, 76, 255), stop:0.415 rgba(194, 187, 89, 255), stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), stop:0.75 rgba(203, 188, 80, 255), stop:0.815 rgba(208, 187, 73, 255), stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(137, 108, 26, 255), stop:1 rgba(35, 40, 3, 255));
+selection-background-color: rgb(0, 0, 0);
+selection-color: rgb(0, 0, 0);
+alternate-background-color: rgb(0, 0, 0);
+color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </widget>
    <widget class="QTextEdit" name="textEdit_2">
     <property name="geometry">
@@ -283,7 +330,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 
       <x>20</x>
       <y>230</y>
       <width>241</width>
-      <height>281</height>
+      <height>231</height>
      </rect>
     </property>
     <property name="font">
@@ -299,8 +346,8 @@ color: rgb(255, 255, 255);</string>
      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:16pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:16pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2';&quot;&gt;Hello&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -316,7 +363,7 @@ p, li { white-space: pre-wrap; }
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="Onyx.qrc">:/Pictures/SipeedLogo.png</pixmap>
+     <pixmap>Pictures/SipeedLogo.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -326,9 +373,9 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>530</y>
+      <y>480</y>
       <width>701</width>
-      <height>441</height>
+      <height>431</height>
      </rect>
     </property>
     <property name="font">
@@ -863,7 +910,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>350</y>
+     <y>270</y>
      <width>631</width>
      <height>711</height>
     </rect>
@@ -895,7 +942,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="Onyx.qrc">:/Pictures/PS.png</pixmap>
+     <pixmap>Pictures/PS.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -914,7 +961,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="Onyx.qrc">:/Pictures/bluetooth.png</pixmap>
+     <pixmap>Pictures/bluetooth.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -933,7 +980,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="Onyx.qrc">:/Pictures/EspressifLogo.png</pixmap>
+     <pixmap>Pictures/EspressifLogo.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -961,8 +1008,8 @@ color: rgb(255, 255, 255);</string>
      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:16pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:16pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2';&quot;&gt;Hello&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox_3">
@@ -1001,7 +1048,7 @@ p, li { white-space: pre-wrap; }
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="Onyx.qrc">:/Pictures/GoldButton.png</pixmap>
+      <pixmap>Pictures/GoldButton.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1050,7 +1097,7 @@ alternate-background-color: rgb(0, 0, 0);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="Onyx.qrc">:/Pictures/GoldButton.png</pixmap>
+      <pixmap>Pictures/GoldButton.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1126,7 +1173,7 @@ alternate-background-color: rgb(0, 0, 0);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="Onyx.qrc">:/Pictures/GoldButton.png</pixmap>
+      <pixmap>Pictures/GoldButton.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1205,7 +1252,7 @@ alternate-background-color: rgb(0, 0, 0);
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="Onyx.qrc">:/Pictures/GoldButton.png</pixmap>
+      <pixmap>Pictures/GoldButton.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1313,9 +1360,9 @@ alternate-background-color: rgb(0, 0, 0);
    <property name="geometry">
     <rect>
      <x>680</x>
-     <y>70</y>
+     <y>20</y>
      <width>461</width>
-     <height>991</height>
+     <height>961</height>
     </rect>
    </property>
    <property name="font">
@@ -1345,7 +1392,7 @@ alternate-background-color: rgb(0, 0, 0);
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="Onyx.qrc">:/Pictures/OrangePi.png</pixmap>
+     <pixmap>Pictures/OrangePi.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -1356,16 +1403,16 @@ alternate-background-color: rgb(0, 0, 0);
    <property name="geometry">
     <rect>
      <x>110</x>
-     <y>-20</y>
-     <width>451</width>
-     <height>421</height>
+     <y>-60</y>
+     <width>411</width>
+     <height>381</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Onyx.qrc">:/Pictures/Logo_WithText.png</pixmap>
+    <pixmap>Pictures/Logo_WithText.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
