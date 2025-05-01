@@ -1,11 +1,14 @@
 # Copyright 2024
 # Bryce's Senior Project
 # Description: This is the main entry point of the Robot code
-import time, sys
+import time, sys, os
 from PyQt5 import QtWidgets, uic
 from multiprocessing import Process
 from drive.Drive import Drive
 from gui.Gui import Gui 
+print(os.getcwd())
+sys.path.append(os.path.realpath('python/src/constants'))
+sys.path.append(os.path.realpath('python/src/subsystem/fpga'))
 import Constants
 import FpgaCommunication
 
@@ -23,9 +26,9 @@ class MainLoop:
         drvProcess = Process( target = self.drive.loop )
 #        armProcess = Process( )
 #        visionProcess = Process( )
-#
-#        # Start each process
-        drvProcess.start( )
+
+        # Start each process
+#        drvProcess.start( )
 
         # Start the GUI process
         app = QtWidgets.QApplication(sys.argv)
