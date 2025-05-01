@@ -16,3 +16,12 @@ class Gui(QtWidgets.QDialog):
         ui_path = os.path.dirname(os.path.abspath(__file__))
         uic.loadUi("GUIs/PyQt5/Rev2_Onyx.ui", self)
 
+        self.Rotation_Button_1.clicked.connect(self.clickme)
+        print("--")
+ 
+    # action method
+    def clickme(self):
+ 
+        # printing pressed
+        print("pressed")
+
