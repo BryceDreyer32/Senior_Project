@@ -6,25 +6,30 @@ from PyQt5 import QtWidgets, uic
 from multiprocessing import Process
 from drive.Drive import Drive
 from gui.Gui import Gui 
+import Constants
+import FpgaCommunication
 
 class MainLoop:
     # Defining main (setup) function 
     def __init__( self ):
+        # FPGA instance
+        fpga = FpgaCommunication.FpgaCommunication(Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
+
         # Create an instance of each of the classes that we will assign to a process
-#        self.drive = Drive()
-#        self.drive.loop()
-#
+        self.drive = Drive()
+
 #        # Create a new process for each of the instances, and assign the loop of
 #        # each to the process
-#        drvProcess = Process( target = self.drive.loop )
+        drvProcess = Process( target = self.drive.loop )
 #        armProcess = Process( )
 #        visionProcess = Process( )
 #
 #        # Start each process
-#        drvProcess.start( )
+        drvProcess.start( )
 
+        # Start the GUI process
         app = QtWidgets.QApplication(sys.argv)
-        main = Gui()
+        main = Gui(fpga)
         main.show()
         sys.exit(app.exec_())
 
