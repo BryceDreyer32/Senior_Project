@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="Background">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -39,7 +39,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QGroupBox" name="groupBox_4">
+  <widget class="QGroupBox" name="FPGA_Subsytem">
    <property name="geometry">
     <rect>
      <x>1160</x>
@@ -62,7 +62,7 @@
    <property name="title">
     <string>FPGA Subsystem</string>
    </property>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="Arm_Control">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -85,7 +85,7 @@
     <property name="title">
      <string>Arm Control</string>
     </property>
-    <widget class="QPushButton" name="Rotation_Button_6">
+    <widget class="QPushButton" name="Arm_Demo_Button">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -110,7 +110,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Run Demo</string>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider">
+    <widget class="QSlider" name="Base_Pivot_Slider_1">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -130,7 +130,7 @@ color: rgb(0, 0, 0);</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="Angle_Label_5">
+    <widget class="QLabel" name="Base_Pivot_Label">
      <property name="geometry">
       <rect>
        <x>19</x>
@@ -157,7 +157,7 @@ color: rgb(0, 0, 0);</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="Angle_Label_6">
+    <widget class="QLabel" name="Arm_Pivot_Label">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -184,7 +184,7 @@ color: rgb(0, 0, 0);</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="Angle_Label_7">
+    <widget class="QLabel" name="Wrist_Label">
      <property name="geometry">
       <rect>
        <x>60</x>
@@ -211,7 +211,7 @@ color: rgb(0, 0, 0);</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_2">
+    <widget class="QSlider" name="Arm_Pivot_Slider">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -231,7 +231,7 @@ color: rgb(0, 0, 0);</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_3">
+    <widget class="QSlider" name="Wrist_Slider">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -251,7 +251,7 @@ color: rgb(0, 0, 0);</string>
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QPushButton" name="Rotation_Button_7">
+    <widget class="QPushButton" name="Arm_Home_Button">
      <property name="geometry">
       <rect>
        <x>240</x>
@@ -276,7 +276,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Go To Home</string>
      </property>
     </widget>
-    <widget class="QLabel" name="Angle_Label_8">
+    <widget class="QLabel" name="Clamp_Label">
      <property name="geometry">
       <rect>
        <x>50</x>
@@ -303,7 +303,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_4">
+    <widget class="QSlider" name="Clamp_Slider">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -324,7 +324,7 @@ color: rgb(0, 0, 0);</string>
      </property>
     </widget>
    </widget>
-   <widget class="QTextEdit" name="textEdit_2">
+   <widget class="QTextEdit" name="Arm_Dialog_Box">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -350,7 +350,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="Sipeed_Logo">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -369,7 +369,7 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="Drive_Control">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -444,7 +444,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Start Drive</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_12">
+    <widget class="QLabel" name="Current_Ang_Txt_2">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -570,7 +570,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Start Drive</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_11">
+    <widget class="QLabel" name="Current_Ang_Txt_1">
      <property name="geometry">
       <rect>
        <x>540</x>
@@ -594,7 +594,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Current Angle</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_5">
+    <widget class="QLabel" name="Current_Ang_Txt_4">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -745,7 +745,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Start Rotation</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_13">
+    <widget class="QLabel" name="Current_Ang_Txt_3">
      <property name="geometry">
       <rect>
        <x>540</x>
@@ -796,7 +796,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_14">
+    <widget class="QLabel" name="SwervePosition_Label_1">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -823,7 +823,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_15">
+    <widget class="QLabel" name="SwervePosition_Label_2">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -850,7 +850,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_16">
+    <widget class="QLabel" name="SwervePosition_Label_3">
      <property name="geometry">
       <rect>
        <x>390</x>
@@ -877,7 +877,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_17">
+    <widget class="QLabel" name="SwervePosition_Label_4">
      <property name="geometry">
       <rect>
        <x>390</x>
@@ -906,7 +906,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
     </widget>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox_5">
+  <widget class="QGroupBox" name="ESP_32">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -929,7 +929,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
    <property name="title">
     <string>ESP32 Subsystem</string>
    </property>
-   <widget class="QLabel" name="label_4">
+   <widget class="QLabel" name="PS4Logo">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -948,7 +948,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_8">
+   <widget class="QLabel" name="Bluetooth_Connect">
     <property name="geometry">
      <rect>
       <x>270</x>
@@ -967,7 +967,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
+   <widget class="QLabel" name="Espressif_Logo">
     <property name="geometry">
      <rect>
       <x>420</x>
@@ -986,7 +986,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QTextEdit" name="PS4_Dialog_box">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -1012,7 +1012,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_3">
+   <widget class="QGroupBox" name="PS4_Inputs">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -1035,7 +1035,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>PS4 Inputs</string>
     </property>
-    <widget class="QLabel" name="ButtonCirc">
+    <widget class="QLabel" name="Button_Circle">
      <property name="geometry">
       <rect>
        <x>510</x>
@@ -1085,7 +1085,7 @@ selection-color: rgb(0, 0, 0);</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="ButtonX">
+    <widget class="QLabel" name="Button_X">
      <property name="geometry">
       <rect>
        <x>460</x>
@@ -1163,7 +1163,7 @@ selection-color: rgb(0, 0, 0);</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="ButtonTri">
+    <widget class="QLabel" name="Button_Triangle">
      <property name="geometry">
       <rect>
        <x>460</x>
@@ -1244,7 +1244,7 @@ selection-color: rgb(0, 0, 0);</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="ButtonSq">
+    <widget class="QLabel" name="Button_Sqare">
      <property name="geometry">
       <rect>
        <x>410</x>
@@ -1364,7 +1364,7 @@ selection-color: rgb(0, 0, 0);</string>
     </widget>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox_6">
+  <widget class="QGroupBox" name="Orange_Pi">
    <property name="geometry">
     <rect>
      <x>680</x>
@@ -1387,7 +1387,7 @@ selection-color: rgb(0, 0, 0);</string>
    <property name="title">
     <string>Orange Pi Subsystem</string>
    </property>
-   <widget class="QLabel" name="label_6">
+   <widget class="QLabel" name="Orange_Pi_Logo">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -1406,8 +1406,101 @@ selection-color: rgb(0, 0, 0);</string>
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>340</y>
+      <width>311</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="autoScroll">
+     <bool>true</bool>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::DoubleClicked|QAbstractItemView::SelectedClicked</set>
+    </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string/>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>Register</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Command</string>
+     </property>
+    </column>
+    <item row="0" column="0">
+     <property name="text">
+      <string>0x01</string>
+     </property>
+    </item>
+    <item row="0" column="1">
+     <property name="text">
+      <string>1</string>
+     </property>
+    </item>
+    <item row="1" column="0">
+     <property name="text">
+      <string>0x02</string>
+     </property>
+    </item>
+    <item row="1" column="1">
+     <property name="text">
+      <string>2</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>750</y>
+      <width>231</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Georgia</family>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(140, 0, 2);
+color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>E-Stop</string>
+    </property>
+   </widget>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="Project_Onyx_Logo">
    <property name="geometry">
     <rect>
      <x>110</x>
