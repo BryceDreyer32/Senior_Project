@@ -61,22 +61,50 @@ module reg_file (
     output [7:0]    pwm_debug_value,
 
     // ROTATION MOTORS
-    input       [7:0]   startup_fail,       // Error: Motor stalled, unable to startup
-    output              enable_stall_chk,   // Enable the stall check
+    input       [7:0]   startup_fail0,       // Error: Motor stalled, unable to startup
+    output              enable_stall_chk0,   // Enable the stall check
 
-    output      [7:0]   kp,                 // Proportional Constant: fixed point 4.4
-    output      [3:0]   ki,                 // Integral Constant: fixed point 0.4
-    output      [3:0]   kd,                 // Derivative Constant: fixed point 0.4
+    output      [7:0]   kp0,                 // Proportional Constant: fixed point 4.4
+    output      [3:0]   ki0,                 // Integral Constant: fixed point 0.4
+    output      [3:0]   kd0,                 // Derivative Constant: fixed point 0.4
 
-    output              rot_pwm_ovrd,       // Rotation motor override enable
-    output              pwm_dir_ovrd,       // Rotation motor override direction
-    output      [5:0]   pwm_ratio_ovrd,     // Rotation motor override value
+    output              rot_pwm_ovrd0,       // Rotation motor override enable
+    output              pwm_dir_ovrd0,       // Rotation motor override direction
+    output      [5:0]   pwm_ratio_ovrd0,     // Rotation motor override value
 
-    output [7:0] lowerbound1,
-    output [7:0] lowerbound2,
-    output [7:0] upperbound1,
-    output [7:0] upperbound2,
-    output [7:0] boost,
+    input       [7:0]   startup_fail1,       // Error: Motor stalled, unable to startup
+    output              enable_stall_chk1,   // Enable the stall check
+
+    output      [7:0]   kp1,                 // Proportional Constant: fixed point 4.4
+    output      [3:0]   ki1,                 // Integral Constant: fixed point 0.4
+    output      [3:0]   kd1,                 // Derivative Constant: fixed point 0.4
+
+    output              rot_pwm_ovrd1,       // Rotation motor override enable
+    output              pwm_dir_ovrd1,       // Rotation motor override direction
+    output      [5:0]   pwm_ratio_ovrd1,     // Rotation motor override value
+
+    input       [7:0]   startup_fail2,       // Error: Motor stalled, unable to startup
+    output              enable_stall_chk2,   // Enable the stall check
+
+    output      [7:0]   kp2,                 // Proportional Constant: fixed point 4.4
+    output      [3:0]   ki2,                 // Integral Constant: fixed point 0.4
+    output      [3:0]   kd2,                 // Derivative Constant: fixed point 0.4
+
+    output              rot_pwm_ovrd2,       // Rotation motor override enable
+    output              pwm_dir_ovrd2,       // Rotation motor override direction
+    output      [5:0]   pwm_ratio_ovrd2,     // Rotation motor override value
+
+    input       [7:0]   startup_fail3,       // Error: Motor stalled, unable to startup
+    output              enable_stall_chk3,   // Enable the stall check
+
+    output      [7:0]   kp3,                 // Proportional Constant: fixed point 4.4
+    output      [3:0]   ki3,                 // Integral Constant: fixed point 0.4
+    output      [3:0]   kd3,                 // Derivative Constant: fixed point 0.4
+
+    output              rot_pwm_ovrd3,       // Rotation motor override enable
+    output              pwm_dir_ovrd3,       // Rotation motor override direction
+    output      [5:0]   pwm_ratio_ovrd3,     // Rotation motor override value
+
 
     output      [11:0]  target_angle0,      // Rotation target angle
     input       [11:0]  current_angle0,     // The current angle
@@ -99,7 +127,6 @@ module reg_file (
     input               angle_done2,        // Arrived at target angle
     input               angle_done3,        // Arrived at target angle
 
-    output      [7:0]   servo_control,      // Servo control
     output      [7:0]   servo_position0,    // Servo 0 target position
     output      [7:0]   servo_position1,    // Servo 1 target position
     output      [7:0]   servo_position2,    // Servo 2 target position
@@ -200,7 +227,7 @@ always @(posedge clock) begin
 end
 
 assign enable4              = reg_file[6'hC][6];
-assign enable_stall_chk     = reg_file[6'hC][5];
+assign enable_stall_chk0    = reg_file[6'hC][5];
 assign target_angle0[11:8]  = reg_file[6'hC][3:0];
 
 // ------------- 0xD	ROTATION0_TARGET_ANGLE	-------------
@@ -244,7 +271,7 @@ always @(posedge clock) begin
 		reg_file[6'h10]     <=  wr_data[7:0];
 end
 
-assign kp[7:0]              = reg_file[6'h10][7:0];
+assign kp0[7:0]              = reg_file[6'h10][7:0];
 
 // ------------- 0x11	Ki and Kd	-------------
 always @(posedge clock) begin
@@ -252,62 +279,53 @@ always @(posedge clock) begin
 		reg_file[6'h11]     <=  wr_data[7:0];
 end
 
-assign ki[3:0]              = reg_file[6'h11][7:4];
-assign kd[3:0]              = reg_file[6'h11][3:0];
+assign ki0[3:0]              = reg_file[6'h11][7:4];
+assign kd0[3:0]              = reg_file[6'h11][3:0];
 
-// ------------- 0x12	ROTATION_PWM_TEST	-------------
+// ------------- 0x12	ROTATION_PWM_OVRD	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h12))
 		reg_file[6'h12]     <=  wr_data[7:0];
 end
 
-assign rot_pwm_ovrd         = reg_file[6'h12][7];
-assign pwm_dir_ovrd         = reg_file[6'h12][6];
-assign pwm_ratio_ovrd[5:0]  = reg_file[6'h12][5:0];
+assign rot_pwm_ovrd0         = reg_file[6'h12][7];
+assign pwm_dir_ovrd0         = reg_file[6'h12][6];
+assign pwm_ratio_ovrd0[5:0]  = reg_file[6'h12][5:0];
 
-// ------------- 0x13	ROTATION1_TARG_ANG	-------------
+
+// ------------- 0x13	ROTATION1_CONTROL	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h13))
-		reg_file[6'h13]     <=  wr_data[7:0];
+		reg_file[6'h13]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
-assign target_angle1[7:0] = reg_file[6'h13][7:0];
+assign enable5              = reg_file[6'h13][6];
+assign enable_stall_chk1    = reg_file[6'h13][5];
+assign target_angle1[11:8]  = reg_file[6'h13][3:0];
 
-// ------------- 0x14	ROTATION1_CURR_ANG	-------------
+// ------------- 0x14	ROTATION1_TARGET_ANGLE	-------------
 always @(posedge clock) begin
-	reg_file[6'h14]     <=  angle_snap1[7:0];
+	if(write_en & (address == 6'h14))
+		reg_file[6'h14]     <=  wr_data[7:0];
 end
 
+assign target_angle1[7:0] = reg_file[6'h14][7:0];
+
+// ------------- 0x15	ROTATION1_CURRENT_ANGLE	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h15))
-		reg_file[6'h15]     <=  wr_data[7:0];
-	if(write_en & (address == 6'h16))
-		reg_file[6'h16]     <=  wr_data[7:0];
-	if(write_en & (address == 6'h17))
-		reg_file[6'h17]     <=  wr_data[7:0];
-	if(write_en & (address == 6'h18))
-		reg_file[6'h18]     <=  wr_data[7:0];
-	if(write_en & (address == 6'h19))
-		reg_file[6'h19]     <=  wr_data[7:0];
+	reg_file[6'h15]     <=  angle_snap1[7:0];
 end
 
-assign lowerbound1[7:0] = reg_file[6'h15][7:0];
-assign lowerbound2[7:0] = reg_file[6'h16][7:0];
-assign upperbound1[7:0] = reg_file[6'h17][7:0];
-assign upperbound2[7:0] = reg_file[6'h18][7:0];
-assign boost[7:0]       = reg_file[6'h19][7:0];
-
-/*
-// ------------- 0x15	ROTATION1_CURR_ANG2	-------------
+// ------------- 0x16	ROTATION1_CURRENT_ANGLE2	-------------
 always @(posedge clock) begin
-	reg_file[6'h15]     <=  {angle_done1, 3'h0, angle_snap1[11:8]};
-
-    if(write_en & (address == 6'h15) & wr_data[4])
+    reg_file[6'h16]     <=  {angle_done1, 3'h0, angle_snap1[11:8]};
+    
+    if(write_en & (address == 6'h16) & wr_data[4])
         abort_angle1 <= 1'b1;
     else
         abort_angle1 <= 1'b0;
-
-    if(write_en & (address == 6'h15) & wr_data[5])
+    
+    if(write_en & (address == 6'h16) & wr_data[5])
         update_angle1 <= 1'b1;
     else
         update_angle1 <= 1'b0;
@@ -315,49 +333,71 @@ always @(posedge clock) begin
     // Grab a snapshot of the angle when bit 6 is written - this ensures
     // that when we do the reading back that we don't read the 1st 8 bits
     // and then the value changes before we read the upper 4 bits
-    if(write_en & (address == 6'h15) & wr_data[6])
+    if(write_en & (address == 6'h16) & wr_data[6]) 
         angle_snap1[11:0] <= current_angle1[11:0];
-end
+   
+end 
 
-// ------------- 0x16	ROTATION2_CONTROL	-------------
+// ------------- 0x17	Kp	-------------
 always @(posedge clock) begin
-	if(write_en & ((address == 6'h16) | (address == 6'h2) | (address == 6'h1)))
-		reg_file[6'h16]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h17))
+		reg_file[6'h17]     <=  wr_data[7:0];
 end
 
-assign brake6               = reg_file[6'h16][7];
-assign enable6              = reg_file[6'h16][6];
-assign direction6           = reg_file[6'h16][5];
-assign target_angle2[11:8]  = reg_file[6'h16][3:0];
+assign kp1[7:0]              = reg_file[6'h17][7:0];
 
-// ------------- 0x17	ROTATION2_STATUS	-------------
-always @(posedge clock) begin
-	reg_file[6'h17]     <=  {fault6, startup_fail[6], adc_temp6[5:0]};
-end
-
-// ------------- 0x18	ROTATION2_TARG_ANG	-------------
+// ------------- 0x18	Ki and Kd	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h18))
 		reg_file[6'h18]     <=  wr_data[7:0];
 end
 
-assign target_angle2[7:0] = reg_file[6'h18][7:0];
+assign ki1[3:0]              = reg_file[6'h18][7:4];
+assign kd1[3:0]              = reg_file[6'h18][3:0];
 
-// ------------- 0x19	ROTATION2_CURR_ANG	-------------
+// ------------- 0x19	ROTATION_PWM_TEST	-------------
 always @(posedge clock) begin
-	reg_file[6'h19]     <=  angle_snap2[7:0];
+	if(write_en & (address == 6'h19))
+		reg_file[6'h19]     <=  wr_data[7:0];
 end
 
-// ------------- 0x1A	ROTATION2_CURR_ANG2	-------------
-always @(posedge clock) begin
-	reg_file[6'h1A]     <=  {angle_done2, 3'h0, angle_snap2[11:8]};
+assign rot_pwm_ovrd1         = reg_file[6'h19][7];
+assign pwm_dir_ovrd1         = reg_file[6'h19][6];
+assign pwm_ratio_ovrd1[5:0]  = reg_file[6'h19][5:0];
 
-    if(write_en & (address == 6'h1A) & wr_data[4])
+// ------------- 0x1A	ROTATION2_CONTROL	------------- 
+always @(posedge clock) begin
+	if(write_en & (address == 6'h1A))
+		reg_file[6'h1A]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
+end
+
+assign enable6              = reg_file[6'h1A][6];
+assign enable_stall_chk2    = reg_file[6'h1A][5];
+assign target_angle2[11:8]  = reg_file[6'h1A][3:0];
+
+// ------------- 0x1B	ROTATION2_TARGET_ANGLE	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h1B))
+		reg_file[6'h1B]     <=  wr_data[7:0];
+end
+
+assign target_angle2[7:0] = reg_file[6'h1B][7:0];
+
+// ------------- 0x1C	ROTATION2_CURRENT_ANGLE	-------------
+always @(posedge clock) begin
+	reg_file[6'h1C]     <=  angle_snap2[7:0];
+end
+
+// ------------- 0x1D	ROTATION2_CURRENT_ANGLE2	-------------
+always @(posedge clock) begin
+    reg_file[6'h1D]     <=  {angle_done2, 3'h0, angle_snap2[11:8]};
+    
+    if(write_en & (address == 6'h1D) & wr_data[4])
         abort_angle2 <= 1'b1;
     else
         abort_angle2 <= 1'b0;
-
-    if(write_en & (address == 6'h1A) & wr_data[5])
+    
+    if(write_en & (address == 6'h1D) & wr_data[5])
         update_angle2 <= 1'b1;
     else
         update_angle2 <= 1'b0;
@@ -365,50 +405,71 @@ always @(posedge clock) begin
     // Grab a snapshot of the angle when bit 6 is written - this ensures
     // that when we do the reading back that we don't read the 1st 8 bits
     // and then the value changes before we read the upper 4 bits
-    if(write_en & (address == 6'h1A) & wr_data[6])
+    if(write_en & (address == 6'h1D) & wr_data[6]) 
         angle_snap2[11:0] <= current_angle2[11:0];
+   
+end 
 
-end
-*/
-// ------------- 0x1B	ROTATION3_CONTROL	-------------
+// ------------- 0x1E	Kp	-------------
 always @(posedge clock) begin
-	if(write_en & ((address == 6'h1B) | (address == 6'h2) | (address == 6'h1)))
-		reg_file[6'h1B]     <=  wr_data[7:0];
-end
-
-assign brake7               = reg_file[6'h1B][7];
-assign enable7              = reg_file[6'h1B][6];
-assign direction7           = reg_file[6'h1B][5];
-assign target_angle3[11:8]  = reg_file[6'h1B][3:0];
-
-// ------------- 0x1C	ROTATION3_STATUS	-------------
-always @(posedge clock) begin
-	reg_file[6'h1C]     <=  {fault7, startup_fail[7], adc_temp7[5:0]};
+	if(write_en & (address == 6'h1E))
+		reg_file[6'h1E]     <=  wr_data[7:0];
 end
 
-// ------------- 0x1D	ROTATION3_TARG_ANG	-------------
+assign kp2[7:0]              = reg_file[6'h1E][7:0];
+
+// ------------- 0x1F	Ki and Kd	-------------
 always @(posedge clock) begin
-	if(write_en & (address == 6'h1D))
-		reg_file[6'h1D]     <=  wr_data[7:0];
+	if(write_en & (address == 6'h1F))
+		reg_file[6'h1F]     <=  wr_data[7:0];
 end
 
-assign target_angle3[7:0] = reg_file[6'h1D][7:0];
+assign ki2[3:0]              = reg_file[6'h1F][7:4];
+assign kd2[3:0]              = reg_file[6'h1F][3:0];
 
-// ------------- 0x1E	ROTATION3_CURR_ANG	-------------
+// ------------- 0x20	ROTATION_PWM_TEST	-------------
 always @(posedge clock) begin
-	reg_file[6'h1E]     <=  angle_snap3[7:0];
+	if(write_en & (address == 6'h20))
+		reg_file[6'h20]     <=  wr_data[7:0];
 end
 
-// ------------- 0x1F	ROTATION3_CURR_ANG2	-------------
-always @(posedge clock) begin
-	reg_file[6'h1F]     <=  {angle_done3, 3'h0, angle_snap3[11:8]};
+assign rot_pwm_ovrd2         = reg_file[6'h20][7];
+assign pwm_dir_ovrd2         = reg_file[6'h20][6];
+assign pwm_ratio_ovrd2[5:0]  = reg_file[6'h20][5:0];
 
-    if(write_en & (address == 6'h1F) & wr_data[4])
+// ------------- 0x21	ROTATION3_CONTROL	------------- 
+always @(posedge clock) begin
+	if(write_en & (address == 6'h21))
+		reg_file[6'h21]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
+end
+
+assign enable7              = reg_file[6'h21][6];
+assign enable_stall_chk3    = reg_file[6'h21][5];
+assign target_angle3[11:8]  = reg_file[6'h21][3:0];
+
+// ------------- 0x22	ROTATION3_TARGET_ANGLE	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h22))
+		reg_file[6'h22]     <=  wr_data[7:0];
+end
+
+assign target_angle3[7:0] = reg_file[6'h22][7:0];
+
+// ------------- 0x23	ROTATION2_CURRENT_ANGLE	-------------
+always @(posedge clock) begin
+	reg_file[6'h23]     <=  angle_snap3[7:0];
+end
+
+// ------------- 0x24	ROTATION2_CURRENT_ANGLE2	------------- 
+always @(posedge clock) begin
+    reg_file[6'h24]     <=  {angle_done3, 3'h0, angle_snap3[11:8]};
+    
+    if(write_en & (address == 6'h24) & wr_data[4])
         abort_angle3 <= 1'b1;
     else
         abort_angle3 <= 1'b0;
-
-    if(write_en & (address == 6'h1F) & wr_data[5])
+    
+    if(write_en & (address == 6'h24) & wr_data[5])
         update_angle3 <= 1'b1;
     else
         update_angle3 <= 1'b0;
@@ -416,156 +477,100 @@ always @(posedge clock) begin
     // Grab a snapshot of the angle when bit 6 is written - this ensures
     // that when we do the reading back that we don't read the 1st 8 bits
     // and then the value changes before we read the upper 4 bits
-    if(write_en & (address == 6'h1F) & wr_data[6])
+    if(write_en & (address == 6'h24) & wr_data[6]) 
         angle_snap3[11:0] <= current_angle3[11:0];
-end
+   
+end 
 
-// ------------ 0x20	ROTATION_GEN_CTRL	------------
-always @(posedge clock) begin
-	if(write_en & (address == 6'h20))
-		reg_file[6'h20]     <=  wr_data[7:0];
-end
-
-//assign enable_stall_chk = reg_file[6'h20][1];
-
-// ------------ 0x21	PROFILE_OFFSET	------------
-always @(posedge clock) begin
-	if(write_en & (address == 6'h21))
-		reg_file[6'h21]     <=  wr_data[7:0];
-end
-
-// ------------ 0x22	CRUISE_POWER	------------
-always @(posedge clock) begin
-	if(write_en & (address == 6'h22))
-		reg_file[6'h22]     <=  wr_data[7:0];
-end
-
-// --------------- 0x23	SERVO_CONTROL	----------------
-always @(posedge clock) begin
-	if(write_en & (address == 6'h23))
-		reg_file[6'h23]     <=  wr_data[7:0];
-end
-
-assign servo_control[7:0]    = reg_file[6'h23][7:0];
-
-// --------------- 0x24	SERVO0_CONTROL	----------------
-always @(posedge clock) begin
-	if(write_en & (address == 6'h24))
-		reg_file[6'h24]     <=  wr_data[7:0];
-end
-
-assign servo_position0[7:0]    = reg_file[6'h24][7:0];
-
-// --------------- 0x25	SERVO0_CONTROL	----------------
+// ------------- 0x25	Kp	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h25))
 		reg_file[6'h25]     <=  wr_data[7:0];
 end
 
-assign servo_position1[7:0]    = reg_file[6'h25][7:0];
+assign kp3[7:0]              = reg_file[6'h25][7:0];
 
-// --------------- 0x26	SERVO0_CONTROL	----------------
+// ------------- 0x26	Ki and Kd	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h26))
 		reg_file[6'h26]     <=  wr_data[7:0];
 end
 
-assign servo_position2[7:0]    = reg_file[6'h26][7:0];
+assign ki3[3:0]              = reg_file[6'h26][7:4];
+assign kd3[3:0]              = reg_file[6'h26][3:0];
 
-// --------------- 0x27	SERVO0_CONTROL	----------------
+// ------------- 0x27	ROTATION_PWM_TEST	-------------
 always @(posedge clock) begin
 	if(write_en & (address == 6'h27))
 		reg_file[6'h27]     <=  wr_data[7:0];
 end
 
-assign servo_position3[7:0]    = reg_file[6'h27][7:0];
+assign rot_pwm_ovrd3         = reg_file[6'h27][7];
+assign pwm_dir_ovrd3         = reg_file[6'h27][6];
+assign pwm_ratio_ovrd3[5:0]  = reg_file[6'h27][5:0];
 
-// ---------------   0x28	DEBUG   ----------------
+// --------------- 0x30	SERVO0_CONTROL	----------------
 always @(posedge clock) begin
-	reg_file[6'h28]     <=  debug_signals[7:0];
-end
-
-// ---------------   0x29	DEBUG   ----------------
-always @(posedge clock) begin
-	reg_file[6'h29]     <=  debug_signals[15:8];
-end
-
-// ---------------   0x2A	DEBUG   ----------------
-always @(posedge clock) begin
-	reg_file[6'h2A]     <=  debug_signals[23:16];
-end
-
-// ---------------   0x2B	DEBUG   ----------------
-always @(posedge clock) begin
-	reg_file[6'h2B]     <=  debug_signals[31:24];
-end
-
-// ------------- 0x2C	LED_TEST	-------------
-always @(posedge clock) begin
-	if(write_en & (address == 6'h2C))
-		reg_file[6'h2C]     <=  wr_data[7:0];
-end
-
-assign led_test_enable      = reg_file[6'h2C][4];
-assign motor_hot_led        = reg_file[6'h2C][3];
-assign ps4_connected_led    = reg_file[6'h2C][2];
-assign pi_connected_led     = reg_file[6'h2C][1];
-assign fault_led            = reg_file[6'h2C][0];
-
-// ------------- 0x2D	PROFILE	-------------
-always @(posedge clock) begin
-	if(write_en & (address == 6'h2D))
-		reg_file[6'h2D]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h2E))
-		reg_file[6'h2E]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h2F))
-		reg_file[6'h2F]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h30))
+	if(write_en & (address == 6'h30))
 		reg_file[6'h30]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h31))
+end
+
+assign servo_position0[7:0]    = reg_file[6'h30][7:0];
+
+// --------------- 0x31	SERVO1_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h31))
 		reg_file[6'h31]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h32))
+end
+
+assign servo_position1[7:0]    = reg_file[6'h31][7:0];
+
+// --------------- 0x32	SERVO2_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h32))
 		reg_file[6'h32]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h33))
+end
+
+assign servo_position2[7:0]    = reg_file[6'h32][7:0];
+
+// --------------- 0x33	SERVO3_CONTROL	----------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h33))
 		reg_file[6'h33]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h34))
-		reg_file[6'h34]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h35))
-		reg_file[6'h35]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h36))
-		reg_file[6'h36]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h37))
-		reg_file[6'h37]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h38))
+end
+
+assign servo_position3[7:0]    = reg_file[6'h33][7:0];
+
+// ---------------   0x34	DEBUG   ----------------
+always @(posedge clock) begin
+	reg_file[6'h34]     <=  debug_signals[7:0];
+end
+
+// ---------------   0x35	DEBUG   ----------------
+always @(posedge clock) begin
+	reg_file[6'h35]     <=  debug_signals[15:8];
+end
+
+// ---------------   0x36	DEBUG   ----------------
+always @(posedge clock) begin
+	reg_file[6'h36]     <=  debug_signals[23:16];
+end
+
+// ---------------   0x37	DEBUG   ----------------
+always @(posedge clock) begin
+	reg_file[6'h37]     <=  debug_signals[31:24];
+end
+
+// ------------- 0x38	LED_TEST	-------------
+always @(posedge clock) begin
+	if(write_en & (address == 6'h38))
 		reg_file[6'h38]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h39))
-		reg_file[6'h39]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h3A))
-		reg_file[6'h3A]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h3B))
-		reg_file[6'h3B]     <=  wr_data[7:0];
-    if(write_en & (address == 6'h3C))
-		reg_file[6'h3C]     <=  wr_data[7:0];
-end
-/*
-assign pwm_profile[127:0] =  {reg_file[6'h3C], reg_file[6'h3B], reg_file[6'h3A], reg_file[6'h39],
-                              reg_file[6'h38], reg_file[6'h37], reg_file[6'h36], reg_file[6'h35],
-                              reg_file[6'h34], reg_file[6'h33], reg_file[6'h32], reg_file[6'h31],
-                              reg_file[6'h30], reg_file[6'h2F], reg_file[6'h2E], reg_file[6'h2D]};
-*/
-// ------------- 0x3D Delay Target	-------------
-always @(posedge clock) begin
-	if(write_en & (address == 6'h3D))
-		reg_file[6'h3D]     <=  wr_data[7:0];
 end
 
-
-// ------------- 0x3E Delay Target	-------------
-always @(posedge clock) begin
-	if(write_en & (address == 6'h3E))
-		reg_file[6'h3E]     <=  wr_data[7:0];
-end
-
-assign pwm_debug_value   = reg_file[6'h3E][7:0];
+assign led_test_enable      = reg_file[6'h38][4];
+assign motor_hot_led        = reg_file[6'h38][3];
+assign ps4_connected_led    = reg_file[6'h38][2];
+assign pi_connected_led     = reg_file[6'h38][1];
+assign fault_led            = reg_file[6'h38][0];
 
 endmodule
