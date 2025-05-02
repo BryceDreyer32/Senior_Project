@@ -44,12 +44,12 @@ def readCurrentAngle():
        
 
 def on_start_click():
-#    fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, 0)
+#    fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, 0)
     print("Start clicked")
     print("Writing value: " + hex(powerValue))
-    fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, powerValue)    
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, powerValue)    
 
-#    val = fpga.fpgaRead(Constants.Constants.ROTATION_PWM_TEST_ADDR)
+#    val = fpga.fpgaRead(Constants.Constants.ROTATION0_PWM_TEST_ADDR)
 #    print("Reading back value just written: " + hex(val))
 
     rotationsDone = 0
@@ -118,7 +118,7 @@ def on_start_click():
             prevValue = newValue
             time.sleep(0.01)        
 
-    fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, STOP_VALUE)
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, STOP_VALUE)
 
     # Write data to a file
     print("Writing to file")
@@ -257,19 +257,19 @@ def on_plot():
 
 def on_force_stop():
     print("Force stop clicked")
-    fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, STOP_VALUE)
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, STOP_VALUE)
     slider1.set(STOP_VALUE)
 
 
 def setup():
     # Set the cruise power level
-    fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, STOP_VALUE)
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, STOP_VALUE)
 
-    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND1_ADDR, 750>>4)
-    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND1_ADDR, 800>>4)
-    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND2_ADDR, 2800>>4)
-    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND2_ADDR, 2900>>4)
-    fpga.fpgaWrite(Constants.Constants.BOOST_ADDR, 15)   
+#    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND1_ADDR, 750>>4)
+#    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND1_ADDR, 800>>4)
+#    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND2_ADDR, 2800>>4)
+#    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND2_ADDR, 2900>>4)
+#    fpga.fpgaWrite(Constants.Constants.BOOST_ADDR, 15)   
 
 
 # Run the setup

@@ -80,16 +80,20 @@ module top(
     wire  [7:0]     servo_position3;        // Servo 3 target position
 
     wire  [31:0]    debug_signals;          // Debug signals
+    wire  [7:0]     startup_fail;
     wire  [15:0]    pwm_ctrl0_debug;        
     wire            led_test_enable;        // Enable the led testing
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
-    wire  [63:0]    angle_chg;              // Change in angle
-    wire  [7:0]     pwm_debug_value;
-    wire  [7:0]     kp;
-    wire  [3:0]     ki, kd;
-    wire            rot_pwm_ovrd;       // Rotation motor override enable
-    wire            pwm_dir_ovrd;       // Rotation motor override direction
-    wire  [5:0]     pwm_ratio_ovrd;     // Rotation motor override value
+    wire  [3:0]     sd_pwm_enable, sd_pwm_direction;
+    wire            enable_stall_chk0, enable_stall_chk1, enable_stall_chk2, enable_stall_chk3;
+    wire  [7:0]     kp0, kp1, kp2, kp3;
+    wire  [3:0]     ki0, ki1, ki2, ki3;
+    wire  [3:0]     kd0, kd1, kd2, kd3;
+    wire            rot_pwm_ovrd0, rot_pwm_ovrd1, rot_pwm_ovrd2, rot_pwm_ovrd3;
+    wire            pwm_dir_ovrd0, pwm_dir_ovrd1, pwm_dir_ovrd2, pwm_dir_ovrd3;
+    wire  [5:0]     pwm_ratio_ovrd0, pwm_ratio_ovrd1, pwm_ratio_ovrd2, pwm_ratio_ovrd3;
+
+assign startup_fail[3:0] = 4'b0;
 
 ////////////////////////////////////////////////////////////////
 // Reset Controller
@@ -148,9 +152,54 @@ reg_file rf(
     .pwm2               (pwm2),      	    // PWM control  
     .pwm3               (pwm3),      	    // PWM control
 
+    .enable0            (sr_pwm_enable[0]),    // Motor enable
+    .enable1            (sr_pwm_enable[1]),    // Motor enable
+    .enable2            (sr_pwm_enable[2]),    // Motor enable
+    .enable3            (sr_pwm_enable[3]),    // Motor enable
+    .enable4            (sd_pwm_enable[0]),    // Motor enable
+    .enable5            (sd_pwm_enable[1]),    // Motor enable
+    .enable6            (sd_pwm_enable[2]),    // Motor enable
+    .enable7            (sd_pwm_enable[3]),    // Motor enable
+
+//    .direction0         (sr_pwm_direction[0]), // Motor direction
+//    .direction1         (sr_pwm_direction[1]), // Motor direction
+//    .direction2         (sr_pwm_direction[2]), // Motor direction
+//    .direction3         (sr_pwm_direction[3]), // Motor direction
+    .direction4         (sd_pwm_direction[0]), // Motor direction
+    .direction5         (sd_pwm_direction[1]), // Motor direction
+    .direction6         (sd_pwm_direction[2]), // Motor direction
+    .direction7         (sd_pwm_direction[3]), // Motor direction
+
+    .startup_fail       (startup_fail[7:0]),
     // Rotation Motors outputs
-    .startup_fail1       (startup_fail1[7:0]),// Error: Motor stalled, unable to startup
-    .enable_stall_chk1   (enable_stall_chk1), // Enable the stall check
+    .enable_stall_chk0  (enable_stall_chk0),    // Enable the stall check
+    .kp0                (kp0[7:0]),             // Proportional Constant: fixed point 4.4
+    .ki0                (ki0[3:0]),             // Integral Constant: fixed point 0.4
+    .kd0                (kd0[3:0]),             // Derivative Constant: fixed point 0.4
+    .rot_pwm_ovrd0      (rot_pwm_ovrd0),        // Rotation motor override enable
+    .pwm_dir_ovrd0      (pwm_dir_ovrd0),        // Rotation motor override direction
+    .pwm_ratio_ovrd0    (pwm_ratio_ovrd0[5:0]), // Rotation motor override value
+    .enable_stall_chk1  (enable_stall_chk1),    // Enable the stall check
+    .kp1                (kp1[7:0]),             // Proportional Constant: fixed point 4.4
+    .ki1                (ki1[3:0]),             // Integral Constant: fixed point 0.4
+    .kd1                (kd1[3:0]),             // Derivative Constant: fixed point 0.4
+    .rot_pwm_ovrd1      (rot_pwm_ovrd1),        // Rotation motor override enable
+    .pwm_dir_ovrd1      (pwm_dir_ovrd1),        // Rotation motor override direction
+    .pwm_ratio_ovrd1    (pwm_ratio_ovrd1[5:0]), // Rotation motor override value
+    .enable_stall_chk2  (enable_stall_chk2),    // Enable the stall check
+    .kp2                (kp2[7:0]),             // Proportional Constant: fixed point 4.4
+    .ki2                (ki2[3:0]),             // Integral Constant: fixed point 0.4
+    .kd2                (kd2[3:0]),             // Derivative Constant: fixed point 0.4
+    .rot_pwm_ovrd2      (rot_pwm_ovrd2),        // Rotation motor override enable
+    .pwm_dir_ovrd2      (pwm_dir_ovrd2),        // Rotation motor override direction
+    .pwm_ratio_ovrd2    (pwm_ratio_ovrd2[5:0]), // Rotation motor override value
+    .enable_stall_chk3  (enable_stall_chk3),    // Enable the stall check
+    .kp3                (kp3[7:0]),             // Proportional Constant: fixed point 4.4
+    .ki3                (ki3[3:0]),             // Integral Constant: fixed point 0.4
+    .kd3                (kd3[3:0]),             // Derivative Constant: fixed point 0.4
+    .rot_pwm_ovrd3      (rot_pwm_ovrd3),        // Rotation motor override enable
+    .pwm_dir_ovrd3      (pwm_dir_ovrd3),        // Rotation motor override direction
+    .pwm_ratio_ovrd3    (pwm_ratio_ovrd3[5:0]), // Rotation motor override value
 
     .target_angle0      (target_angle0),    // Rotation target angle
     .current_angle0     (current_angle0),   // The current angle
@@ -160,30 +209,6 @@ reg_file rf(
     .current_angle2     (current_angle2),   // The current angle
     .target_angle3      (target_angle3),    // Rotation target angle
     .current_angle3     (current_angle3),   // The current angle
-    .kp0                (kp0),              // Proportional Constant: fixed point 4.4
-    .ki0                (ki0),              // Integral Constant: fixed point 0.4
-    .kd0                (kd0),              // Derivative Constant: fixed point 0.4
-    .rot_pwm_ovrd0      (rot_pwm_ovrd0),     // Rotation motor override enable
-    .pwm_dir_ovrd0      (pwm_dir_ovrd0),     // Rotation motor override direction
-    .pwm_ratio_ovrd0    (pwm_ratio_ovrd0),   // Rotation motor override value
-    .kp1                (kp1),              // Proportional Constant: fixed point 4.4
-    .ki1                (ki1),              // Integral Constant: fixed point 0.4
-    .kd1                (kd1),              // Derivative Constant: fixed point 0.4
-    .rot_pwm_ovrd1      (rot_pwm_ovrd1),     // Rotation motor override enable
-    .pwm_dir_ovrd1      (pwm_dir_ovrd1),     // Rotation motor override direction
-    .pwm_ratio_ovrd1    (pwm_ratio_ovrd1),   // Rotation motor override value
-    .kp2                (kp2),              // Proportional Constant: fixed point 4.4
-    .ki2                (ki2),              // Integral Constant: fixed point 0.4
-    .kd2                (kd2),              // Derivative Constant: fixed point 0.4
-    .rot_pwm_ovrd2      (rot_pwm_ovrd2),     // Rotation motor override enable
-    .pwm_dir_ovrd2      (pwm_dir_ovrd2),     // Rotation motor override direction
-    .pwm_ratio_ovrd2    (pwm_ratio_ovrd2),   // Rotation motor override value
-    .kp3                (kp3),              // Proportional Constant: fixed point 4.4
-    .ki3                (ki3),              // Integral Constant: fixed point 0.4
-    .kd3                (kd3),              // Derivative Constant: fixed point 0.4
-    .rot_pwm_ovrd3      (rot_pwm_ovrd3),     // Rotation motor override enable
-    .pwm_dir_ovrd3      (pwm_dir_ovrd3),     // Rotation motor override direction
-    .pwm_ratio_ovrd3    (pwm_ratio_ovrd3),   // Rotation motor override value
 
     .abort_angle0       (abort_angle0),     // Aborts rotating to angle
     .abort_angle1       (abort_angle1),     // Aborts rotating to angle
@@ -208,8 +233,7 @@ reg_file rf(
     .pi_connected_led   (pi_connected_led),     // Orange Pi connected
     .ps4_connected_led  (ps4_connected_led),    // PS4 connected
     .fault_led          (fault_led),            // Fault led
-    .motor_hot_led      (motor_hot_led),        // Hot motor led
-    .pwm_debug_value    (pwm_debug_value[7:0])
+    .motor_hot_led      (motor_hot_led)         // Hot motor led
 );
 
 ////////////////////////////////////////////////////////////////
@@ -237,9 +261,9 @@ pwm_ctrl pwm_ctrl0(
 
     // PWM Interface
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
-    .pwm_enable             (sr_enable[0]),         // Enables the PWM output
+    .pwm_enable             (sr_pwm_enable[0]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
-    .pwm_direction          (sr_direction[0]),      // The direction of the motor
+    .pwm_direction          (sr_pwm_direction[0]),  // The direction of the motor
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
 
     .debug_signals          (pwm_ctrl0_debug[15:0]),
@@ -251,7 +275,7 @@ pwm_ctrl pwm_ctrl0(
 
 assign debug_signals[31:0] = {  pwm_ctrl0_debug[15:0],  // 31:16
                                 sr_pwm_ratio[0][7:0],   // 15:8
-                                3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_enable[0],  sr_pwm_update[0], angle_done0};
+                                3'b0, sr_pwm_direction[0], sr_pwm_done[0], sr_pwm_enable[0],  sr_pwm_update[0], angle_done0};
 
 // Register override to control angle motors
 assign pwm_value0 = rot_pwm_ovrd0 ? {pwm_ratio_ovrd0[5:0], 2'b0}: sr_pwm_ratio[0];
@@ -259,9 +283,9 @@ assign pwm_value0 = rot_pwm_ovrd0 ? {pwm_ratio_ovrd0[5:0], 2'b0}: sr_pwm_ratio[0
 spark_pwm sr_pwm0(
     .reset_n                (reset_n),                              // Active low reset
     .clock                  (clock_div_cntr[5]),                    // ~422kHz
-    .pwm_enable             (sr_enable[0] | rot_pwm_ovrd0),         // PWM enable
+    .pwm_enable             (sr_pwm_enable[0] | rot_pwm_ovrd0),     // PWM enable
     .pwm_ratio              (pwm_value0),                           // The high-time of the PWM signal out of 255
-    .pwm_direction          (sr_direction[0]),                      // Motor direction
+    .pwm_direction          (sr_pwm_direction[0]),                  // Motor direction
     .pwm_update             (sr_pwm_update[0] | rot_pwm_ovrd0),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[0]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[0])                             // The output PWM wave
@@ -292,9 +316,9 @@ pwm_ctrl pwm_ctrl1(
 
     // PWM Interface
     .pwm_done               (sr_pwm_done[1]),       // Updated PWM ratio has been applied (1 cycle long pulse)
-    .pwm_enable             (sr_enable[1]),         // Enables the PWM output
+    .pwm_enable             (sr_pwm_enable[1]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[1]),      // The high-time of the PWM signal out of 255.
-    .pwm_direction          (sr_direction[1]),      // The direction of the motor
+    .pwm_direction          (sr_pwm_direction[1]),  // The direction of the motor
     .pwm_update             (sr_pwm_update[1]),     // Request an update to the PWM ratio
 
     .debug_signals          (),
@@ -310,9 +334,9 @@ assign pwm_value1 = rot_pwm_ovrd1 ? {pwm_ratio_ovrd1[5:0], 2'b0}: sr_pwm_ratio[1
 spark_pwm sr_pwm1(
     .reset_n                (reset_n),                              // Active low reset
     .clock                  (clock_div_cntr[5]),                    // ~422kHz
-    .pwm_enable             (sr_enable[1] | rot_pwm_ovrd1),         // PWM enable
+    .pwm_enable             (sr_pwm_enable[1] | rot_pwm_ovrd1),     // PWM enable
     .pwm_ratio              (pwm_value1),                           // The high-time of the PWM signal out of 255
-    .pwm_direction          (sr_direction[1]),                      // Motor direction
+    .pwm_direction          (sr_pwm_direction[1]),                  // Motor direction
     .pwm_update             (sr_pwm_update[1] | rot_pwm_ovrd1),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[1]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[1])                             // The output PWM wave
@@ -343,9 +367,9 @@ pwm_ctrl pwm_ctrl2(
 
     // PWM Interface
     .pwm_done               (sr_pwm_done[2]),       // Updated PWM ratio has been applied (1 cycle long pulse)
-    .pwm_enable             (sr_enable[2]),         // Enables the PWM output
+    .pwm_enable             (sr_pwm_enable[2]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[2]),      // The high-time of the PWM signal out of 255.
-    .pwm_direction          (sr_direction[2]),      // The direction of the motor
+    .pwm_direction          (sr_pwm_direction[2]),  // The direction of the motor
     .pwm_update             (sr_pwm_update[2]),     // Request an update to the PWM ratio
 
     .debug_signals          (),
@@ -361,9 +385,9 @@ assign pwm_value2 = rot_pwm_ovrd2 ? {pwm_ratio_ovrd2[5:0], 2'b0}: sr_pwm_ratio[2
 spark_pwm sr_pwm2(
     .reset_n                (reset_n),                              // Active low reset
     .clock                  (clock_div_cntr[5]),                    // ~422kHz
-    .pwm_enable             (sr_enable[2] | rot_pwm_ovrd2),         // PWM enable
+    .pwm_enable             (sr_pwm_enable[2] | rot_pwm_ovrd2),     // PWM enable
     .pwm_ratio              (pwm_value2),                           // The high-time of the PWM signal out of 255
-    .pwm_direction          (sr_direction[2]),                      // Motor direction
+    .pwm_direction          (sr_pwm_direction[2]),                  // Motor direction
     .pwm_update             (sr_pwm_update[2] | rot_pwm_ovrd2),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[2]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[2])                             // The output PWM wave
@@ -394,9 +418,9 @@ pwm_ctrl pwm_ctrl3(
 
     // PWM Interface
     .pwm_done               (sr_pwm_done[3]),       // Updated PWM ratio has been applied (1 cycle long pulse)
-    .pwm_enable             (sr_enable[3]),         // Enables the PWM output
+    .pwm_enable             (sr_pwm_enable[3]),     // Enables the PWM output
     .pwm_ratio              (sr_pwm_ratio[3]),      // The high-time of the PWM signal out of 255.
-    .pwm_direction          (sr_direction[3]),      // The direction of the motor
+    .pwm_direction          (sr_pwm_direction[3]),  // The direction of the motor
     .pwm_update             (sr_pwm_update[3]),     // Request an update to the PWM ratio
 
     .debug_signals          (),
@@ -412,9 +436,9 @@ assign pwm_value3 = rot_pwm_ovrd3 ? {pwm_ratio_ovrd3[5:0], 2'b0}: sr_pwm_ratio[3
 spark_pwm sr_pwm3(
     .reset_n                (reset_n),                              // Active low reset
     .clock                  (clock_div_cntr[5]),                    // ~422kHz
-    .pwm_enable             (sr_enable[3] | rot_pwm_ovrd3),         // PWM enable
+    .pwm_enable             (sr_pwm_enable[3] | rot_pwm_ovrd3),     // PWM enable
     .pwm_ratio              (pwm_value3),                           // The high-time of the PWM signal out of 255
-    .pwm_direction          (sr_direction[3]),                      // Motor direction
+    .pwm_direction          (sr_pwm_direction[3]),                  // Motor direction
     .pwm_update             (sr_pwm_update[3] | rot_pwm_ovrd3),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[3]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[3])                             // The output PWM wave
@@ -426,14 +450,55 @@ spark_pwm sr_pwm3(
 spark_pwm sd_pwm0(
     .reset_n                (reset_n),                  // Active low reset
     .clock                  (clock_div_cntr[5]),        // ~422kHz
-    .pwm_enable             (enable[0]),                // PWM enable
+    .pwm_enable             (sd_pwm_enable[0]),         // PWM enable
     .pwm_ratio              ({1'b0, pwm0[4:0], 2'b0}),  // The high-time of the PWM signal out of 255
-    .pwm_direction          (direction0),               // Motor direction
+    .pwm_direction          (sd_pwm_direction[0]),      // Motor direction
     .pwm_update             (1'b1),                     // Request an update to the PWM ratio
     .pwm_done               (),                         // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sd_pwm[0])                 // The output PWM wave
 );
 
+////////////////////////////////////////////////////////////////
+// Swerve Drive Motor1
+////////////////////////////////////////////////////////////////
+spark_pwm sd_pwm1(
+    .reset_n                (reset_n),                  // Active low reset
+    .clock                  (clock_div_cntr[5]),        // ~422kHz
+    .pwm_enable             (sd_pwm_enable[1]),         // PWM enable
+    .pwm_ratio              ({1'b0, pwm1[4:0], 2'b0}),  // The high-time of the PWM signal out of 255
+    .pwm_direction          (sd_pwm_direction[1]),      // Motor direction
+    .pwm_update             (1'b1),                     // Request an update to the PWM ratio
+    .pwm_done               (),                         // Updated PWM ratio has been applied (pulse)
+    .pwm_signal             (sd_pwm[1])                 // The output PWM wave
+);
+
+////////////////////////////////////////////////////////////////
+// Swerve Drive Motor2
+////////////////////////////////////////////////////////////////
+spark_pwm sd_pwm2(
+    .reset_n                (reset_n),                  // Active low reset
+    .clock                  (clock_div_cntr[5]),        // ~422kHz
+    .pwm_enable             (sd_pwm_enable[2]),         // PWM enable
+    .pwm_ratio              ({1'b0, pwm2[4:0], 2'b0}),  // The high-time of the PWM signal out of 255
+    .pwm_direction          (sd_pwm_direction[2]),      // Motor direction
+    .pwm_update             (1'b1),                     // Request an update to the PWM ratio
+    .pwm_done               (),                         // Updated PWM ratio has been applied (pulse)
+    .pwm_signal             (sd_pwm[2])                 // The output PWM wave
+);
+
+////////////////////////////////////////////////////////////////
+// Swerve Drive Motor3
+////////////////////////////////////////////////////////////////
+spark_pwm sd_pwm3(
+    .reset_n                (reset_n),                  // Active low reset
+    .clock                  (clock_div_cntr[5]),        // ~422kHz
+    .pwm_enable             (sd_pwm_enable[3]),         // PWM enable
+    .pwm_ratio              ({1'b0, pwm3[4:0], 2'b0}),  // The high-time of the PWM signal out of 255
+    .pwm_direction          (sd_pwm_direction[3]),      // Motor direction
+    .pwm_update             (1'b1),                     // Request an update to the PWM ratio
+    .pwm_done               (),                         // Updated PWM ratio has been applied (pulse)
+    .pwm_signal             (sd_pwm[3])                 // The output PWM wave
+);
 
 
 ////////////////////////////////////////////////////////////////

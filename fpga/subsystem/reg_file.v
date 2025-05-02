@@ -58,53 +58,40 @@ module reg_file (
     output          enable7,   	     // Motor enable
     output          direction7,	     // Motor direction 
 
-    output [7:0]    pwm_debug_value,
+    input  [7:0]    startup_fail,
 
     // ROTATION MOTORS
-    input       [7:0]   startup_fail0,       // Error: Motor stalled, unable to startup
     output              enable_stall_chk0,   // Enable the stall check
-
     output      [7:0]   kp0,                 // Proportional Constant: fixed point 4.4
     output      [3:0]   ki0,                 // Integral Constant: fixed point 0.4
     output      [3:0]   kd0,                 // Derivative Constant: fixed point 0.4
-
     output              rot_pwm_ovrd0,       // Rotation motor override enable
     output              pwm_dir_ovrd0,       // Rotation motor override direction
     output      [5:0]   pwm_ratio_ovrd0,     // Rotation motor override value
 
-    input       [7:0]   startup_fail1,       // Error: Motor stalled, unable to startup
     output              enable_stall_chk1,   // Enable the stall check
-
     output      [7:0]   kp1,                 // Proportional Constant: fixed point 4.4
     output      [3:0]   ki1,                 // Integral Constant: fixed point 0.4
     output      [3:0]   kd1,                 // Derivative Constant: fixed point 0.4
-
     output              rot_pwm_ovrd1,       // Rotation motor override enable
     output              pwm_dir_ovrd1,       // Rotation motor override direction
     output      [5:0]   pwm_ratio_ovrd1,     // Rotation motor override value
 
-    input       [7:0]   startup_fail2,       // Error: Motor stalled, unable to startup
     output              enable_stall_chk2,   // Enable the stall check
-
     output      [7:0]   kp2,                 // Proportional Constant: fixed point 4.4
     output      [3:0]   ki2,                 // Integral Constant: fixed point 0.4
     output      [3:0]   kd2,                 // Derivative Constant: fixed point 0.4
-
     output              rot_pwm_ovrd2,       // Rotation motor override enable
     output              pwm_dir_ovrd2,       // Rotation motor override direction
     output      [5:0]   pwm_ratio_ovrd2,     // Rotation motor override value
 
-    input       [7:0]   startup_fail3,       // Error: Motor stalled, unable to startup
     output              enable_stall_chk3,   // Enable the stall check
-
     output      [7:0]   kp3,                 // Proportional Constant: fixed point 4.4
     output      [3:0]   ki3,                 // Integral Constant: fixed point 0.4
     output      [3:0]   kd3,                 // Derivative Constant: fixed point 0.4
-
     output              rot_pwm_ovrd3,       // Rotation motor override enable
     output              pwm_dir_ovrd3,       // Rotation motor override direction
     output      [5:0]   pwm_ratio_ovrd3,     // Rotation motor override value
-
 
     output      [11:0]  target_angle0,      // Rotation target angle
     input       [11:0]  current_angle0,     // The current angle

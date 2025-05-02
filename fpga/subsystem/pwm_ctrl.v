@@ -21,9 +21,6 @@ module pwm_ctrl(
 
     // Acceleration hammer interface    
     input                   enable_stall_chk,   // Enable the stall check
-    input           [7:0]   delay_target,       // Number of times to remain on each profile step
-    input           [7:0]   profile_offset,     // An offset that is added to each of the profile steps
-    input           [7:0]   cruise_power,       // The amount of power to apply during the cruise phase
     output                  stalled,            // Error: Motor stalled, unable to startup
     
     // PWM Interface    

@@ -30,27 +30,28 @@ def on_motorPower_change(event):
     print("powerValue = " + hex(powerValue))    
 
 def on_start_click():
-#    fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, 0)
+#    fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, 0)
     print("Start clicked")
     print("Writing value: " + hex(powerValue))
-    fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, powerValue)    
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, powerValue)    
+    print("Reading back: " + hex(fpga.fpgaRead(Constants.Constants.ROTATION0_PWM_TEST_ADDR)))
 
 
 def on_force_stop():
     print("Force stop clicked")
-    fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, STOP_VALUE)
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, STOP_VALUE)
     slider1.set(STOP_VALUE)
 
 
 def setup():
     # Set the cruise power level
-    fpga.fpgaWrite(Constants.Constants.ROTATION_PWM_TEST_ADDR, STOP_VALUE)
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, STOP_VALUE)
 
-    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND1_ADDR, 750>>4)
-    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND1_ADDR, 800>>4)
-    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND2_ADDR, 2800>>4)
-    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND2_ADDR, 2900>>4)
-    fpga.fpgaWrite(Constants.Constants.BOOST_ADDR, 15)   
+#    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND1_ADDR, 750>>4)
+#    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND1_ADDR, 800>>4)
+#    fpga.fpgaWrite(Constants.Constants.LOWER_BOUND2_ADDR, 2800>>4)
+#    fpga.fpgaWrite(Constants.Constants.UPPER_BOUND2_ADDR, 2900>>4)
+#    fpga.fpgaWrite(Constants.Constants.BOOST_ADDR, 15)   
 
 
 # Run the setup
