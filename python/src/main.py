@@ -28,12 +28,13 @@ class MainLoop:
 #        visionProcess = Process( )
 
         # Start each process
-#        drvProcess.start( )
+        drvProcess.start( )
 
         # Start the GUI process
         app = QtWidgets.QApplication(sys.argv)
-        main = Gui(fpga)
-        main.show()
+        gui = Gui(fpga)
+        self.drive.ps4ctrl.setGuiEnabled(gui)
+        gui.show()
         sys.exit(app.exec_())
 
         # Call the main loop

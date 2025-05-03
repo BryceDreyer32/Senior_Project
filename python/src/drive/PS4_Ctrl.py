@@ -15,6 +15,7 @@ class PS4_Ctrl:
         self.runFlag = False
         self.ps4Connected = False
         self.ps4Battery = False
+        self.gui = None
 
         # Enable SPI
         self.spi = spidev.SpiDev(spiDevice, spiChannel)
@@ -31,6 +32,9 @@ class PS4_Ctrl:
 
         # Set the run flag to be true
         self.setRunFlag()
+
+    def setGuiEnabled(self, gui):
+        self.gui = gui
 
     def print(self, str):
         if( Constants.PS4_DEBUG ):
@@ -66,10 +70,16 @@ class PS4_Ctrl:
                 str(data[3]-128).rjust(4) + ", " + 
                 str(data[4]-128).rjust(4) + ", " + 
                 str(data[5]).rjust(4))
+            # These 2 lines are very specific to the GUI!
+            if(self.gui is not None):
+                self.gui.processPs4Data(data)
         
     def getPs4ConnectionStatus(self, data):
         if( data[1] == 1):
             self.ps4Connected = True
+            # These 2 lines are very specific to the GUI!
+            if(self.gui is not None):
+                self.gui.setPS4Connected()
         else:
             self.ps4Connected = False
 
@@ -103,6 +113,8 @@ class PS4_Ctrl:
                 case Constants.PS4_CONNECT_DATA_FRAME   : self.getPs4ConnectionStatus( data )
                 case _                                  : self.print("Invalid header " + str(data[0]))
             
+            time.sleep(0.1)
+
         # When the runFlag is cleared, loop is exited and cleanup performed
         self.cleanup()
 
