@@ -3,12 +3,15 @@
 # Description: This is the main entry point of the Robot code
 from PyQt5 import QtWidgets, uic
 from PyQt5 import uic
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QPixmap
+from PyQt5.QtCore import QThread, pyqtSignal
 import sys, os, time
 sys.path.append(os.path.realpath('python/src/constants'))
 sys.path.append(os.path.realpath('python/src/subsystem/fpga'))
+sys.path.append(os.path.realpath('python/src/gui'))
 import Constants
 import FpgaCommunication
+import PS4_CtrlGui
 
 class Gui(QtWidgets.QDialog):
     rot1 = False
@@ -18,7 +21,11 @@ class Gui(QtWidgets.QDialog):
     drv1 = False
     drv2 = False
     drv3 = False
-    drv4 = False   
+    drv4 = False
+    ps4Connected = False   
+
+    DRV_POWER = 10
+    ROT_POWER = 6
 
     def __init__(self, fpga):
         super().__init__()
@@ -50,6 +57,11 @@ class Gui(QtWidgets.QDialog):
         self.Wrist_Slider.valueChanged.connect(self.on_wristSlider_change)
         self.Clamp_Slider.valueChanged.connect(self.on_grabberSlider_change)
 
+        self.Estop_Button.clicked.connect(self.eStop)
+
+        self.ps4_thread = PS4_CtrlGui.PS4_CtrlGui()
+        self.ps4_thread.ps4_data.connect(self.processPs4Data)
+        self.ps4_thread.start()
 
 ####################################################################################
 # PS4 ROUTINES
@@ -58,81 +70,80 @@ class Gui(QtWidgets.QDialog):
         # Print connected in green, then change color to redish
         self.PS4_Dialog_box.setTextColor(QColor(0, 255, 0))
         self.PS4_Dialog_box.append("PS4 connected to ESP32")
-        self.PS4_Dialog_box.setTextColor(QColor(250, 100, 100))
+        self.PS4_Dialog_box.setTextColor(QColor(200, 100, 100))
+
+#        self.LL.setStyleSheet("QProgressBar::chunk "
+#                  "{"
+#                    "background-color: red;"
+#                    "background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(35, 40, 3, 255), stop:0.16 rgba(136, 106, 22, 255), stop:0.225 rgba(166, 140, 41, 255), stop:0.285 rgba(204, 181, 74, 255), stop:0.345 rgba(235, 219, 102, 255), stop:0.415 rgba(245, 236, 112, 255), stop:0.52 rgba(209, 190, 76, 255), stop:0.57 rgba(187, 156, 51, 255), stop:0.635 rgba(168, 142, 42, 255), stop:0.695 rgba(202, 174, 68, 255), stop:0.75 rgba(218, 202, 86, 255), stop:0.815 rgba(208, 187, 73, 255), stop:0.88 rgba(187, 156, 51, 255), stop:0.935 rgba(137, 108, 26, 255), stop:1 rgba(35, 40, 3, 255));"
+#                  "}")
+
   
     def processPs4Data(self, data):
+        data = [int(x) for x in data.split(',')]
+        match ( data[0] ):
+            case Constants.Constants.PS4_ALL_DATA_FRAME       : self.getPs4Data( data )
+            case Constants.Constants.PS4_CONNECT_DATA_FRAME   : self.getPs4ConnectionStatus( data )
+            case _                                  : print("Invalid header " + str(data[0]))
+
+    def getPs4Data(self, data):
+        if(self.ps4Connected):
+            print("[PS4_Ctrl.getPs4Data] Received data:  " + 
+                str(data[1]-128).rjust(4) + ", " + 
+                str(data[2]-128).rjust(4) + ", " + 
+                str(data[3]-128).rjust(4) + ", " + 
+                str(data[4]-128).rjust(4) + ", " + 
+                str(data[5]).rjust(4))
+            self.displayPs4Data(data)
+        
+    def getPs4ConnectionStatus(self, data):
+        if(not self.ps4Connected):
+            self.ps4Connected = True
+            if( data[1] == 1):
+                self.ps4Connected = True
+            else:
+                self.ps4Connected = False
+
+            self.ps4Battery = data[2]
+            self.setPS4Connected()
+
+    def displayPs4Data(self, data):
         # Left stick left-right
-        LLval = data[1]-128 if data[1] < 128 else 0
-        LRval = data[1]-128 if data[1] >= 128 else 0
+        LLval =  256-data[1] if (data[1] < 250 and data[1] > 128) else 0
+        LRval =      data[1] if (data[1] > 5   and data[1] < 128) else 0
 
-        self.LL.tracking = True
-        self.LL.value = LLval
-        self.LL.sliderPosition = LLval
-        self.LL.update()
-        self.LL.repaint()                
-
-        self.LR.tracking = True
-        self.LR.value = LRval
-        self.LR.sliderPosition = LRval
-        self.LR.update()
-        self.LR.repaint()                
+        self.LL.setValue(LLval)
+        self.LR.setValue(LRval)
 
         # Left stick up-down
-        LUval = data[2]-128 if data[2] < 128 else 0
-        LDval = data[2]-128 if data[2] >= 128 else 0
+        LUval =     data[2] if (data[2] > 5   and data[2] < 128) else 0
+        LDval = 256-data[2] if (data[2] < 250 and data[1] > 128) else 0
 
-        self.LU.tracking = True
-        self.LU.value = LUval
-        self.LU.sliderPosition = LUval
-        self.LU.update()
-        self.LU.repaint()                
-
-        self.LD.tracking = True
-        self.LD.value = LDval
-        self.LD.sliderPosition = LDval
-        self.LD.update()
-        self.LD.repaint() 
+        self.LU.setValue(LUval)
+        self.LD.setValue(LDval)
 
         # Right stick left-right
-        RLval = data[3]-128 if data[3] < 128 else 0
-        RRval = data[3]-128 if data[3] >= 128 else 0
+        RLval =  256-data[3] if (data[3] < 250 and data[3] > 128) else 0
+        RRval =      data[3] if (data[3] > 5   and data[3] < 128) else 0
 
-        self.RL.tracking = True
-        self.RL.value = RLval
-        self.RL.sliderPosition = RLval
-        self.RL.update()
-        self.RL.repaint()                
-
-        self.RR.tracking = True
-        self.RR.value = RRval
-        self.RR.sliderPosition = RRval
-        self.RR.update()
-        self.RR.repaint()                
+        self.RL.setValue(RLval)
+        self.RR.setValue(RRval)
 
         # Right stick up-down
-        RUval = data[4]-128 if data[4] < 128 else 0
-        RDval = data[4]-128 if data[4] >= 128 else 0
+        RUval =     data[4] if (data[4] > 5   and data[4] < 128) else 0
+        RDval = 256-data[4] if (data[4] < 250 and data[4] > 128) else 0
 
-        self.RU.tracking = True
-        self.RU.value = RUval
-        self.RU.sliderPosition = RUval
-        self.RU.update()
-        self.RU.repaint()                
-
-        self.RD.tracking = True
-        self.RD.value = RDval
-        self.RD.sliderPosition = RDval
-        self.RD.update()
-        self.RD.repaint() 
+        self.RU.setValue(RUval)
+        self.RD.setValue(RDval)
 
         # Buttons
-        square = 1 if data[5] & 0x1 else 0
-        circle = 1 if data[5] & 0x2 else 0
-        triangle = 1 if data[5] & 0x4 else 0
-        x = 1 if data[5] & 0x8 else 0
+        square      = 1 if data[5] & 0x1 else 0
+        x           = 1 if data[5] & 0x2 else 0
+        circle      = 1 if data[5] & 0x4 else 0
+        triangle    = 1 if data[5] & 0x8 else 0
 
-        DarkButton = "GUIs/PyQt5/Pictures/DarkGoldButton.png"
-        LightButton = "GUIs/PyQt5/Pictures/GoldButton.png"
+        DarkButton = QPixmap("GUIs/PyQt5/Pictures/DarkGoldButton.png")
+        LightButton = QPixmap("GUIs/PyQt5/Pictures/GoldButton.png")
         
         if(square):
             self.Button_Square.setPixmap(DarkButton)
@@ -155,10 +166,10 @@ class Gui(QtWidgets.QDialog):
             self.Button_X.setPixmap(LightButton)
 
         # Text box
-        self.PS4_Dialog_box.append( str(data[1]-128).rjust(4) + ", " + 
-                                    str(data[2]-128).rjust(4) + ", " + 
-                                    str(data[3]-128).rjust(4) + ", " + 
-                                    str(data[4]-128).rjust(4) + ", " + 
+        self.PS4_Dialog_box.append( str(data[1]).rjust(4) + ", " + 
+                                    str(data[2]).rjust(4) + ", " + 
+                                    str(data[3]).rjust(4) + ", " + 
+                                    str(data[4]).rjust(4) + ", " + 
                                     str(data[5]).rjust(4) )
 
 
@@ -168,11 +179,11 @@ class Gui(QtWidgets.QDialog):
     def toggleRotation1(self):
         if(self.rot1):
             self.Rotation_Button_1.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, 0x0)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, 0x80)
         else:
             self.Rotation_Button_1.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = 5 | (1 << 6) | (1 << 7)
+            powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, powerValue)
             print("Wrote " + hex(self.fpga.fpgaRead(Constants.Constants.ROTATION0_PWM_TEST_ADDR)))
         self.rot1 = not self.rot1
@@ -180,33 +191,33 @@ class Gui(QtWidgets.QDialog):
     def toggleRotation2(self):
         if(self.rot2):
             self.Rotation_Button_2.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, 0x0)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, 0x80)
         else:
             self.Rotation_Button_2.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = 5 | (1 << 6) | (1 << 7)
+            powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, powerValue)
         self.rot2 = not self.rot2
 
     def toggleRotation3(self):
         if(self.rot3):
             self.Rotation_Button_3.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, 0x0)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, 0x80)
         else:
             self.Rotation_Button_3.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = 5 | (1 << 6) | (1 << 7)
+            powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, powerValue)
         self.rot3 = not self.rot3
 
     def toggleRotation4(self):
         if(self.rot4):
             self.Rotation_Button_4.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, 0x0)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, 0x80)
         else:
             self.Rotation_Button_4.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = 5 | (1 << 6) | (1 << 7)
+            powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, powerValue)
         self.rot4 = not self.rot4
 
@@ -221,7 +232,7 @@ class Gui(QtWidgets.QDialog):
         else:
             self.Drive_Button_1.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = 5 | (1 << 6)
+            powerValue = self.DRV_POWER | (1 << 6)
             self.fpga.fpgaWrite(Constants.Constants.DRIVE0_CONTROL_ADDR, powerValue)
         self.drv1 = not self.drv1
 
@@ -232,7 +243,7 @@ class Gui(QtWidgets.QDialog):
         else:
             self.Drive_Button_2.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = 5 | (1 << 6)
+            powerValue = self.DRV_POWER | (1 << 6)
             self.fpga.fpgaWrite(Constants.Constants.DRIVE1_CONTROL_ADDR, powerValue)
         self.drv2 = not self.drv2
 
@@ -243,7 +254,7 @@ class Gui(QtWidgets.QDialog):
         else:
             self.Drive_Button_3.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = 5 | (1 << 6)
+            powerValue = self.DRV_POWER | (1 << 6)
             self.fpga.fpgaWrite(Constants.Constants.DRIVE2_CONTROL_ADDR, powerValue)
         self.drv3 = not self.drv3
 
@@ -254,7 +265,7 @@ class Gui(QtWidgets.QDialog):
         else:
             self.Drive_Button_4.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = 5 | (1 << 6)
+            powerValue = self.DRV_POWER | (1 << 6)
             self.fpga.fpgaWrite(Constants.Constants.DRIVE3_CONTROL_ADDR, powerValue)
         self.drv4 = not self.drv4
 
@@ -364,3 +375,16 @@ class Gui(QtWidgets.QDialog):
         self.fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, self.sliderValueToPWM(event.widget.get(), Constants.Constants.GRABBER_SERVO_CONTROL_ADDR))
 
 
+####################################################################################
+# MISC ROUTINES
+####################################################################################
+    def eStop(self):
+        self.fpga.fpgaWrite(Constants.Constants.DRIVE0_CONTROL_ADDR, 0x0)
+        self.fpga.fpgaWrite(Constants.Constants.DRIVE1_CONTROL_ADDR, 0x0)
+        self.fpga.fpgaWrite(Constants.Constants.DRIVE2_CONTROL_ADDR, 0x0)
+        self.fpga.fpgaWrite(Constants.Constants.DRIVE3_CONTROL_ADDR, 0x0)
+
+        self.fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, 0x80)
+        self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, 0x80)
+        self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, 0x80)
+        self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, 0x80)

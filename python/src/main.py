@@ -23,17 +23,17 @@ class MainLoop:
 
 #        # Create a new process for each of the instances, and assign the loop of
 #        # each to the process
-        drvProcess = Process( target = self.drive.loop )
+#        drvProcess = Process( target = self.drive.loop )
 #        armProcess = Process( )
 #        visionProcess = Process( )
 
         # Start each process
-        drvProcess.start( )
+#        drvProcess.start( )
 
         # Start the GUI process
         app = QtWidgets.QApplication(sys.argv)
         gui = Gui(fpga)
-        self.drive.ps4ctrl.setGuiEnabled(gui)
+
         gui.show()
         sys.exit(app.exec_())
 
