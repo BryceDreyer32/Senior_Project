@@ -342,12 +342,15 @@ color: rgb(0, 0, 0);</string>
      <string notr="true">background-color:rgba(36, 36, 36, 150);
 color: rgb(255, 255, 255);</string>
     </property>
+    <property name="markdown">
+     <string/>
+    </property>
     <property name="html">
      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:16pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:16pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="Sipeed_Logo">
@@ -1004,12 +1007,15 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
      <string notr="true">background-color:rgba(36, 36, 36, 150);
 color: rgb(255, 255, 255);</string>
     </property>
+    <property name="markdown">
+     <string/>
+    </property>
     <property name="html">
      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:16pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:16pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="PS4_Inputs">
@@ -1075,6 +1081,9 @@ alternate-background-color: rgb(0, 0, 0);
 color: rgb(0, 0, 0);
 selection-color: rgb(0, 0, 0);</string>
      </property>
+     <property name="maximum">
+      <number>128</number>
+     </property>
      <property name="value">
       <number>24</number>
      </property>
@@ -1125,6 +1134,9 @@ alternate-background-color: rgb(0, 0, 0);
 color: rgb(0, 0, 0);
 selection-color: rgb(0, 0, 0);</string>
      </property>
+     <property name="maximum">
+      <number>128</number>
+     </property>
      <property name="value">
       <number>24</number>
      </property>
@@ -1155,6 +1167,9 @@ border-color: rgb(0, 0, 0);
 alternate-background-color: rgb(0, 0, 0);
 color: rgb(0, 0, 0);
 selection-color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="maximum">
+      <number>128</number>
      </property>
      <property name="value">
       <number>24</number>
@@ -1203,6 +1218,9 @@ alternate-background-color: rgb(0, 0, 0);
 color: rgb(0, 0, 0);
 selection-color: rgb(0, 0, 0);</string>
      </property>
+     <property name="maximum">
+      <number>128</number>
+     </property>
      <property name="value">
       <number>24</number>
      </property>
@@ -1231,6 +1249,9 @@ alternate-background-color: rgb(0, 0, 0);
 color: rgb(0, 0, 0);
 selection-color: rgb(0, 0, 0);</string>
      </property>
+     <property name="maximum">
+      <number>128</number>
+     </property>
      <property name="value">
       <number>24</number>
      </property>
@@ -1244,7 +1265,7 @@ selection-color: rgb(0, 0, 0);</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="Button_Sqare">
+    <widget class="QLabel" name="Button_Square">
      <property name="geometry">
       <rect>
        <x>410</x>
@@ -1284,6 +1305,9 @@ alternate-background-color: rgb(0, 0, 0);
 color: rgb(0, 0, 0);
 selection-color: rgb(0, 0, 0);</string>
      </property>
+     <property name="maximum">
+      <number>128</number>
+     </property>
      <property name="value">
       <number>24</number>
      </property>
@@ -1318,6 +1342,9 @@ alternate-background-color: rgb(0, 0, 0);
 color: rgb(0, 0, 0);
 selection-color: rgb(0, 0, 0);</string>
      </property>
+     <property name="maximum">
+      <number>128</number>
+     </property>
      <property name="value">
       <number>24</number>
      </property>
@@ -1348,6 +1375,9 @@ border-color: rgb(0, 0, 0);
 alternate-background-color: rgb(0, 0, 0);
 color: rgb(0, 0, 0);
 selection-color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="maximum">
+      <number>128</number>
      </property>
      <property name="value">
       <number>24</number>
@@ -1474,7 +1504,7 @@ selection-color: rgb(0, 0, 0);</string>
      </property>
     </item>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="Estop_Button">
     <property name="geometry">
      <rect>
       <x>120</x>

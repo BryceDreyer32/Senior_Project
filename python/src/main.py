@@ -23,7 +23,7 @@ class MainLoop:
 
 #        # Create a new process for each of the instances, and assign the loop of
 #        # each to the process
-        drvProcess = Process( target = self.drive.loop )
+#        drvProcess = Process( target = self.drive.loop )
 #        armProcess = Process( )
 #        visionProcess = Process( )
 
@@ -32,8 +32,9 @@ class MainLoop:
 
         # Start the GUI process
         app = QtWidgets.QApplication(sys.argv)
-        main = Gui(fpga)
-        main.show()
+        gui = Gui(fpga)
+
+        gui.show()
         sys.exit(app.exec_())
 
         # Call the main loop

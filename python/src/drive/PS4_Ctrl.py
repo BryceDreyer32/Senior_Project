@@ -32,6 +32,7 @@ class PS4_Ctrl:
         # Set the run flag to be true
         self.setRunFlag()
 
+
     def print(self, str):
         if( Constants.PS4_DEBUG ):
             print( str )
@@ -103,6 +104,8 @@ class PS4_Ctrl:
                 case Constants.PS4_CONNECT_DATA_FRAME   : self.getPs4ConnectionStatus( data )
                 case _                                  : self.print("Invalid header " + str(data[0]))
             
+            time.sleep(0.1)
+
         # When the runFlag is cleared, loop is exited and cleanup performed
         self.cleanup()
 
