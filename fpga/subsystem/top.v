@@ -85,6 +85,7 @@ module top(
     wire  [15:0]    pwm_ctrl0_debug;        
     wire            led_test_enable;        // Enable the led testing
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
+    wire  [3:0]     led_pwm;
     wire  [3:0]     sd_pwm_enable, sd_pwm_direction;
     wire            enable_stall_chk0, enable_stall_chk1, enable_stall_chk2, enable_stall_chk3;
     wire  [7:0]     kp0, kp1, kp2, kp3;
@@ -231,6 +232,7 @@ reg_file rf(
     .servo_position2    (servo_position2),          // Servo 2 target position
     .servo_position3    (servo_position3),          // Servo 3 target position
 
+<<<<<<< HEAD
     .debug_signals      (debug_signals[31:0]),      // Debug signals
     .led_test_enable    (led_test_enable),          // Enable the led testing
     .pi_connected_led   (pi_connected_led),         // Orange Pi connected
@@ -249,6 +251,15 @@ spark_pwm sr_pwm0(
     .pwm_update             (1'b1),     // Request an update to the PWM ratio
     .pwm_done               (),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[0])                             // The output PWM wave
+=======
+    .debug_signals      (debug_signals[31:0]),  // Debug signals
+    .led_pwm            (led_pwm[3:0]),         // LED intesity
+    .led_test_enable    (led_test_enable),      // Enable the led testing
+    .pi_connected_led   (pi_connected_led),     // Orange Pi connected
+    .ps4_connected_led  (ps4_connected_led),    // PS4 connected
+    .fault_led          (fault_led),            // Fault led
+    .motor_hot_led      (motor_hot_led)         // Hot motor led
+>>>>>>> 3d5d45b99985d7365381ab0946f4c38c9a6366b0
 );
 */
 
