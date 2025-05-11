@@ -120,6 +120,7 @@ module reg_file (
     output      [7:0]   servo_position3,    // Servo 3 target position
 
     input       [31:0]  debug_signals,      // Debug signals
+    output      [3:0]   led_pwm,            // LED intesity
     output              led_test_enable,    // Enable the led testing
     output              motor_hot_led,      // Hot motor led
     output              pi_connected_led,   // Orange Pi connected
@@ -554,8 +555,8 @@ always @(posedge clock) begin
 		reg_file[6'h38]     <=  wr_data[7:0];
 end
 
-assign led_test_enable      = reg_file[6'h38][4];
-assign motor_hot_led        = reg_file[6'h38][3];
+assign led_pwm              = reg_file[6'h38][7:4];
+assign led_test_enable      = reg_file[6'h38][3];
 assign ps4_connected_led    = reg_file[6'h38][2];
 assign pi_connected_led     = reg_file[6'h38][1];
 assign fault_led            = reg_file[6'h38][0];

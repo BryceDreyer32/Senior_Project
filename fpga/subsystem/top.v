@@ -84,6 +84,7 @@ module top(
     wire  [15:0]    pwm_ctrl0_debug;        
     wire            led_test_enable;        // Enable the led testing
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
+    wire  [3:0]     led_pwm;
     wire  [3:0]     sd_pwm_enable, sd_pwm_direction;
     wire            enable_stall_chk0, enable_stall_chk1, enable_stall_chk2, enable_stall_chk3;
     wire  [7:0]     kp0, kp1, kp2, kp3;
@@ -229,6 +230,7 @@ reg_file rf(
     .servo_position3    (servo_position3),  // Servo 3 target position
 
     .debug_signals      (debug_signals[31:0]),  // Debug signals
+    .led_pwm            (led_pwm[3:0]),         // LED intesity
     .led_test_enable    (led_test_enable),      // Enable the led testing
     .pi_connected_led   (pi_connected_led),     // Orange Pi connected
     .ps4_connected_led  (ps4_connected_led),    // PS4 connected
@@ -542,9 +544,25 @@ pwm grabber_servo(
     .pwm_signal             (servo_pwm[3])
 );
 
-//assign status_fault = led_test_enable ? fault_led       : |(sr_fault[3:0]);   // Control for LED for when a fault has occurred
-assign status_pi    = led_test_enable ? 1'b1            : pi_connected_led;   // Control for LED for when the Orange Pi is connected
-assign status_ps4   = led_test_enable ? 1'b1            : ps4_connected_led;  // Control for LED for when the PS4 controller is connected
-assign status_debug = led_test_enable ? motor_hot_led   : 1'b1;               // Control for LED for general debug
+
+
+////////////////////////////////////////////////////////////////
+// LEDs
+////////////////////////////////////////////////////////////////
+wire pwm_light;
+pwm lights(
+    .reset_n                (reset_n),              // Active low reset
+    .clock                  (clock_div_cntr[10]),   // 
+    .pwm_enable             (1'b1),                 // PWM enable
+    .pwm_ratio              ({led_pwm[3:0], 4'b0}), // The high-time of the PWM signal out of 255
+    .pwm_update             (1'b1),                 // Request an update to the PWM ratio
+    .pwm_done               (),                     // Updated PWM ratio has been applied (pulse)
+    .pwm_signal             (pwm_light)             // The output PWM wave
+);
+
+assign status_fault = pwm_light & fault_led;
+assign status_pi    = pwm_light & pi_connected_led;
+assign status_ps4   = pwm_light & ps4_connected_led;
+assign status_debug = pwm_light;//led_test_enable ? motor_hot_led   : 1'b1;               // Control for LED for general debug
 
 endmodule
