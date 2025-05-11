@@ -16,6 +16,7 @@ module top(
     output  [3:0]   sr_pwm,         // The swerve rotation PWM wave
     output  [3:0]   scl,            // The I2C clock to encoders
     inout   [3:0]   sda,            // The I2C bi-directional data to/from encoders
+    output  [3:0]   gnd,
 
     // Swerve Drive Motors
     output  [3:0]   sd_pwm,         // The swerve drive PWM signal
@@ -94,6 +95,7 @@ module top(
     wire  [5:0]     pwm_ratio_ovrd0, pwm_ratio_ovrd1, pwm_ratio_ovrd2, pwm_ratio_ovrd3;
 
 assign startup_fail[3:0] = 4'b0;
+//assign gnd[3:0]          = 4'b0;
 
 ////////////////////////////////////////////////////////////////
 // Reset Controller
@@ -134,107 +136,122 @@ spi spi(
     .rd_data            (rd_data[7:0]) 	    // Read data
 );
 
+
 ////////////////////////////////////////////////////////////////
 // Register File (with address decode)
 ////////////////////////////////////////////////////////////////
 reg_file rf(
-    .reset_n            (reset_n),   	    // Active low reset
-    .clock              (clock),     	    // The main clock
-    .address            (address[5:0]),	    // Read / write address
-    .write_en           (write_en),  	    // Write enable
-    .wr_data            (wr_data[7:0]),	    // Write data
-    .read_en            (read_en),   	    // Read enable
-    .rd_data            (rd_data[7:0]),	    // Read data
-				     
-    // Drive Motors	outputs	     
-    .pwm0               (pwm0),      	    // PWM control  
-    .pwm1               (pwm1),      	    // PWM control  
-    .pwm2               (pwm2),      	    // PWM control  
-    .pwm3               (pwm3),      	    // PWM control
+    .reset_n            (reset_n),   	            // Active low reset
+    .clock              (clock),     	            // The main clock
+    .address            (address[5:0]),	            // Read / write address
+    .write_en           (write_en),  	            // Write enable
+    .wr_data            (wr_data[7:0]),	            // Write data
+    .read_en            (read_en),   	            // Read enable
+    .rd_data            (rd_data[7:0]),	            // Read data
 
-    .enable0            (sr_pwm_enable[0]),    // Motor enable
-    .enable1            (sr_pwm_enable[1]),    // Motor enable
-    .enable2            (sr_pwm_enable[2]),    // Motor enable
-    .enable3            (sr_pwm_enable[3]),    // Motor enable
-    .enable4            (sd_pwm_enable[0]),    // Motor enable
-    .enable5            (sd_pwm_enable[1]),    // Motor enable
-    .enable6            (sd_pwm_enable[2]),    // Motor enable
-    .enable7            (sd_pwm_enable[3]),    // Motor enable
+    // Drive Motors	outputs	            
+    .pwm0               (pwm0),      	            // PWM control  
+    .pwm1               (pwm1),      	            // PWM control  
+    .pwm2               (pwm2),      	            // PWM control  
+    .pwm3               (pwm3),      	            // PWM control
 
-//    .direction0         (sr_pwm_direction[0]), // Motor direction
-//    .direction1         (sr_pwm_direction[1]), // Motor direction
-//    .direction2         (sr_pwm_direction[2]), // Motor direction
-//    .direction3         (sr_pwm_direction[3]), // Motor direction
-    .direction4         (sd_pwm_direction[0]), // Motor direction
-    .direction5         (sd_pwm_direction[1]), // Motor direction
-    .direction6         (sd_pwm_direction[2]), // Motor direction
-    .direction7         (sd_pwm_direction[3]), // Motor direction
+    .sr_enable0         (sr_pwm_enable[0]),         // Motor enable
+    .sr_enable1         (sr_pwm_enable[1]),         // Motor enable
+    .sr_enable2         (sr_pwm_enable[2]),         // Motor enable
+    .sr_enable3         (sr_pwm_enable[3]),         // Motor enable
+    .sd_enable0         (sd_pwm_enable[0]),         // Motor enable
+    .sd_enable1         (sd_pwm_enable[1]),         // Motor enable
+    .sd_enable2         (sd_pwm_enable[2]),         // Motor enable
+    .sd_enable3         (sd_pwm_enable[3]),         // Motor enable
+
+//    .direction0         (sr_pwm_direction[0]),    // Motor direction
+//    .direction1         (sr_pwm_direction[1]),    // Motor direction
+//    .direction2         (sr_pwm_direction[2]),    // Motor direction
+//    .direction3         (sr_pwm_direction[3]),    // Motor direction
+    .direction4         (sd_pwm_direction[0]),      // Motor direction
+    .direction5         (sd_pwm_direction[1]),      // Motor direction
+    .direction6         (sd_pwm_direction[2]),      // Motor direction
+    .direction7         (sd_pwm_direction[3]),      // Motor direction
 
     .startup_fail       (startup_fail[7:0]),
     // Rotation Motors outputs
-    .enable_stall_chk0  (enable_stall_chk0),    // Enable the stall check
-    .kp0                (kp0[7:0]),             // Proportional Constant: fixed point 4.4
-    .ki0                (ki0[3:0]),             // Integral Constant: fixed point 0.4
-    .kd0                (kd0[3:0]),             // Derivative Constant: fixed point 0.4
-    .rot_pwm_ovrd0      (rot_pwm_ovrd0),        // Rotation motor override enable
-    .pwm_dir_ovrd0      (pwm_dir_ovrd0),        // Rotation motor override direction
-    .pwm_ratio_ovrd0    (pwm_ratio_ovrd0[5:0]), // Rotation motor override value
-    .enable_stall_chk1  (enable_stall_chk1),    // Enable the stall check
-    .kp1                (kp1[7:0]),             // Proportional Constant: fixed point 4.4
-    .ki1                (ki1[3:0]),             // Integral Constant: fixed point 0.4
-    .kd1                (kd1[3:0]),             // Derivative Constant: fixed point 0.4
-    .rot_pwm_ovrd1      (rot_pwm_ovrd1),        // Rotation motor override enable
-    .pwm_dir_ovrd1      (pwm_dir_ovrd1),        // Rotation motor override direction
-    .pwm_ratio_ovrd1    (pwm_ratio_ovrd1[5:0]), // Rotation motor override value
-    .enable_stall_chk2  (enable_stall_chk2),    // Enable the stall check
-    .kp2                (kp2[7:0]),             // Proportional Constant: fixed point 4.4
-    .ki2                (ki2[3:0]),             // Integral Constant: fixed point 0.4
-    .kd2                (kd2[3:0]),             // Derivative Constant: fixed point 0.4
-    .rot_pwm_ovrd2      (rot_pwm_ovrd2),        // Rotation motor override enable
-    .pwm_dir_ovrd2      (pwm_dir_ovrd2),        // Rotation motor override direction
-    .pwm_ratio_ovrd2    (pwm_ratio_ovrd2[5:0]), // Rotation motor override value
-    .enable_stall_chk3  (enable_stall_chk3),    // Enable the stall check
-    .kp3                (kp3[7:0]),             // Proportional Constant: fixed point 4.4
-    .ki3                (ki3[3:0]),             // Integral Constant: fixed point 0.4
-    .kd3                (kd3[3:0]),             // Derivative Constant: fixed point 0.4
-    .rot_pwm_ovrd3      (rot_pwm_ovrd3),        // Rotation motor override enable
-    .pwm_dir_ovrd3      (pwm_dir_ovrd3),        // Rotation motor override direction
-    .pwm_ratio_ovrd3    (pwm_ratio_ovrd3[5:0]), // Rotation motor override value
+    .enable_stall_chk0  (enable_stall_chk0),        // Enable the stall check
+    .kp0                (kp0[7:0]),                 // Proportional Constant: fixed point 4.4
+    .ki0                (ki0[3:0]),                 // Integral Constant: fixed point 0.4
+    .kd0                (kd0[3:0]),                 // Derivative Constant: fixed point 0.4
+    .rot_pwm_ovrd0      (rot_pwm_ovrd0),            // Rotation motor override enable
+    .pwm_dir_ovrd0      (pwm_dir_ovrd0),            // Rotation motor override direction
+    .pwm_ratio_ovrd0    (pwm_ratio_ovrd0[5:0]),     // Rotation motor override value
+    .enable_stall_chk1  (enable_stall_chk1),        // Enable the stall check
+    .kp1                (kp1[7:0]),                 // Proportional Constant: fixed point 4.4
+    .ki1                (ki1[3:0]),                 // Integral Constant: fixed point 0.4
+    .kd1                (kd1[3:0]),                 // Derivative Constant: fixed point 0.4
+    .rot_pwm_ovrd1      (rot_pwm_ovrd1),            // Rotation motor override enable
+    .pwm_dir_ovrd1      (pwm_dir_ovrd1),            // Rotation motor override direction
+    .pwm_ratio_ovrd1    (pwm_ratio_ovrd1[5:0]),     // Rotation motor override value
+    .enable_stall_chk2  (enable_stall_chk2),        // Enable the stall check
+    .kp2                (kp2[7:0]),                 // Proportional Constant: fixed point 4.4
+    .ki2                (ki2[3:0]),                 // Integral Constant: fixed point 0.4
+    .kd2                (kd2[3:0]),                 // Derivative Constant: fixed point 0.4
+    .rot_pwm_ovrd2      (rot_pwm_ovrd2),            // Rotation motor override enable
+    .pwm_dir_ovrd2      (pwm_dir_ovrd2),            // Rotation motor override direction
+    .pwm_ratio_ovrd2    (pwm_ratio_ovrd2[5:0]),     // Rotation motor override value
+    .enable_stall_chk3  (enable_stall_chk3),        // Enable the stall check
+    .kp3                (kp3[7:0]),                 // Proportional Constant: fixed point 4.4
+    .ki3                (ki3[3:0]),                 // Integral Constant: fixed point 0.4
+    .kd3                (kd3[3:0]),                 // Derivative Constant: fixed point 0.4
+    .rot_pwm_ovrd3      (rot_pwm_ovrd3),            // Rotation motor override enable
+    .pwm_dir_ovrd3      (pwm_dir_ovrd3),            // Rotation motor override direction
+    .pwm_ratio_ovrd3    (pwm_ratio_ovrd3[5:0]),     // Rotation motor override value
 
-    .target_angle0      (target_angle0),    // Rotation target angle
-    .current_angle0     (current_angle0),   // The current angle
-    .target_angle1      (target_angle1),    // Rotation target angle
-    .current_angle1     (current_angle1),   // The current angle
-    .target_angle2      (target_angle2),    // Rotation target angle
-    .current_angle2     (current_angle2),   // The current angle
-    .target_angle3      (target_angle3),    // Rotation target angle
-    .current_angle3     (current_angle3),   // The current angle
+    .target_angle0      (target_angle0),            // Rotation target angle
+    .current_angle0     (current_angle0),           // The current angle
+    .target_angle1      (target_angle1),            // Rotation target angle
+    .current_angle1     (current_angle1),           // The current angle
+    .target_angle2      (target_angle2),            // Rotation target angle
+    .current_angle2     (current_angle2),           // The current angle
+    .target_angle3      (target_angle3),            // Rotation target angle
+    .current_angle3     (current_angle3),           // The current angle
 
-    .abort_angle0       (abort_angle0),     // Aborts rotating to angle
-    .abort_angle1       (abort_angle1),     // Aborts rotating to angle
-    .abort_angle2       (abort_angle2),     // Aborts rotating to angle
-    .abort_angle3       (abort_angle3),     // Aborts rotating to angle
-    .update_angle0      (update_angle0),    // Start rotation to angle
-    .update_angle1      (update_angle1),    // Start rotation to angle
-    .update_angle2      (update_angle2),    // Start rotation to angle
-    .update_angle3      (update_angle3),    // Start rotation to angle
-    .angle_done0        (angle_done0),      // Start rotation to angle
-    .angle_done1        (angle_done1),      // Start rotation to angle
-    .angle_done2        (angle_done2),      // Start rotation to angle
-    .angle_done3        (angle_done3),      // Start rotation to angle
+    .abort_angle0       (abort_angle0),             // Aborts rotating to angle
+    .abort_angle1       (abort_angle1),             // Aborts rotating to angle
+    .abort_angle2       (abort_angle2),             // Aborts rotating to angle
+    .abort_angle3       (abort_angle3),             // Aborts rotating to angle
+    .update_angle0      (update_angle0),            // Start rotation to angle
+    .update_angle1      (update_angle1),            // Start rotation to angle
+    .update_angle2      (update_angle2),            // Start rotation to angle
+    .update_angle3      (update_angle3),            // Start rotation to angle
+    .angle_done0        (angle_done0),              // Start rotation to angle
+    .angle_done1        (angle_done1),              // Start rotation to angle
+    .angle_done2        (angle_done2),              // Start rotation to angle
+    .angle_done3        (angle_done3),              // Start rotation to angle
 
-    .servo_position0    (servo_position0),  // Servo 0 target position
-    .servo_position1    (servo_position1),  // Servo 1 target position
-    .servo_position2    (servo_position2),  // Servo 2 target position
-    .servo_position3    (servo_position3),  // Servo 3 target position
+    .servo_position0    (servo_position0),          // Servo 0 target position
+    .servo_position1    (servo_position1),          // Servo 1 target position
+    .servo_position2    (servo_position2),          // Servo 2 target position
+    .servo_position3    (servo_position3),          // Servo 3 target position
 
-    .debug_signals      (debug_signals[31:0]),  // Debug signals
-    .led_test_enable    (led_test_enable),      // Enable the led testing
-    .pi_connected_led   (pi_connected_led),     // Orange Pi connected
-    .ps4_connected_led  (ps4_connected_led),    // PS4 connected
-    .fault_led          (fault_led),            // Fault led
-    .motor_hot_led      (motor_hot_led)         // Hot motor led
+    .debug_signals      (debug_signals[31:0]),      // Debug signals
+    .led_test_enable    (led_test_enable),          // Enable the led testing
+    .pi_connected_led   (pi_connected_led),         // Orange Pi connected
+    .ps4_connected_led  (ps4_connected_led),        // PS4 connected
+    .fault_led          (fault_led),                // Fault led
+    .motor_hot_led      (motor_hot_led)             // Hot motor led
+);  
+
+/*
+spark_pwm sr_pwm0(
+    .reset_n                (reset_n),                              // Active low reset
+    .clock                  (clock_div_cntr[5]),                    // ~422kHz
+    .pwm_enable             (1'b1),     // PWM enable
+    .pwm_ratio              (8'hF0),                           // The high-time of the PWM signal out of 255
+    .pwm_direction          (1'b1),                  // Motor direction
+    .pwm_update             (1'b1),     // Request an update to the PWM ratio
+    .pwm_done               (),                       // Updated PWM ratio has been applied (pulse)
+    .pwm_signal             (sr_pwm[0])                             // The output PWM wave
 );
+*/
+
 
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor0

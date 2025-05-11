@@ -30,32 +30,32 @@ module reg_file (
     input   [5:0]   adc_temp7, 	     // Adc temperature from motor
 								     
     output          brake0,    	     // Brake control
-    output          enable0,   	     // Motor enable
+    output          sd_enable0,      // Motor enable
     output          direction0,	     // Motor direction
     output  [4:0]   pwm0,      	     // PWM control  
     output          brake1,    	     // Brake control
-    output          enable1,   	     // Motor enable
+    output          sd_enable1,      // Motor enable
     output          direction1,	     // Motor direction
     output  [4:0]   pwm1,      	     // PWM control  
     output          brake2,    	     // Brake control
-    output          enable2,   	     // Motor enable
+    output          sd_enable2,	     // Motor enable
     output          direction2,	     // Motor direction
     output  [4:0]   pwm2,      	     // PWM control  
     output          brake3,    	     // Brake control
-    output          enable3,   	     // Motor enable
+    output          sd_enable3,      // Motor enable
     output          direction3,	     // Motor direction
     output  [4:0]   pwm3,      	     // PWM control
     output          brake4,    	     // Brake control
-    output          enable4,   	     // Motor enable
+    output          sr_enable0,      // Motor enable
     output          direction4,	     // Motor direction 
     output          brake5,    	     // Brake control
-    output          enable5,   	     // Motor enable
+    output          sr_enable1,	     // Motor enable
     output          direction5,	     // Motor direction 
     output          brake6,    	     // Brake control
-    output          enable6,   	     // Motor enable
+    output          sr_enable2,	     // Motor enable
     output          direction6,	     // Motor direction
     output          brake7,    	     // Brake control
-    output          enable7,   	     // Motor enable
+    output          sr_enable3,	     // Motor enable
     output          direction7,	     // Motor direction 
 
     input  [7:0]    startup_fail,
@@ -128,7 +128,7 @@ module reg_file (
 );
 
 // 63:0 is the maximum addressable space with 6-bit address
-reg     [7:0]   reg_file    [63:0];
+reg     [7:0]   reg_file    [55:0];
 reg     [11:0]  angle_snap0, angle_snap1, angle_snap2, angle_snap3;
 
 // Read Data is just a pointer to whatever the address is set to 
@@ -150,7 +150,7 @@ always @(posedge clock) begin
 end
 
 assign brake0       = reg_file[6'h4][7];
-assign enable0      = reg_file[6'h4][6];
+assign sd_enable0   = reg_file[6'h4][6];
 assign direction0   = reg_file[6'h4][5];
 assign pwm0[4:0]    = reg_file[6'h4][4:0]; 
 
@@ -166,7 +166,7 @@ always @(posedge clock) begin
 end
 
 assign brake1       = reg_file[6'h6][7];
-assign enable1      = reg_file[6'h6][6];
+assign sd_enable1   = reg_file[6'h6][6];
 assign direction1   = reg_file[6'h6][5];
 assign pwm1[4:0]    = reg_file[6'h6][4:0];
 
@@ -182,7 +182,7 @@ always @(posedge clock) begin
 end
 
 assign brake2       = reg_file[6'h8][7];
-assign enable2      = reg_file[6'h8][6];
+assign sd_enable2   = reg_file[6'h8][6];
 assign direction2   = reg_file[6'h8][5];
 assign pwm2[4:0]    = reg_file[6'h8][4:0];
 
@@ -198,7 +198,7 @@ always @(posedge clock) begin
 end
 
 assign brake3       = reg_file[6'hA][7];
-assign enable3      = reg_file[6'hA][6];
+assign sd_enable3   = reg_file[6'hA][6];
 assign direction3   = reg_file[6'hA][5];
 assign pwm3[4:0]    = reg_file[6'hA][4:0];
 
@@ -213,7 +213,7 @@ always @(posedge clock) begin
 		reg_file[6'hC]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
-assign enable4              = reg_file[6'hC][6];
+assign sr_enable0           = reg_file[6'hC][6];
 assign enable_stall_chk0    = reg_file[6'hC][5];
 assign target_angle0[11:8]  = reg_file[6'hC][3:0];
 
@@ -286,7 +286,7 @@ always @(posedge clock) begin
 		reg_file[6'h13]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
-assign enable5              = reg_file[6'h13][6];
+assign sr_enable1           = reg_file[6'h13][6];
 assign enable_stall_chk1    = reg_file[6'h13][5];
 assign target_angle1[11:8]  = reg_file[6'h13][3:0];
 
@@ -358,7 +358,7 @@ always @(posedge clock) begin
 		reg_file[6'h1A]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
-assign enable6              = reg_file[6'h1A][6];
+assign sr_enable3           = reg_file[6'h1A][6];
 assign enable_stall_chk2    = reg_file[6'h1A][5];
 assign target_angle2[11:8]  = reg_file[6'h1A][3:0];
 
@@ -430,7 +430,7 @@ always @(posedge clock) begin
 		reg_file[6'h21]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
-assign enable7              = reg_file[6'h21][6];
+assign sr_enable4           = reg_file[6'h21][6];
 assign enable_stall_chk3    = reg_file[6'h21][5];
 assign target_angle3[11:8]  = reg_file[6'h21][3:0];
 
