@@ -8,19 +8,29 @@ import FpgaCommunication
 # FPGA instance
 fpga = FpgaCommunication.FpgaCommunication(Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
 
-def update_label_text():
+def update_label_text():        
+    # Write to bit 6 to initiate a capture, then read back [7:0] followed by [11:8]
+    # Set bit[7] to enable the i2c 
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, 0xC0) 
+    fpga.fpgaWrite(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR, 0x40) 
     val = fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE_ADDR) 
     val |= (fpga.fpgaRead(Constants.Constants.ROTATION0_CURRENT_ANGLE2_ADDR) & 0x0F) << 8
     wheelValue1.config(text= str(val))
 
+    fpga.fpgaWrite(Constants.Constants.ROTATION1_CONTROL_ADDR, 0xC0) 
+    fpga.fpgaWrite(Constants.Constants.ROTATION1_CURRENT_ANGLE2_ADDR, 0x40) 
     val = fpga.fpgaRead(Constants.Constants.ROTATION1_CURRENT_ANGLE_ADDR) 
     val |= (fpga.fpgaRead(Constants.Constants.ROTATION1_CURRENT_ANGLE2_ADDR) & 0x0F) << 8
     wheelValue2.config(text= str(val))
 
+    fpga.fpgaWrite(Constants.Constants.ROTATION2_CONTROL_ADDR, 0xC0) 
+    fpga.fpgaWrite(Constants.Constants.ROTATION2_CURRENT_ANGLE2_ADDR, 0x40) 
     val = fpga.fpgaRead(Constants.Constants.ROTATION2_CURRENT_ANGLE_ADDR) 
     val |= (fpga.fpgaRead(Constants.Constants.ROTATION2_CURRENT_ANGLE2_ADDR) & 0x0F) << 8
     wheelValue3.config(text= str(val))
 
+    fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, 0xC0) 
+    fpga.fpgaWrite(Constants.Constants.ROTATION3_CURRENT_ANGLE2_ADDR, 0x40) 
     val = fpga.fpgaRead(Constants.Constants.ROTATION3_CURRENT_ANGLE_ADDR) 
     val |= (fpga.fpgaRead(Constants.Constants.ROTATION3_CURRENT_ANGLE2_ADDR) & 0x0F) << 8
     wheelValue4.config(text= str(val))
