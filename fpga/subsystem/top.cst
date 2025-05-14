@@ -1,68 +1,76 @@
-IO_LOC "servo_pwm[3]" 38;
-IO_PORT "servo_pwm[3]" IO_TYPE=LVCMOS33 ;
-IO_LOC "servo_pwm[2]" 37;
-IO_PORT "servo_pwm[2]" IO_TYPE=LVCMOS33 ;
-IO_LOC "servo_pwm[1]" 36;
-IO_PORT "servo_pwm[1]" IO_TYPE=LVCMOS33 ;
-IO_LOC "servo_pwm[0]" 39;
-IO_PORT "servo_pwm[0]" IO_TYPE=LVCMOS33 ;
-IO_LOC "sr_pwm[0]" 34;
-IO_PORT "sr_pwm[0]" IO_TYPE=LVCMOS33 ;
-IO_LOC "gnd[0]" 33;
-IO_PORT "gnd[0]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
-IO_LOC "sr_pwm[1]" 35;
-IO_PORT "sr_pwm[1]" IO_TYPE=LVCMOS33 ;
-IO_LOC "gnd[1]" 40;
-IO_PORT "gnd[1]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
-IO_LOC "sr_pwm[2]" 69;
-IO_PORT "sr_pwm[2]" IO_TYPE=LVCMOS33 ;
-IO_LOC "gnd[2]" 68;
-IO_PORT "gnd[2]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
-IO_LOC "sr_pwm[3]" 32;
-IO_PORT "sr_pwm[3]" IO_TYPE=LVCMOS33 ;
-IO_LOC "gnd[3]" 31;
-IO_PORT "gnd[3]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
-IO_LOC "scl[3]" 70;
-IO_PORT "scl[3]" IO_TYPE=LVCMOS33 ;
-IO_LOC "sda[3]" 71;
-IO_PORT "sda[3]" IO_TYPE=LVCMOS33 PULL_MODE=UP;
-IO_LOC "scl[2]" 72;
-IO_PORT "scl[2]" IO_TYPE=LVCMOS33 ;
-IO_LOC "sda[2]" 73;
-IO_PORT "sda[2]" IO_TYPE=LVCMOS33 PULL_MODE=UP;
-IO_LOC "scl[1]" 74;
-IO_PORT "scl[1]" IO_TYPE=LVCMOS33 ;
-IO_LOC "sda[1]" 75;
-IO_PORT "sda[1]" IO_TYPE=LVCMOS33 PULL_MODE=UP;
-IO_LOC "scl[0]" 76;
-IO_PORT "scl[0]" IO_TYPE=LVCMOS33 ;
-IO_LOC "sda[0]" 77;
-IO_PORT "sda[0]" IO_TYPE=LVCMOS33 PULL_MODE=UP;
-IO_LOC "sd_pwm[0]" 25;
-IO_PORT "sd_pwm[0]" IO_TYPE=LVCMOS33 ;
-IO_LOC "sd_pwm[1]" 26;
-IO_PORT "sd_pwm[1]" IO_TYPE=LVCMOS33 ;
-IO_LOC "sd_pwm[2]" 27;
-IO_PORT "sd_pwm[2]" IO_TYPE=LVCMOS33 ;
-IO_LOC "sd_pwm[3]" 28;
-IO_PORT "sd_pwm[3]" IO_TYPE=LVCMOS33 ;
-IO_LOC "status_debug" 79;
-IO_PORT "status_debug" IO_TYPE=LVCMOS18 ;
-IO_LOC "status_ps4" 80;
-IO_PORT "status_ps4" IO_TYPE=LVCMOS18 ;
-IO_LOC "status_pi" 81;
-IO_PORT "status_pi" IO_TYPE=LVCMOS18 ;
-IO_LOC "status_fault" 82;
-IO_PORT "status_fault" IO_TYPE=LVCMOS18 ;
-IO_LOC "tang_config" 83;
-IO_PORT "tang_config" IO_TYPE=LVCMOS18 ;
-IO_LOC "mosi" 84;
-IO_PORT "mosi" IO_TYPE=LVCMOS18 ;
-IO_LOC "cs_n" 85;
-IO_PORT "cs_n" IO_TYPE=LVCMOS18 ;
-IO_LOC "spi_clock" 86;
-IO_PORT "spi_clock" IO_TYPE=LVCMOS18 ;
-IO_LOC "miso" 63;
-IO_PORT "miso" IO_TYPE=LVCMOS33 ;
-IO_LOC "clock" 52;
-IO_PORT "clock" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+"IO_LOC ""servo_pwm[3]"" 38;
+IO_PORT ""servo_pwm[3]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""servo_pwm[2]"" 37;
+IO_PORT ""servo_pwm[2]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""servo_pwm[1]"" 36;
+IO_PORT ""servo_pwm[1]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""servo_pwm[0]"" 39;
+IO_PORT ""servo_pwm[0]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sr_pwm[0]"" 25;
+IO_PORT ""sr_pwm[0]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sr_pwm[1]"" 26;
+IO_PORT ""sr_pwm[1]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sr_pwm[2]"" 27;
+IO_PORT ""sr_pwm[2]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sr_pwm[3]"" 28;
+IO_PORT ""sr_pwm[3]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""scl[3]"" 55;
+IO_PORT ""scl[3]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sda[3]"" 57;
+IO_PORT ""sda[3]"" IO_TYPE=LVCMOS33 PULL_MODE=UP;"
+"IO_LOC ""pwr[3]"" 53;
+IO_PORT ""pwr[3]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""gnd[3]"" 56;
+IO_PORT ""gnd[3]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""scl[2]"" 42;
+IO_PORT ""scl[2]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sda[2]"" 53;
+IO_PORT ""sda[2]"" IO_TYPE=LVCMOS33 PULL_MODE=UP;"
+"IO_LOC ""pwr[2]"" 41;
+IO_PORT ""pwr[2]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""gnd[2]"" 51;
+IO_PORT ""gnd[2]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""scl[1]"" 30;
+IO_PORT ""scl[1]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sda[1]"" 34;
+IO_PORT ""sda[1]"" IO_TYPE=LVCMOS33 PULL_MODE=UP;"
+"IO_LOC ""pwr[1]"" 29;
+IO_PORT ""pwr[1]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""gnd[1]"" 33;
+IO_PORT ""gnd[1]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""scl[0]"" 76;
+IO_PORT ""scl[0]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sda[0]"" 77;
+IO_PORT ""sda[0]"" IO_TYPE=LVCMOS33 PULL_MODE=UP;"
+"IO_LOC ""pwr[0]"" 48;
+IO_PORT ""pwr[0]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""gnd[0]"" 49;
+IO_PORT ""gnd[0]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sd_pwm[0]"" 25;
+IO_PORT ""sd_pwm[0]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sd_pwm[1]"" 26;
+IO_PORT ""sd_pwm[1]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sd_pwm[2]"" 27;
+IO_PORT ""sd_pwm[2]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""sd_pwm[3]"" 28;
+IO_PORT ""sd_pwm[3]"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""status_debug"" 79;
+IO_PORT ""status_debug"" IO_TYPE=LVCMOS18 ;"
+"IO_LOC ""status_ps4"" 80;
+IO_PORT ""status_ps4"" IO_TYPE=LVCMOS18 ;"
+"IO_LOC ""status_pi"" 81;
+IO_PORT ""status_pi"" IO_TYPE=LVCMOS18 ;"
+"IO_LOC ""status_fault"" 82;
+IO_PORT ""status_fault"" IO_TYPE=LVCMOS18 ;"
+"IO_LOC ""tang_config"" 83;
+IO_PORT ""tang_config"" IO_TYPE=LVCMOS18 ;"
+"IO_LOC ""mosi"" 84;
+IO_PORT ""mosi"" IO_TYPE=LVCMOS18 ;"
+"IO_LOC ""cs_n"" 85;
+IO_PORT ""cs_n"" IO_TYPE=LVCMOS18 ;"
+"IO_LOC ""spi_clock"" 86;
+IO_PORT ""spi_clock"" IO_TYPE=LVCMOS18 ;"
+"IO_LOC ""miso"" 63;
+IO_PORT ""miso"" IO_TYPE=LVCMOS33 ;"
+"IO_LOC ""clock"" 52;
+IO_PORT ""clock"" IO_TYPE=LVCMOS33 PULL_MODE=UP;"
