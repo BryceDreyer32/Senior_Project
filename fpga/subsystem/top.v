@@ -16,7 +16,8 @@ module top(
     output  [3:0]   sr_pwm,         // The swerve rotation PWM wave
     output  [3:0]   scl,            // The I2C clock to encoders
     inout   [3:0]   sda,            // The I2C bi-directional data to/from encoders
-    output  [3:0]   gnd,
+    output  [7:0]   gnd,
+    output  [3:0]   pwr,
 
     // Swerve Drive Motors
     output  [3:0]   sd_pwm,         // The swerve drive PWM signal
@@ -96,7 +97,8 @@ module top(
     wire  [5:0]     pwm_ratio_ovrd0, pwm_ratio_ovrd1, pwm_ratio_ovrd2, pwm_ratio_ovrd3;
 
 assign startup_fail[3:0] = 4'b0;
-//assign gnd[3:0]          = 4'b0;
+assign gnd[7:0] = 8'b0;
+assign pwr[3:0] = 4'hF;
 
 ////////////////////////////////////////////////////////////////
 // Reset Controller
@@ -244,7 +246,7 @@ reg_file rf(
     .motor_hot_led      (motor_hot_led)             // Hot motor led
 );  
 
-
+/*
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor0
 ////////////////////////////////////////////////////////////////
@@ -404,7 +406,7 @@ spark_pwm sr_pwm2(
     .pwm_done               (sr_pwm_done[2]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[2])                             // The output PWM wave
 );
-
+*/
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor3
 ////////////////////////////////////////////////////////////////
@@ -456,7 +458,7 @@ spark_pwm sr_pwm3(
     .pwm_done               (sr_pwm_done[3]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[3])                             // The output PWM wave
 );
-
+/*
 ////////////////////////////////////////////////////////////////
 // Swerve Drive Motor0
 ////////////////////////////////////////////////////////////////
@@ -575,5 +577,5 @@ assign status_fault = pwm_light & fault_led;
 assign status_pi    = pwm_light & pi_connected_led;
 assign status_ps4   = pwm_light & ps4_connected_led;
 assign status_debug = pwm_light;//led_test_enable ? motor_hot_led   : 1'b1;               // Control for LED for general debug
-
+*/
 endmodule
