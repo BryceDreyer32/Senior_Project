@@ -11,6 +11,7 @@ module pwm_ctrl(
     input                   angle_update,       // Signals when an angle update is available
     output                  angle_done,         // Output sent when angle has been adjusted to target_angle
     output  reg     [11:0]  current_angle,      // Angle we are currently at from I2C
+    input                   calib_en,           // I2C enable override for calibration
     input                   pwm_enable,         // Enables the PWM output
     input                   abort_angle,        // Aborts rotating to angle
 
@@ -87,6 +88,7 @@ i2c i2c(
     .reset_n            (reset_n),              // Active low reset
     .clock              (clk_counter[6]),       // The main clock
     .angle_done         (angle_done),           // Whether or not we are at the target angle
+    .calib_en           (calib_en),             // I2C enable override for calibration
     .raw_angle          (curr_ang[11:0]),       // The raw angle from the AS5600 
     .rd_done            (rd_done),              // I2C read done pulse           
     .scl                (sck),                  // The I2C clock

@@ -47,15 +47,19 @@ module reg_file (
     output  [4:0]   pwm3,      	     // PWM control
     output          brake4,    	     // Brake control
     output          sr_enable0,      // Motor enable
+    output          i2c_calib_en0,   // I2C enable override for calibration
     output          direction4,	     // Motor direction 
     output          brake5,    	     // Brake control
     output          sr_enable1,	     // Motor enable
+    output          i2c_calib_en1,   // I2C enable override for calibration
     output          direction5,	     // Motor direction 
     output          brake6,    	     // Brake control
     output          sr_enable2,	     // Motor enable
+    output          i2c_calib_en2,   // I2C enable override for calibration
     output          direction6,	     // Motor direction
     output          brake7,    	     // Brake control
     output          sr_enable3,	     // Motor enable
+    output          i2c_calib_en3,   // I2C enable override for calibration
     output          direction7,	     // Motor direction 
 
     input  [7:0]    startup_fail,
@@ -214,6 +218,7 @@ always @(posedge clock) begin
 		reg_file[6'hC]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
+assign i2c_calib_en0        = reg_file[6'hC][7];
 assign sr_enable0           = reg_file[6'hC][6];
 assign enable_stall_chk0    = reg_file[6'hC][5];
 assign target_angle0[11:8]  = reg_file[6'hC][3:0];
@@ -287,6 +292,7 @@ always @(posedge clock) begin
 		reg_file[6'h13]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
+assign i2c_calib_en1        = reg_file[6'h13][7];
 assign sr_enable1           = reg_file[6'h13][6];
 assign enable_stall_chk1    = reg_file[6'h13][5];
 assign target_angle1[11:8]  = reg_file[6'h13][3:0];
@@ -359,6 +365,7 @@ always @(posedge clock) begin
 		reg_file[6'h1A]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
+assign i2c_calib_en2        = reg_file[6'h1A][7];
 assign sr_enable3           = reg_file[6'h1A][6];
 assign enable_stall_chk2    = reg_file[6'h1A][5];
 assign target_angle2[11:8]  = reg_file[6'h1A][3:0];
@@ -431,6 +438,7 @@ always @(posedge clock) begin
 		reg_file[6'h21]     <=  {wr_data[7:5], startup_fail[4], wr_data[3:0]};
 end
 
+assign i2c_calib_en3        = reg_file[6'h21][7];
 assign sr_enable4           = reg_file[6'h21][6];
 assign enable_stall_chk3    = reg_file[6'h21][5];
 assign target_angle3[11:8]  = reg_file[6'h21][3:0];

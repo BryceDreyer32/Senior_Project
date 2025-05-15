@@ -86,7 +86,7 @@ module top(
     wire            led_test_enable;        // Enable the led testing
     wire            pi_connected_led, ps4_connected_led, motor_hot_led, fault_led;
     wire  [3:0]     led_pwm;
-    wire  [3:0]     sd_pwm_enable, sd_pwm_direction;
+    wire  [3:0]     sd_pwm_enable, sd_pwm_direction, sd_i2c_caliben;
     wire            enable_stall_chk0, enable_stall_chk1, enable_stall_chk2, enable_stall_chk3;
     wire  [7:0]     kp0, kp1, kp2, kp3;
     wire  [3:0]     ki0, ki1, ki2, ki3;
@@ -169,6 +169,10 @@ reg_file rf(
 //    .direction1         (sr_pwm_direction[1]),    // Motor direction
 //    .direction2         (sr_pwm_direction[2]),    // Motor direction
 //    .direction3         (sr_pwm_direction[3]),    // Motor direction
+    .i2c_calib_en0      (sd_i2c_caliben[0]),   // I2C enable override for calibration 
+    .i2c_calib_en1      (sd_i2c_caliben[1]),   // I2C enable override for calibration 
+    .i2c_calib_en2      (sd_i2c_caliben[2]),   // I2C enable override for calibration 
+    .i2c_calib_en3      (sd_i2c_caliben[3]),   // I2C enable override for calibration 
     .direction4         (sd_pwm_direction[0]),      // Motor direction
     .direction5         (sd_pwm_direction[1]),      // Motor direction
     .direction6         (sd_pwm_direction[2]),      // Motor direction
@@ -232,7 +236,6 @@ reg_file rf(
     .servo_position2    (servo_position2),          // Servo 2 target position
     .servo_position3    (servo_position3),          // Servo 3 target position
 
-<<<<<<< HEAD
     .debug_signals      (debug_signals[31:0]),      // Debug signals
     .led_test_enable    (led_test_enable),          // Enable the led testing
     .pi_connected_led   (pi_connected_led),         // Orange Pi connected
@@ -240,28 +243,6 @@ reg_file rf(
     .fault_led          (fault_led),                // Fault led
     .motor_hot_led      (motor_hot_led)             // Hot motor led
 );  
-
-/*
-spark_pwm sr_pwm0(
-    .reset_n                (reset_n),                              // Active low reset
-    .clock                  (clock_div_cntr[5]),                    // ~422kHz
-    .pwm_enable             (1'b1),     // PWM enable
-    .pwm_ratio              (8'hF0),                           // The high-time of the PWM signal out of 255
-    .pwm_direction          (1'b1),                  // Motor direction
-    .pwm_update             (1'b1),     // Request an update to the PWM ratio
-    .pwm_done               (),                       // Updated PWM ratio has been applied (pulse)
-    .pwm_signal             (sr_pwm[0])                             // The output PWM wave
-=======
-    .debug_signals      (debug_signals[31:0]),  // Debug signals
-    .led_pwm            (led_pwm[3:0]),         // LED intesity
-    .led_test_enable    (led_test_enable),      // Enable the led testing
-    .pi_connected_led   (pi_connected_led),     // Orange Pi connected
-    .ps4_connected_led  (ps4_connected_led),    // PS4 connected
-    .fault_led          (fault_led),            // Fault led
-    .motor_hot_led      (motor_hot_led)         // Hot motor led
->>>>>>> 3d5d45b99985d7365381ab0946f4c38c9a6366b0
-);
-*/
 
 
 ////////////////////////////////////////////////////////////////
@@ -290,6 +271,7 @@ pwm_ctrl pwm_ctrl0(
     // PWM Interface
     .pwm_done               (sr_pwm_done[0]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[0]),     // Enables the PWM output
+    .calib_en               (sd_i2c_caliben[0]),    // I2C enable override for calibration
     .pwm_ratio              (sr_pwm_ratio[0]),      // The high-time of the PWM signal out of 255.
     .pwm_direction          (sr_pwm_direction[0]),  // The direction of the motor
     .pwm_update             (sr_pwm_update[0]),     // Request an update to the PWM ratio
@@ -345,6 +327,7 @@ pwm_ctrl pwm_ctrl1(
     // PWM Interface
     .pwm_done               (sr_pwm_done[1]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[1]),     // Enables the PWM output
+    .calib_en               (sd_i2c_caliben[1]),    // I2C enable override for calibration
     .pwm_ratio              (sr_pwm_ratio[1]),      // The high-time of the PWM signal out of 255.
     .pwm_direction          (sr_pwm_direction[1]),  // The direction of the motor
     .pwm_update             (sr_pwm_update[1]),     // Request an update to the PWM ratio
@@ -396,6 +379,7 @@ pwm_ctrl pwm_ctrl2(
     // PWM Interface
     .pwm_done               (sr_pwm_done[2]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[2]),     // Enables the PWM output
+    .calib_en               (sd_i2c_caliben[2]),    // I2C enable override for calibration
     .pwm_ratio              (sr_pwm_ratio[2]),      // The high-time of the PWM signal out of 255.
     .pwm_direction          (sr_pwm_direction[2]),  // The direction of the motor
     .pwm_update             (sr_pwm_update[2]),     // Request an update to the PWM ratio
@@ -447,6 +431,7 @@ pwm_ctrl pwm_ctrl3(
     // PWM Interface
     .pwm_done               (sr_pwm_done[3]),       // Updated PWM ratio has been applied (1 cycle long pulse)
     .pwm_enable             (sr_pwm_enable[3]),     // Enables the PWM output
+    .calib_en               (sd_i2c_caliben[3]),    // I2C enable override for calibration
     .pwm_ratio              (sr_pwm_ratio[3]),      // The high-time of the PWM signal out of 255.
     .pwm_direction          (sr_pwm_direction[3]),  // The direction of the motor
     .pwm_update             (sr_pwm_update[3]),     // Request an update to the PWM ratio
