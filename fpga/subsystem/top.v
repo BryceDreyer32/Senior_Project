@@ -246,7 +246,7 @@ reg_file rf(
     .motor_hot_led      (motor_hot_led)             // Hot motor led
 );  
 
-/*
+
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor0
 ////////////////////////////////////////////////////////////////
@@ -406,7 +406,7 @@ spark_pwm sr_pwm2(
     .pwm_done               (sr_pwm_done[2]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[2])                             // The output PWM wave
 );
-*/
+
 ////////////////////////////////////////////////////////////////
 // Swerve Rotation Motor3
 ////////////////////////////////////////////////////////////////
@@ -458,7 +458,7 @@ spark_pwm sr_pwm3(
     .pwm_done               (sr_pwm_done[3]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[3])                             // The output PWM wave
 );
-/*
+
 ////////////////////////////////////////////////////////////////
 // Swerve Drive Motor0
 ////////////////////////////////////////////////////////////////
@@ -577,5 +577,5 @@ assign status_fault = pwm_light & fault_led;
 assign status_pi    = pwm_light & pi_connected_led;
 assign status_ps4   = pwm_light & ps4_connected_led;
 assign status_debug = pwm_light;//led_test_enable ? motor_hot_led   : 1'b1;               // Control for LED for general debug
-*/
+
 endmodule

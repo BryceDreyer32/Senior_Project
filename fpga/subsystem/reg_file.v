@@ -366,7 +366,7 @@ always @(posedge clock) begin
 end
 
 assign i2c_calib_en2        = reg_file[6'h1A][7];
-assign sr_enable3           = reg_file[6'h1A][6];
+assign sr_enable2           = reg_file[6'h1A][6];
 assign enable_stall_chk2    = reg_file[6'h1A][5];
 assign target_angle2[11:8]  = reg_file[6'h1A][3:0];
 
@@ -439,7 +439,7 @@ always @(posedge clock) begin
 end
 
 assign i2c_calib_en3        = reg_file[6'h21][7];
-assign sr_enable4           = reg_file[6'h21][6];
+assign sr_enable3           = reg_file[6'h21][6];
 assign enable_stall_chk3    = reg_file[6'h21][5];
 assign target_angle3[11:8]  = reg_file[6'h21][3:0];
 
