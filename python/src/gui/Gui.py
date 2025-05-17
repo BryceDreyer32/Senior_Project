@@ -4,6 +4,7 @@
 from PyQt5 import QtWidgets, uic
 from PyQt5 import uic
 from PyQt5.QtGui import QColor, QPixmap
+from PyQt5.QtWidgets import QApplication, QDialog, QVBoxLayout
 from PyQt5.QtCore import QThread, pyqtSignal
 import sys, os, time
 sys.path.append(os.path.realpath('python/src/constants'))
@@ -12,6 +13,7 @@ sys.path.append(os.path.realpath('python/src/gui'))
 import Constants
 import FpgaCommunication
 import PS4_CtrlGui
+import CPU_Usage
 
 class Gui(QtWidgets.QDialog):
     rot1 = False
@@ -36,6 +38,13 @@ class Gui(QtWidgets.QDialog):
         # Load the UI Page - added path too
         ui_path = os.path.dirname(os.path.abspath(__file__))
         uic.loadUi("GUIs/PyQt5/Rev2_Onyx.ui", self)
+
+        # Create a MplCanvas instance (matplotlib plot)
+        self.canvas = CPU_Usage.CPU_Usage()
+
+        # Add the canvas to the layout in the .ui file
+        self.layout = QVBoxLayout(self.cpu_usage)  # Replace 'plot_widget' with your QWidget's name
+        self.layout.addWidget(self.canvas)
 
         self.PS4_Dialog_box.setTextColor(QColor(255, 0, 0))
         self.PS4_Dialog_box.append("Waiting for PS4 to connect to ESP32")
@@ -350,14 +359,14 @@ class Gui(QtWidgets.QDialog):
         self.fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, 80)
 
     def on_baseSlider_change(self, event):
-        print("Base slider value changed to: " + str(event.widget.get()))
+        print("Base slider value changed to: " + str(event.get()))
         value = self.sliderValueToPWM(event.widget.get(), Constants.Constants.BASE_SERVO_CONTROL_ADDR)
         print("Writing value " + str(value) + " to BASE_SERVO_CONTROL_ADDR")
         self.fpga.fpgaWrite(Constants.Constants.BASE_SERVO_CONTROL_ADDR, value)
         print("Read-back of BASE_SERVO_CONTROL_ADDR = " + str(self.fpga.fpgaRead(Constants.Constants.BASE_SERVO_CONTROL_ADDR)))
 
     def on_centerSlider_change(self, event):
-        print("Center slider value changed to: " + str(event.widget.get()))
+        print("Center slider value changed to: " + str(event.get()))
         #fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, sliderValueToPWM(event.widget.get(), Constants.Constants.CENTER_SERVO_CONTROL_ADDR))
 
         value = self.sliderValueToPWM(event.widget.get(), Constants.Constants.CENTER_SERVO_CONTROL_ADDR)
@@ -367,11 +376,11 @@ class Gui(QtWidgets.QDialog):
 
 
     def on_wristSlider_change(self, event):
-        print("Wrist slider value changed to: " + str(event.widget.get()))
+        print("Wrist slider value changed to: " + str(event.get()))
         self.fpga.fpgaWrite(Constants.Constants.WRIST_SERVO_CONTROL_ADDR, self.sliderValueToPWM(event.widget.get(), Constants.Constants.WRIST_SERVO_CONTROL_ADDR))
 
     def on_grabberSlider_change(self, event):
-        print("Grabber slider value changed to: " + str(event.widget.get()))
+        print("Grabber slider value changed to: " + str(event.get()))
         self.fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, self.sliderValueToPWM(event.widget.get(), Constants.Constants.GRABBER_SERVO_CONTROL_ADDR))
 
 
