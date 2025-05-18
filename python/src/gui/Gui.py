@@ -68,6 +68,7 @@ class Gui(QtWidgets.QDialog):
         self.Wrist_Slider.valueChanged.connect(self.on_wristSlider_change)
         self.Clamp_Slider.valueChanged.connect(self.on_grabberSlider_change)
 
+        self.Refresh_Button.clicked.connect(self.RefreshRfData)
         self.Estop_Button.clicked.connect(self.eStop)
 
         self.ps4_thread = PS4_CtrlGui.PS4_CtrlGui()
@@ -410,3 +411,6 @@ class Gui(QtWidgets.QDialog):
         self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, 0x80)
         self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, 0x80)
         self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, 0x80)
+
+    def RefreshRfData(self):
+        self.fpga.refreshRegFileTable()     

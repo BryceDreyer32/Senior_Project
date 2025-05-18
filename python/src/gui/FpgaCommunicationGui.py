@@ -6,6 +6,7 @@ sys.path.append( '../constants' )
 import FpgaCommunication
 from Constants import Constants
 from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
 
 class FpgaCommunicationGui(FpgaCommunication.FpgaCommunication):
 
@@ -13,9 +14,16 @@ class FpgaCommunicationGui(FpgaCommunication.FpgaCommunication):
     def __init__(self, gui, spiChannel, spiDevice, spiMode, speed):
         self.gui = gui
         self.lines = 0
+
+        header_labels = ["Address", "Value"]
+        self.gui.regfileTable.setHorizontalHeaderLabels(header_labels)
+
         #self.gui.FPGA_Dialog_Box.setMaximumBlockCount(100)
         # Call superclass constructor
         super().__init__(spiChannel, spiDevice, spiMode, speed)
+
+        self.refreshRegFileTable()
+
 
     # Override of fpgaWrite with the addition of printing to GUI console
     def fpgaWrite(self, address, data):
@@ -39,3 +47,8 @@ class FpgaCommunicationGui(FpgaCommunication.FpgaCommunication):
         if(self.lines > 20):
             self.lines = 0
             self.gui.FPGA_Dialog_Box.pop(20)
+
+    def refreshRegFileTable(self):
+        for address in range(0, Constants.LED_CONTROL_ADDR):
+            self.gui.regfileTable.setItem(address, 0, QTableWidgetItem(hex(address)))
+            self.gui.regfileTable.setItem(address, 1, QTableWidgetItem(hex(self.fpgaRead(address))))

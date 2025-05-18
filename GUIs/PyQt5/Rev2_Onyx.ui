@@ -1436,12 +1436,12 @@ color: rgb(0, 0, 0);</string>
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="regfileTable">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>510</y>
-      <width>311</width>
+      <x>70</x>
+      <y>500</y>
+      <width>240</width>
       <height>281</height>
      </rect>
     </property>
@@ -1463,6 +1463,12 @@ color: rgb(0, 0, 0);</string>
     <property name="alternatingRowColors">
      <bool>true</bool>
     </property>
+    <property name="rowCount">
+     <number>64</number>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>true</bool>
+    </attribute>
     <row>
      <property name="text">
       <string/>
@@ -1473,6 +1479,68 @@ color: rgb(0, 0, 0);</string>
       <string/>
      </property>
     </row>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
+    <row/>
     <column>
      <property name="text">
       <string>Register</string>
@@ -1507,9 +1575,9 @@ color: rgb(0, 0, 0);</string>
    <widget class="QPushButton" name="Estop_Button">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>820</y>
-      <width>231</width>
+      <x>109</x>
+      <y>810</y>
+      <width>241</width>
       <height>81</height>
      </rect>
     </property>
@@ -1537,6 +1605,35 @@ color: rgb(255, 255, 255);</string>
       <width>321</width>
       <height>191</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(255, 255, 255);
+background-color: rgb(48, 48, 48);</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Refresh_Button">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>600</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Georgia</family>
+      <pointsize>13</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0, 255), stop:0.16 rgba(97, 76, 15, 255), stop:0.225 rgba(115, 97, 28, 255), stop:0.285 rgba(93, 83, 33, 255), stop:0.345 rgba(105, 98, 45, 255), stop:0.415 rgba(127, 123, 58, 255), stop:0.52 rgba(166, 151, 60, 255), stop:0.57 rgba(151, 126, 41, 255), stop:0.635 rgba(133, 112, 33, 255), stop:0.695 rgba(162, 139, 54, 255), stop:0.75 rgba(157, 145, 62, 255), stop:0.815 rgba(171, 153, 60, 255), stop:0.88 rgba(167, 139, 45, 255), stop:0.935 rgba(112, 88, 21, 255), stop:1 rgba(0, 0, 0, 255));</string>
+    </property>
+    <property name="text">
+     <string>Refresh</string>
     </property>
    </widget>
   </widget>
