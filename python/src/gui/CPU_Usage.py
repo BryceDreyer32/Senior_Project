@@ -17,7 +17,7 @@ class CPU_Usage(FigureCanvas):
         self.ydata = [deque(maxlen=10) for _ in range(psutil.cpu_count(logical=False))]  # One deque per CPU core
 
         # Set figure background to dark transparent gray
-        self.fig.patch.set_facecolor('#101010')  # Dark gray background
+        self.fig.patch.set_facecolor('#050505')  # Dark gray background
         self.fig.patch.set_alpha(0.5)  # Make it slightly transparent
 
         # Set axes background to dark gray
