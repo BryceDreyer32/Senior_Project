@@ -16,7 +16,8 @@ module top(
     output  [3:0]   sr_pwm,         // The swerve rotation PWM wave
     output  [3:0]   scl,            // The I2C clock to encoders
     inout   [3:0]   sda,            // The I2C bi-directional data to/from encoders
-    output  [3:0]   gnd,
+    output  [7:0]   gnd,
+    output  [3:0]   pwr,
 
     // Swerve Drive Motors
     output  [3:0]   sd_pwm,         // The swerve drive PWM signal
@@ -96,7 +97,8 @@ module top(
     wire  [5:0]     pwm_ratio_ovrd0, pwm_ratio_ovrd1, pwm_ratio_ovrd2, pwm_ratio_ovrd3;
 
 assign startup_fail[3:0] = 4'b0;
-//assign gnd[3:0]          = 4'b0;
+assign gnd[7:0] = 8'b0;
+assign pwr[3:0] = 4'hF;
 
 ////////////////////////////////////////////////////////////////
 // Reset Controller

@@ -35,7 +35,7 @@ def update_label_text():
     val |= (fpga.fpgaRead(Constants.Constants.ROTATION3_CURRENT_ANGLE2_ADDR) & 0x0F) << 8
     wheelValue4.config(text= str(val))
 
-    root.after(200, update_label_text)  # Schedule the function to run again after 1000ms (1 second)
+    root.after(200, update_label_text)  # Schedule the function to run again 200ms
 
 
 # Create the main window
