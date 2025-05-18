@@ -41,7 +41,7 @@ class PS4_CtrlGui(QThread):
         self.runFlag = False
 
     def confirmCurveSetup(self, data):
-        print("[PS4_Ctrl.confirmCurveSetup] Confirming Curve setup" )
+        #print("[PS4_Ctrl.confirmCurveSetup] Confirming Curve setup" )
         # Read back the data from the ESP32 and check its correctness
         if( (data[1] == Constants.PS4_CURVE_MODE) &
             (data[2] == Constants.PS4_CURVE_CONST_COEFF) &

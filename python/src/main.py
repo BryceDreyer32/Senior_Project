@@ -10,13 +10,13 @@ print(os.getcwd())
 sys.path.append(os.path.realpath('python/src/constants'))
 sys.path.append(os.path.realpath('python/src/subsystem/fpga'))
 import Constants
-import FpgaCommunication
+import FpgaCommunicationGui
 
 class MainLoop:
     # Defining main (setup) function 
     def __init__( self ):
         # FPGA instance
-        fpga = FpgaCommunication.FpgaCommunication(Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
+#        fpga = FpgaCommunicationGui.FpgaCommunicationGui(self, Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
 
         # Create an instance of each of the classes that we will assign to a process
         self.drive = Drive()
@@ -32,7 +32,7 @@ class MainLoop:
 
         # Start the GUI process
         app = QtWidgets.QApplication(sys.argv)
-        gui = Gui(fpga)
+        gui = Gui()
 
         gui.show()
         sys.exit(app.exec_())
