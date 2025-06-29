@@ -188,46 +188,46 @@ class Gui(QtWidgets.QDialog):
     def toggleRotation1(self):
         if(self.rot1):
             self.Rotation_Button_1.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, 0x80)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, 0x0)
         else:
             self.Rotation_Button_1.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, powerValue)
-            print("Wrote " + hex(self.fpga.fpgaRead(Constants.Constants.ROTATION0_PWM_TEST_ADDR)))
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, powerValue)
+            print("Wrote " + hex(self.fpga.fpgaRead(Constants.Constants.ROTATION0_CONTROL_ADDR)))
         self.rot1 = not self.rot1
 
     def toggleRotation2(self):
         if(self.rot2):
             self.Rotation_Button_2.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, 0x80)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_CONTROL_ADDR, 0x0)
         else:
             self.Rotation_Button_2.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, powerValue)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_CONTROL_ADDR, powerValue)
         self.rot2 = not self.rot2
 
     def toggleRotation3(self):
         if(self.rot3):
             self.Rotation_Button_3.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, 0x80)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_CONTROL_ADDR, 0x0)
         else:
             self.Rotation_Button_3.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, powerValue)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_CONTROL_ADDR, powerValue)
         self.rot3 = not self.rot3
 
     def toggleRotation4(self):
         if(self.rot4):
             self.Rotation_Button_4.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, 0x80)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, 0x0)
         else:
             self.Rotation_Button_4.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, powerValue)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, powerValue)
         self.rot4 = not self.rot4
 
 
@@ -241,7 +241,7 @@ class Gui(QtWidgets.QDialog):
         else:
             self.Drive_Button_1.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = self.DRV_POWER | (1 << 6)
+            powerValue = self.DRV_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.DRIVE0_CONTROL_ADDR, powerValue)
         self.drv1 = not self.drv1
 
@@ -252,7 +252,7 @@ class Gui(QtWidgets.QDialog):
         else:
             self.Drive_Button_2.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = self.DRV_POWER | (1 << 6)
+            powerValue = self.DRV_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.DRIVE1_CONTROL_ADDR, powerValue)
         self.drv2 = not self.drv2
 
@@ -263,7 +263,7 @@ class Gui(QtWidgets.QDialog):
         else:
             self.Drive_Button_3.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = self.DRV_POWER | (1 << 6)
+            powerValue = self.DRV_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.DRIVE2_CONTROL_ADDR, powerValue)
         self.drv3 = not self.drv3
 
@@ -274,7 +274,7 @@ class Gui(QtWidgets.QDialog):
         else:
             self.Drive_Button_4.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
-            powerValue = self.DRV_POWER | (1 << 6)
+            powerValue = self.DRV_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.DRIVE3_CONTROL_ADDR, powerValue)
         self.drv4 = not self.drv4
 
