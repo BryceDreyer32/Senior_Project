@@ -17,18 +17,18 @@ import SwerveAngleGui
 import CPU_Usage
 
 class Gui(QtWidgets.QDialog):
+    rot0 = False
     rot1 = False
     rot2 = False
     rot3 = False
-    rot4 = False
+    drv0 = False
     drv1 = False
     drv2 = False
     drv3 = False
-    drv4 = False
     ps4Connected = False   
 
-    DRV_POWER = 10
-    ROT_POWER = 6
+    DRV_POWER = 12
+    ROT_POWER = 7
 
     def __init__(self):
         super().__init__()
@@ -51,15 +51,15 @@ class Gui(QtWidgets.QDialog):
         self.PS4_Dialog_box.setTextColor(QColor(255, 0, 0))
         self.PS4_Dialog_box.append("Waiting for PS4 to connect to ESP32")
 
+        self.Rotation_Button_0.clicked.connect(self.toggleRotation0)
         self.Rotation_Button_1.clicked.connect(self.toggleRotation1)
         self.Rotation_Button_2.clicked.connect(self.toggleRotation2)
         self.Rotation_Button_3.clicked.connect(self.toggleRotation3)
-        self.Rotation_Button_4.clicked.connect(self.toggleRotation4)
 
+        self.Drive_Button_0.clicked.connect(self.toggleDrive0)
         self.Drive_Button_1.clicked.connect(self.toggleDrive1)
         self.Drive_Button_2.clicked.connect(self.toggleDrive2)
         self.Drive_Button_3.clicked.connect(self.toggleDrive3)
-        self.Drive_Button_4.clicked.connect(self.toggleDrive4)
 
         self.Arm_Demo_Button.clicked.connect(self.ArmDemoRun)
         self.Arm_Home_Button.clicked.connect(self.ArmGoHome)
@@ -194,103 +194,103 @@ class Gui(QtWidgets.QDialog):
 ####################################################################################
     def processAngleData(self, data):
         data = data.split(',')
-        self.Angle_Label_1.setText(data[0])
-        self.Angle_Label_2.setText(data[1])
-        self.Angle_Label_3.setText(data[2])
-        self.Angle_Label_4.setText(data[3])
+        self.Angle_Label_0.setText(data[0])
+        self.Angle_Label_1.setText(data[1])
+        self.Angle_Label_2.setText(data[2])
+        self.Angle_Label_3.setText(data[3])
 
-    def toggleRotation1(self):
-        if(self.rot1):
-            self.Rotation_Button_1.setText("Start Rotation")
+    def toggleRotation0(self):
+        if(self.rot0):
+            self.Rotation_Button_0.setText("Start Rotation")
             self.fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, 0x80)
         else:
-            self.Rotation_Button_1.setText("Stop Rotation")
+            self.Rotation_Button_0.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.ROTATION0_PWM_TEST_ADDR, powerValue)
             print("Wrote " + hex(self.fpga.fpgaRead(Constants.Constants.ROTATION0_PWM_TEST_ADDR)))
+        self.rot0 = not self.rot0
+
+    def toggleRotation1(self):
+        if(self.rot1):
+            self.Rotation_Button_1.setText("Start Rotation")
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, 0x80)
+        else:
+            self.Rotation_Button_1.setText("Stop Rotation")
+            # Power value of 5, direction = 1, override pwm = 1
+            powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, powerValue)
         self.rot1 = not self.rot1
 
     def toggleRotation2(self):
         if(self.rot2):
             self.Rotation_Button_2.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, 0x80)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, 0x80)
         else:
             self.Rotation_Button_2.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, powerValue)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, powerValue)
         self.rot2 = not self.rot2
 
     def toggleRotation3(self):
         if(self.rot3):
             self.Rotation_Button_3.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, 0x80)
+            self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, 0x80)
         else:
             self.Rotation_Button_3.setText("Stop Rotation")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, powerValue)
-        self.rot3 = not self.rot3
-
-    def toggleRotation4(self):
-        if(self.rot4):
-            self.Rotation_Button_4.setText("Start Rotation")
-            self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, 0x80)
-        else:
-            self.Rotation_Button_4.setText("Stop Rotation")
-            # Power value of 5, direction = 1, override pwm = 1
-            powerValue = self.ROT_POWER | (1 << 6) | (1 << 7)
             self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, powerValue)
-        self.rot4 = not self.rot4
+        self.rot3 = not self.rot3
 
 
 ####################################################################################
 # DRIVE ROUTINES
 ####################################################################################
+    def toggleDrive0(self):
+        if(self.drv0):
+            self.Drive_Button_0.setText("Start Drive")
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE0_CONTROL_ADDR, 0x0)
+        else:
+            self.Drive_Button_0.setText("Stop Drive")
+            # Power value of 5, direction = 1, override pwm = 1
+            powerValue = self.DRV_POWER | (1 << 6)
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE0_CONTROL_ADDR, powerValue)
+        self.drv0 = not self.drv0
+
     def toggleDrive1(self):
         if(self.drv1):
             self.Drive_Button_1.setText("Start Drive")
-            self.fpga.fpgaWrite(Constants.Constants.DRIVE0_CONTROL_ADDR, 0x0)
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE1_CONTROL_ADDR, 0x0)
         else:
             self.Drive_Button_1.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.DRV_POWER | (1 << 6)
-            self.fpga.fpgaWrite(Constants.Constants.DRIVE0_CONTROL_ADDR, powerValue)
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE1_CONTROL_ADDR, powerValue)
         self.drv1 = not self.drv1
 
     def toggleDrive2(self):
         if(self.drv2):
             self.Drive_Button_2.setText("Start Drive")
-            self.fpga.fpgaWrite(Constants.Constants.DRIVE1_CONTROL_ADDR, 0x0)
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE2_CONTROL_ADDR, 0x0)
         else:
             self.Drive_Button_2.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.DRV_POWER | (1 << 6)
-            self.fpga.fpgaWrite(Constants.Constants.DRIVE1_CONTROL_ADDR, powerValue)
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE2_CONTROL_ADDR, powerValue)
         self.drv2 = not self.drv2
 
     def toggleDrive3(self):
         if(self.drv3):
             self.Drive_Button_3.setText("Start Drive")
-            self.fpga.fpgaWrite(Constants.Constants.DRIVE2_CONTROL_ADDR, 0x0)
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE3_CONTROL_ADDR, 0x0)
         else:
             self.Drive_Button_3.setText("Stop Drive")
             # Power value of 5, direction = 1, override pwm = 1
             powerValue = self.DRV_POWER | (1 << 6)
-            self.fpga.fpgaWrite(Constants.Constants.DRIVE2_CONTROL_ADDR, powerValue)
-        self.drv3 = not self.drv3
-
-    def toggleDrive4(self):
-        if(self.drv4):
-            self.Drive_Button_4.setText("Start Drive")
-            self.fpga.fpgaWrite(Constants.Constants.DRIVE3_CONTROL_ADDR, 0x0)
-        else:
-            self.Drive_Button_4.setText("Stop Drive")
-            # Power value of 5, direction = 1, override pwm = 1
-            powerValue = self.DRV_POWER | (1 << 6)
             self.fpga.fpgaWrite(Constants.Constants.DRIVE3_CONTROL_ADDR, powerValue)
-        self.drv4 = not self.drv4
+        self.drv3 = not self.drv3
 
 ####################################################################################
 # ARM ROUTINES
@@ -411,6 +411,12 @@ class Gui(QtWidgets.QDialog):
         self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, 0x80)
         self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, 0x80)
         self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, 0x80)
+
+        self.fpga.fpgaWrite(Constants.Constants.BASE_SERVO_CONTROL_ADDR, 0x0)
+        self.fpga.fpgaWrite(Constants.Constants.WRIST_SERVO_CONTROL_ADDR, 0x0)
+        self.fpga.fpgaWrite(Constants.Constants.CENTER_SERVO_CONTROL_ADDR, 0x0)
+        self.fpga.fpgaWrite(Constants.Constants.GRABBER_SERVO_CONTROL_ADDR, 0x0)
+
 
     def RefreshRfData(self):
         self.fpga.refreshRegFileTable()     

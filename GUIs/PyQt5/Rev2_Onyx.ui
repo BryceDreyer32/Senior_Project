@@ -395,7 +395,7 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Drive Control</string>
     </property>
-    <widget class="QLabel" name="Angle_Label_4">
+    <widget class="QLabel" name="Angle_Label_3">
      <property name="geometry">
       <rect>
        <x>560</x>
@@ -422,7 +422,7 @@ p, li { white-space: pre-wrap; }
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QPushButton" name="Drive_Button_1">
+    <widget class="QPushButton" name="Drive_Button_0">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -496,7 +496,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Start Rotation</string>
      </property>
     </widget>
-    <widget class="QLabel" name="Angle_Label_2">
+    <widget class="QLabel" name="Angle_Label_1">
      <property name="geometry">
       <rect>
        <x>560</x>
@@ -523,7 +523,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QPushButton" name="Rotation_Button_1">
+    <widget class="QPushButton" name="Rotation_Button_0">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -548,7 +548,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Start Rotation</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="Drive_Button_2">
+    <widget class="QPushButton" name="Drive_Button_1">
      <property name="geometry">
       <rect>
        <x>390</x>
@@ -621,7 +621,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Current Angle</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="Rotation_Button_2">
+    <widget class="QPushButton" name="Rotation_Button_1">
      <property name="geometry">
       <rect>
        <x>390</x>
@@ -646,7 +646,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Start Rotation</string>
      </property>
     </widget>
-    <widget class="QLabel" name="Angle_Label_1">
+    <widget class="QLabel" name="Angle_Label_0">
      <property name="geometry">
       <rect>
        <x>200</x>
@@ -698,7 +698,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Start Drive</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="Drive_Button_4">
+    <widget class="QPushButton" name="Drive_Button_2">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -723,7 +723,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Start Drive</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="Rotation_Button_4">
+    <widget class="QPushButton" name="Rotation_Button_2">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -772,7 +772,7 @@ background-color: qconicalgradient(cx:0.5, cy:0.5, angle:0, stop:0 rgba(0, 0, 0,
       <string>Current Angle</string>
      </property>
     </widget>
-    <widget class="QLabel" name="Angle_Label_3">
+    <widget class="QLabel" name="Angle_Label_2">
      <property name="geometry">
       <rect>
        <x>200</x>

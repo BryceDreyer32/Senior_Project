@@ -7,7 +7,7 @@ import FpgaCommunication
 
 # FPGA instance
 fpga = FpgaCommunication.FpgaCommunication(Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
-fpga.fpgaWrite(Constants.Constants.SERVO_CONTROL_ADDRESS, 0x0)
+#fpga.fpgaWrite(Constants.Constants.SERVO_CONTROL_ADDRESS, 0x0)
 
 # The clock period of the servo pwm is 2^19 (the counter in the FPGA) * the period of the 27MHz FPGA clock
 SERVO_PWM_PERIOD = (2**19) * (1/27e6)
@@ -116,7 +116,7 @@ def on_disable_click():
 def up_nod_bite_demo_click():
     print("Go up, nod, and bite demo")
     print("Enabling all...")
-    fpga.fpgaWrite(Constants.Constants.SERVO_CONTROL_ADDRESS, 0xF)
+    #fpga.fpgaWrite(Constants.Constants.SERVO_CONTROL_ADDRESS, 0xF)
 
     print("Going up")
     fpga.fpgaWrite(Constants.Constants.BASE_SERVO_CONTROL_ADDR, sliderValueToPWM(20, Constants.Constants.BASE_SERVO_CONTROL_ADDR))
@@ -152,7 +152,7 @@ def up_nod_bite_demo_click():
     time.sleep(1)
 
     print("Disabling all...")
-    fpga.fpgaWrite(Constants.Constants.SERVO_CONTROL_ADDRESS, 0x0)
+    #fpga.fpgaWrite(Constants.Constants.SERVO_CONTROL_ADDRESS, 0x0)
 
 
 # Create the main window

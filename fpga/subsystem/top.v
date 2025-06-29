@@ -297,7 +297,7 @@ spark_pwm sr_pwm0(
     .clock                  (clock_div_cntr[5]),                    // ~422kHz
     .pwm_enable             (sr_pwm_enable[0] | rot_pwm_ovrd0),     // PWM enable
     .pwm_ratio              (pwm_value0),                           // The high-time of the PWM signal out of 255
-    .pwm_direction          (sr_pwm_direction[0]),                  // Motor direction
+    .pwm_direction          (sr_pwm_direction[0] | rot_pwm_ovrd0),  // Motor direction
     .pwm_update             (sr_pwm_update[0] | rot_pwm_ovrd0),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[0]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[0])                             // The output PWM wave
@@ -349,7 +349,7 @@ spark_pwm sr_pwm1(
     .clock                  (clock_div_cntr[5]),                    // ~422kHz
     .pwm_enable             (sr_pwm_enable[1] | rot_pwm_ovrd1),     // PWM enable
     .pwm_ratio              (pwm_value1),                           // The high-time of the PWM signal out of 255
-    .pwm_direction          (sr_pwm_direction[1]),                  // Motor direction
+    .pwm_direction          (sr_pwm_direction[1] | rot_pwm_ovrd1),  // Motor direction
     .pwm_update             (sr_pwm_update[1] | rot_pwm_ovrd1),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[1]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[1])                             // The output PWM wave
@@ -401,7 +401,7 @@ spark_pwm sr_pwm2(
     .clock                  (clock_div_cntr[5]),                    // ~422kHz
     .pwm_enable             (sr_pwm_enable[2] | rot_pwm_ovrd2),     // PWM enable
     .pwm_ratio              (pwm_value2),                           // The high-time of the PWM signal out of 255
-    .pwm_direction          (sr_pwm_direction[2]),                  // Motor direction
+    .pwm_direction          (sr_pwm_direction[2] | rot_pwm_ovrd2),  // Motor direction
     .pwm_update             (sr_pwm_update[2] | rot_pwm_ovrd2),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[2]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[2])                             // The output PWM wave
@@ -453,7 +453,7 @@ spark_pwm sr_pwm3(
     .clock                  (clock_div_cntr[5]),                    // ~422kHz
     .pwm_enable             (sr_pwm_enable[3] | rot_pwm_ovrd3),     // PWM enable
     .pwm_ratio              (pwm_value3),                           // The high-time of the PWM signal out of 255
-    .pwm_direction          (sr_pwm_direction[3]),                  // Motor direction
+    .pwm_direction          (sr_pwm_direction[3] | rot_pwm_ovrd3),  // Motor direction
     .pwm_update             (sr_pwm_update[3] | rot_pwm_ovrd3),     // Request an update to the PWM ratio
     .pwm_done               (sr_pwm_done[3]),                       // Updated PWM ratio has been applied (pulse)
     .pwm_signal             (sr_pwm[3])                             // The output PWM wave
