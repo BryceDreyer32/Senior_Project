@@ -11,8 +11,9 @@ sys.path.append(os.path.realpath('python/src/constants'))
 sys.path.append(os.path.realpath('python/src/subsystem/fpga'))
 sys.path.append(os.path.realpath('python/src/gui'))
 import Constants
-import FpgaCommunication
+import FpgaCommunicationGui
 import PS4_CtrlGui
+import SwerveAngleGui
 import CPU_Usage
 
 class Gui(QtWidgets.QDialog):
@@ -29,15 +30,16 @@ class Gui(QtWidgets.QDialog):
     DRV_POWER = 10
     ROT_POWER = 6
 
-    def __init__(self, fpga):
+    def __init__(self):
         super().__init__()
-        self.fpga = fpga
 
         print("cwd = " + str(os.getcwd()))
 
         # Load the UI Page - added path too
         ui_path = os.path.dirname(os.path.abspath(__file__))
         uic.loadUi("GUIs/PyQt5/Rev2_Onyx.ui", self)
+
+        self.fpga = FpgaCommunicationGui.FpgaCommunicationGui(self, Constants.Constants.FPGA_SPI_CHANNEL, Constants.Constants.FPGA_SPI_DEVICE, Constants.Constants.FPGA_SPI_MODE, Constants.Constants.FPGA_SPI_SPEED)
 
         # Create a MplCanvas instance (matplotlib plot)
         self.canvas = CPU_Usage.CPU_Usage()
@@ -66,11 +68,16 @@ class Gui(QtWidgets.QDialog):
         self.Wrist_Slider.valueChanged.connect(self.on_wristSlider_change)
         self.Clamp_Slider.valueChanged.connect(self.on_grabberSlider_change)
 
+        self.Refresh_Button.clicked.connect(self.RefreshRfData)
         self.Estop_Button.clicked.connect(self.eStop)
 
         self.ps4_thread = PS4_CtrlGui.PS4_CtrlGui()
         self.ps4_thread.ps4_data.connect(self.processPs4Data)
         self.ps4_thread.start()
+
+        self.angle_thread = SwerveAngleGui.SwerveAngleGui(self.fpga)
+        self.angle_thread.angle_data.connect(self.processAngleData)
+        self.angle_thread.start()
 
 ####################################################################################
 # PS4 ROUTINES
@@ -97,12 +104,12 @@ class Gui(QtWidgets.QDialog):
 
     def getPs4Data(self, data):
         if(self.ps4Connected):
-            print("[PS4_Ctrl.getPs4Data] Received data:  " + 
-                str(data[1]-128).rjust(4) + ", " + 
-                str(data[2]-128).rjust(4) + ", " + 
-                str(data[3]-128).rjust(4) + ", " + 
-                str(data[4]-128).rjust(4) + ", " + 
-                str(data[5]).rjust(4))
+#            print("[PS4_Ctrl.getPs4Data] Received data:  " + 
+#                str(data[1]-128).rjust(4) + ", " + 
+#                str(data[2]-128).rjust(4) + ", " + 
+#                str(data[3]-128).rjust(4) + ", " + 
+#                str(data[4]-128).rjust(4) + ", " + 
+#                str(data[5]).rjust(4))
             self.displayPs4Data(data)
         
     def getPs4ConnectionStatus(self, data):
@@ -126,7 +133,7 @@ class Gui(QtWidgets.QDialog):
 
         # Left stick up-down
         LUval =     data[2] if (data[2] > 5   and data[2] < 128) else 0
-        LDval = 256-data[2] if (data[2] < 250 and data[1] > 128) else 0
+        LDval = 256-data[2] if (data[2] < 250 and data[2] > 128) else 0
 
         self.LU.setValue(LUval)
         self.LD.setValue(LDval)
@@ -185,6 +192,13 @@ class Gui(QtWidgets.QDialog):
 ####################################################################################
 # ROTATION ROUTINES
 ####################################################################################
+    def processAngleData(self, data):
+        data = data.split(',')
+        self.Angle_Label_1.setText(data[0])
+        self.Angle_Label_2.setText(data[1])
+        self.Angle_Label_3.setText(data[2])
+        self.Angle_Label_4.setText(data[3])
+
     def toggleRotation1(self):
         if(self.rot1):
             self.Rotation_Button_1.setText("Start Rotation")
@@ -397,3 +411,6 @@ class Gui(QtWidgets.QDialog):
         self.fpga.fpgaWrite(Constants.Constants.ROTATION1_PWM_TEST_ADDR, 0x80)
         self.fpga.fpgaWrite(Constants.Constants.ROTATION2_PWM_TEST_ADDR, 0x80)
         self.fpga.fpgaWrite(Constants.Constants.ROTATION3_PWM_TEST_ADDR, 0x80)
+
+    def RefreshRfData(self):
+        self.fpga.refreshRegFileTable()     

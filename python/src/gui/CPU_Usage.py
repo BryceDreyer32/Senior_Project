@@ -24,9 +24,9 @@ class CPU_Usage(FigureCanvas):
         self.ax.set_facecolor('#101010')
         
         # Set up the plot
-        self.ax.set_title("Real-time CPU Usage per Core", fontsize=8)  # Adjust title font size
-        self.ax.set_xlabel("Time (s)", fontsize=8)  # Adjust x-axis label font size
-        self.ax.set_ylabel("CPU Usage (%)", fontsize=8)  # Adjust y-axis label font size
+        self.ax.set_title("Real-time CPU Usage per Core", fontsize=8, color='white')  # Adjust title font size
+        self.ax.set_xlabel("Time (s)", fontsize=8, color='white')  # Adjust x-axis label font size
+        self.ax.set_ylabel("CPU Usage (%)", fontsize=8, color='white')  # Adjust y-axis label font size
         self.ax.set_ylim(0, 100)
         self.ax.tick_params(axis='x', labelsize=8)
         self.ax.tick_params(axis='y', labelsize=8)
