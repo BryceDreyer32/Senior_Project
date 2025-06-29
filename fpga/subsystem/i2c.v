@@ -4,8 +4,7 @@
 module i2c(
     input               reset_n,        // Active low reset
     input               clock,          // The main clock
-    input               angle_done,     // Whether or not we are at the target angle
-    input               calib_en,       // I2C enable override for calibration
+    input               enable,         // I2C enabled
     output      [11:0]  raw_angle,      // The raw angle from the AS5600     
     output  reg         rd_done,        // I2C read done pulse
     output              scl,            // The I2C clock
@@ -91,7 +90,7 @@ end
 always @(*) begin
     case(ps)
         IDLE: begin
-            if(~angle_done | calib_en)
+            if(enable)
                 ns = START;
             else
                 ns = IDLE;
@@ -166,7 +165,7 @@ always @(*) begin
         end
 
         PAUSE: begin
-            if(angle_done)
+            if(enable)
                 ns = IDLE;
             else
                 ns = START;
