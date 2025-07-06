@@ -180,7 +180,7 @@ reg_file rf(
 
 i2c i2c_swerve0(    
     .reset_n            (reset_n),              // Active low reset
-    .clock              (clk_counter[6]),       // The main clock
+    .clock              (clock_div_cntr[6]),    // The main clock
     .enable             (rot_pwm_enable0),      // I2C enable override for calibration
     .raw_angle          (current_angle0[11:0]), // The raw angle from the AS5600 
     .rd_done            (),                     // I2C read done pulse           
@@ -206,7 +206,7 @@ spark_pwm sr_pwm0(
 
 i2c i2c_swerve1(    
     .reset_n            (reset_n),              // Active low reset
-    .clock              (clk_counter[6]),       // The main clock
+    .clock              (clock_div_cntr[6]),    // The main clock
     .enable             (rot_pwm_enable1),      // I2C enable override for calibration
     .raw_angle          (current_angle1[11:0]), // The raw angle from the AS5600 
     .rd_done            (),                     // I2C read done pulse           
@@ -232,7 +232,7 @@ spark_pwm sr_pwm1(
 
 i2c i2c_swerve2(    
     .reset_n            (reset_n),              // Active low reset
-    .clock              (clk_counter[6]),       // The main clock
+    .clock              (clock_div_cntr[6]),    // The main clock
     .enable             (rot_pwm_enable2),      // I2C enable override for calibration
     .raw_angle          (current_angle2[11:0]), // The raw angle from the AS5600 
     .rd_done            (),                     // I2C read done pulse           
@@ -258,7 +258,7 @@ spark_pwm sr_pwm2(
 
 i2c i2c_swerve3(    
     .reset_n            (reset_n),              // Active low reset
-    .clock              (clk_counter[6]),       // The main clock
+    .clock              (clock_div_cntr[6]),    // The main clock
     .enable             (rot_pwm_enable3),      // I2C enable override for calibration
     .raw_angle          (current_angle3[11:0]), // The raw angle from the AS5600 
     .rd_done            (),                     // I2C read done pulse           
