@@ -1,0 +1,115 @@
+IO_LOC "out0" 38;
+IO_PORT "out0" IO_TYPE=LVCMOS25 ;
+IO_LOC "out1" 37;
+IO_PORT "out1" IO_TYPE=LVCMOS25 ;
+IO_LOC "out2" 36;
+IO_PORT "out2" IO_TYPE=LVCMOS25 ;
+IO_LOC "out3" 39;
+IO_PORT "out3" IO_TYPE=LVCMOS25 ;
+IO_LOC "out4" 51;
+IO_PORT "out4" IO_TYPE=LVCMOS25 ;
+IO_LOC "out5" 32;
+IO_PORT "out5" IO_TYPE=LVCMOS25 ;
+IO_LOC "out6" 69;
+IO_PORT "out6" IO_TYPE=LVCMOS25 ;
+IO_LOC "out7" 68;
+IO_PORT "out7" IO_TYPE=LVCMOS25 ;
+IO_LOC "out8" 49;
+IO_PORT "out8" IO_TYPE=LVCMOS25 ;
+IO_LOC "out9" 48;
+IO_PORT "out9" IO_TYPE=LVCMOS25 ;
+IO_LOC "out10" 53;
+IO_PORT "out10" IO_TYPE=LVCMOS25 ;
+IO_LOC "out11" 31;
+IO_PORT "out11" IO_TYPE=LVCMOS25 ;
+IO_LOC "out12" 55;
+IO_PORT "out12" IO_TYPE=LVCMOS25 ;
+IO_LOC "out13" 57;
+IO_PORT "out13" IO_TYPE=LVCMOS25 PULL_MODE=UP;
+IO_LOC "out14" 54;
+IO_PORT "out14" IO_TYPE=LVCMOS25 ;
+IO_LOC "out15" 56;
+IO_PORT "out15" IO_TYPE=LVCMOS25 ;
+IO_LOC "out16" 35;
+IO_PORT "out16" IO_TYPE=LVCMOS25 ;
+IO_LOC "out17" 41;
+IO_PORT "out17" IO_TYPE=LVCMOS25 PULL_MODE=UP;
+IO_LOC "out18" 40;
+IO_PORT "out18" IO_TYPE=LVCMOS25 ;
+IO_LOC "out19" 42;
+IO_PORT "out19" IO_TYPE=LVCMOS25 ;
+IO_LOC "out20" 30;
+IO_PORT "out20" IO_TYPE=LVCMOS25 ;
+IO_LOC "out21" 34;
+IO_PORT "out21" IO_TYPE=LVCMOS25 PULL_MODE=UP;
+IO_LOC "out22" 29;
+IO_PORT "out22" IO_TYPE=LVCMOS25 ;
+IO_LOC "out23" 33;
+IO_PORT "out23" IO_TYPE=LVCMOS25 ;
+IO_LOC "out24" 76;
+IO_PORT "out24" IO_TYPE=LVCMOS25 ;
+IO_LOC "out25" 77;
+IO_PORT "out25" IO_TYPE=LVCMOS25 PULL_MODE=UP;
+IO_LOC "out26" 75;
+IO_PORT "out26" IO_TYPE=LVCMOS25 ;
+IO_LOC "out27" 71;
+IO_PORT "out27" IO_TYPE=LVCMOS25 ;
+IO_LOC "out28" 25;
+IO_PORT "out28" IO_TYPE=LVCMOS25 ;
+IO_LOC "out29" 26;
+IO_PORT "out29" IO_TYPE=LVCMOS25 ;
+IO_LOC "out30" 27;
+IO_PORT "out30" IO_TYPE=LVCMOS25 ;
+IO_LOC "out31" 28;
+IO_PORT "out31" IO_TYPE=LVCMOS25 ;
+IO_LOC "out32" 79;
+IO_PORT "out32" IO_TYPE=LVCMOS18 ;
+IO_LOC "out33" 80;
+IO_PORT "out33" IO_TYPE=LVCMOS18 ;
+IO_LOC "out34" 81;
+IO_PORT "out34" IO_TYPE=LVCMOS18 ;
+IO_LOC "out35" 82;
+IO_PORT "out35" IO_TYPE=LVCMOS18 ;
+IO_LOC "out36" 83;
+IO_PORT "out36" IO_TYPE=LVCMOS18 ;
+IO_LOC "out37" 84;
+IO_PORT "out37" IO_TYPE=LVCMOS18 ;
+IO_LOC "out38" 85;
+IO_PORT "out38" IO_TYPE=LVCMOS18 ;
+IO_LOC "out39" 86;
+IO_PORT "out39" IO_TYPE=LVCMOS18 ;
+IO_LOC "out40" 63;
+IO_PORT "out40" IO_TYPE=LVCMOS25 ;
+IO_LOC "clock" 52;
+IO_PORT ""clock"" IO_TYPE=LVCMOS25 PULL_MODE=UP;
+
+
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports scl[3]]
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports sda[3]]
+
+
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports scl[2]]
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports sda[2]]
+
+
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports scl[1]]
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports sda[1]]
+
+
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports scl[0]]
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports sda[0]]
+
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports scl[3]]
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports sda[3]]
+
+
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports scl[2]]
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports sda[2]]
+
+
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports scl[1]]
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports sda[1]]
+
+
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports scl[0]]
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports sda[0]]

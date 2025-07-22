@@ -123,3 +123,34 @@ IO_PORT "miso" IO_TYPE=LVCMOS33;
 
 IO_LOC  "clock" 52;
 IO_PORT "clock" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports scl[3]]
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports sda[3]]
+
+
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports scl[2]]
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports sda[2]]
+
+
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports scl[1]]
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports sda[1]]
+
+
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports scl[0]]
+set_input_delay -clock sys_clk -min 0.0 -max 120.0 [get_ports sda[0]]
+
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports scl[3]]
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports sda[3]]
+
+
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports scl[2]]
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports sda[2]]
+
+
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports scl[1]]
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports sda[1]]
+
+
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports scl[0]]
+set_output_delay -clock sys_clk -min 0.0 -max 50.0 [get_ports sda[0]]
