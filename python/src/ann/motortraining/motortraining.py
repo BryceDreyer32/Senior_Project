@@ -10,6 +10,7 @@ import sys
 import os
 import random
 import time
+import numpy as np
 
 print(os.getcwd())
 sys.path.append(os.path.realpath('python/src/constants'))
@@ -22,27 +23,35 @@ fpga = FpgaCommunication.FpgaCommunication(Constants.Constants.FPGA_SPI_CHANNEL,
 
 def run_motor(motor, speed, duration):
     start_angle = get_angle(motor)
-    val = ((1 << 7) | (speed & 0x3F))
+    val = ((1 << 7) | (1 << 6) | (speed & 0x3F))
     if(motor == 0):
         fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, val)
+        time.sleep(duration)
+        fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, 0x0)
 
     elif(motor == 1):
-            fpga.fpgaWrite(Constants.Constants.ROTATION1_CONTROL_ADDR, val)
+        fpga.fpgaWrite(Constants.Constants.ROTATION1_CONTROL_ADDR, val)
+        time.sleep(duration)
+        fpga.fpgaWrite(Constants.Constants.ROTATION1_CONTROL_ADDR, 0x0)
 
     elif(motor == 2):
-            fpga.fpgaWrite(Constants.Constants.ROTATION2_CONTROL_ADDR, val)
+        fpga.fpgaWrite(Constants.Constants.ROTATION2_CONTROL_ADDR, val)
+        time.sleep(duration)
+        fpga.fpgaWrite(Constants.Constants.ROTATION2_CONTROL_ADDR, 0x0)
 
     elif(motor == 3):
-            fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, val)
-    
-    time.sleep(duration)
-    fpga.fpgaWrite(Constants.Constants.ROTATION0_TARGET_ANGLE_ADDR, 0x0)
+        fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, val)
+        time.sleep(duration)
+        fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, 0x0)
+
+    time.sleep(1)
     end_angle = get_angle(motor)
-    
-    if(start_angle > end_angle):
-         return 4096 - start_angle + end_angle
+
+    if(start_angle > end_angle):         
+        delta = 4096 - start_angle + end_angle
     else:
-        return end_angle - start_angle
+        delta = end_angle - start_angle
+    return start_angle, end_angle, delta
 
 def get_angle(motor):
     if(motor == 0):
@@ -70,17 +79,17 @@ def get_angle(motor):
 
 def main():
     with open('motor_training_results.txt', 'w') as f:
-        f.write("Motor Training Results:\n")
-        f.write("Motor\tTrial\tSpeed\tDuration\tAngle Change\n")
-        motor = 3
+        #f.write("Motor Training Results:\n")
+        f.write("Motor\tTrial\tSpeed\tDuration\tStart Angle\tEnd Angle\tAngle Change\n")
+        motor = 2
         print(f"Testing motor {motor}...")
-        for duration in range(0.1, 0.5, 0.2):
-            for speed in range(10, 20, 5):  # Test speeds 
-                for trial in range(10):
-                    #print(f"Trial {trial}: Running motor {motor} at speed {speed}...")
-                    angle_change = run_motor(motor, speed, 2)  # Run for 2 seconds
+        for duration in np.arange(0.03, 0.04, 0.02):
+            for speed in range(9, 14, 2):  # Test speeds 
+                for trial in range(50):
+                    print(f"Trial {trial}: Running motor {motor} at speed {speed} for {duration}")
+                    start, end, angle_change = run_motor(motor, speed, duration)
                     #print(f"Motor {motor} changed angle by {angle_change} degrees.")
-                    f.write(f"{motor}\t{trial}\t{speed}\t{duration}\t{angle_change}\n")
+                    f.write(f"{motor}\t{trial}\t{speed}\t{duration}\t{start}\t{end}\t{angle_change}\n")
 
     print(f"Finished testing motor {motor}.\n")
     f.close()
