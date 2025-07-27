@@ -50,7 +50,7 @@ axes[0].grid(True)
 #axes[1].set_ylabel('Angle Change')
 # --- Plot 2: Scatter Plot (Start Angle vs Angle Change) ---
 axes[1].scatter(start_angle_data, angle_change_data, alpha=0.4, label='Original', color='gray')
-axes[1].scatter(filtered_start_angle, filtered_angle_change, alpha=0.7, label='Filtered', color='blue')
+axes[1].scatter(start_angle_data, filtered_angle_change, alpha=0.7, label='Filtered', color='blue')
 axes[1].set_title('Angle Change vs Start Angle')
 axes[1].set_xlabel('Start Angle')
 axes[1].set_ylabel('Angle Change')
@@ -60,7 +60,7 @@ axes[1].grid(True)
 # --- Plot 3: Histogram + KDE ---
 sns.histplot(angle_change_data, kde=True, color='gray', label='Original', bins=20,
              stat='density', alpha=0.4, ax=axes[2])
-sns.histplot(filtered_angle_change, kde=True, color='blue', label='Filtered', bins=20,
+sns.histplot(angle_change_data, kde=True, color='blue', label='Filtered', bins=20,
              stat='density', alpha=0.6, ax=axes[2])
 axes[2].set_title('Distribution of Angle Change (Original vs Filtered)')
 axes[2].set_xlabel('Angle Change')

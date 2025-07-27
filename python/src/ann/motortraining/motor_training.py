@@ -13,17 +13,8 @@ import sklearn
 print("version = " + sklearn.__version__)
 
 # Load your dataset
-#df = pd.read_csv('python/src/ann/motortraining/motor_data.csv')
 df = pd.read_csv('python/src/ann/motortraining/results.txt', sep=',', engine='python')
-
 print(df.shape)
-
-#df['Current Angle'] = df['Start_Angle']
-#df['Target Angle'] = df['End_Angle']
-#df['Angle Delta'] = df['Angle_Change']
-#X = df[['Current Angle', 'Target Angle', 'Angle Delta', 'Voltage']]
-#X = df[['Current Angle', 'Angle Delta', 'Voltage']]
-#y = df[['Speed', 'Duration']].values  # Replace 'Speed' if needed
 
 X = df.iloc[:, [4, 6, 7]].values  # as NumPy array
 y = df.iloc[:, [2, 3]].values
@@ -76,8 +67,8 @@ class Motor_ANN(nn.Module):
 
 if __name__ == '__main__':
     model = Motor_ANN()
-    criterion = nn.SmoothL1Loss()  # aka Huber loss
-    # criterion = nn.MSELoss()
+    # criterion = nn.SmoothL1Loss()  # aka Huber loss
+    criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)  # Adjusted learning rate
 
     # --- Train ---
