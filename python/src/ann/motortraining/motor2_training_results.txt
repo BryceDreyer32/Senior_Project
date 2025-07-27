@@ -1,4 +1,4 @@
-Motor	Trial	Speed	Duration	Start Angle	End Angle	Angle Change
+Motor	Trial	Speed	Duration	Start_Angle End_Angle   Angle_Change
 2	0	4	0.13	1512	1630	118
 2	1	4	0.13	1630	1764	134
 2	2	4	0.13	1764	1925	161
