@@ -14,13 +14,13 @@ import sklearn
 print("version = " + sklearn.__version__)
 
 # Load your dataset
-df = pd.read_csv('python/src/ann/motortraining/motor_data.csv')
+df = pd.read_csv('python/src/ann/motortraining/results.txt', sep=',', engine='python')
+print(df.shape)
 
-df['Current Angle'] = df['Start_Angle']
-df['Target Angle'] = df['End_Angle']
-df['Angle Delta'] = df['Angle_Change']
-X = df[['Current Angle', 'Target Angle', 'Angle Delta', 'Voltage']]
-y = df[['Speed', 'Duration']].values  # Replace 'Speed' if needed
+X = df.iloc[:, [4, 6, 7]].values  # as NumPy array
+y = df.iloc[:, [2, 3]].values
+#.values  # Replace 'Speed' if needed
+
 
 # Fit scalers
 input_scaler = StandardScaler().fit(X)
@@ -59,7 +59,7 @@ class Motor_ANN(nn.Module):
     def __init__(self):
         super(Motor_ANN, self).__init__()
         self.net = nn.Sequential(
-            nn.Linear(4, 16),
+            nn.Linear(3, 16),
             nn.ReLU(),
             nn.Dropout(0.1),  # 10% of neurons randomly disabled
             nn.Linear(16, 16),
@@ -73,8 +73,8 @@ class Motor_ANN(nn.Module):
     
 if __name__ == '__main__':
     model = Motor_ANN()
-    #criterion = nn.SmoothL1Loss()  # aka Huber loss
     # criterion = nn.MSELoss()
+    # criterion = nn.SmoothL1Loss()  # aka Huber loss
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)  # Adjusted learning rate
 
     # --- Train ---
@@ -133,7 +133,7 @@ if __name__ == '__main__':
     plt.show()
 
     # --- Save the model ---
-    example_input = torch.rand(1, 4)  # assuming input has 4 features
+    example_input = torch.rand(1, 3)  # assuming input has 3 features
     scripted_model = torch.jit.trace(model, example_input)
     scripted_model.save("python/src/ann/motortraining/pwm_model.pt")
 
@@ -145,7 +145,7 @@ if __name__ == '__main__':
     joblib.dump(output_scaler, 'python/src/ann/motortraining/output_scaler.pkl')
 
     # --- Export to ONNX ---
-    dummy_input = torch.randn(1, 4)  # assuming input has 4 features
+    dummy_input = torch.randn(1, 3)  # assuming input has 4 features
     torch.onnx.export(
         model,  # your trained model
         dummy_input,

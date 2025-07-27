@@ -44,7 +44,13 @@ def run_motor(motor, speed, duration):
         time.sleep(duration)
         fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, 0x0)
 
-    time.sleep(1)
+    if(speed < 5):
+        time.sleep(0.3)
+    elif(speed < 8):
+        time.sleep(0.5)
+    else:
+        time.sleep(1)
+
     end_angle = get_angle(motor)
 
     if(start_angle > end_angle):         
@@ -77,22 +83,50 @@ def get_angle(motor):
     rd_data = ((msb_data << 8) | lsb_data) & 0xFFF
     return rd_data
 
+def data_clean(angle_change_data):
+    # Convert list to NumPy array
+    angle_change_data = np.array(angle_change_data)
+    
+    # Filter outliers using IQR method
+    Q1 = np.quantile(angle_change_data,0.25)
+    Q3 = np.quantile(angle_change_data,0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Boolean mask for filtered data
+    filtered_mask = (angle_change_data >= lower_bound) & (angle_change_data <= upper_bound)
+
+    # Filtered data
+    return angle_change_data[filtered_mask]
+
 def main():
-    with open('motor_training_results.txt', 'w') as f:
-        #f.write("Motor Training Results:\n")
-        f.write("Motor\tTrial\tSpeed\tDuration\tStart Angle\tEnd Angle\tAngle Change\n")
-        motor = 2
-        print(f"Testing motor {motor}...")
-        for duration in np.arange(0.03, 0.04, 0.02):
-            for speed in range(9, 14, 2):  # Test speeds 
-                for trial in range(50):
-                    print(f"Trial {trial}: Running motor {motor} at speed {speed} for {duration}")
-                    start, end, angle_change = run_motor(motor, speed, duration)
-                    #print(f"Motor {motor} changed angle by {angle_change} degrees.")
-                    f.write(f"{motor}\t{trial}\t{speed}\t{duration}\t{start}\t{end}\t{angle_change}\n")
+    motor = 2
+    raw_lines = []
+    angle_data = []
+    voltage = 12.74
+    print(f"Testing motor {motor}...")
+    for duration in np.arange(0.04, 0.09, 0.01):
+        for speed in range(3, 8, 1):  # Test speeds 
+            for trial in range(50):
+                print(f"Trial {trial}: Running motor {motor} at speed {speed} for {duration:.2f}")
+                start, end, angle_change = run_motor(motor, speed, duration)                                    
+                #f.write(f"{motor}\t{trial}\t{speed}\t{duration}\t{start}\t{end}\t{angle_change}\n")
+                raw_lines.append(f"{motor},{trial},{speed},{duration:.2f},{start},{end},")
+                angle_data.append(angle_change)
+
+            # Clean the data for this setup, and write to the results file
+            angle_change = data_clean(angle_data)
+            with open('python/src/ann/motortraining/results2.txt', 'a') as f:
+                for idx in range(0,len(angle_change)):
+                    f.write(f"{raw_lines[idx]},{angle_change[idx]},{voltage}\n")
+            f.close()
+            raw_lines = []
+            angle_data = []
 
     print(f"Finished testing motor {motor}.\n")
-    f.close()
+
+
 
 
 if __name__=="__main__": 
