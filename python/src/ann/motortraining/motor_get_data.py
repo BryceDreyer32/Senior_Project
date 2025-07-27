@@ -44,7 +44,7 @@ def run_motor(motor, speed, duration):
         time.sleep(duration)
         fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, 0x0)
 
-    time.sleep(1)
+    time.sleep(0.8)
     end_angle = get_angle(motor)
 
     if(start_angle > end_angle):         
@@ -78,14 +78,14 @@ def get_angle(motor):
     return rd_data
 
 def main():
-    with open('motor_training_results.txt', 'w') as f:
+    with open('python/src/ann/motortraining/motor2_training_results.txt', 'w') as f:
         #f.write("Motor Training Results:\n")
         f.write("Motor\tTrial\tSpeed\tDuration\tStart Angle\tEnd Angle\tAngle Change\n")
         motor = 2
         print(f"Testing motor {motor}...")
         for duration in np.arange(0.03, 0.04, 0.02):
-            for speed in range(9, 14, 2):  # Test speeds 
-                for trial in range(50):
+            for speed in range(10, 11, 2):  # Test speeds 
+                for trial in range(200):
                     print(f"Trial {trial}: Running motor {motor} at speed {speed} for {duration}")
                     start, end, angle_change = run_motor(motor, speed, duration)
                     #print(f"Motor {motor} changed angle by {angle_change} degrees.")
