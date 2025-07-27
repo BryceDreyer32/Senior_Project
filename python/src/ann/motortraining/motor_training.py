@@ -7,6 +7,7 @@ from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch.utils.data import DataLoader, TensorDataset
 
 import sklearn
@@ -48,6 +49,11 @@ X_train, X_test, y_train, y_test = train_test_split(X_tensor, y_tensor, test_siz
 train_loader = DataLoader(TensorDataset(X_train, y_train), batch_size=16, shuffle=True)
 test_loader = DataLoader(TensorDataset(X_test, y_test), batch_size=16)
 
+def penalized_duration_loss(output, target, penalty_weight):
+    mse = F.mse_loss(output, target)
+    duration_penalty = output[:, 1].mean()  # assumes index 1 is duration
+    return mse + penalty_weight * duration_penalty
+
 # --- Define ANN ---
 class Motor_ANN(nn.Module):
     def __init__(self):
@@ -64,23 +70,26 @@ class Motor_ANN(nn.Module):
 
     def forward(self, x):
         return self.net(x)
-
+    
 if __name__ == '__main__':
     model = Motor_ANN()
-    criterion = nn.SmoothL1Loss()  # aka Huber loss
+    #criterion = nn.SmoothL1Loss()  # aka Huber loss
     # criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)  # Adjusted learning rate
 
     # --- Train ---
     train_losses = []
-    epochs = 100
+    epochs = 500
 
     for epoch in range(epochs):
         model.train()
         epoch_loss = 0
         for xb, yb in train_loader:
             pred = model(xb)
-            loss = criterion(pred, yb)
+            #loss = criterion(pred, yb)
+
+            loss = penalized_duration_loss(pred, yb, penalty_weight=0.1)
+
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
