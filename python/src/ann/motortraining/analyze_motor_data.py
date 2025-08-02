@@ -17,8 +17,8 @@ angle_change_data = df.iloc[:, 6]    # 7th column (Angle Change)
 Q1 = angle_change_data.quantile(0.25)
 Q3 = angle_change_data.quantile(0.75)
 IQR = Q3 - Q1
-lower_bound = Q1 - 1.5 * IQR
-upper_bound = Q3 + 1.5 * IQR
+lower_bound = Q1 - 1.25 * IQR
+upper_bound = Q3 + 1.25 * IQR
 
 # Boolean mask for filtered data
 filtered_mask = (angle_change_data >= lower_bound) & (angle_change_data <= upper_bound)
@@ -50,7 +50,7 @@ axes[0].grid(True)
 #axes[1].set_ylabel('Angle Change')
 # --- Plot 2: Scatter Plot (Start Angle vs Angle Change) ---
 axes[1].scatter(start_angle_data, angle_change_data, alpha=0.4, label='Original', color='gray')
-axes[1].scatter(start_angle_data, filtered_angle_change, alpha=0.7, label='Filtered', color='blue')
+axes[1].scatter(filtered_start_angle, filtered_angle_change, alpha=0.7, label='Filtered', color='blue')
 axes[1].set_title('Angle Change vs Start Angle')
 axes[1].set_xlabel('Start Angle')
 axes[1].set_ylabel('Angle Change')

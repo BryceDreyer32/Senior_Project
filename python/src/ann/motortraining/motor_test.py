@@ -3,6 +3,7 @@ import numpy as np
 import joblib
 import random
 import os, sys, time
+import matplotlib.pyplot as plt
 #from model import MotorNet  # import your trained model class
 from motor_training import Motor_ANN  # import the ANN class defined in motor_training.py
 
@@ -75,20 +76,19 @@ def get_angle(motor):
     return rd_data
 
 
-with open("results.txt", "w") as file:
+with open("test_results.txt", "w") as file:
 
+    error_log = []
     try:
-        for runs in range(10):
-            print(f"Run {runs}\n")            
+        for runs in range(50):
+            #print(f"Run {runs}\n")            
             start = get_angle(2)
             random_delta = random.randint(5, 2000)
             expected_end = (start + random_delta) % 4096
 
-            print(f"Start = {start}, End = {expected_end}")
-
             # Input: Start_Angle, End_Angle, Angle_Change, Voltage
         #    raw_input = np.array([[1681,1845,164,12.5]])  # Example input
-            raw_input = np.array([[start, expected_end, random_delta, 12.5]])  # Example input
+            raw_input = np.array([[start, random_delta, 12.5]])  # Example input
 
             # Normalize input
             input_scaled = input_scaler.transform(raw_input)
@@ -107,19 +107,41 @@ with open("results.txt", "w") as file:
                 pwm_val = 10
             run_motor(2, pwm_val, float(predicted_output[0][1]))
 
-            time.sleep(0.6)
+            time.sleep(0.3)
             actual_end = get_angle(2)
-            time.sleep(0.4)
+            time.sleep(0.2)
 
-            print(f", Actual End = {actual_end}, Error = {abs(actual_end-expected_end)}")
+            error = 0
+
+            expected_delta = 0
+            if(start > expected_end):         
+                expected_delta = 4096 - start + expected_end
+            else:
+                expected_delta = expected_end - start
+
+            actual_delta = 0
+            if(start > actual_end):         
+                actual_delta = 4096 - start + actual_end
+            else:
+                actual_delta = actual_end - start
+
+            error = expected_delta - actual_delta
+
+            print(f"Start = {start}, End = {expected_end}, Actual End = {actual_end}, Error = {error}, PWM = {pwm_val}, Duration = {predicted_output[0][1]:.4f}")
+            error_log.append(error)
 
             file.write(f"Expected: Start = {start}, End = {expected_end}, Delta = {random_delta}, PWM: {pwm_val}, Duration: {predicted_output[0][1]:.4f}\n")
-            file.write(f"Acual:    Start = {start}, End = {actual_end}, Delta = {actual_end-start}, Error = {abs(random_delta-(actual_end-start))}\n")
+            file.write(f"Actual:   Start = {start}, End = {actual_end}, Delta = {actual_end-start}, Error = {abs(expected_end-actual_end)%4096}\n")
     except KeyboardInterrupt:
         fpga.fpgaWrite(Constants.Constants.ROTATION2_CONTROL_ADDR, 0x0)
         print("\nLoop interrupted by Ctrl+C.")
     finally:
         print("Exiting program.")
 
-
 file.close()
+
+print("Average error = " + str(sum((error_log))/len(error_log)))
+print("Average absolute error = " + str(sum([abs(x) for x in error_log])/len(error_log)))
+
+plt.plot(error_log)
+plt.show()
