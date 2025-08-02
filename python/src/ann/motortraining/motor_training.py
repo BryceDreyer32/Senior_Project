@@ -75,11 +75,11 @@ if __name__ == '__main__':
     model = Motor_ANN()
     # criterion = nn.MSELoss()
     # criterion = nn.SmoothL1Loss()  # aka Huber loss
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)  # Adjusted learning rate
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)  # Adjusted learning rate
 
     # --- Train ---
     train_losses = []
-    epochs = 500
+    epochs = 200
 
     for epoch in range(epochs):
         model.train()
