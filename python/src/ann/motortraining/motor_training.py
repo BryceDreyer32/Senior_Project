@@ -21,21 +21,12 @@ X = df.iloc[:, [4, 6, 7]].values  # as NumPy array
 y = df.iloc[:, [2, 3]].values
 #.values  # Replace 'Speed' if needed
 
-
-# Fit scalers
-input_scaler = StandardScaler().fit(X)
-output_scaler = StandardScaler().fit(y)
-
-# Normalize
-X_scaled = input_scaler.transform(X)
-y_scaled = output_scaler.transform(y)
-
 #X = df[['Start_Angle', 'End_Angle', 'Voltage']].values
 #y = df[['Speed', 'Duration']].values  # Replace 'Speed' if needed
 
 # Normalize
-x_scaler = StandardScaler()
-y_scaler = StandardScaler()
+x_scaler = StandardScaler().fit(X)
+y_scaler = StandardScaler().fit(y)
 X_scaled = x_scaler.fit_transform(X)
 y_scaled = y_scaler.fit_transform(y)
 
@@ -74,21 +65,21 @@ class Motor_ANN(nn.Module):
 if __name__ == '__main__':
     model = Motor_ANN()
     # criterion = nn.MSELoss()
-    # criterion = nn.SmoothL1Loss()  # aka Huber loss
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)  # Adjusted learning rate
+    criterion = nn.SmoothL1Loss()  # aka Huber loss
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)  # Adjusted learning rate
 
     # --- Train ---
     train_losses = []
-    epochs = 500
+    epochs = 200
 
     for epoch in range(epochs):
         model.train()
         epoch_loss = 0
         for xb, yb in train_loader:
             pred = model(xb)
-            #loss = criterion(pred, yb)
+            loss = criterion(pred, yb)
 
-            loss = penalized_duration_loss(pred, yb, penalty_weight=0.1)
+            #loss = penalized_duration_loss(pred, yb, penalty_weight=0.1)
 
             optimizer.zero_grad()
             loss.backward()
