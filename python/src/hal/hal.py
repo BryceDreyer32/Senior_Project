@@ -6,16 +6,17 @@ import Constants
 class HAL:
     """Hardware Abstraction Layer for Onyx / Helios Robot code"""
 
-    def __init__(self, fpga):
+    def __init__(self, fpga, spi):
         """Constructor needs a pointer to the FPGA object, which has the SPI interface
         that we will interact through."""
         self.fpga = fpga
+        self.spi = spi
 
 
-    def run_motor(self, motor, speed, direction):
+    def run_rotation_motor(self, motor, speed, direction):
         """Starts running the motor with the given index, in the specified direction
         with the given speed"""
-        start_angle = self.get_angle(motor)
+        #start_angle = self.get_angle(motor)
         val = ((1 << 7) | (direction << 6) | (speed & 0x3F))
         if(motor == 0):
             self.fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, val)
@@ -30,7 +31,7 @@ class HAL:
             self.fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, val)
 
 
-    def stop_motor(self, motor):
+    def stop_rotation_motor(self, motor):
         """Stops the motor with the given index"""
         if(motor == 0):
             self.fpga.fpgaWrite(Constants.Constants.ROTATION0_CONTROL_ADDR, 0x0)
@@ -43,6 +44,38 @@ class HAL:
 
         elif(motor == 3):
             self.fpga.fpgaWrite(Constants.Constants.ROTATION3_CONTROL_ADDR, 0x0)
+
+
+    def run_drive_motor(self, motor, speed, direction):
+        """Starts running the drive motor with the given index, in the specified direction
+        with the given speed"""
+        val = ((1 << 7) | (direction << 6) | (speed & 0x3F))
+        if(motor == 0):
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE0_CONTROL_ADDR, val)
+
+        elif(motor == 1):
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE1_CONTROL_ADDR, val)
+
+        elif(motor == 2):
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE2_CONTROL_ADDR, val)
+
+        elif(motor == 3):
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE3_CONTROL_ADDR, val)        
+
+
+    def stop_drive_motor(self, motor):
+        """Stops the motor with the given index"""
+        if(motor == 0):
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE0_CONTROL_ADDR, 0x0)
+
+        elif(motor == 1):
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE1_CONTROL_ADDR, 0x0)
+
+        elif(motor == 2):
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE2_CONTROL_ADDR, 0x0)
+
+        elif(motor == 3):
+            self.fpga.fpgaWrite(Constants.Constants.DRIVE3_CONTROL_ADDR, 0x0)
 
 
     def get_angle(self, motor):
@@ -69,3 +102,8 @@ class HAL:
 
         rd_data = ((msb_data << 8) | lsb_data) & 0xFFF
         return rd_data
+
+    def get_voltage(self):
+        data = self.spi.readbytes(Constants.Constants.PS4_SPI_RX_BUFFER_SIZE)
+        voltage = (data[6] << 8) | data[7]
+        return voltage

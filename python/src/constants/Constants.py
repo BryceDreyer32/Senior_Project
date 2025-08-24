@@ -30,6 +30,7 @@ class Constants:
     SETUP_FRAME = 0
     PS4_ALL_DATA_FRAME = 1
     PS4_CONNECT_DATA_FRAME = 2
+    VOLTAGE_ONLY_FRAME = 3
     
 
     # PS4 RESPONSE CURVE

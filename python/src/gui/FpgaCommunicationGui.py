@@ -28,8 +28,8 @@ class FpgaCommunicationGui(FpgaCommunication.FpgaCommunication):
     # Override of fpgaWrite with the addition of printing to GUI console
     def fpgaWrite(self, address, data):
         # Don't print angle rotation data
-        if((int(address) < Constants.ROTATION0_CONTROL_ADDR) | (int(address) > Constants.ROTATION3_PWM_TEST_ADDR)):
-            self.gui.FPGA_Dialog_Box.append("Wr Addr = " + hex(address) + ", Wr Data = " + hex(data))
+#        if((int(address) < Constants.ROTATION0_CONTROL_ADDR) | (int(address) > Constants.ROTATION3_PWM_TEST_ADDR)):
+        self.gui.FPGA_Dialog_Box.append("Wr Addr = " + hex(address) + ", Wr Data = " + hex(data))
 #        self.checkLines()
         super().fpgaWrite(address, data)
 
@@ -37,8 +37,8 @@ class FpgaCommunicationGui(FpgaCommunication.FpgaCommunication):
     def fpgaRead(self, address):
         val = super().fpgaRead(address)
         # Don't print angle rotation data
-        if((int(address) < Constants.ROTATION0_CONTROL_ADDR) | (int(address) > Constants.ROTATION3_PWM_TEST_ADDR)):
-            self.gui.FPGA_Dialog_Box.append("Rd Addr = " + hex(address) + ", Rd Data  = " + hex(val))
+#        if((int(address) < Constants.ROTATION0_CONTROL_ADDR) | (int(address) > Constants.ROTATION3_PWM_TEST_ADDR)):
+        self.gui.FPGA_Dialog_Box.append("Rd Addr = " + hex(address) + ", Rd Data  = " + hex(val))
 #        self.checkLines()
         return val
 
